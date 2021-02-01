@@ -35,7 +35,7 @@ save_plotly(race_US, width= 340, height=240)
 save_plotly(speak_US, width= 750, height=140)
 
 (education_US <- barres(vars = "education", df = e, miss=F, rev_color = T, rev = F, labels="Highest level of education"))
-save_plotly(education_US, width= 880, height=140) # TODO
+save_plotly(education_US, width= 1080, height=140) 
 
 (employment_status_US <- barres(vars = "employment_agg", df = e, miss=F, labels="What is your employment status?"))
 save_plotly(employment_status_US, width= 630, height=140)
@@ -51,19 +51,38 @@ save_plotly(income_US, width= 510, height=140)
 save_plotly(wealth_US, width= 480, height=140)
 
 ## 2. HH composition and energy characteristics
-
-(nb_children_US <- barres(vars = "nb_children", df = e, miss=F, rev_color = T, rev = F, labels="Number of children"))
-save_plotly(nb_children_US, width= 560, height=140) # TODO
+(nb_children_US <- barres(vars = "nb_children_ceiling_4", df = e, miss=F, rev_color = T, rev = F, labels="Number of children", legend = c(0:3, "4 or more")))
+save_plotly(nb_children_US, width= 470, height=140)
 
 (heating_US <- barres(vars = "heating", df = e, miss=T, labels="Heating type", rev = F, legend=c("Electricity", "Gas", "Oil", "Other", "PNR")))
 save_plotly(heating_US, width= 525, height=140)
 
-### /!\ Var. cont. TODO
-(flights_US <- barres(vars = "flights", df = e, miss=F, labels="How many round-trip flights did you take between 2015 and 2019?"))
-save_plotly(flights_US, width= 1194, height=140)
+(flights_US <- barres(vars = "flights_agg", rev = F, df = e, miss=F, labels="How many round-trip flights did you<br>take between 2015 and 2019?"))
+save_plotly(flights_US, width= 655, height=140)
 
-(km_driven_US <- barres(vars = "km_driven", df = e, miss=F, labels="How many km have your household driven in 2019?"))
-save_plotly(km_driven_US, width= 1194, height=140) # TODO
+(flights_desagg_US <- barres(vars = "flights", df = e, miss=F, labels="How many round-trip flights did you take between 2015 and 2019?"))
+save_plotly(flights_desagg_US, width= 1194, height=140)
+
+mar_old <- par()$mar
+cex_old <- par()$cex
+par(mar = c(3.4, 3.4, 1.1, 0.1), cex=1.5)
+cdf_flights_US <- Ecdf(e$flights, weights = e$weight)
+plot(cdf_flights_US$x, cdf_flights_US$y, lwd=2, log='x', type='s', col="red", xlab="", ylab="")
+title(ylab=expression("Proportion <= x"), xlab="Number of flights from 2015 to 2019", line=2.3)
+grid() 
+par(mar = mar_old, cex = cex_old)
+
+(km_driven_US <- barres(vars = "km_driven_agg", df = e, miss=F, rev = F, labels="How many km have your household driven in 2019?"))
+save_plotly(km_driven_US, width= 1100, height=140) 
+
+mar_old <- par()$mar
+cex_old <- par()$cex
+par(mar = c(3.4, 3.4, 1.1, 0.1), cex=1.5)
+cdf_km_US <- Ecdf(e$km_driven, weights = e$weight)
+plot(cdf_km_US$x, cdf_km_US$y, lwd=2, xlim=c(0, 40000), type='s', col="red", xlab="", ylab="")
+title(ylab=expression("Proportion <= x"), xlab="km driven by househould in 2019", line=2.3)
+grid() 
+par(mar = mar_old, cex = cex_old)
 
 (frequency_beef_US <- barres(vars = "frequency_beef", df = e, miss=F, rev = F, labels="How often do you eat beef?"))
 save_plotly(frequency_beef_US, width= 530, height=140)
@@ -331,15 +350,18 @@ save_plotly(tax_US, width= 870, height=470)
 (insulation_compulsory_US <- barres(vars = "insulation_compulsory", df = e, miss=F, labels="If government subsidizes <br> thermal renovation it should be"))
 save_plotly(insulation_compulsory_US, width= 550, height=140)
 
-(flight_quota_1000km_US <- barres(vars = "flight_quota_1000km", df = e, miss=F, labels="National quota:<br>1000km"))
+(flight_quota_1000km_US <- barres(vars = "flight_quota_1000km", df = usp2, miss=F, labels="National quota:<br>1000km"))
 save_plotly(flight_quota_1000km_US, width= 510, height=140)
 
-(flight_quota_1000km_global_US <- barres(vars = "flight_quota_1000km_global", df = e, miss=F, labels="Global quota:<br>1000km"))
+(flight_quota_1000km_global_US <- barres(vars = "flight_quota_1000km_global", df = usp2, miss=F, labels="Global quota:<br>1000km"))
 save_plotly(flight_quota_1000km_global_US, width= 510, height=140)
 
-(flight_quota_one_trip_US <- barres(vars = "flight_quota_one_trip", df = e, miss=F, labels="National quota:<br>1 round-trip every 2 years"))
-save_plotly(flight_quota_one_trip_US, width= 510, height=140) # TODO!
-# TODO: group them
+(flight_quota_one_trip_US <- barres(vars = "flight_quota_one_trip", df = usp2, miss=F, labels="National quota:<br>1 round-trip every 2 years"))
+save_plotly(flight_quota_one_trip_US, width= 510, height=140) 
+
+labels_flight_quota <- c("National quota: 1000km", "Global quota: 1000km", "National quota:<br>1 round-trip every 2 years")
+(flight_quota_US <- barres(vars = variables_flight_quota[1:3], df = usp2, miss=F, sort = F, labels=labels_flight_quota))
+save_plotly(flight_quota_US, width= 510, height=250) 
 
 labels_beef <- c()
 for (v in variables_beef) labels_beef <- c(labels_beef, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -396,15 +418,18 @@ save_plotly(media_US, width= 925, height=140) # TODO order
 save_plotly(vote_participation_US, width= 540, height=140) 
 
 (vote_US <- barres(vars = "vote", df = e, rev_color = T, miss=T, labels="Voted for"))
-save_plotly(vote_US, width= 480, height=140) # TODO
+save_plotly(vote_US, width= 650, height=140) 
 
 (vote_participation_2016_US <- barres(vars = "vote_participation_2016", df = e, miss=T, labels="Voted in 2016 election"))
 save_plotly(vote_participation_2016_US, width= 540, height=140) 
 
-(vote_2016_US <- barres(vars = "vote_2016", df = e, rev_color = T, miss=T, labels="Voted for"))
-save_plotly(vote_2016_US, width= 530, height=140) # TODO: order
+(vote_2016_US <- barres(vars = "vote_2016_factor", df = usp2, rev_color = T, miss=T, labels="Voted for"))
+save_plotly(vote_2016_US, width= 530, height=140) 
 
 ## 13. Feedback
 
 (survey_biased_US <- barres(vars = "survey_biased", df = e, rev_color = T, miss=F, labels="Survey biased"))
-save_plotly(survey_biased_US, width= 450, height=140) # TODO
+save_plotly(survey_biased_US, width= 810, height=140) # TODO
+
+(survey_biased_US <- barres(vars = "survey_biased", df = usp2, rev_color = T, miss=F, labels="Survey biased"))
+save_plotly(survey_biased_US, width= 810, height=140)

@@ -1650,6 +1650,8 @@ convert <- function(e, country, wave = NULL) {
     e$vote_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"] <- e$vote_non_voters_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"]
     e$vote_participation_2016 <- as.item(as.character(e$vote_participation_2016), missing.values = 'PNR', annotation=Label(e$vote_participation_2016))
     e$vote_2016 <- as.item(as.character(e$vote_2016), missing.values = 'PNR', annotation=Label(e$vote_2016))
+    e$vote_2016_factor <- as.factor(e$vote_2016)
+    e$vote_2016_factor <- relevel(relevel(e$vote_2016_factor, "Stein"), "Clinton")
   }
   e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
   e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation=Label(e$vote))
@@ -1722,6 +1724,12 @@ convert <- function(e, country, wave = NULL) {
                                  missing.values=-0.1, annotation=Label(e$CC_impacts))
   }
   
+  e$flights_agg <- 1.8*(e$flights %in% 1:2) + 5*(e$flights %in% 3:7) + 11*(e$flights %in% 8:14) + 25*(e$flights > 14)
+  e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1.8,5,11,25), names = c("0", "1 or 2", "3 to 7", "8 to 14", "15 or more")), annotation=attr(e$flights, "label"))
+  
+  e$km_driven_agg <- 3000*(e$km_driven > 1000 & e$km_driven <= 5000) + 7500*(e$km_driven > 5000 & e$km_driven <= 10000) + 15000*(e$km_driven > 10000 & e$km_driven <= 20000) + 25000*(e$km_driven > 20000 & e$km_driven <= 30000) + 60000*(e$km_driven > 30000)
+  e$km_driven_agg <- as.item(e$km_driven_agg, labels = structure(c(0,3000,7500,15000,25000,60000), names = c("Below 1,000", "1,001 to 5,000", "5k to 10k", "10k to 20k", "20k to 30k", "More than 30k")), annotation=attr(e$flights, "label"))
+  
   e$treatment <- "None"
   e$treatment[e$treatment_climate==1 & e$treatment_policy==0] <- "Climate"
   e$treatment[e$treatment_climate==0 & e$treatment_policy==1] <- "Policy"
@@ -1754,6 +1762,7 @@ convert <- function(e, country, wave = NULL) {
   e$children <- 0
   e[e$nb_children >= 1, "children"] <- 1
   e$children <- as.factor(e$children)
+  e$nb_children_ceiling_4 <- pmin(e$nb_children, 4)
   
   e$college <- "No college"
   e[e$education >= 5, "college"] <- "College Degree"
