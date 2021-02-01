@@ -1698,10 +1698,20 @@ convert <- function(e, country, wave = NULL) {
   label(e$policies_side_effects) <- "policies_side_effects: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative side effects overall? Postive impacts/No notable impact/Negative impacts/PNR"
   e$policies_support <- ((e$standard_support=="Yes") + (e$investments_support=="Yes") + (e$tax_transfers_support=="Yes") - (e$standard_support=="No") - (e$investments_support=="No") - (e$tax_transfers_support=="No"))/3
   label(e$policies_support) <- "policies_support: Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
-  e$policies_self <- e$policies_incidence <- 0
+  e$policies_self <- e$policies_incidence <- e$policies_poor <- e$policies_middle <- e$policies_rich <- e$policies_rural <- e$policies_urban <- 0
   label(e$policies_self) <- "policies_self: Would your household win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  for (v in variables_incidence) e$policies_incidence <- e$policies_incidence + e[[v]]/length(variables_incidence)
+  label(e$policies_poor) <- "policies_self: Would the poorest win or lose ffinancially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
+  label(e$policies_middle) <- "policies_self: Would the middle class win or lose ffinancially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
+  label(e$policies_rich) <- "policies_self: Would the richest financially win or lose ffrom an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
+  label(e$policies_rural) <- "policies_self: Would rural financially win or lose ffrom an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
+  label(e$policies_urban) <- "policies_self: Would urban dwellers win or lose ffinancially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
+  for (v in variables_incidence) e$policies_incidence <- e$policies_incidence + e[[v]]/length(variables_incidence) # this variable makes no sense
   for (v in names_policies) e$policies_self <- e$policies_self + e[[paste(v, "incidence_self", sep="_")]]/3
+  for (v in names_policies) e$policies_poor <- e$policies_poor + e[[paste(v, "incidence_poor", sep="_")]]/3
+  for (v in names_policies) e$policies_middle <- e$policies_middle + e[[paste(v, "incidence_middle", sep="_")]]/3
+  for (v in names_policies) e$policies_rich <- e$policies_rich + e[[paste(v, "incidence_rich", sep="_")]]/3
+  for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, "incidence_rural", sep="_")]]/3
+  for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, "incidence_urban", sep="_")]]/3
   
   e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
   label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"
