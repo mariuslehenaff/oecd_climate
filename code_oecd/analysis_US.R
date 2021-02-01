@@ -124,48 +124,48 @@ decrit("pro_tax_1p", data = e)
 
 
 ##### Treatment effects #####
-end_formula <- paste(paste(variables_main_controls, collapse = ' + '), " + treatment") #  treatment_climate * treatment_policy
+end_formula <- paste(paste(variables_main_controls, collapse = ' + '), " + wave + treatment") #  treatment_climate * treatment_policy
 
 ## Placebo tests (questions asked before treatment)
-summary(lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e))  # /!\ Placebo test fails: there is a (non significant) effect!
-summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e)) 
-# summary(lm(country_should_act=='Yes' ~ treatment_climate * treatment_policy, data = e)) # /!\ Placebo test fails: there is an effect!
-# summary(lm(equal_quota > 0 ~ treatment_climate * treatment_policy, data = e))
-# summary(lm(change_lifestyle=='Yes' ~ treatment_climate * treatment_policy, data = e))
-# summary(lm(CC_exists=='Anthropogenic' ~ treatment_climate * treatment_policy, data = e))
+summary(lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
+summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, weights = e$weight)) 
+# summary(lm(country_should_act=='Yes' ~ treatment_climate * treatment_policy, data = e, weights = e$weight)) # /!\ Placebo test fails: there is an effect!
+# summary(lm(equal_quota > 0 ~ treatment_climate * treatment_policy, data = e, weights = e$weight))
+# summary(lm(change_lifestyle=='Yes' ~ treatment_climate * treatment_policy, data = e, weights = e$weight))
+# summary(lm(CC_exists=='Anthropogenic' ~ treatment_climate * treatment_policy, data = e, weights = e$weight))
 
 # Table 1
 ## Placebo tests (questions asked before treatment)
-summary(lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e))  # /!\ Placebo test fails: there is a (non significant) effect!
-summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e)) 
+summary(lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
+summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, weights = e$weight)) 
 ## Genuine treatment effects
-summary(lm(as.formula(paste("CC_worries >= 0 ~ ", end_formula)), data = e)) 
-summary(lm(as.formula(paste("country_should_act=='Yes' ~ wave*treatment +", end_formula)), data = e))
-summary(lm(as.formula(paste("change_lifestyle=='Yes' ~ wave*treatment +", end_formula)), data = e)) 
+summary(lm(as.formula(paste("CC_worries >= 0 ~ ", end_formula)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("country_should_act=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("change_lifestyle=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight)) 
 
 # Table 2
-summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~", end_formula)), data = e))  # /!\ negative effect of climate video
-summary(lm(as.formula(paste("investments_support=='Yes' ~", end_formula)), data = e)) 
-summary(lm(as.formula(paste("standard_support=='Yes' ~", end_formula)), data = e))  
-summary(lm(as.formula(paste("policies_support ~", end_formula)), data = e)) # effect of interaction
+summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~", end_formula)), data = e, weights = e$weight))  # /!\ negative effect of climate video
+summary(lm(as.formula(paste("investments_support=='Yes' ~", end_formula)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("standard_support=='Yes' ~", end_formula)), data = e, weights = e$weight))  
+summary(lm(as.formula(paste("policies_support ~", end_formula)), data = e, weights = e$weight)) # effect of interaction
 
 # Table 3
-summary(lm(as.formula(paste("policies_trust ~", end_formula)), data = e))
-summary(lm(as.formula(paste("policies_effective ~", end_formula)), data = e))
-summary(lm(as.formula(paste("policies_self ~", end_formula)), data = e)) # effect of interaction
-summary(lm(as.formula(paste("policies_poor ~", end_formula)), data = e)) 
-summary(lm(as.formula(paste("policies_employment ~", end_formula)), data = e))
-summary(lm(as.formula(paste("policies_side_effects ~", end_formula)), data = e))
+summary(lm(as.formula(paste("policies_trust ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_effective ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_self ~", end_formula)), data = e, weights = e$weight)) # effect of interaction
+summary(lm(as.formula(paste("policies_poor ~", end_formula)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("policies_employment ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_side_effects ~", end_formula)), data = e, weights = e$weight))
 
-summary(lm(as.formula(paste("standard_exists=='Yes' ~", end_formula)), data = e)) # /!\ effect although we expect none
-summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~ treatment_climate +", paste(variables_main_controls, collapse = ' + '))), data = e)) 
-summary(lm(as.formula(paste("tax_transfers_trust=='Yes' ~", end_formula)), data = e))
-summary(lm(as.formula(paste("tax_transfers_effective=='Yes' ~", end_formula)), data = e))
-summary(lm(as.formula(paste("tax_transfers_employment=='Positive' ~", end_formula)), data = e))
-summary(lm(as.formula(paste("tax_transfers_side_effects=='Positive' ~", end_formula)), data = e))
-summary(lm(as.formula(paste("tax_transfers_incidence_self=='Win' ~", end_formula)), data = e))
-summary(lm(as.formula(paste("tax_transfers_incidence_poor=='Win' ~", end_formula)), data = e))
-summary(lm(as.formula(paste("tax_transfers_incidence_rich=='Lose' ~", end_formula)), data = e))
+summary(lm(as.formula(paste("standard_exists=='Yes' ~", end_formula)), data = e, weights = e$weight)) # /!\ effect although we expect none
+summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~ treatment_climate +", paste(variables_main_controls, collapse = ' + '))), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("tax_transfers_trust=='Yes' ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_effective=='Yes' ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_employment=='Positive' ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_side_effects=='Positive' ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_incidence_self=='Win' ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_incidence_poor=='Win' ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_incidence_rich=='Lose' ~", end_formula)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("policies_incidence ~", end_formula)), data = e)) # stupid dependent variable
 # summary(lm(CC_worries >= 0 ~ treatment_climate * treatment_policy, data = e))
 # summary(lm(tax_transfers_support=="Yes" ~ treatment_climate * treatment_policy, data = e)) # /!\ negative effect of climate video
