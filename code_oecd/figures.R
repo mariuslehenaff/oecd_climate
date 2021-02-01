@@ -174,7 +174,7 @@ save_plotly(country_should_act_condition_US, width= 870, height=140)
 
 labels_pro <- c("Global democratic assembly<br>on climate change", "Global tax on carbon <br> to fund a global basic income", "Global tax on top 1% <br> to finance low-income countries")
 (pro_US <- barres(vars = variables_pro, df = e, miss = T, labels=labels_pro, legend=c("Yes", "No", "PNR")))
-save_plotly(pro_US, width= 510, height=250) # TODO!
+save_plotly(pro_US, width= 615, height=250)
 
 ## Post-treatment
 
@@ -226,7 +226,6 @@ save_plotly(investments_incidence_US, width= 600, height=340)
 save_plotly(investments_support_US, width= 650, height=140)
 
 ## 8. Pref 3: Tax and dividend
-
 (tax_transfers_trust_US <- barres(vars = "tax_transfers_trust", df = e, miss=T, labels="U.S. govt could correctly implement <br> a carbon tax with cash transfers", legend=c("Yes ", "No", "PNR")))
 save_plotly(tax_transfers_trust_US, width= 590, height=140)
 
@@ -245,7 +244,64 @@ save_plotly(tax_transfers_incidence_US, width= 600, height=340)
 (tax_transfers_support_US <- barres(vars = "tax_transfers_support", df = e, miss=T, labels="Support for a <br>carbon tax with cash transfers", legend=c("Yes ", "No", "PNR")))
 save_plotly(tax_transfers_support_US, width= 680, height=140)
 
-# TODO: group by policies, group by question
+## 6-8. Specific policies
+labels_policies <- c("An emission limit for cars", "A green infrastructure program", "A carbon tax with cash transfers")
+(policies_trust_US <- barres(vars = paste(names_policies, "trust", sep="_"), df = e, miss=T, sort = F, labels=labels_policies, legend=c("Yes ", "No", "PNR")))
+save_plotly(policies_trust_US, width= 620, height=250)
+
+(policies_effective_US <- barres(vars = paste(names_policies, "effective", sep="_"), df = e, miss=T, sort = F, labels=labels_policies, legend=c("Yes ", "No", "PNR")))
+save_plotly(policies_effective_US, width= 625, height=250)
+
+(policies_employment_US <- barres(vars = paste(names_policies, "employment", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_employment_US, width= 620, height=250)
+
+(policies_side_effects_US <- barres(vars = paste(names_policies, "side_effects", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_side_effects_US, width= 620, height=250)
+
+(policies_incidence_poor_US <- barres(vars = paste(names_policies, "incidence_poor", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_incidence_poor_US, width= 620, height=250)
+
+(policies_incidence_middle_US <- barres(vars = paste(names_policies, "incidence_middle", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_incidence_middle_US, width= 620, height=250)
+
+(policies_incidence_rich_US <- barres(vars = paste(names_policies, "incidence_rich", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_incidence_rich_US, width= 620, height=250)
+
+(policies_incidence_urban_US <- barres(vars = paste(names_policies, "incidence_urban", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_incidence_urban_US, width= 620, height=250)
+
+(policies_incidence_rural_US <- barres(vars = paste(names_policies, "incidence_rural", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_incidence_rural_US, width= 620, height=250)
+
+(policies_incidence_self_US <- barres(vars = paste(names_policies, "incidence_self", sep="_"), df = e, miss=T, sort = F, labels=labels_policies))
+save_plotly(policies_incidence_self_US, width= 620, height=250)
+
+(policies_support_US <- barres(vars = paste(names_policies, "support", sep="_"), df = e, miss=T, sort = F, labels=labels_policies, legend=c("Yes ", "No", "PNR")))
+save_plotly(policies_support_US, width= 620, height=250)
+
+(standard_yes_no_US <- barres(vars = c("standard_support", "standard_effective", "standard_trust"), sort = F,
+                            df = e, miss=T, labels=c("Supports", "Would be effective to flight CC", "Government could correctly implement"), legend=c("Yes ", "No", "PNR")))
+save_plotly(standard_yes_no_US, width= 715, height=250)
+ 
+(standard_effects_US <- barres(vars = c("standard_side_effects", "standard_employment"), sort = F,
+                            df = e, miss=T, labels=c("Side effects", "Impacts of employment")))
+save_plotly(standard_effects_US, width= 600, height=200)
+
+(investments_yes_no_US <- barres(vars = c("investments_support", "investments_effective", "investments_trust"), sort = F,
+                                   df = e, miss=T, labels=c("Supports", "Would be effective to flight CC", "Government could correctly implement"), legend=c("Yes ", "No", "PNR")))
+save_plotly(investments_yes_no_US, width= 715, height=250)
+
+(investments_effects_US <- barres(vars = c("investments_side_effects", "investments_employment"), sort = F,
+                                    df = e, miss=T, labels=c("Side effects", "Impacts of employment")))
+save_plotly(investments_effects_US, width= 600, height=200)
+
+(tax_transfers_yes_no_US <- barres(vars = c("tax_transfers_support", "tax_transfers_effective", "tax_transfers_trust"), sort = F,
+                                   df = e, miss=T, labels=c("Supports", "Would be effective to flight CC", "Government could correctly implement"), legend=c("Yes ", "No", "PNR")))
+save_plotly(tax_transfers_yes_no_US, width= 715, height=250)
+
+(tax_transfers_effects_US <- barres(vars = c("tax_transfers_side_effects", "tax_transfers_employment"), sort = F,
+                                    df = e, miss=T, labels=c("Side effects", "Impacts of employment")))
+save_plotly(tax_transfers_effects_US, width= 600, height=200)
 
 ## 9. Pref on climate policies
 

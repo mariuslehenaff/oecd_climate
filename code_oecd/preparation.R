@@ -1209,7 +1209,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 
 convert <- function(e, country, wave = NULL) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", 
-                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.", "PNR")
+                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "PNR")
   text_yes <- c("US" = "Yes")
   text_no <- c("US" = "No")
   names_policies <- c("standard", "investments", "tax_transfers")
