@@ -148,8 +148,8 @@ labels_CC_affected <- c("People born in the 1960s", "People born in the 1990s", 
 (CC_affected_US <- barres(vars = variables_CC_affected, df = e, error_margin=T, rev = F, miss = T, showLegend=F, labels=labels_CC_affected, hover=labels_CC_affected))
 save_plotly(CC_affected_US, width= 470, height=300) 
 
-(CC_affected_min_US <- barres(vars = "CC_affected_min", df = e, rev = F, rev_color = T, miss = T, labels="First US generation seriously affected by CC"))
-save_plotly(CC_affected_min_US, width= 750, height=140) # TODO!
+# (CC_affected_min_US <- barres(vars = "CC_affected_min", df = usp1, rev = F, rev_color = T, miss = T, labels="First US generation seriously affected by CC"))
+# save_plotly(CC_affected_min_US, width= 750, height=140) 
 
 (CC_impacts_US <- barres(vars = "CC_impacts", df = e, miss=T, rev_color = F, rev = F, labels="Effects of CC if humanity does not limit it"))
 save_plotly(CC_impacts_US, width= 885, height=110)
@@ -391,7 +391,7 @@ cex_old <- par()$cex
 par(mar = c(3.4, 3.4, 1.1, 0.1), cex=1.5)
 cdf_wtp_US <- Ecdf(e$wtp, weights = e$weight)
 plot(cdf_wtp_US$x, cdf_wtp_US$y, lwd=2, log='x', type='s', col="red", xlab="", ylab="")
-title(ylab=expression("Proportion "<=" x"), xlab="WTP (in $/year)", line=2.3)
+title(ylab=expression("Proportion <= x"), xlab="WTP (in $/year)", line=2.3)
 grid() # TODO legend
 par(mar = mar_old, cex = cex_old)
 
