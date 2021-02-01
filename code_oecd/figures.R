@@ -188,6 +188,9 @@ save_plotly(burden_sharing_US, width= 1150, height=325)
 (equal_quota_US <- barres(vars = "equal_quota", df = e, miss=T, labels="Should the U.S. take measures <br> to fight climate change?"))
 save_plotly(equal_quota_US, width= 930, height=140)
 
+(country_should_act_US <- barres(vars = "country_should_act", df = e, miss=F, labels="Should the US govt<br>take measures against CC?"))
+save_plotly(country_should_act_US, width= 600, height=140)
+
 (country_should_act_condition_US <- barres(vars = "country_should_act_condition", df = e, miss=F, labels="You think the US should take measures against CC.<br> How does this depend on what other countries do?"))
 save_plotly(country_should_act_condition_US, width= 870, height=140)
 

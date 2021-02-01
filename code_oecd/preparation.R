@@ -1688,20 +1688,20 @@ convert <- function(e, country, wave = NULL) {
   e$wave <- wave
   label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"
 
-  e$policies_trust <- (e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No")
+  e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
   label(e$policies_trust) <- "policies_trust: Could the U.S. federal government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
-  e$policies_effective <- (e$standard_effective=="Yes") + (e$investments_effective=="Yes") + (e$tax_transfers_effective=="Yes") - (e$standard_effective=="No") - (e$investments_effective=="No") - (e$tax_transfers_effective=="No")
+  e$policies_effective <- ((e$standard_effective=="Yes") + (e$investments_effective=="Yes") + (e$tax_transfers_effective=="Yes") - (e$standard_effective=="No") - (e$investments_effective=="No") - (e$tax_transfers_effective=="No"))/3
   label(e$policies_effective) <- "policies_effective: Woudl an emission limit for cars, a green infrastrcuture program and a carbon tax be effective to fight climate change? Yes/No/PNR"
-  e$policies_employment <- (e$standard_employment=="Positive") + (e$investments_employment=="Positive") + (e$tax_transfers_employment=="Positive") - (e$standard_employment=="Negative") - (e$investments_employment=="Negative") - (e$tax_transfers_employment=="Negative")
+  e$policies_employment <- ((e$standard_employment=="Positive") + (e$investments_employment=="Positive") + (e$tax_transfers_employment=="Positive") - (e$standard_employment=="Negative") - (e$investments_employment=="Negative") - (e$tax_transfers_employment=="Negative"))/3
   label(e$policies_employment) <- "policies_employment: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative impact on employment? Postive impacts/No notable impact/Negative impacts/PNR"
-  e$policies_side_effects <- (e$standard_side_effects=="Positive") + (e$investments_side_effects=="Positive") + (e$tax_transfers_side_effects=="Positive") - (e$standard_side_effects=="Negative") - (e$investments_side_effects=="Negative") - (e$tax_transfers_side_effects=="Negative")
+  e$policies_side_effects <- ((e$standard_side_effects=="Positive") + (e$investments_side_effects=="Positive") + (e$tax_transfers_side_effects=="Positive") - (e$standard_side_effects=="Negative") - (e$investments_side_effects=="Negative") - (e$tax_transfers_side_effects=="Negative"))/3
   label(e$policies_side_effects) <- "policies_side_effects: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative side effects overall? Postive impacts/No notable impact/Negative impacts/PNR"
-  e$policies_support <- (e$standard_support=="Yes") + (e$investments_support=="Yes") + (e$tax_transfers_support=="Yes") - (e$standard_support=="No") - (e$investments_support=="No") - (e$tax_transfers_support=="No")
+  e$policies_support <- ((e$standard_support=="Yes") + (e$investments_support=="Yes") + (e$tax_transfers_support=="Yes") - (e$standard_support=="No") - (e$investments_support=="No") - (e$tax_transfers_support=="No"))/3
   label(e$policies_support) <- "policies_support: Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
   e$policies_self <- e$policies_incidence <- 0
   label(e$policies_self) <- "policies_self: Would your household win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  for (v in variables_incidence) e$policies_incidence <- e$policies_incidence + e[[v]]
-  for (v in names_policies) e$policies_self <- e$policies_self + e[[paste(v, "incidence_self", sep="_")]]
+  for (v in variables_incidence) e$policies_incidence <- e$policies_incidence + e[[v]]/length(variables_incidence)
+  for (v in names_policies) e$policies_self <- e$policies_self + e[[paste(v, "incidence_self", sep="_")]]/3
   
   e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
   label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"
