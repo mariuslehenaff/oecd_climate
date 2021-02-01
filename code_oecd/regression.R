@@ -11,7 +11,7 @@ setwd(Paths[Sys.info()[7]])
 #source(".Rprofile")
 
 
-us <- readRDS("../data/US_pilot_clean_210115.rds")
+us <- load("../data/US_pilot_both_clean_210201.RData")
 
 
 ##### 1. Creation control variables #####

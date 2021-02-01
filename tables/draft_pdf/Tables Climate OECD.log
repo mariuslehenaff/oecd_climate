@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.6.18)  12 JAN 2021 15:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.6.18)  1 FEB 2021 20:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1370,7 +1370,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 473.
 Here is how much of TeX's memory you used:
  32160 strings out of 492616
  606541 string characters out of 6129481
- 763897 words of memory out of 5000000
+ 764897 words of memory out of 5000000
  35359 multiletter control sequences out of 15000+600000
  539713 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1385,7 +1385,7 @@ local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loc
 al/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
 l/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/
 texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on "Tables Climate OECD.pdf" (45 pages, 246636 bytes).
+Output written on "Tables Climate OECD.pdf" (45 pages, 246692 bytes).
 PDF statistics:
  473 PDF objects out of 1000 (max. 8388607)
  411 compressed objects within 5 object streams
