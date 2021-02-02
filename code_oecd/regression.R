@@ -26,7 +26,7 @@ cov_lab = c("race: White only", "Male", "Children", "No college", "status: Retir
 
 desc_table <- function(dep_vars, filename = NULL, data = us, indep_vars = control_variables, indep_labels = cov_lab, weights = NULL,
                        save_folder = "../tables/", dep.var.labels = dep_vars, dep.var.caption = NULL, digits= 3, mean_control = FALSE,
-                       mean_above = T, only_mean = F) {
+                       mean_above = T, only_mean = F, vars_kept=indep_vars) {
   models <- list()
   means <- c()
   for (i in seq_along(dep_vars)) {
@@ -48,7 +48,7 @@ desc_table <- function(dep_vars, filename = NULL, data = us, indep_vars = contro
                             covariate.labels = indep_labels, add.lines = list(c(mean_text, means)),
                             dep.var.labels = dep.var.labels,
                             dep.var.caption = dep.var.caption,
-                            multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n" #, omit.stat = c("n")
+                            multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=vars_kept #, omit.stat = c("n")
                        )))
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
     if (only_mean) {
@@ -62,7 +62,7 @@ desc_table <- function(dep_vars, filename = NULL, data = us, indep_vars = contro
                                      covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
                                      dep.var.labels = dep.var.labels,
                                      dep.var.caption = dep.var.caption,
-                                     multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n"
+                                     multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=vars_kept
                                 )))
   return(table)
 }
