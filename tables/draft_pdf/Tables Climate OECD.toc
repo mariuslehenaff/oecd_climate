@@ -3,11 +3,11 @@
 \contentsline {subsection}{\numberline {1.1}Energie Characteristics}{3}{subsection.4}% 
 \contentsline {subsection}{\numberline {1.2}Trust, perceptions of institution, inequality, and the future}{7}{subsection.8}% 
 \contentsline {subsection}{\numberline {1.3}Climate change (attitudes and risks)}{10}{subsection.12}% 
-\contentsline {subsection}{\numberline {1.4}International burden-sharing}{18}{subsection.24}% 
-\contentsline {section}{\numberline {2}Post-treatment}{24}{section.31}% 
-\contentsline {subsection}{\numberline {2.1}Preferences 1: Emission standards}{24}{subsection.32}% 
-\contentsline {subsection}{\numberline {2.2}Preferences 2: Green investments}{28}{subsection.36}% 
-\contentsline {subsection}{\numberline {2.3}Preferences 3: Tax and dividend}{31}{subsection.40}% 
-\contentsline {subsection}{\numberline {2.4}Preferences on climate policies}{34}{subsection.44}% 
-\contentsline {subsection}{\numberline {2.5}Preferences for bans vs. incentives}{37}{subsection.48}% 
-\contentsline {subsection}{\numberline {2.6}Political views and media consumption}{42}{subsection.54}% 
+\contentsline {subsection}{\numberline {1.4}International burden-sharing}{19}{subsection.24}% 
+\contentsline {section}{\numberline {2}Post-treatment}{25}{section.31}% 
+\contentsline {subsection}{\numberline {2.1}Preferences 1: Emission standards}{25}{subsection.32}% 
+\contentsline {subsection}{\numberline {2.2}Preferences 2: Green investments}{29}{subsection.36}% 
+\contentsline {subsection}{\numberline {2.3}Preferences 3: Tax and dividend}{32}{subsection.40}% 
+\contentsline {subsection}{\numberline {2.4}Preferences on climate policies}{35}{subsection.44}% 
+\contentsline {subsection}{\numberline {2.5}Preferences for bans vs. incentives}{38}{subsection.48}% 
+\contentsline {subsection}{\numberline {2.6}Political views and media consumption}{43}{subsection.54}% 

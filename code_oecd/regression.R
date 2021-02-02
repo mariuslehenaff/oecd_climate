@@ -11,7 +11,7 @@ setwd(Paths[Sys.info()[7]])
 #source(".Rprofile")
 
 
-us <- load("../data/US_pilot_both_clean_210201.RData")
+#us <- load("../data/US_pilot_both_clean_210201.RData")
 
 
 ##### 1. Creation control variables #####
@@ -21,8 +21,8 @@ us <- load("../data/US_pilot_both_clean_210201.RData")
 
 ##### 2. Regressions #####
 
-control_variables <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum")
-cov_lab = c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump")
+control_variables <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum", "wave")
+cov_lab = c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "wave: Pilote 2")
 
 desc_table <- function(dep_vars, filename = NULL, data = us, indep_vars = control_variables, indep_labels = cov_lab, weights = NULL,
                        save_folder = "../tables/", dep.var.labels = dep_vars, dep.var.caption = NULL, digits= 3, mean_control = FALSE,
@@ -274,8 +274,8 @@ desc_table(dep_vars = c("dummy_pro_global_assembly", "dummy_pro_global_tax", "du
            dep.var.caption = c("Approve"), data = us, indep_vars = control_variables, indep_labels = cov_lab, weights = NULL)
 
 ## Post-Treatment
-control_variables <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum", "treatment_agg")
-cov_lab = c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "staths: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "Both treatments", "Climate treatment only", "Policy treatment only")
+control_variables <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum", "treatment_agg", "wave")
+cov_lab = c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "staths: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilote 2")
 
 ## Block Pref 1: emission standards
 us$dummy_standard_exists <- (us$standard_exists == "Yes")
