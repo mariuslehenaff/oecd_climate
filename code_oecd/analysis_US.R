@@ -157,6 +157,31 @@ summary(lm(as.formula(paste("policies_poor ~", end_formula)), data = e, weights 
 summary(lm(as.formula(paste("policies_employment ~", end_formula)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("policies_side_effects ~", end_formula)), data = e, weights = e$weight))
 
+## Generate tables
+e$equal_quota_pos <-(e$equal_quota >0)
+e$dummy_CC_worries <- (e$CC_worries >= 0)
+e$country_should_act_yes <- (e$country_should_act == 1)
+e$dummy_change_lifestyle <- (e$change_lifestyle == "Yes")
+
+desc_table(dep_vars = c("equal_quota_pos", "CC_exists_anthro", "dummy_CC_worries", "country_should_act_yes", "dummy_change_lifestyle"), filename = "table_1",
+           dep.var.labels = c("Approve global equal quota", "CC Anthropogenic", "Worried about CC", "US should act", "Willing to change lifestyle"),
+           dep.var.caption = c(""), data = e, indep_vars = control_variables, indep_labels = cov_lab, weights = e$weight, mean_control = T
+)
+
+e$dummy_tax_transfers_support <- (e$tax_transfers_support == "Yes")
+e$dummy_investments_support <- (e$investments_support == "Yes")
+e$dummy_standard_support <- (e$standard_support == "Yes")
+desc_table(dep_vars = c("dummy_tax_transfers_support", "dummy_investments_support", "dummy_standard_support", "policies_support"), filename = "table_2",
+           dep.var.labels = c("Carbon tax with transfers", "Green Infrastructure Program", "Standard emission for cars", "Average over 3 policies"),
+           dep.var.caption = c("Support"), data = e, indep_vars = control_variables, indep_labels = cov_lab, weights = e$weight, mean_control = T
+)
+
+desc_table(dep_vars = c("policies_trust", "policies_effective", "policies_self", "policies_poor", "policies_employment", "policies_side_effects"), filename = "table_3",
+           dep.var.labels =  c("Trust implementation", "Effective", "Effect on my HH", "Effect on poorest", "Effect on employment", "Other side effects"),
+           dep.var.caption = c(""), data = e, indep_vars = control_variables, indep_labels = cov_lab, weights = e$weight, mean_control = T
+)
+
+
 summary(lm(as.formula(paste("standard_exists=='Yes' ~", end_formula)), data = e, weights = e$weight)) # /!\ effect although we expect none
 summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~ treatment_climate +", paste(variables_main_controls, collapse = ' + '))), data = e, weights = e$weight)) 
 summary(lm(as.formula(paste("tax_transfers_trust=='Yes' ~", end_formula)), data = e, weights = e$weight))
