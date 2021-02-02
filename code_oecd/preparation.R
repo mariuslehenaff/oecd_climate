@@ -1572,6 +1572,10 @@ convert <- function(e, country, wave = NULL) {
   e$equal_quota <- as.item(temp, labels = structure(c(-2:2,-0.1),
                         names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
                       missing.values=-0.1, annotation=Label(e$equal_quota))
+  
+  if (country=="US" & wave=="pilot2") e$equal_quota2 <- as.item(e$equal_quota, labels = structure(c(-2,-1,1,2,-0.1),
+                                                                                         names = c("No, against restriction","No, grand-fathering","Yes","No, more to vulnerable","PNR")),
+                                                                missing.values=-0.1, annotation=Label(e$equal_quota))
     
   temp <-  (e$country_should_act %in% text_should_act_yes) - (e$country_should_act %in% text_should_act_no) - 0.1 * (e$country_should_act %in% text_pnr)
   e$country_should_act <- as.item(temp, labels = structure(c(-1:1,-0.1),
@@ -1607,6 +1611,8 @@ convert <- function(e, country, wave = NULL) {
   
   e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_mandatory] <- "Mandatory"
   e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_voluntary] <- "Voluntary"
+  e$insulation_compulsory <- as.item(as.character(e$insulation_compulsory), labels = structure(c("Mandatory", "Voluntary", "PNR"), names=c("Mandatory", "Voluntary", "PNR")), 
+                                      missing.values = "PNR", annotation=Label(e$insulation_compulsory))
   
   e$flight_quota <- e$flight_quota_1000km
   if (wave == "pilot1") e$flight_quota[!is.na(e$flight_quota_3000km)] <- e$flight_quota_3000km[!is.na(e$flight_quota_3000km)]

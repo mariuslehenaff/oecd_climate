@@ -135,8 +135,8 @@ save_plotly(CC_factor_US, width= 942, height=200)
 labels_responsible <- c()
 for (v in variables_CC_responsible) labels_responsible <- c(labels_responsible, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 labels_responsible[8] <- "None of the above, <br>climate change is not a reality"
-(responsible_US <- barres(vars = variables_CC_responsible, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_responsible, hover=labels_responsible))
-save_plotly(responsible_US, width= 575, height=320) 
+(CC_responsible_US <- barres(vars = variables_CC_responsible, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_responsible, hover=labels_responsible))
+save_plotly(CC_responsible_US, width= 575, height=320) 
 
 (CC_stoppable_US <- barres(vars = "CC_stoppable", df = e, miss=T, rev = F, labels="Can humanity stop emitting GHG?"))
 save_plotly(CC_stoppable_US, width= 1200, height=140)
@@ -185,8 +185,11 @@ labels_burden_sharing[5] <- "The richest countries should pay even more, <br> vu
 (burden_sharing_US <- barres(vars = variables_burden_sharing, df = e, miss=T, labels=labels_burden_sharing))
 save_plotly(burden_sharing_US, width= 1150, height=325) 
 
-(equal_quota_US <- barres(vars = "equal_quota", df = e, miss=T, labels="Should the U.S. take measures <br> to fight climate change?"))
-save_plotly(equal_quota_US, width= 930, height=140)
+(equal_quota_US <- barres(vars = "equal_quota", df = e, miss=T, labels="Give each human same right to pollute"))
+save_plotly(equal_quota_US, width= 1200, height=140)
+
+(equal_quota_US <- barres(vars = "equal_quota2", df = usp2, miss=T, labels="Give each human same right to pollute"))
+save_plotly(equal_quota_US, width= 1050, height=140)
 
 (country_should_act_US <- barres(vars = "country_should_act", df = e, miss=F, labels="Should the US govt<br>take measures against CC?"))
 save_plotly(country_should_act_US, width= 600, height=140)
@@ -328,7 +331,7 @@ save_plotly(tax_transfers_effects_US, width= 600, height=200)
 ## 9. Pref on climate policies
 
 (CC_worries_US <- barres(vars = "CC_worries", df = e, miss=T, labels="Worry about impacts of climate change"))
-save_plotly(CC_worries_US, width= 830, height=140)
+save_plotly(CC_worries_US, width= 830, height=140) # TODO: rev_color
 
 labels_policy <- c()
 for (v in variables_policy) labels_policy <- c(labels_policy, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -350,7 +353,7 @@ save_plotly(tax_US, width= 870, height=470)
 
 ## 10. Pref for bans vs. incentives
 
-(insulation_compulsory_US <- barres(vars = "insulation_compulsory", df = e, miss=F, labels="If government subsidizes <br> thermal renovation it should be"))
+(insulation_compulsory_US <- barres(vars = "insulation_compulsory", df = e, miss=T, labels="If government subsidizes <br> thermal renovation it should be"))
 save_plotly(insulation_compulsory_US, width= 550, height=140)
 
 (flight_quota_1000km_US <- barres(vars = "flight_quota_1000km", df = usp2, miss=F, labels="National quota:<br>1000km"))
