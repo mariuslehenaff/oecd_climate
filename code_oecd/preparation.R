@@ -1306,7 +1306,8 @@ convert <- function(e, country, wave = NULL) {
   variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_", names(e))]
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "core_metropolitan", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
-  variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "core_metropolitan")
+  # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "core_metropolitan")
+  variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
   
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")

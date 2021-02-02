@@ -22,7 +22,7 @@ setwd(Paths[Sys.info()[7]])
 ##### 2. Regressions #####
 
 control_variables <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum", "wave")
-cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "wave: Pilote 2")
+cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "wave: Pilot 2")
 
 ## Block: Energy charac.
 # Heating
@@ -152,7 +152,7 @@ desc_table(dep_vars = c("pro_global_assembly == 'Yes'", "pro_global_tax == 'Yes'
 
 ## Post-Treatment
 control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum", "treatment", "wave")
-cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "staths: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilote 2")
+cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "staths: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
 ## Block Pref 1: emission standards
 desc_table(dep_vars = c("standard_exists == 'Yes'", "standard_trust == 'Yes'", "standard_effective == 'Yes'", 

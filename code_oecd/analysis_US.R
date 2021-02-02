@@ -136,12 +136,21 @@ summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data 
 
 # Table 1
 ## Placebo tests (questions asked before treatment)
-summary(lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
-summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, weights = e$weight)) 
+summary(reg_quota <- lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
+summary(reg_anthro <- lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, weights = e$weight)) 
 ## Genuine treatment effects
-summary(lm(as.formula(paste("CC_worries >= 0 ~ ", end_formula)), data = e, weights = e$weight)) 
-summary(lm(as.formula(paste("country_should_act=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("change_lifestyle=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight)) 
+summary(reg_worry <- lm(as.formula(paste("CC_worries >= 0 ~ ", end_formula)), data = e, weights = e$weight)) 
+summary(reg_act <- lm(as.formula(paste("country_should_act=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight))
+summary(reg_lifestyle <- lm(as.formula(paste("change_lifestyle=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight)) 
+temp <- c()
+for (dep_var in c("equal_quota >0", "CC_exists == 1", "CC_worries >= 0", "country_should_act == 'Yes'", "change_lifestyle == 'Yes'")) {
+  temp <- c(temp, round(wtd.mean(eval(parse(text = paste( "(e$", parse(text = dep_var), ")[data$treatment_agg=='None']", sep=""))), weights = weights[e$treatment=='None'], na.rm = T), d = 3)) }
+stargazer(reg_quota, reg_anthro, reg_worry, reg_act, reg_lifestyle, header=F, model.numbers = F,
+          covariate.labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both", "Wave: Pilot 2", "Pilot 2 $\\times$ Climate", "Pilot 2 $\\times$ Policy", "Pilot 2 $\\times$ Both"),
+          add.lines = list(c("Control group mean", temp)),
+          dep.var.labels = c("Approve global equal quota", "CC Anthropogenic", "Worried about CC", "US should act", "Willing to change lifestyle"),
+          dep.var.caption = c("\\multicolumn{2}{c}{Placebo tets} & \\multicolumn{3}{c}{Genuine treatment effects}"),
+          multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=c("treatment","wave"),  order = c("^treatment","2$","wave"))
 
 # Table 2
 summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~", end_formula)), data = e, weights = e$weight))  # /!\ negative effect of climate video
@@ -158,11 +167,12 @@ summary(lm(as.formula(paste("policies_employment ~", end_formula)), data = e, we
 summary(lm(as.formula(paste("policies_side_effects ~", end_formula)), data = e, weights = e$weight))
 
 ## Generate tables
-label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilote 2")
+label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
 desc_table(dep_vars = c("equal_quota >0", "CC_exists == 1", "CC_worries >= 0", "country_should_act == 'Yes'", "change_lifestyle == 'Yes'"), filename = "table_1",
            dep.var.labels = c("Approve global equal quota", "CC Anthropogenic", "Worried about CC", "US should act", "Willing to change lifestyle"),
-           dep.var.caption = c(""), data = e, keep = c("treatment","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
+           dep.var.caption = c("\\multicolumn{2}{c}{Placebo tets} & \\multicolumn{3}{c}{Genuine treatment effects}"), data = e, keep = c("treatment","wave"), 
+           indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
 )
 
 desc_table(dep_vars = c("tax_transfers_support == 'Yes'", "investments_support == 'Yes'", "standard_support == 'Yes'", "policies_support"), filename = "table_2bis",
