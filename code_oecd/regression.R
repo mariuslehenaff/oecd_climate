@@ -155,7 +155,7 @@ desc_table(dep_vars = c("pro_global_assembly == 'Yes'", "pro_global_tax == 'Yes'
 
 ## Post-Treatment
 control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum", "treatment", "wave")
-cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "staths: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilote 2")
+cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "staths: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump", "Climate treatment only", "Policy treatment only", "Both treatments", "wave: Pilote 2")
 
 ## Block Pref 1: emission standards
 desc_table(dep_vars = c("standard_exists == 'Yes'", "standard_trust == 'Yes'", "standard_effective == 'Yes'", 

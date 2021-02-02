@@ -235,7 +235,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
       means[i] <- round(wtd.mean(eval(parse(text = paste( "data$", parse(text = dep_vars[i]), sep=""))), weights = weights, na.rm = T), d = digits)
       mean_text <- "Mean"
     } else {
-      means[i] <- round(wtd.mean(eval(parse(text = paste( "(data$", parse(text = dep_vars[i]), ")[data$treatment_agg=='None']", sep=""))), weights = weights[data$treatment_agg=='None'], na.rm = T), d = digits)
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "(data$", parse(text = dep_vars[i]), ")[data$treatment=='None']", sep=""))), weights = weights[data$treatment_agg=='None'], na.rm = T), d = digits)
       mean_text <- "Control group mean"      
     }
   }
