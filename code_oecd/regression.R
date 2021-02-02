@@ -93,9 +93,12 @@ desc_table(dep_vars = c("CC_talks=='Never'", "CC_talks=='Yearly'", "CC_talks=='M
            dep.var.caption = c(""), data = us, indep_vars = control_variables, indep_labels = cov_lab, only_mean = T)
 
 ## Generations most affected
-desc_table(dep_vars = c("CC_affected_1960", "CC_affected_1990", "CC_affected_2020", "CC_affected_2050", "CC_affected_none"), filename = "CC_affected",
-           dep.var.labels = c("Born in 1960s", "Born in 1990s", "Born in 2020s", "Born in 2050s", "None of them"),
-           dep.var.caption = c("Generations"), data = us, indep_vars = control_variables, indep_labels = cov_lab, only_mean = T)
+#control_variables_usp <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum")
+#cov_lab_usp <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump")
+#
+#desc_table(dep_vars = c("CC_affected_1960", "CC_affected_1990", "CC_affected_2020", "CC_affected_2050", "CC_affected_none"), filename = "CC_affected",
+#           dep.var.labels = c("Born in 1960s", "Born in 1990s", "Born in 2020s", "Born in 2050s", "None of them"),
+#           dep.var.caption = c("Generations"), data = usp1, indep_vars = control_variables_usp, indep_labels = cov_lab_usp, only_mean = T)
 
 ## Sustainable lifestyle
 desc_table(dep_vars = c("change_lifestyle == 'Yes'"), filename = "change_lifestyle",
