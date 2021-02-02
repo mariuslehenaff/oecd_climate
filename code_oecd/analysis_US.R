@@ -158,29 +158,21 @@ summary(lm(as.formula(paste("policies_employment ~", end_formula)), data = e, we
 summary(lm(as.formula(paste("policies_side_effects ~", end_formula)), data = e, weights = e$weight))
 
 ## Generate tables
-e$equal_quota_pos <-(e$equal_quota >0)
-e$dummy_CC_worries <- (e$CC_worries >= 0)
-e$country_should_act_yes <- (e$country_should_act == 1)
-e$dummy_change_lifestyle <- (e$change_lifestyle == "Yes")
-
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilote 2")
 
-desc_table(dep_vars = c("equal_quota_pos", "CC_exists_anthro", "dummy_CC_worries", "country_should_act_yes", "dummy_change_lifestyle"), filename = "table_1",
+desc_table(dep_vars = c("equal_quota >0", "CC_exists == 1", "CC_worries >= 0", "country_should_act == 'Yes'", "change_lifestyle == 'Yes'"), filename = "table_1",
            dep.var.labels = c("Approve global equal quota", "CC Anthropogenic", "Worried about CC", "US should act", "Willing to change lifestyle"),
-           dep.var.caption = c(""), data = e,vars_kept = c("treatment_agg","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, weights = e$weight, mean_control = T
+           dep.var.caption = c(""), data = e, keep = c("treatment","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
 )
 
-e$dummy_tax_transfers_support <- (e$tax_transfers_support == "Yes")
-e$dummy_investments_support <- (e$investments_support == "Yes")
-e$dummy_standard_support <- (e$standard_support == "Yes")
-desc_table(dep_vars = c("dummy_tax_transfers_support", "dummy_investments_support", "dummy_standard_support", "policies_support"), filename = "table_2bis",
+desc_table(dep_vars = c("tax_transfers_support == 'Yes'", "investments_support == 'Yes'", "standard_support == 'Yes'", "policies_support"), filename = "table_2bis",
            dep.var.labels = c("Carbon tax with transfers", "Green Infrastructure Program", "Standard emission for cars", "Average over 3 policies"),
-           dep.var.caption = c("Support"), data = e, vars_kept = c("treatment_agg","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, weights = e$weight, mean_control = T
+           dep.var.caption = c("Support"), data = e, keep = c("treatment","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
 )
 
 desc_table(dep_vars = c("policies_trust", "policies_effective", "policies_self", "policies_poor", "policies_employment", "policies_side_effects"), filename = "table_3",
            dep.var.labels =  c("Trust implementation", "Effective", "Effect on my HH", "Effect on poorest", "Effect on employment", "Other side effects"),
-           dep.var.caption = c(""), data = e, vars_kept = c("treatment_agg","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, weights = e$weight, mean_control = T
+           dep.var.caption = c(""), data = e, keep = c("treatment","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
 )
 
 
@@ -195,13 +187,13 @@ summary(lm(as.formula(paste("tax_transfers_incidence_poor=='Win' ~", end_formula
 summary(lm(as.formula(paste("tax_transfers_incidence_rich=='Lose' ~", end_formula)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("policies_incidence ~", end_formula)), data = e)) # stupid dependent variable
 # summary(lm(CC_worries >= 0 ~ treatment_climate * treatment_policy, data = e))
-# summary(lm(tax_transfers_support=="Yes" ~ treatment_climate * treatment_policy, data = e)) # /!\ negative effect of climate video
+# summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy, data = e)) # /!\ negative effect of climate video
 # summary(lm(policies_support ~ treatment_climate * treatment_policy, data = e)) # effect of interaction
 # summary(lm(policies_self ~ treatment_climate * treatment_policy, data = e)) # effect of interaction
-# summary(lm(standard_exists=="Yes" ~ treatment_climate * treatment_policy, data = e)) # /!\ effect although we expect none
-# summary(lm(standard_support=="Yes" ~ treatment_climate * treatment_policy, data = e))
-# summary(lm(investments_support=="Yes" ~ treatment_climate * treatment_policy, data = e))
-# summary(lm(tax_transfers_support=="Yes" ~ treatment_climate, data = e))
+# summary(lm(standard_exists=='Yes' ~ treatment_climate * treatment_policy, data = e)) # /!\ effect although we expect none
+# summary(lm(standard_support=='Yes' ~ treatment_climate * treatment_policy, data = e))
+# summary(lm(investments_support=='Yes' ~ treatment_climate * treatment_policy, data = e))
+# summary(lm(tax_transfers_support=='Yes' ~ treatment_climate, data = e))
 # summary(lm(policies_trust ~ treatment_climate * treatment_policy, data = e))
 # summary(lm(policies_effective ~ treatment_climate * treatment_policy, data = e))
 # summary(lm(policies_employment ~ treatment_climate * treatment_policy, data = e))
@@ -225,28 +217,28 @@ summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~ tax_transfers_employ
 
 ## Heterogenous effects
 # Heterogenous effects: duration > 15. Nothing different for these ones.
-summary(lm(standard_exists=="Yes" ~ treatment_climate * treatment_policy, data = e, subset = duration > 15)) 
-summary(lm(tax_transfers_support=="Yes" ~ treatment_climate * treatment_policy, data = e, subset = duration > 15))
+summary(lm(standard_exists=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = duration > 15)) 
+summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = duration > 15))
 summary(lm(policies_support ~ treatment_climate * treatment_policy, data = e, subset = duration > 15))
 summary(lm(policies_self ~ treatment_climate * treatment_policy, data = e, subset = duration > 15)) 
 # # Heterogenous effects: duration > 8
-# summary(lm(standard_exists=="Yes" ~ treatment_climate * treatment_policy, data = e, subset = duration > 8)) 
-# summary(lm(tax_transfers_support=="Yes" ~ treatment_climate * treatment_policy, data = e, subset = duration > 8)) 
+# summary(lm(standard_exists=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = duration > 8)) 
+# summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = duration > 8)) 
 # summary(lm(policies_support ~ treatment_climate * treatment_policy, data = e, subset = duration > 8)) 
 # summary(lm(policies_self ~ treatment_climate * treatment_policy, data = e, subset = duration > 8)) 
 
 # Heterogenous effects: rush. Negative climate results driven by Trump supporters.
-summary(lm(tax_transfers_support=="Yes" ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
+summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
 summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, subset = !rush)) 
 summary(lm(as.formula(paste("CC_worries >= 0 ~", end_formula)), data = e, subset = !rush)) 
 summary(lm(tax_transfers_incidence_self=="Win" ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
 summary(lm(tax_transfers_incidence_rich=="Lose" ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
-summary(lm(tax_transfers_effective=="Yes" ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
+summary(lm(tax_transfers_effective=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
 summary(lm(policies_support ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
 summary(lm(policies_self ~ treatment_climate * treatment_policy, data = e, subset = !rush))
 
 # Heterogenous effects: politics. Negative climate results driven by Trump supporters.
-summary(lm(tax_transfers_support=="Yes" ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e)) 
+summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e)) 
 summary(lm(policies_support ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e)) 
 summary(lm(policies_self ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e))
 

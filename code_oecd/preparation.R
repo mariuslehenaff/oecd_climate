@@ -1812,14 +1812,6 @@ convert <- function(e, country, wave = NULL) {
   # # e$vote_dum <- as.factor(e$vote_dum)
   # # e$vote_dum <- relevel(e$vote_dum, ref ="Other")
   
-  e$treatment_agg <- NULL # TODO: duplicate of "treatment"
-  e[e$treatment_policy == 0 & e$treatment_climate == 0, "treatment_agg"] <- "None"
-  e[e$treatment_policy == 0 & e$treatment_climate == 1, "treatment_agg"] <- "Climate treatment only"
-  e[e$treatment_policy == 1 & e$treatment_climate == 0, "treatment_agg"] <- "Policy treatment only"
-  e[e$treatment_policy == 1 & e$treatment_climate == 1, "treatment_agg"] <- "Both"
-  e$treatment_agg <- as.factor(e$treatment_agg)
-  e$treatment_agg <- relevel(e$treatment_agg, ref ="None") 
-  
   e$income_factor <- as.factor(e$income)
   
   # e <- e[, -c(9:17)] 

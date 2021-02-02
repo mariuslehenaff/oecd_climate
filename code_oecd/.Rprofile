@@ -222,6 +222,50 @@ export_stats_desc <- function(data, file, miss = TRUE, sorted_by_n = FALSE, retu
     nb_manquants <<- des_miss     }
   if (return) return(output)
 }
+desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = cov_lab, weights = data$weight,
+                       save_folder = "../tables/", dep.var.labels = dep_vars, dep.var.caption = NULL, digits= 3, mean_control = FALSE,
+                       mean_above = T, only_mean = F, keep = indep_vars) {
+  # Wrapper for stargazer
+  # dep_vars accepts expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
+  models <- list()
+  means <- c()
+  for (i in seq_along(dep_vars)) {
+    models[[i]] <- lm(as.formula(paste(dep_vars[i], "~", paste("(", indep_vars, ")", collapse = ' + '))), data = data, weights = weights)
+    if (mean_control==FALSE){
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "data$", parse(text = dep_vars[i]), sep=""))), weights = weights, na.rm = T), d = digits)
+      mean_text <- "Mean"
+    } else {
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "(data$", parse(text = dep_vars[i]), ")[data$treatment_agg=='None']", sep=""))), weights = weights[data$treatment_agg=='None'], na.rm = T), d = digits)
+      mean_text <- "Control group mean"      
+    }
+  }
+  if (missing(filename)) file_path <- NULL
+  else file_path <- paste(save_folder, filename, ".tex", sep="")
+  if (only_mean) mean_above <- T
+  if (mean_above) { 
+    table <- do.call(stargazer, c(models,
+                                  list(out=NULL, header=F, model.numbers = F,
+                                       covariate.labels = indep_labels, add.lines = list(c(mean_text, means)),
+                                       dep.var.labels = dep.var.labels,
+                                       dep.var.caption = dep.var.caption,
+                                       multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
+                                  )))
+    mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
+    if (only_mean) {
+      table <- write_clip(gsub(paste(indep_labels[1], ".*"), paste(mean_line, '\\\\\\\\'), table), collapse=' ')
+      table <- table[c(1:grep('(Mean|Control group mean) &[^\\]*', table)[1], (length(table)-3):length(table))]
+    } else table <- write_clip(gsub(indep_labels[1], paste(mean_line, '\\\\\\\\ \\\\hline \\\\\\\\[-1.8ex]', indep_labels[1]), 
+                                    gsub('(Mean|Control group mean) &.*', '', table)), collapse=' ')
+    cat(paste(table, collapse="\n"), file = file_path)
+  } else table <- do.call(stargazer, c(models,
+                                       list(out=file_path, header=F,
+                                            covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
+                                            dep.var.labels = dep.var.labels,
+                                            dep.var.caption = dep.var.caption,
+                                            multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
+                                       )))
+  return(table)
+}
 CImedian <- function(vec) { # 95% confidence interval
   res <- tryCatch(unlist(ci.median(vec[!is.na(vec) & vec!=-1])), error=function(e) {print('NA')})
   return(paste(res[paste('ci.lower')], res[paste('ci.median')], res[paste('ci.upper')], length(which(!is.na(vec) & vec!=-1)))) 
