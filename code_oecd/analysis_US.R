@@ -318,10 +318,13 @@ decrit("flights", data = e, which = e$flights == 0) # 54
 decrit("flights", data = e, which = e$flights %in% c(1:9)) # 91 
 decrit("flights", data = e, which = e$flights >= 10) # 50
 all(as.integer(e$flights)==e$flights) # TODO: table, plot flight_pref(revenu/nb_flight)
-for (v in variables_flight_quota) print(decrit(v, data = e))
-for (v in variables_flight_quota) print(decrit(v, data = e, which = e$flights == 0))
-for (v in variables_flight_quota) print(decrit(v, data = e, which = e$flights %in% c(1:9)))
-for (v in variables_flight_quota) print(decrit(v, data = e, which = e$flights >= 10))
+for (v in variables_flight_quota) print(decrit(v, data = e, miss = F))
+# More want it tradable when it is global (normal). Those who fly more / richer prefer more market when quota is global
+for (v in variables_flight_quota[1:2]) print(decrit(v, data = e, which = e$flights == 0))
+for (v in variables_flight_quota[1:2]) print(decrit(v, data = e, which = e$flights < 2.5, miss = F))
+for (v in variables_flight_quota[1:2]) print(decrit(v, data = e, which = e$flights > 2.5, miss = F))
+for (v in variables_flight_quota[1:2]) print(decrit(v, data = e, which = e$income %in% c("Q1", "Q2"), miss = F)) # seuils 35/70/120k
+for (v in variables_flight_quota[1:2]) print(decrit(v, data = e, which = e$income %in% c("Q3", "Q4"), miss = F))
 for (v in variables_beef) print(decrit(v, data = e))
 decrit("ban_incentives", data = e)
 

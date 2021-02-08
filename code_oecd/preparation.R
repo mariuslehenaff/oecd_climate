@@ -1259,15 +1259,15 @@ convert <- function(e, country, wave = NULL) {
     #             missing.values = c("","PNR"), annotation=attr(e[j][[1]], "label"))
   }
 
-  for (j in c(#"gender", "region", "speaks_well", "education", "employment_status", "income", "wealth", "frequency_beef", "survey_biased", "vote", "media", "country_should_act_condition
+  for (j in intersect(c(#"gender", "region", "speaks_well", "education", "employment_status", "income", "wealth", "frequency_beef", "survey_biased", "vote", "media", "country_should_act_condition
               "heating", "transport_available", "trust_govt", "trust_public_spending", "inequality_problem", "CC_exists", "CC_dynamics", "CC_stoppable", 
-              "CC_talks", "CC_worries", "interest_politics"#, "vote_participation"
+              "CC_talks", "CC_worries", "interest_politics"#, "flight_quota_1000km", "flight_quota_1000km_global", "flight_quota_one_trip", "vote_participation"
               # "standard_employment", "investments_employment", "tax_transfers_employment", "standard_side_effects", "investments_side_effects", "tax_transfers_side_effects", 
               # "standard_incidence_poor", "investments_incidence_poor", "tax_transfers_incidence_poor", "standard_incidence_rich", "investments_incidence_rich", "tax_transfers_incidence_rich", 
               # "standard_incidence_middle", "investments_incidence_middle", "tax_transfers_incidence_middle", "standard_incidence_urban", "investments_incidence_urban", "tax_transfers_incidence_urban", 
               # "standard_incidence_rural", "investments_incidence_rural", "tax_transfers_incidence_rural", "standard_incidence_self", "investments_incidence_self", "tax_transfers_incidence_self", 
               # "future_gdp", "envi", "equal_quota", "country_should_act", "insulation_compulsory", "flight_quota_1000km", "flight_quota_3000km", "flight_quota_one_trip", "ban_incentives"
-              )) {
+      ), names(e))) {
     e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label"))) 
   }
 
@@ -1630,6 +1630,8 @@ convert <- function(e, country, wave = NULL) {
   e$variant_flight_quota[!is.na(e$flight_quota_1000km_global)] <- "1000km global"
   e$variant_flight_quota[!is.na(e$flight_quota_1000km)] <- "1000km"
   e$variant_flight_quota[!is.na(e$flight_quota_one_trip)] <- "1 trip"
+  for (v in variables_flight_quota) { e[[v]] <- as.item(as.character(e[[v]]), labels = structure(c("Rationing", "Tradable", "PNR"), 
+                          names=c("Rationing", "Tradable", "PNR")), missing.values = "PNR", annotation=Label(e[[v]])) }
   
   e$ban_incentives[e$ban_incentives %in% text_ban_incentives_encourage] <- "Encourage"
   e$ban_incentives[e$ban_incentives %in% text_ban_incentives_force] <- "Force"

@@ -412,6 +412,12 @@ save_plotly(member_environmental_orga_US, width= 622, height=140)
 (relative_environmentalist_US <- barres(vars = "relative_environmentalist", df = e, miss=F, labels="Has an environmentalist relative"))
 save_plotly(relative_environmentalist_US, width= 540, height=140)
 
+(left_right_US <- barres(vars = "left_right", rev_color = T, rev = F, df = e, miss=T, labels="How would you define yourself?", legend=c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right", "Intedeterminate")))
+save_plotly(left_right_US, width= 1020, height=140)
+
+(left_right_US_rev_color <- barres(vars = "left_right", rev_color = F, rev = F, df = e, miss=T, labels="How would you define yourself?", legend=c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right", "Intedeterminate")))
+save_plotly(left_right_US_rev_color, width= 1020, height=140)
+
 labels_political_identity <- c()
 for (v in variables_political_identity[1:7]) labels_political_identity <- c(labels_political_identity, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (political_identity_US <- barres(vars = variables_political_identity[1:7], df = e, rev = F, miss = F, labels=labels_political_identity, showLegend=F))
