@@ -69,10 +69,11 @@ decrit("envi", data = e)
 
 
 ##### Essay: politics ######
-decrit(e$politics_field!="")
+mean(e$politics_field!="",na.rm=T)
 Label(e$politics_field)
 usp1$politics_field
 usp2$politics_field
+mean(grepl("Climate|climate|green|Green|fuel|fracking", e$politics_field))
 # proposed variables: liberal, conservative, democrat, republican, independent, moderate / middle of the road, leaning dummy, 
 #     abortion, reduce govt, reduce inequality, against discrimination, reduce deficit, climate, healthcare, other proposal, proposal dummy
 # + in every field: meaningless/irrelevant, wrong grammar/spelling, detailed, "good"
