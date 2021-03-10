@@ -2044,7 +2044,7 @@ convert <- function(e, country, wave = NULL) {
                                                                      names = c("Free-riding","Reciprocity", "Compensation")),
                                              annotation=Label(e$country_should_act))
   
-  for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { 
+  for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { # TODO bug when variables_side_effects is not yet defined
     temp <-  (e[[v]] %in% text_effects_positive) - (e[[v]] %in% text_effects_negative) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
                           names = c("Negative","None notable","Positive","PNR")),
@@ -2391,7 +2391,7 @@ usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 e <- usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
 usp12 <- merge(usp1, usp2, all = T)
-# us <- merge(usp3, usp12, all = T, by=date)
+us <- merge(usp3, usp12, all = T, by="date")
 
 # e <- read_csv("../data/US_pilot3.csv") 
 # e <- e[-c(1:2),]
