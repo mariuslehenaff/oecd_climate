@@ -234,8 +234,8 @@ save_plotly(investments_support_US, width= 980, height=140)
 
 labels_investments_funding <- c()
 for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(investments_funding_pnr_US <- barres(vars = variables_investments_funding, df = e, rev = F, miss = T, labels=labels_investments_funding,showLegend=F))
-save_plotly(investments_funding_pnr_US, width= 880, height=143)  
+(investments_funding_US <- barres(vars = variables_investments_funding, df = e, rev = F, miss = T, labels=labels_investments_funding,showLegend=F))
+save_plotly(investments_funding_US, width= 880, height=143)  
 
 ## 9. Pref 3: Tax and dividend
 labels_tax_transfers_effects <- c() # TODO reduce width/labels
