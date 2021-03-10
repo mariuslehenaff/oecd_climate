@@ -794,8 +794,8 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "condition_financial_aid",
       "condition_people_change",
       "condition_rich_change",
-      "standard_reduce_emission",
-      "standard_reduce_pollution",
+      "standard_effect_less_emission",
+      "standard_effect_less_pollution",
       "standard_large_effect",
       "standard_negative_effect",
       "standard_cost_effective",
@@ -807,9 +807,9 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "standard_fair",
       "standard_support",
       "standard_public_transport_support",
-      "investments_make_elec_greener",
-      "investments_more_use_public_transport",
-      "investments_reduce_pollution",
+      "investments_effect_elec_greener",
+      "investments_effect_public_transport",
+      "investments_effect_less_pollution",
       "investments_large_effect",
       "investments_negative_effect",
       "investments_cost_effective",
@@ -829,10 +829,10 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q142_Last",
       "duration_tax_transfers",
       "Q142_Click",
-      "tax_transfers_drive_less",
-      "tax_transfers_insulation",
-      "tax_transfers_reduce_emission",
-      "tax_transfers_reduce_pollution",
+      "tax_transfers_effect_driving",
+      "tax_transfers_effect_insulation",
+      "tax_transfers_effect_less_emission",
+      "tax_transfers_effect_less_pollution",
       "tax_transfers_large_effect",
       "tax_transfers_negative_effect",
       "tax_transfers_cost_effective",
@@ -1530,7 +1530,7 @@ convert <- function(e, country, wave = NULL) {
   }
 
   variables_duration <<- names(e)[grepl('duration', names(e))]
-  if (grepl('footprint', names(e))) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
+  if (length(grep('footprint', names(e)))>0) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
   for (i in c(variables_duration, variables_footprint, intersect(c( # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
     "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "age", "zipcode", "donation"
   ), names(e)))) {
@@ -1596,17 +1596,22 @@ convert <- function(e, country, wave = NULL) {
   variables_race <<- names(e)[grepl('race_', names(e))]
   variables_home <<- names(e)[grepl('home_', names(e))]
   variables_transport <<- names(e)[grepl('transport_', names(e))]
-  if (grepl('CC_factor_', names(e))) variables_CC_factor <<- names(e)[grepl('CC_factor_', names(e))]
-  if (grepl('CC_responsible_', names(e))) variables_CC_responsible <<- names(e)[grepl('CC_responsible_', names(e)) & !grepl("order_", names(e))]
-  if (grepl('responsible_CC_', names(e))) variables_responsible_CC <<- names(e)[grepl('responsible_CC_', names(e)) & !grepl("order_", names(e))]
-  if (grepl('CC_affected_', names(e))) variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
-  if (grepl('change_condition_', names(e))) variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
-  if (grepl('effect_policies_', names(e))) variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
-  if (grepl('effect_halt_CC_', names(e))) variables_effect_policies <<- names(e)[grepl('effect_halt_CC_', names(e))]
-  if (grepl('kaya_', names(e))) variables_kaya <<- names(e)[grepl('kaya_', names(e))]
+  if (length(grep('CC_factor_', names(e)))>0) variables_CC_factor <<- names(e)[grepl('CC_factor_', names(e))]
+  if (length(grep('CC_responsible_', names(e)))>0) variables_CC_responsible <<- names(e)[grepl('CC_responsible_', names(e)) & !grepl("order_", names(e))]
+  if (length(grep('responsible_CC_', names(e)))>0) variables_responsible_CC <<- names(e)[grepl('responsible_CC_', names(e)) & !grepl("order_", names(e))]
+  if (length(grep('CC_affected_', names(e)))>0) variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
+  if (length(grep('change_condition_', names(e)))>0) variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
+  if (length(grep('effect_policies_', names(e)))>0) variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
+  if (length(grep('effect_halt_CC_', names(e)))>0) variables_effect_policies <<- names(e)[grepl('effect_halt_CC_', names(e))]
+  if (length(grep('kaya_', names(e)))>0) variables_kaya <<- names(e)[grepl('kaya_', names(e))]
   variables_scale <<- names(e)[grepl('scale_', names(e))]
   variables_beef <<- names(e)[grepl('beef_', names(e)) & !grepl("order_", names(e))]
   variables_burden_sharing <<- names(e)[grepl('burden_sharing_', names(e))]
+  if ('standard_cost_effective' %in% names(e)) variables_standard_effect <<- names(e)[grepl('standard_', names(e)) & grepl('_effect', names(e))]
+  if ('standard_cost_effective' %in% names(e)) variables_investments_effect <<- names(e)[grepl('investments_', names(e)) & grepl('_effect', names(e))]
+  if ('standard_cost_effective' %in% names(e)) variables_tax_transfers_effect <<- names(e)[grepl('tax_transfers_', names(e)) & grepl('_effect', names(e))]
+  if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
+  if ("standard_fair" %in% names(e)) variables_policies_fair  <<- names(e)[grepl('_fair', names(e))]
   variables_policies_support <<- c("standard_support", "investments_support", "tax_transfers_support")
   variables_support <<- names(e)[grepl('_support', names(e))]
   variables_incidence <<- names(e)[grepl('incidence_', names(e))]
@@ -1620,8 +1625,11 @@ convert <- function(e, country, wave = NULL) {
   variables_standard <<- c("standard_support", "standard_trust", "standard_effective", "standard_employment", "standard_side_effects", variables_standard_incidence, variables_standard_win_lose)
   variables_investments <<- c("investments_support", "investments_trust", "investments_effective", "investments_employment", "investments_side_effects", variables_investments_incidence, variables_investments_win_lose)
   variables_tax_transfers <<- c("tax_transfers_support", "tax_transfers_trust", "tax_transfers_effective", "tax_transfers_employment", "tax_transfers_side_effects", variables_tax_transfers_incidence, variables_tax_transfers_win_lose)
-  if (grepl('_side_effects', names(e))) variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
-  if (grepl('_employment', names(e))) variables_employment <<- names(e)[grepl('_employment', names(e))]
+  if (length(grep('_side_effects', names(e)))>0) variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
+  if (length(grep('_employment', names(e)))>0) variables_employment <<- names(e)[grepl('_employment', names(e))]
+  if (length(grep('willing_', names(e)))>0) variables_willing <<- names(e)[grepl('willing_', names(e))]
+  if (length(grep('condition_', names(e)))>0) variables_condition <<- names(e)[grepl('condition_', names(e))]
+  if (length(grep('CC_impacts_', names(e)))>0) variables_CC_impacts <<- names(e)[grepl('CC_impacts_', names(e))]
   variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
   variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_", names(e))]
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
@@ -1853,15 +1861,33 @@ convert <- function(e, country, wave = NULL) {
   text_survey_biased_left <- c("US" = "Yes, left-wing biased")
   text_survey_biased_right <- c("US" = "Yes, right-wing biased")
   
-  for (v in intersect(names(e), c(variables_burden_sharing, "trust_public_spending"))) { 
-    temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr)
+  for (v in intersect(names(e), c(variables_burden_sharing, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
+    temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                           names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
+  
+  # insulation excellent, CC_anthropogenic none-most, effect_halt_CC_economy effects, if_other less-more, statist, problem_inequality, future_richness, liberal-conservative, 
+  # TODO! know_
+  
+  for (v in intersect(names(e), c(variables_CC_impacts, "will_insulate", "CC_will_end"))) { 
+    temp <-  2 * (e[[v]] %in% text_very_likely) + (e[[v]] %in% text_somewhat_likely) - (e[[v]] %in% text_somewhat_unlikely) - 2 * (e[[v]] %in% text_very_unlikely) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
+    e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1),
+                                               names = c("Very unlikely","Somewhat unlikely","Somewhat likely","Very likely","PNR")),
+                      missing.values=-0.1, annotation=Label(e[[v]]))
+  }
+  
+  
+  for (v in intersect(names(e), c(variables_responsible_CC, variables_willing, variables_condition, "CC_knowledgeable", "net_zero_feasible", "CC_affects_self", "pro_ambitious_policies", "effect_halt_CC_lifestyle", "interested_politics"))) { 
+    temp <-  2 * (e[[v]] %in% text_intensity_great_deal) + (e[[v]] %in% text_intensity_lot) - (e[[v]] %in% text_intensity_little) - 2 * (e[[v]] %in% text_intensity_not) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
+    e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                                               names = c("Not at all","A little","Moderately","A lot","A great deal","PNR")),
+                      missing.values=-0.1, annotation=Label(e[[v]]))
+  }
 
   for (v in c(variables_policy , variables_tax, variables_support)) { 
-    temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr)
+    temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                           names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
