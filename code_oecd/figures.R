@@ -394,10 +394,10 @@ save_plotly(vote_participation_US, width= 540, height=140)
 (vote_participation_2016_US <- barres(vars = "vote_participation_2016", df = e, miss=T, labels="Voted in 2016 election"))
 save_plotly(vote_participation_2016_US, width= 540, height=140) 
 
-(vote_US <- barres(vars = "vote", df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
+(vote_US <- barres(vars = "vote", df = e, rev_color = T, miss=T, labels="In 2020, voted for"))
 save_plotly(vote_US, width= 650, height=140) 
 
-(vote_2016_US <- barres(vars = "vote_2016", df = e, rev_color = T, miss=T, labels="In 2016, voted for (voters)"))
+(vote_2016_US <- barres(vars = "vote_2016", df = e, rev_color = T, miss=T, labels="In 2016, voted for"))
 save_plotly(vote_2016_US, width= 650, height=140) 
 
 (liberal_conservative_US <- barres(vars = "liberal_conservative", df = e, rev_color = T, miss=T, labels="On economic policy matters, where do you see yourself on the liberal/conservative spectrum?"))
