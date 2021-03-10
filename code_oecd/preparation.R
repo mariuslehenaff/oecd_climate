@@ -1531,9 +1531,9 @@ convert <- function(e, country, wave = NULL) {
 
   variables_duration <<- names(e)[grepl('duration', names(e))]
   if (length(grep('footprint', names(e)))>0) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
-  for (i in c(variables_duration, variables_footprint, intersect(c( # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
+  for (i in intersect(c(variables_duration, variables_footprint,  # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
     "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "age", "zipcode", "donation"
-  ), names(e)))) {
+  ), names(e))) {
     lab <- label(e[[i]])
     e[[i]] <- as.numeric(as.vector(e[[i]]))
     label(e[[i]]) <- lab
@@ -2390,15 +2390,16 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
 usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 e <- usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
-us <- merge(usp3, merge(usp1, usp2, all = T), all = T)
+usp12 <- merge(usp1, usp2, all = T)
+# us <- merge(usp3, usp12, all = T, by=date)
 
-e <- read_csv("../data/US_pilot3.csv") 
-e <- e[-c(1:2),]
-sum((is.na(e$Q18.2_6) | is.na(e$Q18.2_1)) & !is.na(e$Q18.3_1), na.rm=T)/sum(!is.na(e$Q18.3_1)) # error rate attention test
-e$Finished_1[e$Q_TerminateFlag=="QuotaMet"] <- "False"
-e <- e[is.na(e$Q_TerminateFlag),]
-e <- e[as.numeric(as.vector(e$Q_TotalDuration)) > 686,]
-e <- e[e$Finished_1==1,]
-decrit(as.numeric(e$Q_TotalDuration)/60)
-decrit(e$Q12.1)
-decrit(e$Q9.1) # no bug in videos
+# e <- read_csv("../data/US_pilot3.csv") 
+# e <- e[-c(1:2),]
+# sum((is.na(e$Q18.2_6) | is.na(e$Q18.2_1)) & !is.na(e$Q18.3_1), na.rm=T)/sum(!is.na(e$Q18.3_1)) # error rate attention test
+# e$Finished_1[e$Q_TerminateFlag=="QuotaMet"] <- "False"
+# e <- e[is.na(e$Q_TerminateFlag),]
+# e <- e[as.numeric(as.vector(e$Q_TotalDuration)) > 686,]
+# e <- e[e$Finished_1==1,]
+# decrit(as.numeric(e$Q_TotalDuration)/60)
+# decrit(e$Q12.1)
+# decrit(e$Q9.1) # no bug in videos
