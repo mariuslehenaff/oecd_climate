@@ -791,7 +791,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "willing_limit_beef",
       "willing_limit_heating",
       "condition_ambitious_policies",
-      "condition_financial_support",
+      "condition_financial_aid",
       "condition_people_change",
       "condition_rich_change",
       "standard_reduce_emission",
@@ -799,11 +799,11 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "standard_large_effect",
       "standard_negative_effect",
       "standard_cost_effective",
-      "standard_incidence_poor",
-      "standard_incidence_middle",
-      "standard_incidence_rich",
-      "standard_incidence_rural",
-      "standard_incidence_self",
+      "standard_win_lose_poor",
+      "standard_win_lose_middle",
+      "standard_win_lose_rich",
+      "standard_win_lose_rural",
+      "standard_win_lose_self",
       "standard_fair",
       "standard_support",
       "standard_public_transport_support",
@@ -813,11 +813,11 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "investments_large_effect",
       "investments_negative_effect",
       "investments_cost_effective",
-      "investments_incidence_poor",
-      "investments_incidence_middle",
-      "investments_incidence_rich",
-      "investments_incidence_rural",
-      "investments_incidence_self",
+      "investments_win_lose_poor",
+      "investments_win_lose_middle",
+      "investments_win_lose_rich",
+      "investments_win_lose_rural",
+      "investments_win_lose_self",
       "investments_fair",
       "investments_support",
       "investments_funding_debt",
@@ -836,11 +836,11 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "tax_transfers_large_effect",
       "tax_transfers_negative_effect",
       "tax_transfers_cost_effective",
-      "tax_transfers_incidence_poor",
-      "tax_transfers_incidence_middle",
-      "tax_transfers_incidence_rich",
-      "tax_transfers_incidence_rural",
-      "tax_transfers_incidence_self",
+      "tax_transfers_win_lose_poor",
+      "tax_transfers_win_lose_middle",
+      "tax_transfers_win_lose_rich",
+      "tax_transfers_win_lose_rural",
+      "tax_transfers_win_lose_self",
       "tax_transfers_fair",
       "tax_transfers_support",
       "Q142_First",
@@ -898,7 +898,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "scale_federal",
       "scale_state",
       "scale_local",
-      "country_should_act",
+      "should_fight_CC",
       "if_other_do_more",
       "if_other_do_less",
       "burden_sharing_income",
@@ -906,9 +906,9 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "burden_sharing_cumulative",
       "burden_sharing_rich_pay",
       "burden_sharing_poor_receive",
-      "pro_global_assembly",
-      "pro_global_tax", 
-      "pro_tax_1p",
+      "global_assembly_support",
+      "global_tax_support", 
+      "tax_1p_support",
       "will_insulate",
       "obstacles_insulation_cannot",
       "obstacles_insulation_cost",
@@ -916,22 +916,22 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "obstacles_insulation_useless",
       "obstacles_insulation_other_choice",
       "obstacles_insulation_choice",
-      "pro_insulation_subsidies",
-      "pro_insulation_mandatory",
-      "beef_tax",
-      "beef_subsidies_vegetables",
-      "beef_subsidies_removal",
-      "beef_ban_intensive",
-      "beef_order_tax",
-      "beef_order_subsidies_vegetables",
-      "beef_order_subsidies_removal",
-      "beef_order_ban_intensive",
-      "trust_people",
-      "trust_govt",
+      "insulation_subsidies_support",
+      "insulation_mandatory_support",
+      "beef_tax_support",
+      "beef_subsidies_vegetables_support",
+      "beef_subsidies_removal_support",
+      "beef_ban_intensive_support",
+      "beef_order_tax_support",
+      "beef_order_subsidies_vegetables_support",
+      "beef_order_subsidies_removal_support",
+      "beef_order_ban_intensive_support",
+      "can_trust_people",
+      "can_trust_govt",
       "statist",
       "problem_inequality",
-      "future_gdp",
-      "interest_politics", 
+      "future_richness",
+      "interested_politics", 
       "member_environmental_orga",
       "relative_environmentalist",
       "vote_participation",
@@ -1581,7 +1581,7 @@ convert <- function(e, country, wave = NULL) {
               # "future_gdp", "envi", "equal_quota", "country_should_act", "insulation_compulsory", "flight_quota_1000km", "flight_quota_3000km", "flight_quota_one_trip", "ban_incentives"
       ), names(e))) {
     e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label"))) 
-  }
+  } # TODO! all $likert scales?
 
   for (j in names(e)) {
     if ((grepl('race_|home_|CC_factor_|CC_responsible_|CC_affected_|change_condition_|effect_policies_|kaya_|scale_|beef_|far_left|left|center$', j)
@@ -1598,24 +1598,30 @@ convert <- function(e, country, wave = NULL) {
   variables_transport <<- names(e)[grepl('transport_', names(e))]
   if (grepl('CC_factor_', names(e))) variables_CC_factor <<- names(e)[grepl('CC_factor_', names(e))]
   if (grepl('CC_responsible_', names(e))) variables_CC_responsible <<- names(e)[grepl('CC_responsible_', names(e)) & !grepl("order_", names(e))]
-  if (grepl('responsible_CC_', names(e)))variables_responsible_CC <<- names(e)[grepl('responsible_CC_', names(e)) & !grepl("order_", names(e))]
-  if (grepl('CC_affected_', names(e)))variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
-  if (grepl('change_condition_', names(e)))variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
-  if (grepl('effect_policies_', names(e)))variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
-  if (grepl('effect_halt_CC_', names(e)))variables_effect_policies <<- names(e)[grepl('effect_halt_CC_', names(e))]
-  if (grepl('kaya_', names(e)))variables_kaya <<- names(e)[grepl('kaya_', names(e))]
+  if (grepl('responsible_CC_', names(e))) variables_responsible_CC <<- names(e)[grepl('responsible_CC_', names(e)) & !grepl("order_", names(e))]
+  if (grepl('CC_affected_', names(e))) variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
+  if (grepl('change_condition_', names(e))) variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
+  if (grepl('effect_policies_', names(e))) variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
+  if (grepl('effect_halt_CC_', names(e))) variables_effect_policies <<- names(e)[grepl('effect_halt_CC_', names(e))]
+  if (grepl('kaya_', names(e))) variables_kaya <<- names(e)[grepl('kaya_', names(e))]
   variables_scale <<- names(e)[grepl('scale_', names(e))]
   variables_beef <<- names(e)[grepl('beef_', names(e)) & !grepl("order_", names(e))]
   variables_burden_sharing <<- names(e)[grepl('burden_sharing_', names(e))]
+  variables_policies_support <<- c("standard_support", "investments_support", "tax_transfers_support")
+  variables_support <<- names(e)[grepl('_support', names(e))]
   variables_incidence <<- names(e)[grepl('incidence_', names(e))]
   variables_standard_incidence <<- names(e)[grepl('standard_incidence_', names(e))]
   variables_investments_incidence <<- names(e)[grepl('investments_incidence_', names(e))]
   variables_tax_transfers_incidence <<- names(e)[grepl('tax_transfers_incidence_', names(e))]
-  variables_standard <<- c("standard_support", "standard_trust", "standard_effective", "standard_employment", "standard_side_effects", variables_standard_incidence)
-  variables_investments <<- c("investments_support", "investments_trust", "investments_effective", "investments_employment", "investments_side_effects", variables_investments_incidence)
-  variables_tax_transfers <<- c("tax_transfers_support", "tax_transfers_trust", "tax_transfers_effective", "tax_transfers_employment", "tax_transfers_side_effects", variables_tax_transfers_incidence)
-  if (grepl('_side_effects', names(e)))variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
-  variables_employment <<- names(e)[grepl('_employment', names(e))]
+  variables_win_lose <<- names(e)[grepl('win_lose_', names(e))]
+  variables_standard_win_lose <<- names(e)[grepl('standard_win_lose_', names(e))]
+  variables_investments_win_lose <<- names(e)[grepl('investments_win_lose_', names(e))]
+  variables_tax_transfers_win_lose <<- names(e)[grepl('tax_transfers_win_lose_', names(e))]
+  variables_standard <<- c("standard_support", "standard_trust", "standard_effective", "standard_employment", "standard_side_effects", variables_standard_incidence, variables_standard_win_lose)
+  variables_investments <<- c("investments_support", "investments_trust", "investments_effective", "investments_employment", "investments_side_effects", variables_investments_incidence, variables_investments_win_lose)
+  variables_tax_transfers <<- c("tax_transfers_support", "tax_transfers_trust", "tax_transfers_effective", "tax_transfers_employment", "tax_transfers_side_effects", variables_tax_transfers_incidence, variables_tax_transfers_win_lose)
+  if (grepl('_side_effects', names(e))) variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
+  if (grepl('_employment', names(e))) variables_employment <<- names(e)[grepl('_employment', names(e))]
   variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
   variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_", names(e))]
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
@@ -1784,10 +1790,11 @@ convert <- function(e, country, wave = NULL) {
   text_incidence_lose <- c("US" = "Would lose", "US" = "Would be lose", "US" = "Lose")
   text_incidence_unaffected <- c("US" = "Would not be severely affected", "US" = "Neither win nor lose", "US" = "Be unaffected")
   
-  text_incidence_win_a_lot <- c("US" = "Win a lot")
-  text_incidence_mostly_win <- c("US" = "Mostly win")
-  text_incidence_mostly_lose <- c("US" = "Mostly lose")
-  text_incidence_lose_a_lot <- c("US" = "Lose a lot")
+  text_win_a_lot <- c("US" = "Win a lot")
+  text_mostly_win <- c("US" = "Mostly win")
+  text_mostly_lose <- c("US" = "Mostly lose")
+  text_lose_a_lot <- c("US" = "Lose a lot")
+  text_unaffected <- c("US" = "Neither win nor lose")
   
   text_much_more <- c("US" = "Much more")
   text_more <- c("US" = "More")
@@ -1851,7 +1858,7 @@ convert <- function(e, country, wave = NULL) {
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
 
-  for (v in c(variables_policy , variables_tax)) { 
+  for (v in c(variables_policy , variables_tax, variables_support)) { 
     temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                           names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
@@ -1864,8 +1871,8 @@ convert <- function(e, country, wave = NULL) {
                         names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")),
                       annotation=Label(e$urbanity))
   
-  temp <-  (e$speaks_well %in% text_speaks_well) + 2 * (e$speaks_well %in% text_speaks_native) - 1 * (e$speaks_well %in% text_speaks_no) 
-  e$speaks_well <- as.item(temp, labels = structure(c(-1:2),
+  if ("speaks_well" %in% names(e)) temp <-  (e$speaks_well %in% text_speaks_well) + 2 * (e$speaks_well %in% text_speaks_native) - 1 * (e$speaks_well %in% text_speaks_no) 
+  if ("speaks_well" %in% names(e)) e$speaks_well <- as.item(temp, labels = structure(c(-1:2),
                         names = c("Cannot speak","Somewhat well","Well or very well","Native")),
                       annotation=Label(e$speaks_well))
   
@@ -1889,58 +1896,61 @@ convert <- function(e, country, wave = NULL) {
                         names = c("Never", "Rarely", "Weekly", "Daily")),
                       annotation=Label(e$frequency_beef))
   
-  temp <-  (e$transport_available %in% text_transport_available_yes_limited) + 2 * (e$transport_available %in% text_transport_available_yes_easily) - (e$transport_available %in% text_transport_available_not_at_all) - 0.1*(e$transport_available %in% text_pnr)
-  e$transport_available <- as.item(temp, labels = structure(c(-1:2,-0.1),
+  if ("transport_available" %in% names(e)) temp <-  (e$transport_available %in% text_transport_available_yes_limited) + 2 * (e$transport_available %in% text_transport_available_yes_easily) - (e$transport_available %in% text_transport_available_not_at_all) - 0.1*(e$transport_available %in% text_pnr)
+  if ("transport_available" %in% names(e)) e$transport_available <- as.item(temp, labels = structure(c(-1:2,-0.1),
                         names = c("Not at all", "Not so much", "Yes but limited", "Yes, easily", "PNR")),
-                      missing.values=-0.1, annotation=Label(e$transport_available))
+                      missing.values=-0.1, annotation=Label(e$transport_available)) # TODO: waves
   
-  temp <-  (e$trust_govt %in% text_trust_govt_sometimes) + 2 * (e$trust_govt %in% text_trust_govt_often) + 3 * (e$trust_govt %in% text_trust_govt_always) - 0.1*(e$trust_govt %in% text_pnr)
-  e$trust_govt <- as.item(temp, labels = structure(c(0:3,-0.1),
+  if ("trust_govt" %in% names(e)) temp <-  (e$trust_govt %in% text_trust_govt_sometimes) + 2 * (e$trust_govt %in% text_trust_govt_often) + 3 * (e$trust_govt %in% text_trust_govt_always) - 0.1*(e$trust_govt %in% text_pnr)
+  if ("trust_govt" %in% names(e)) e$trust_govt <- as.item(temp, labels = structure(c(0:3,-0.1),
                         names = c("Never","Only some of the time","Most of the time","Nearly all the time","PNR")),
                       missing.values=-0.1, annotation=Label(e$trust_govt))
   
-  temp <-  2 * (e$inequality_problem %in% text_inequality_very_serious) + (e$inequality_problem %in% text_inequality_serious) - (e$inequality_problem %in% text_inequality_small) - 2 * (e$inequality_problem %in% text_inequality_not) - 0.1 * (e$inequality_problem %in% text_pnr)
-  e$inequality_problem <- as.item(temp, labels = structure(c(-2:2,-0.1),
+  if ("inequality_problem" %in% names(e)) temp <-  2 * (e$inequality_problem %in% text_inequality_very_serious) + (e$inequality_problem %in% text_inequality_serious) - (e$inequality_problem %in% text_inequality_small) - 2 * (e$inequality_problem %in% text_inequality_not) - 0.1 * (e$inequality_problem %in% text_pnr)
+  if ("inequality_problem" %in% names(e)) e$inequality_problem <- as.item(temp, labels = structure(c(-2:2,-0.1),
                         names = c("Very serious problem","Serious problem","A problem","Small problem","Not a problem at all","PNR")),
-                      missing.values=-0.1, annotation=Label(e$inequality_problem))
+                      missing.values=-0.1, annotation=Label(e$inequality_problem)) # TODO: waves
     
-  temp <-  (e$future_gdp %in% text_future_richer) - (e$future_gdp %in% text_future_poorer) - 0.1 * (e$future_gdp %in% text_pnr)
-  e$future_gdp <- as.item(temp, labels = structure(c(-1:1,-0.1),
+  if ("future_gdp" %in% names(e)) temp <-  (e$future_gdp %in% text_future_richer) - (e$future_gdp %in% text_future_poorer) - 0.1 * (e$future_gdp %in% text_pnr)
+  if ("future_gdp" %in% names(e)) e$future_gdp <- as.item(temp, labels = structure(c(-1:1,-0.1),
                         names = c("Poorer","About as rich", "Richer","PNR")),
                       missing.values=-0.1, annotation=Label(e$future_gdp))
   
-  e$envi[e$envi %in% text_envi_pro_envi] <- "Pro environmental action"
-  e$envi[e$envi %in% text_envi_collapse] <- "Useless: collapse"
-  e$envi[e$envi %in% text_envi_anti_envi] <- "Other goals"
-  e$envi[e$envi %in% text_envi_progress] <- "Not a pb: progress"
-  e$envi <- as.item(as.factor(e$envi), missing.values = c("PNR", "", NA), annotation=paste(attr(e$envi, "label")))
-  
+  if ("envi" %in% names(e)) {
+    e$envi[e$envi %in% text_envi_pro_envi] <- "Pro environmental action"
+    e$envi[e$envi %in% text_envi_collapse] <- "Useless: collapse"
+    e$envi[e$envi %in% text_envi_anti_envi] <- "Other goals"
+    e$envi[e$envi %in% text_envi_progress] <- "Not a pb: progress"
+    e$envi <- as.item(as.factor(e$envi), missing.values = c("PNR", "", NA), annotation=paste(attr(e$envi, "label")))
+  }
     
-  temp <-  (e$CC_exists %in% text_CC_exists_human) - (e$CC_exists %in% text_CC_exists_not) - 0.1 * (e$CC_exists %in% text_pnr)
-  e$CC_exists <- as.item(temp, labels = structure(c(-1:1,-0.1),
+  if ("CC_exists" %in% names(e)) temp <-  (e$CC_exists %in% text_CC_exists_human) - (e$CC_exists %in% text_CC_exists_not) - 0.1 * (e$CC_exists %in% text_pnr)
+  if ("CC_exists" %in% names(e)) e$CC_exists <- as.item(temp, labels = structure(c(-1:1,-0.1),
                         names = c("Not a reality","Natural", "Anthropogenic","PNR")),
                       missing.values=-0.1, annotation=Label(e$CC_exists))
     
-  temp <-  (e$CC_dynamics %in% text_CC_dynamics_rise) - (e$CC_dynamics %in% text_CC_dynamics_decrease) - 2 * (e$CC_dynamics %in% text_CC_dynamics_none) - 0.1 * (e$CC_dynamics %in% text_pnr)
-  e$CC_dynamics <- as.item(temp, labels = structure(c(-2:1,-0.1),
+  if ("CC_dynamics" %in% names(e)) temp <-  (e$CC_dynamics %in% text_CC_dynamics_rise) - (e$CC_dynamics %in% text_CC_dynamics_decrease) - 2 * (e$CC_dynamics %in% text_CC_dynamics_none) - 0.1 * (e$CC_dynamics %in% text_pnr)
+  if ("CC_dynamics" %in% names(e)) e$CC_dynamics <- as.item(temp, labels = structure(c(-2:1,-0.1),
                         names = c("No impact","Decrease", "Stabilize","Rise more slowly","PNR")),
                       missing.values=-0.1, annotation=Label(e$CC_dynamics))
   
-  e$CC_stoppable <- as.character(e$CC_stoppable)
-  e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_no_influence] <- "No influence"
-  e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_adapt] <- "Better to adapt"
-  e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_optimistic] <- "Progress will suffice"
-  e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_policies] <- "Policies & awareness will"
-  e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_pessimistic] <- "Should but not happening"
-  e$CC_stoppable <- relevel(relevel(relevel(relevel(relevel(as.factor(e$CC_stoppable), "No influence"), "Better to adapt"), "Should but not happening"), "Policies & awareness will"), "Progress will suffice") # TODO! uncomment
-    
+  if ("CC_stoppable" %in% names(e)) {
+    e$CC_stoppable <- as.character(e$CC_stoppable)
+    e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_no_influence] <- "No influence"
+    e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_adapt] <- "Better to adapt"
+    e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_optimistic] <- "Progress will suffice"
+    e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_policies] <- "Policies & awareness will"
+    e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_pessimistic] <- "Should but not happening"
+    e$CC_stoppable <- relevel(relevel(relevel(relevel(relevel(as.factor(e$CC_stoppable), "No influence"), "Better to adapt"), "Should but not happening"), "Policies & awareness will"), "Progress will suffice") # TODO! uncomment
+  }
+  
   temp <-  (e$CC_talks %in% text_CC_talks_monthly) - (e$CC_talks %in% text_CC_talks_never) - 0.1 * (e$CC_talks %in% text_pnr)
   e$CC_talks <- as.item(temp, labels = structure(c(-1:1,-0.1),
                         names = c("Never","Yearly","Monthly","PNR")), 
                         missing.values=-0.1, annotation=Label(e$CC_talks))
   
-  temp <-  2 * (e$equal_quota %in% text_equal_quota_no_redistribution) + (e$equal_quota %in% text_equal_quota_yes) - (e$equal_quota %in% text_equal_quota_no_grand_fathering) - 2 * (e$equal_quota %in% text_equal_quota_no_restriction) - 0.1 * (e$equal_quota %in% text_pnr)
-  e$equal_quota <- as.item(temp, labels = structure(c(-2:2,-0.1),
+  if ("equal_quota" %in% names(e)) temp <-  2 * (e$equal_quota %in% text_equal_quota_no_redistribution) + (e$equal_quota %in% text_equal_quota_yes) - (e$equal_quota %in% text_equal_quota_no_grand_fathering) - 2 * (e$equal_quota %in% text_equal_quota_no_restriction) - 0.1 * (e$equal_quota %in% text_pnr)
+  if ("equal_quota" %in% names(e)) e$equal_quota <- as.item(temp, labels = structure(c(-2:2,-0.1),
                         names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
                       missing.values=-0.1, annotation=Label(e$equal_quota))
   
@@ -1948,16 +1958,16 @@ convert <- function(e, country, wave = NULL) {
                                                                                          names = c("No, against restriction","No, grand-fathering","Yes","No, more to vulnerable","PNR")),
                                                                 missing.values=-0.1, annotation=Label(e$equal_quota))
     
-  temp <-  (e$country_should_act %in% text_should_act_yes) - (e$country_should_act %in% text_should_act_no) - 0.1 * (e$country_should_act %in% text_pnr)
-  e$country_should_act <- as.item(temp, labels = structure(c(-1:1,-0.1),
+  if ("country_should_act" %in% names(e)) temp <-  (e$country_should_act %in% text_should_act_yes) - (e$country_should_act %in% text_should_act_no) - 0.1 * (e$country_should_act %in% text_pnr)
+  if ("country_should_act" %in% names(e)) e$country_should_act <- as.item(temp, labels = structure(c(-1:1,-0.1),
                         names = c("No","Only if international agreement", "Yes","PNR")),
                       missing.values=-0.1, annotation=Label(e$country_should_act))
   
   # e$country_should_act_condition[e$country_should_act_condition %in% text_should_act_condition_compensation] <- 1
   # e$country_should_act_condition[e$country_should_act_condition %in% text_should_act_condition_reciprocity] <- 0
   # e$country_should_act_condition[e$country_should_act_condition %in% text_should_act_condition_free_riding] <- -1
-  temp <- (e$country_should_act_condition %in% text_should_act_condition_compensation) - (e$country_should_act_condition %in% text_should_act_condition_free_riding) - 0.1 * (e$country_should_act_condition %in% text_pnr)
-  e$country_should_act_condition <- as.item(temp, labels = structure(c(-1:1), # No PNR option here, but question asked only if Yes to country_should_act
+  if ("country_should_act_condition" %in% names(e)) temp <- (e$country_should_act_condition %in% text_should_act_condition_compensation) - (e$country_should_act_condition %in% text_should_act_condition_free_riding) - 0.1 * (e$country_should_act_condition %in% text_pnr)
+  if ("country_should_act_condition" %in% names(e)) e$country_should_act_condition <- as.item(temp, labels = structure(c(-1:1), # No PNR option here, but question asked only if Yes to country_should_act
                                                                      names = c("Free-riding","Reciprocity", "Compensation")),
                                              annotation=Label(e$country_should_act))
   
@@ -1974,54 +1984,68 @@ convert <- function(e, country, wave = NULL) {
                           names = c("Lose","Unaffected","Win","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
+  
+  for (v in c(variables_win_lose)) {
+    temp <-  -2*(e[[v]] %in% text_lose_a_lot) - (e[[v]] %in% text_mostly_lose) + (e[[v]] %in% text_mostly_win) + 2*(e[[v]] %in% text_win_a_lot) - 0.1 * is.na(e[[v]])
+    e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                                               names = c("Lose a lot", "Mostly lose", "Neither win nor lose","Mostly win", "Win a lot","PNR")),
+                      missing.values=-0.1, annotation=Label(e[[v]]))
+  }
     
-  temp <-  (e$CC_worries %in% text_CC_worries_very) - (e$CC_worries %in% text_CC_worries_not) - 2 * (e$CC_worries %in% text_CC_worries_not_at_all) - 0.1 * (e$CC_worries %in% text_pnr)
-  e$CC_worries <- as.item(temp, labels = structure(c(-2:1,-0.1),
+  if ("CC_worries" %in% names(e)) temp <-  (e$CC_worries %in% text_CC_worries_very) - (e$CC_worries %in% text_CC_worries_not) - 2 * (e$CC_worries %in% text_CC_worries_not_at_all) - 0.1 * (e$CC_worries %in% text_pnr)
+  if ("CC_worries" %in% names(e)) e$CC_worries <- as.item(temp, labels = structure(c(-2:1,-0.1),
                         names = c("No worried at all","Not worried", "Worried","Very worried","PNR")),
                       missing.values=-0.1, annotation=Label(e$CC_worries))
   
-  e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_mandatory] <- "Mandatory"
-  e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_voluntary] <- "Voluntary"
-  e$insulation_compulsory <- as.item(as.character(e$insulation_compulsory), labels = structure(c("Mandatory", "Voluntary", "PNR"), names=c("Mandatory", "Voluntary", "PNR")), 
+  if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_mandatory] <- "Mandatory"
+  if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_voluntary] <- "Voluntary"
+  if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory <- as.item(as.character(e$insulation_compulsory), labels = structure(c("Mandatory", "Voluntary", "PNR"), names=c("Mandatory", "Voluntary", "PNR")), 
                                       missing.values = "PNR", annotation=Label(e$insulation_compulsory))
   
-  e$flight_quota <- e$flight_quota_1000km
-  if (wave == "pilot1") e$flight_quota[!is.na(e$flight_quota_3000km)] <- e$flight_quota_3000km[!is.na(e$flight_quota_3000km)]
-  if (wave == "pilot2") e$flight_quota[!is.na(e$flight_quota_1000km_global)] <- e$flight_quota_1000km_global[!is.na(e$flight_quota_1000km_global)]
-  e$flight_quota[!is.na(e$flight_quota_one_trip)] <- e$flight_quota_one_trip[!is.na(e$flight_quota_one_trip)]
-  label(e$flight_quota) <- "flight_quota: ~ Given that the govt decides to limit average flights per person, what do you prefer? Rationing / Tradable quota / PNR. Variants (distance per year): 1000km/1000km global/one round-trip every two years. [units adjusted to country]"
-  variables_flight_quota <<- names(e)[grepl('flight_quota', names(e))]
+  if("flight_quota" %in% names(e)) {
+    e$flight_quota <- e$flight_quota_1000km
+    if (wave == "pilot1") e$flight_quota[!is.na(e$flight_quota_3000km)] <- e$flight_quota_3000km[!is.na(e$flight_quota_3000km)]
+    if (wave == "pilot2") e$flight_quota[!is.na(e$flight_quota_1000km_global)] <- e$flight_quota_1000km_global[!is.na(e$flight_quota_1000km_global)]
+    e$flight_quota[!is.na(e$flight_quota_one_trip)] <- e$flight_quota_one_trip[!is.na(e$flight_quota_one_trip)]
+    label(e$flight_quota) <- "flight_quota: ~ Given that the govt decides to limit average flights per person, what do you prefer? Rationing / Tradable quota / PNR. Variants (distance per year): 1000km/1000km global/one round-trip every two years. [units adjusted to country]"
+    variables_flight_quota <<- names(e)[grepl('flight_quota', names(e))]
   
-  for (v in variables_flight_quota) {
-    e[[v]][e[[v]] %in% text_flight_quota_rationing] <- "Rationing"
-    e[[v]][e[[v]] %in% text_flight_quota_tradable] <- "Tradable" }
-  e$variant_flight_quota <- ""
-  e$variant_flight_quota[!is.na(e$flight_quota_3000km)] <- "3000km"
-  e$variant_flight_quota[!is.na(e$flight_quota_1000km_global)] <- "1000km global"
-  e$variant_flight_quota[!is.na(e$flight_quota_1000km)] <- "1000km"
-  e$variant_flight_quota[!is.na(e$flight_quota_one_trip)] <- "1 trip"
-  for (v in variables_flight_quota) { e[[v]] <- as.item(as.character(e[[v]]), labels = structure(c("Rationing", "Tradable", "PNR"), 
-                          names=c("Rationing", "Tradable", "PNR")), missing.values = "PNR", annotation=Label(e[[v]])) }
+    for (v in variables_flight_quota) {
+      e[[v]][e[[v]] %in% text_flight_quota_rationing] <- "Rationing"
+      e[[v]][e[[v]] %in% text_flight_quota_tradable] <- "Tradable" }
+    e$variant_flight_quota <- ""
+    e$variant_flight_quota[!is.na(e$flight_quota_3000km)] <- "3000km"
+    e$variant_flight_quota[!is.na(e$flight_quota_1000km_global)] <- "1000km global"
+    e$variant_flight_quota[!is.na(e$flight_quota_1000km)] <- "1000km"
+    e$variant_flight_quota[!is.na(e$flight_quota_one_trip)] <- "1 trip"
+    for (v in variables_flight_quota) { e[[v]] <- as.item(as.character(e[[v]]), labels = structure(c("Rationing", "Tradable", "PNR"), 
+                            names=c("Rationing", "Tradable", "PNR")), missing.values = "PNR", annotation=Label(e[[v]])) }
+  }
   
-  e$ban_incentives[e$ban_incentives %in% text_ban_incentives_encourage] <- "Encourage"
-  e$ban_incentives[e$ban_incentives %in% text_ban_incentives_force] <- "Force"
-  e$ban_incentives <- as.item(as.character(e$ban_incentives), missing.values = 'PNR', annotation=Label(e$ban_incentives))
+  if ("ban_incentives" %in% names(e)) {
+    e$ban_incentives[e$ban_incentives %in% text_ban_incentives_encourage] <- "Encourage"
+    e$ban_incentives[e$ban_incentives %in% text_ban_incentives_force] <- "Force"
+    e$ban_incentives <- as.item(as.character(e$ban_incentives), missing.values = 'PNR', annotation=Label(e$ban_incentives))
+  }
   
-  temp <-  (e$interest_politics %in% text_interest_politics_lot) - (e$interest_politics %in% text_interest_politics_no) - 0.1 * (e$interest_politics %in% text_pnr)
-  e$interest_politics <- as.item(temp, labels = structure(c(-1:1,-0.1),
+  if ("interest_politics" %in% names(e)) temp <-  (e$interest_politics %in% text_interest_politics_lot) - (e$interest_politics %in% text_interest_politics_no) - 0.1 * (e$interest_politics %in% text_pnr)
+  if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-1:1,-0.1),
                         names = c("Not really or not at all","A little", "A lot","PNR")),
                       missing.values=-0.1, annotation=Label(e$interest_politics))
+  # TODO! intensity questions
   
-  e$media[e$media %in% text_media_other] <- "Other"
-  e$media[e$media %in% text_media_print] <- "Print"
-  e$media[e$media %in% text_media_radio] <- "Radio"
-  e$media[e$media %in% text_media_social] <- "Social media"
-  e$media[e$media %in% text_media_TV_private] <- "TV (private)"
-  e$media[e$media %in% text_media_TV_public] <- "TV (public)"
-  e$media[e$media %in% text_media_web] <- "News websites"
+  if ("media" %in% names(e)) {
+    e$media[e$media %in% text_media_other] <- "Other"
+    e$media[e$media %in% text_media_print] <- "Print"
+    e$media[e$media %in% text_media_radio] <- "Radio"
+    e$media[e$media %in% text_media_social] <- "Social media"
+    e$media[e$media %in% text_media_TV_private] <- "TV (private)"
+    e$media[e$media %in% text_media_TV_public] <- "TV (public)"
+    e$media[e$media %in% text_media_web] <- "News websites"
+  }
   
   e$vote_participation[e$vote_participation %in% text_vote_participation_no_right] <- "No right to vote"
-  if (country == "US" & wave == "pilot2") {
+  if (vote_2016 %in% names(e)) {
     e$vote_participation_2016[e$vote_participation_2016 %in% text_vote_participation_no_right] <- "No right to vote"
     e$vote[!is.na(e$vote_voters) & e$vote_participation=="Yes"] <- e$vote_voters[!is.na(e$vote_voters) & e$vote_participation=="Yes"]
     e$vote[!is.na(e$vote_non_voters_2016) & e$vote_participation!="Yes"] <- e$vote_non_voters[!is.na(e$vote_non_voters_2016) & e$vote_participation!="Yes"]
@@ -2047,34 +2071,36 @@ convert <- function(e, country, wave = NULL) {
   
   # TODO: Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, nb_policies_supported, score_knowlege_CC, score_trust, zipcode, race, standard of living
   
-  e$left_right <- pmax(-2,pmin(2,-2 * e$far_left - 1*e$left + 1*e$right + 2 * e$far_right))
-  is.na(e$left_right) <- (e$left_right == 0) & !e$center
-  e$Left_right <- as.factor(e$left_right)
-  e$left_right <- as.item(as.numeric(as.vector(e$left_right)), labels = structure(c(-2:2),
-                          names = c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right")), annotation="left_right: scale from -2 (far left) to +2 (far right) - Political leaning - How would you define yourself? Multiple answers are possible: (Far) left/Center/(Far) right/Liberal/Conservative/Humanist/Patriot/Apolitical/Environmentalist/Feminist/Other (specify)")
-  levels(e$Left_right) <- c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right", "Indeterminate")
-  e$Left_right[is.na(e$Left_right)] <- "Indeterminate"
-  e$indeterminate <- e$Left_right == "Indeterminate"
-  e$left_right_pnr <- as.character(e$left_right)
-  e$left_right_pnr[e$Left_right=='Indeterminate'] <- 'PNR'
-  e$left_right_pnr <- as.factor(e$left_right_pnr)
-  e$left_right_pnr <- relevel(relevel(e$left_right_pnr, "Left or center-left"), "Far left")
-  label(e$left_right) <- "left_right: How would you define yourself? Far Left/Left or center-left/Center/Right or center-right/Far right"
-
+  if ("left" %in% names(e)) {
+    e$left_right <- pmax(-2,pmin(2,-2 * e$far_left - 1*e$left + 1*e$right + 2 * e$far_right))
+    is.na(e$left_right) <- (e$left_right == 0) & !e$center
+    e$Left_right <- as.factor(e$left_right)
+    e$left_right <- as.item(as.numeric(as.vector(e$left_right)), labels = structure(c(-2:2),
+                            names = c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right")), annotation="left_right: scale from -2 (far left) to +2 (far right) - Political leaning - How would you define yourself? Multiple answers are possible: (Far) left/Center/(Far) right/Liberal/Conservative/Humanist/Patriot/Apolitical/Environmentalist/Feminist/Other (specify)")
+    levels(e$Left_right) <- c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right", "Indeterminate")
+    e$Left_right[is.na(e$Left_right)] <- "Indeterminate"
+    e$indeterminate <- e$Left_right == "Indeterminate"
+    e$left_right_pnr <- as.character(e$left_right)
+    e$left_right_pnr[e$Left_right=='Indeterminate'] <- 'PNR'
+    e$left_right_pnr <- as.factor(e$left_right_pnr)
+    e$left_right_pnr <- relevel(relevel(e$left_right_pnr, "Left or center-left"), "Far left")
+    label(e$left_right) <- "left_right: How would you define yourself? Far Left/Left or center-left/Center/Right or center-right/Far right"
+  }
   
   e$country <- country
   label(e$country) <- "country: Country of the survey. US/FRA/IND/DEN"
   e$wave <- wave
   label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"
 
-  e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
-  label(e$policies_trust) <- "policies_trust: Could the U.S. federal government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
-  e$policies_effective <- ((e$standard_effective=="Yes") + (e$investments_effective=="Yes") + (e$tax_transfers_effective=="Yes") - (e$standard_effective=="No") - (e$investments_effective=="No") - (e$tax_transfers_effective=="No"))/3
-  label(e$policies_effective) <- "policies_effective: Woudl an emission limit for cars, a green infrastrcuture program and a carbon tax be effective to fight climate change? Yes/No/PNR"
-  e$policies_employment <- ((e$standard_employment=="Positive") + (e$investments_employment=="Positive") + (e$tax_transfers_employment=="Positive") - (e$standard_employment=="Negative") - (e$investments_employment=="Negative") - (e$tax_transfers_employment=="Negative"))/3
-  label(e$policies_employment) <- "policies_employment: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative impact on employment? Postive impacts/No notable impact/Negative impacts/PNR"
-  e$policies_side_effects <- ((e$standard_side_effects=="Positive") + (e$investments_side_effects=="Positive") + (e$tax_transfers_side_effects=="Positive") - (e$standard_side_effects=="Negative") - (e$investments_side_effects=="Negative") - (e$tax_transfers_side_effects=="Negative"))/3
-  label(e$policies_side_effects) <- "policies_side_effects: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative side effects overall? Postive impacts/No notable impact/Negative impacts/PNR"
+  # TODO! policies_cost_effective, employment, side_effects
+  if ("standard_trust" %in% names(e)) e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
+  if ("standard_trust" %in% names(e)) label(e$policies_trust) <- "policies_trust: Could the U.S. federal government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
+  if ("standard_effective" %in% names(e)) e$policies_effective <- ((e$standard_effective=="Yes") + (e$investments_effective=="Yes") + (e$tax_transfers_effective=="Yes") - (e$standard_effective=="No") - (e$investments_effective=="No") - (e$tax_transfers_effective=="No"))/3
+  if ("standard_effective" %in% names(e)) label(e$policies_effective) <- "policies_effective: Woudl an emission limit for cars, a green infrastrcuture program and a carbon tax be effective to fight climate change? Yes/No/PNR"
+  if ("standard_employment" %in% names(e)) e$policies_employment <- ((e$standard_employment=="Positive") + (e$investments_employment=="Positive") + (e$tax_transfers_employment=="Positive") - (e$standard_employment=="Negative") - (e$investments_employment=="Negative") - (e$tax_transfers_employment=="Negative"))/3
+  if ("standard_employment" %in% names(e)) label(e$policies_employment) <- "policies_employment: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative impact on employment? Postive impacts/No notable impact/Negative impacts/PNR"
+  if ("standard_side_effects" %in% names(e)) e$policies_side_effects <- ((e$standard_side_effects=="Positive") + (e$investments_side_effects=="Positive") + (e$tax_transfers_side_effects=="Positive") - (e$standard_side_effects=="Negative") - (e$investments_side_effects=="Negative") - (e$tax_transfers_side_effects=="Negative"))/3
+  if ("standard_side_effects" %in% names(e)) label(e$policies_side_effects) <- "policies_side_effects: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative side effects overall? Postive impacts/No notable impact/Negative impacts/PNR"
   e$policies_support <- ((e$standard_support=="Yes") + (e$investments_support=="Yes") + (e$tax_transfers_support=="Yes") - (e$standard_support=="No") - (e$investments_support=="No") - (e$tax_transfers_support=="No"))/3
   label(e$policies_support) <- "policies_support: Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
   e$policies_self <- e$policies_incidence <- e$policies_poor <- e$policies_middle <- e$policies_rich <- e$policies_rural <- e$policies_urban <- 0
@@ -2084,13 +2110,14 @@ convert <- function(e, country, wave = NULL) {
   label(e$policies_rich) <- "policies_self: Would the richest financially win or lose from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
   label(e$policies_rural) <- "policies_self: Would rural financially win or lose from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
   label(e$policies_urban) <- "policies_self: Would urban dwellers win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  for (v in variables_incidence) e$policies_incidence <- e$policies_incidence + e[[v]]/length(variables_incidence) # this variable makes no sense
-  for (v in names_policies) e$policies_self <- e$policies_self + e[[paste(v, "incidence_self", sep="_")]]/3
-  for (v in names_policies) e$policies_poor <- e$policies_poor + e[[paste(v, "incidence_poor", sep="_")]]/3
-  for (v in names_policies) e$policies_middle <- e$policies_middle + e[[paste(v, "incidence_middle", sep="_")]]/3
-  for (v in names_policies) e$policies_rich <- e$policies_rich + e[[paste(v, "incidence_rich", sep="_")]]/3
-  for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, "incidence_rural", sep="_")]]/3
-  for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, "incidence_urban", sep="_")]]/3
+  # for (v in variables_incidence) e$policies_incidence <- e$policies_incidence + e[[v]]/length(variables_incidence) # this variable makes no sense
+  text_incidence <- ifelse("standard_incidence_poor" %in% names(e), "incidence", "win_lose")
+  for (v in names_policies) e$policies_self <- e$policies_self + e[[paste(v, text_incidence, "self", sep="_")]]/3
+  for (v in names_policies) e$policies_poor <- e$policies_poor + e[[paste(v, text_incidence, "poor", sep="_")]]/3
+  for (v in names_policies) e$policies_middle <- e$policies_middle + e[[paste(v, text_incidence, "middle", sep="_")]]/3
+  for (v in names_policies) e$policies_rich <- e$policies_rich + e[[paste(v, text_incidence, "rich", sep="_")]]/3
+  for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, text_incidence, "rural", sep="_")]]/3
+  if ("standard_incidence_urban" %in% names(e)) for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, text_incidence, "urban", sep="_")]]/3
   
   e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
   label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"
@@ -2107,17 +2134,22 @@ convert <- function(e, country, wave = NULL) {
                                  missing.values=-0.1, annotation=Label(e$CC_affected_min))
     label(e$CC_affected_min) <- "CC_affected_min: Youngest generation seriously affected by climate change. 2100/2050/2020/1990/1960/PNR" 
   }
+  
   if ("CC_impacts" %in% names(e)) {
     temp <- -2*(e$CC_impacts %in% text_CC_impacts_cataclysmic) -1*(e$CC_impacts %in% text_CC_impacts_disastrous) + 1*(e$CC_impacts %in% text_CC_impacts_small) + 2*(e$CC_impacts %in% text_CC_impacts_insignificant) -0.1*(e$CC_impacts %in% text_pnr)
     e$CC_impacts <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Insignificant","Small","Grave","Disastrous","Cataclysmic","PNR")),
                                  missing.values=-0.1, annotation=Label(e$CC_impacts))
   }
   
-  e$flights_agg <- 1.8*(e$flights %in% 1:2) + 5*(e$flights %in% 3:7) + 11*(e$flights %in% 8:14) + 25*(e$flights > 14)
-  e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1.8,5,11,25), names = c("0", "1 or 2", "3 to 7", "8 to 14", "15 or more")), annotation=attr(e$flights, "label"))
+  if (!("flights_agg" %in% names(e))) {
+    e$flights_agg <- 1.8*(e$flights %in% 1:2) + 5*(e$flights %in% 3:7) + 11*(e$flights %in% 8:14) + 25*(e$flights > 14)
+    e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1.8,5,11,25), names = c("0", "1 or 2", "3 to 7", "8 to 14", "15 or more")), annotation=attr(e$flights, "label"))
+  } # TODO: else flights_agg as item
   
-  e$km_driven_agg <- 3000*(e$km_driven > 1000 & e$km_driven <= 5000) + 7500*(e$km_driven > 5000 & e$km_driven <= 10000) + 15000*(e$km_driven > 10000 & e$km_driven <= 20000) + 25000*(e$km_driven > 20000 & e$km_driven <= 30000) + 60000*(e$km_driven > 30000)
-  e$km_driven_agg <- as.item(e$km_driven_agg, labels = structure(c(0,3000,7500,15000,25000,60000), names = c("Below 1,000", "1,001 to 5,000", "5k to 10k", "10k to 20k", "20k to 30k", "More than 30k")), annotation=attr(e$flights, "label"))
+  if ("km_driven" %in% names(e)) {
+    e$km_driven_agg <- 3000*(e$km_driven > 1000 & e$km_driven <= 5000) + 7500*(e$km_driven > 5000 & e$km_driven <= 10000) + 15000*(e$km_driven > 10000 & e$km_driven <= 20000) + 25000*(e$km_driven > 20000 & e$km_driven <= 30000) + 60000*(e$km_driven > 30000)
+    e$km_driven_agg <- as.item(e$km_driven_agg, labels = structure(c(0,3000,7500,15000,25000,60000), names = c("Below 1,000", "1,001 to 5,000", "5k to 10k", "10k to 20k", "20k to 30k", "More than 30k")), annotation=attr(e$flights, "label"))
+  }
   
   e$treatment <- "None"
   e$treatment[e$treatment_climate==1 & e$treatment_policy==0] <- "Climate"
@@ -2126,7 +2158,7 @@ convert <- function(e, country, wave = NULL) {
   e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
   label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
 
-  e$rush_treatment <- e$duration_treatment_climate < 2.4 | e$duration_treatment_policy < 4.45
+  e$rush_treatment <- e$duration_treatment_climate < 2.4 | e$duration_treatment_policy < 4.45 # TODO adapt time for climate
   e$rush_treatment[is.na(e$rush_treatment)] <- F
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
 
@@ -2135,7 +2167,7 @@ convert <- function(e, country, wave = NULL) {
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
   # race TODO: problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
   e$race_white_only <- 0
-  e[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE, "race_white_only"] <- 1
+  e$race_white_only[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE] <- 1
   #e[e$race_black == TRUE, "race"] <- "Black"
   #e[e$race_hispanic == TRUE, "race"] <- "Hispanic"
   #e[e$race_asian == TRUE | e$race_native == TRUE | e$race_hawaii == TRUE | e$race_other_choice == TRUE | e$race_pnr == TRUE , "race"] <- "Other"
@@ -2149,9 +2181,14 @@ convert <- function(e, country, wave = NULL) {
   if ("Other" %in% levels(e$gender_factor)) e$gender_factor <- relevel(relevel(as.factor(e$gender), "Other"), "Female")
  
   e$children <- 0
-  e[e$nb_children >= 1, "children"] <- 1
+  if ("nb_children" %in% names(e)) e[e$nb_children >= 1, "children"] <- 1
+  else if ("Nb_children" %in% names(e)) e$children[!(e$Nb_children %in% c(0, "0"))] <- 1
   e$children <- as.factor(e$children)
-  e$nb_children_ceiling_4 <- pmin(e$nb_children, 4)
+  if ("nb_children" %in% names(e)) e$nb_children_ceiling_4 <- pmin(e$nb_children, 4)
+  else if ("Nb_children" %in% names(e)) {
+    e$nb_children_ceiling_4 <- e$Nb_children
+    e$nb_children_ceiling_4[e$Nb_children == "4 or more"] <- 4
+    e$nb_children_ceiling_4 <- as.numeric(as.vector(e$nb_children_ceiling_4)) }
   
   e$college <- "No college"
   e[e$education >= 5, "college"] <- "College Degree"
@@ -2163,17 +2200,19 @@ convert <- function(e, country, wave = NULL) {
   e[e$employment_status == "Self-employed" | e$employment_status == "Full-time employed" | e$employment_status == "Part-time employed", "employment_agg"] <- "Working"
   e$employment_agg <- as.factor(e$employment_agg)
   
-  e$age_agg <- NULL
-  e[e$age %in% 18:29, "age_agg"] <- "18-29"
-  e[e$age %in% 30:49, "age_agg"] <- "30-49"
-  e[e$age %in% 50:87, "age_agg"] <- "50-87"
-  e$age_agg <- as.factor(e$age_agg)
-  e$age_quota <- NULL
-  e$age_quota[e$age %in% 18:24] <- "18-24"
-  e$age_quota[e$age %in% 25:34] <- "25-34"
-  e$age_quota[e$age %in% 35:49] <- "35-49"
-  e$age_quota[e$age %in% 50:64] <- "50-64"
-  e$age_quota[e$age > 64] <- "65+"
+  if ("age" %in% names(e)) {
+    e$age_agg <- NULL
+    e[e$age %in% 18:29, "age_agg"] <- "18-29"
+    e[e$age %in% 30:49, "age_agg"] <- "30-49"
+    e[e$age %in% 50:87, "age_agg"] <- "50-87"
+    e$age_agg <- as.factor(e$age_agg)
+    e$age_quota <- NULL
+    e$age_quota[e$age %in% 18:24] <- "18-24"
+    e$age_quota[e$age %in% 25:34] <- "25-34"
+    e$age_quota[e$age %in% 35:49] <- "35-49"
+    e$age_quota[e$age %in% 50:64] <- "50-64"
+    e$age_quota[e$age > 64] <- "65+"
+  } else { e$age_quota[e$age_quota == "65 or above"] <- "65+" }
   
   # political position
   # AF TODO I'd rather use the dummy vote=='Biden' than a variable vote_dum with 4 modalities
