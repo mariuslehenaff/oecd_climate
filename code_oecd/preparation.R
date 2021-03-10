@@ -1843,7 +1843,9 @@ convert <- function(e, country, wave = NULL) {
   text_media_other <- c("US" = "Other")
   
   text_vote_participation_no_right <- c("US" = "I don't have the right to vote in the US",
-                                        "US" = "I didn't have the right to vote in the US")
+                                        "US" = "I didn't have the right to vote in the US",
+                                        "US" = "I don't have the right to vote in the U.S.",
+                                        "US" = "I didn't have the right to vote in the U.S.")
   
   text_survey_biased_no <- c("US" = "No, I do not feel it was biased")
   text_survey_biased_pro_envi <- c("US" = "Yes, biased towards environmental causes")
@@ -1851,7 +1853,7 @@ convert <- function(e, country, wave = NULL) {
   text_survey_biased_left <- c("US" = "Yes, left-wing biased")
   text_survey_biased_right <- c("US" = "Yes, right-wing biased")
   
-  for (v in interesect(names(e), c(variables_burden_sharing, "trust_public_spending"))) { 
+  for (v in intersect(names(e), c(variables_burden_sharing, "trust_public_spending"))) { 
     temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                           names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
@@ -1890,7 +1892,7 @@ convert <- function(e, country, wave = NULL) {
   e$wealth <- as.item(temp, labels = structure(c(1:5),
                         names = c("Q1","Q2","Q3","Q4","Q5")),
                       annotation=Label(e$wealth))
-  
+
   temp <-  (e$frequency_beef %in% text_frequency_beef_rarely) + 2 * (e$frequency_beef %in% text_frequency_beef_weekly) + 3 * (e$frequency_beef %in% text_frequency_beef_daily) 
   e$frequency_beef <- as.item(temp, labels = structure(c(0:3),
                         names = c("Never", "Rarely", "Weekly", "Daily")),
@@ -1910,7 +1912,7 @@ convert <- function(e, country, wave = NULL) {
   if ("inequality_problem" %in% names(e)) e$inequality_problem <- as.item(temp, labels = structure(c(-2:2,-0.1),
                         names = c("Very serious problem","Serious problem","A problem","Small problem","Not a problem at all","PNR")),
                       missing.values=-0.1, annotation=Label(e$inequality_problem)) # TODO: waves
-    
+
   if ("future_gdp" %in% names(e)) temp <-  (e$future_gdp %in% text_future_richer) - (e$future_gdp %in% text_future_poorer) - 0.1 * (e$future_gdp %in% text_pnr)
   if ("future_gdp" %in% names(e)) e$future_gdp <- as.item(temp, labels = structure(c(-1:1,-0.1),
                         names = c("Poorer","About as rich", "Richer","PNR")),
@@ -1933,7 +1935,7 @@ convert <- function(e, country, wave = NULL) {
   if ("CC_dynamics" %in% names(e)) e$CC_dynamics <- as.item(temp, labels = structure(c(-2:1,-0.1),
                         names = c("No impact","Decrease", "Stabilize","Rise more slowly","PNR")),
                       missing.values=-0.1, annotation=Label(e$CC_dynamics))
-  
+
   if ("CC_stoppable" %in% names(e)) {
     e$CC_stoppable <- as.character(e$CC_stoppable)
     e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_no_influence] <- "No influence"
@@ -1971,21 +1973,21 @@ convert <- function(e, country, wave = NULL) {
                                                                      names = c("Free-riding","Reciprocity", "Compensation")),
                                              annotation=Label(e$country_should_act))
   
-  for (v in c(variables_side_effects, variables_employment)) { 
+  for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { 
     temp <-  (e[[v]] %in% text_effects_positive) - (e[[v]] %in% text_effects_negative) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
                           names = c("Negative","None notable","Positive","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }  
-  
-  for (v in c(variables_incidence)) { # TODO! why 0 missing?
+
+  for (v in intersect(names(e), c(variables_incidence))) { # TODO! why 0 missing?
     temp <-  (e[[v]] %in% text_incidence_win) - (e[[v]] %in% text_incidence_lose) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
                           names = c("Lose","Unaffected","Win","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
   
-  for (v in c(variables_win_lose)) {
+  for (v in intersect(names(e), c(variables_win_lose))) {
     temp <-  -2*(e[[v]] %in% text_lose_a_lot) - (e[[v]] %in% text_mostly_lose) + (e[[v]] %in% text_mostly_win) + 2*(e[[v]] %in% text_win_a_lot) - 0.1 * is.na(e[[v]])
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                                                names = c("Lose a lot", "Mostly lose", "Neither win nor lose","Mostly win", "Win a lot","PNR")),
@@ -2021,7 +2023,7 @@ convert <- function(e, country, wave = NULL) {
     for (v in variables_flight_quota) { e[[v]] <- as.item(as.character(e[[v]]), labels = structure(c("Rationing", "Tradable", "PNR"), 
                             names=c("Rationing", "Tradable", "PNR")), missing.values = "PNR", annotation=Label(e[[v]])) }
   }
-  
+
   if ("ban_incentives" %in% names(e)) {
     e$ban_incentives[e$ban_incentives %in% text_ban_incentives_encourage] <- "Encourage"
     e$ban_incentives[e$ban_incentives %in% text_ban_incentives_force] <- "Force"
@@ -2045,7 +2047,7 @@ convert <- function(e, country, wave = NULL) {
   }
   
   e$vote_participation[e$vote_participation %in% text_vote_participation_no_right] <- "No right to vote"
-  if (vote_2016 %in% names(e)) {
+  if ("vote_voters_2016" %in% names(e)) {
     e$vote_participation_2016[e$vote_participation_2016 %in% text_vote_participation_no_right] <- "No right to vote"
     e$vote[!is.na(e$vote_voters) & e$vote_participation=="Yes"] <- e$vote_voters[!is.na(e$vote_voters) & e$vote_participation=="Yes"]
     e$vote[!is.na(e$vote_non_voters_2016) & e$vote_participation!="Yes"] <- e$vote_non_voters[!is.na(e$vote_non_voters_2016) & e$vote_participation!="Yes"]
@@ -2058,7 +2060,7 @@ convert <- function(e, country, wave = NULL) {
   }
   e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
   e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation=Label(e$vote))
-  
+
   e$survey_biased[e$survey_biased %in% text_survey_biased_pro_envi] <- "Yes, pro environment"
   e$survey_biased[e$survey_biased %in% text_survey_biased_anti_envi] <- "Yes, anti environment"
   e$survey_biased[e$survey_biased %in% text_survey_biased_left] <- "Yes, left"
@@ -2118,7 +2120,7 @@ convert <- function(e, country, wave = NULL) {
   for (v in names_policies) e$policies_rich <- e$policies_rich + e[[paste(v, text_incidence, "rich", sep="_")]]/3
   for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, text_incidence, "rural", sep="_")]]/3
   if ("standard_incidence_urban" %in% names(e)) for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, text_incidence, "urban", sep="_")]]/3
-  
+
   e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
   label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"
 
@@ -2150,11 +2152,11 @@ convert <- function(e, country, wave = NULL) {
     e$km_driven_agg <- 3000*(e$km_driven > 1000 & e$km_driven <= 5000) + 7500*(e$km_driven > 5000 & e$km_driven <= 10000) + 15000*(e$km_driven > 10000 & e$km_driven <= 20000) + 25000*(e$km_driven > 20000 & e$km_driven <= 30000) + 60000*(e$km_driven > 30000)
     e$km_driven_agg <- as.item(e$km_driven_agg, labels = structure(c(0,3000,7500,15000,25000,60000), names = c("Below 1,000", "1,001 to 5,000", "5k to 10k", "10k to 20k", "20k to 30k", "More than 30k")), annotation=attr(e$flights, "label"))
   }
-  
+
   e$treatment <- "None"
-  e$treatment[e$treatment_climate==1 & e$treatment_policy==0] <- "Climate"
-  e$treatment[e$treatment_climate==0 & e$treatment_policy==1] <- "Policy"
-  e$treatment[e$treatment_climate==1 & e$treatment_policy==1] <- "Both"
+  e$treatment[e$treatment_climate>0.5423261 & e$treatment_policy<=0.5423261] <- "Climate"
+  e$treatment[e$treatment_climate<=0.5423261 & e$treatment_policy>0.5423261] <- "Policy"
+  e$treatment[e$treatment_climate>0.5423261 & e$treatment_policy>0.5423261] <- "Both"
   e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
   label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
 
@@ -2193,7 +2195,7 @@ convert <- function(e, country, wave = NULL) {
   e$college <- "No college"
   e[e$education >= 5, "college"] <- "College Degree"
   e$college <- as.factor(e$college)
-  
+
   e$employment_agg <-  "Not working"
   e[e$employment_status == "Student", "employment_agg"] <- "Student"
   e[e$employment_status == "Retired", "employment_agg"] <- "Retired"
@@ -2212,7 +2214,13 @@ convert <- function(e, country, wave = NULL) {
     e$age_quota[e$age %in% 35:49] <- "35-49"
     e$age_quota[e$age %in% 50:64] <- "50-64"
     e$age_quota[e$age > 64] <- "65+"
-  } else { e$age_quota[e$age_quota == "65 or above"] <- "65+" }
+  } else { 
+    e$age_quota[e$age_quota == "18 to 24"] <- "18-24"
+    e$age_quota[e$age_quota == "25 to 34"] <- "25-34"
+    e$age_quota[e$age_quota == "35 to 49"] <- "35-49"
+    e$age_quota[e$age_quota == "50 to 64"] <- "50-64"
+    e$age_quota[e$age_quota == "65 or above"] <- "65+" 
+  }
   
   # political position
   # AF TODO I'd rather use the dummy vote=='Biden' than a variable vote_dum with 4 modalities
@@ -2223,7 +2231,7 @@ convert <- function(e, country, wave = NULL) {
   # # e[e$vote_participation == 2, "vote_dum"] <- "Other" # add non-voters as others
   # # e$vote_dum <- as.factor(e$vote_dum)
   # # e$vote_dum <- relevel(e$vote_dum, ref ="Other")
-  
+
   e$income_factor <- as.factor(e$income)
   
   # e <- e[, -c(9:17)] 
@@ -2234,6 +2242,7 @@ weighting <- function(data, printWeights = T) {
   d <- data 
   d$core_metropolitan[is.na(d$core_metropolitan)] <- "NA"
   d$age_quota[is.na(d$age_quota)] <- "NA"
+  d$region[is.na(d$region)] <- "NA"
   
   unweigthed <- svydesign(ids=~1, data=d)
   if ("NA" %in% levels(as.factor(d$core_metropolitan))) core_metropolitan <- data.frame(core_metropolitan = c(FALSE, TRUE, "NA"), 
@@ -2249,10 +2258,14 @@ weighting <- function(data, printWeights = T) {
                     Freq=nrow(d)*c(0.2034,0.239,0.2439,0.3137))
   # region <- data.frame(region = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"), 
   #                      Freq=nrow(d)*c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831))
-  region <- data.frame(region = c("Midwest","Northeast", "South", "West"), 
+  if ("NA" %in% levels(as.factor(d$region))) region <- data.frame(region = c("Midwest","Northeast", "South", "West", "NA"), 
+                       Freq=nrow(d)*c(0.171,0.208,0.383,0.239, 0.0001))
+  else region <- data.frame(region = c("Midwest","Northeast", "South", "West"), 
                        Freq=nrow(d)*c(0.171,0.208,0.383,0.239))
   if ("NA" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "NA"), 
                                                        Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
+  else if ("Below 18" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "Below 18"), 
+                                                                             Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
   else age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+"), 
                     Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118)) # France: c(0.120,0.150,0.240,0.240,0.250)
   # revenu <- data.frame(revenu = c(), Freq=nrow(d)*c())
@@ -2266,7 +2279,7 @@ weighting <- function(data, printWeights = T) {
     print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique   
     print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
   }
-  return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
+  return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE))) # TODO! race
 }
 
 
