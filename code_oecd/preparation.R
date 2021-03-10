@@ -915,7 +915,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "obstacles_insulation_effort",
       "obstacles_insulation_useless",
       "obstacles_insulation_other_choice",
-      "obstacles_insulation_choice",
+      "obstacles_insulation_other",
       "insulation_subsidies_support",
       "insulation_mandatory_support",
       "beef_tax_support",
@@ -1546,7 +1546,7 @@ convert <- function(e, country, wave = NULL) {
     label(e$km_driven) <- "km_driven: How many kilometers have you and your household members driven in 2019?" }
   if ("hh_children" %in% names(e)) {
     e$hh_size <- e$hh_adults + e$hh_children
-  # e$bad_quality <- 0 # TODO
+  # e$bad_quality <- 0 # TODO! inattention question 
   # e$bad_quality[e$hh_size > 12] <- 1.3 + e$bad_quality[e$hh_size > 12] # 
   # e$bad_quality[e$hh_children > 10] <- 1 + e$bad_quality[e$hh_children > 10] # 
     e$hh_size <- pmin(e$hh_size, 12)
@@ -1561,8 +1561,8 @@ convert <- function(e, country, wave = NULL) {
   if (country=="US") yes_no_names <- c("","No","PNR","Yes")
   if (country=="FR") yes_no_names <- c("","Non","PNR","Oui")
   for (j in intersect(c("couple", "CC_real", "CC_dynamic", "change_lifestyle", "pro_global_assembly", "pro_global_tax", "pro_tax_1p", "tax_transfers_trust", "investments_trust",
-                        "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_support", "investments_support",
-                        "standard_support", "hit_by_covid", "member_environmental_orga", "relative_environmentalist", "standard_exists"
+                        "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_supports", "investments_supports", # TODO! in pilot1, 2 add an "s" to [policies]_supports & add cap to Beef, incl. in other files
+                        "standard_supports", "hit_by_covid", "member_environmental_orga", "relative_environmentalist", "standard_exists"
               ), names(e))) {
     temp <- 1*(e[j][[1]] %in% text_yes) - (e[j][[1]] %in% text_no) - 0.1*(e[j][[1]] %in% text_pnr)
     e[j][[1]] <- as.item(temp, labels = structure(c(-1,-0.1,1), names = c( "No","PNR","Yes")),
@@ -1584,8 +1584,8 @@ convert <- function(e, country, wave = NULL) {
   } # TODO! all $likert scales?
 
   for (j in names(e)) {
-    if ((grepl('race_|home_|CC_factor_|CC_responsible_|CC_affected_|change_condition_|effect_policies_|kaya_|scale_|beef_|far_left|left|center$', j)
-        | grepl('right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice', j))
+    if ((grepl('race_|home_|CC_factor_|CC_responsible_|CC_affected_|change_condition_|effect_policies_|kaya_|scale_|Beef_|far_left|left|center$', j)
+        | grepl('right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice|GHG_', j))
         & !(grepl('_other$|order_', j))) {
       temp <- label(e[[j]])
       e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
@@ -1613,7 +1613,7 @@ convert <- function(e, country, wave = NULL) {
   if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
   if ("standard_fair" %in% names(e)) variables_policies_fair  <<- names(e)[grepl('_fair', names(e))]
   variables_policies_support <<- c("standard_support", "investments_support", "tax_transfers_support")
-  variables_support <<- names(e)[grepl('_support', names(e))]
+  variables_support <<- names(e)[grepl('_support', names(e)) & !grepl('order_', names(e))]
   variables_incidence <<- names(e)[grepl('incidence_', names(e))]
   variables_standard_incidence <<- names(e)[grepl('standard_incidence_', names(e))]
   variables_investments_incidence <<- names(e)[grepl('investments_incidence_', names(e))]
@@ -1637,7 +1637,14 @@ convert <- function(e, country, wave = NULL) {
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "core_metropolitan")
   variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
-  
+  variables_know_treatment_climate <<- c("know_frequence_heatwaves", "know_temperature_2100")
+  variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
+  variables_know_treatment <<- c(variables_know_treatment_climate, variables_know_treatment_policy)
+  if (length(grep('GHG_', names(e)))>0) variables_GHG <<- names(e)[grepl('GHG_', names(e))]
+  if (length(grep('investments_funding_', names(e)))>0) variables_investments_funding <<- names(e)[grepl('investments_funding_', names(e))]
+  if (length(grep('if_other_do_', names(e)))>0) variables_if_other_do <<- names(e)[grepl('if_other_do_', names(e))]
+  if (length(grep('obstacles_insulation_', names(e)))>0) variables_obstacles_insulation <<- names(e)[grepl('obstacles_insulation_', names(e)) & !grepl('choice', names(e))]
+
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
   text_neutral <- c( "US" = "Neither agree or disagree",  "US" = "Neither agree nor disagree",  "US" = "I neither agree nor disagree")
@@ -1873,7 +1880,6 @@ convert <- function(e, country, wave = NULL) {
                           names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
-  # TODO! know_
   
   for (v in intersect(names(e), c(variables_CC_impacts, "will_insulate", "CC_will_end"))) { 
     temp <-  2 * (e[[v]] %in% text_very_likely) + (e[[v]] %in% text_somewhat_likely) - (e[[v]] %in% text_somewhat_unlikely) - 2 * (e[[v]] %in% text_very_unlikely) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
@@ -2223,13 +2229,59 @@ convert <- function(e, country, wave = NULL) {
     e$km_driven_agg <- 3000*(e$km_driven > 1000 & e$km_driven <= 5000) + 7500*(e$km_driven > 5000 & e$km_driven <= 10000) + 15000*(e$km_driven > 10000 & e$km_driven <= 20000) + 25000*(e$km_driven > 20000 & e$km_driven <= 30000) + 60000*(e$km_driven > 30000)
     e$km_driven_agg <- as.item(e$km_driven_agg, labels = structure(c(0,3000,7500,15000,25000,60000), names = c("Below 1,000", "1,001 to 5,000", "5k to 10k", "10k to 20k", "20k to 30k", "More than 30k")), annotation=attr(e$flights, "label"))
   }
-
+  
+  if ("donation" %in% names(e)) {
+    e$donation_agg <- 0*(e$donation == 0) + 10*(e$donation %in% 1:20) + 30*(e$donation %in% 21:40) + 70*(e$donation %in% 41:99) + 100*(e$donation == 100)
+    e$donation_agg <- as.item(e$donation_agg, labels = structure(c(0,10,30,70,100), names = c("0", "1 to 20", "21 to 40", "41 to 99", "100")), annotation=attr(e$donation, "label"))
+  }
+  
+  e$treatment_climate <- ifelse(e$treatment_climate > sqrt(5/17), 1, 0)
+  e$treatment_policy <- ifelse(e$treatment_policy > sqrt(5/17), 1, 0)
   e$treatment <- "None"
-  e$treatment[e$treatment_climate>0.5423261 & e$treatment_policy<=0.5423261] <- "Climate"
-  e$treatment[e$treatment_climate<=0.5423261 & e$treatment_policy>0.5423261] <- "Policy"
-  e$treatment[e$treatment_climate>0.5423261 & e$treatment_policy>0.5423261] <- "Both"
+  e$treatment[e$treatment_climate == 1 & e$treatment_policy == 0] <- "Climate"
+  e$treatment[e$treatment_climate == 0 & e$treatment_policy == 1] <- "Policy"
+  e$treatment[e$treatment_climate == 1 & e$treatment_policy == 1] <- "Both"
   e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
   label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
+  
+  if ("know_standard" %in% names(e)) {
+    e$know_treatment_climate <- (e$know_temperature_2100 == "8 °F") + (e$know_frequence_heatwaves == "70 days per year")
+    e$know_treatment_policy <- (e$know_standard == "A limit on CO2 emissions from cars") + (e$know_investments_jobs == "1.5 million people")
+    label(e$know_treatment_climate) <- "know_treatment_climate: Number of good responses among the 2 knowledge questions related to treatment content: temperature_2100 = 8°F & frequence_heatwaves = 70 days per year"
+    label(e$know_treatment_policy) <- "know_treatment_policy: Number of good responses among the 2 knowledge questions related to treatment content: standard = limit on car emissions & investments_jobs = 1.5 million"
+  }
+  
+  if ("GHG_methane" %in% names(e)) {
+    e$score_GHG <- e$GHG_CO2 + e$GHG_methane - e$GHG_H2 - e$GHG_particulates
+    e$know_GHG_CO2 <- e$GHG_CO2
+    e$know_GHG_methane <- e$GHG_methane
+    e$know_GHG_H2 <- ifelse(e$GHG_H2, F, T)
+    e$know_GHG_particulates <- ifelse(e$GHG_particulates, F, T)
+    label(e$score_GHG) <- "score_GHG: Score to the knowledge of GHG [-2;+2] = CO2 + methane - H2 - particulates"
+    label(e$know_GHG_CO2) <- "know_GHG_CO2: Correct answer that CO2 is a GHG"
+    label(e$know_GHG_methane) <- "know_GHG_methane: Correct answer that methane is a GHG"
+    label(e$know_GHG_H2) <- "know_GHG_H2: Correct answer that H2 is not a GHG"
+    label(e$know_GHG_particulates) <- "know_GHG_particulates: Correct answer that particulates is not a GHG"
+  }
+  
+  if ("footprint_el_coal" %in% names(e)) {
+    e$score_footprint_elec <- AllSeqDists(cbind(e$footprint_el_coal, e$footprint_el_gas, e$footprint_el_wind))
+    e$score_footprint_food <- AllSeqDists(cbind(e$footprint_fd_beef, e$footprint_fd_chicken, e$footprint_fd_pasta))
+    e$score_footprint_transport <- AllSeqDists(cbind(e$footprint_tr_plane, e$footprint_tr_car, e$footprint_tr_coach))
+    e$score_footprint_region <- AllSeqDists(cbind(e$footprint_reg_US, e$footprint_reg_europe, e$footprint_reg_china, e$footprint_reg_india))
+    label(e$score_footprint_elec) <- "e$score_footprint_elec: Kendall distance with true ranking of electricity footprints: coal>gas>wind"
+    label(e$score_footprint_food) <- "e$score_footprint_food: Kendall distance with true ranking of food footprints: beef>chicken>pasta"
+    label(e$score_footprint_transport) <- "e$score_footprint_transport: Kendall distance with true ranking of transport footprints: plane>car>coach"
+    label(e$score_footprint_region) <- "e$score_footprint_region: Kendall distance with true ranking of region footprints: US>Western Europe>China>India"
+    e$know_footprint_elec <- e$score_footprint_elec == 0
+    e$know_footprint_food <- e$score_footprint_elec == 0
+    e$know_footprint_transport <- e$score_footprint_elec == 0
+    e$know_footprint_region <- e$score_footprint_elec == 0
+    label(e$know_footprint_elec) <- "know_footprint_elec: Correct answer to the ranking of electricity footprints"
+    label(e$know_footprint_food) <- "know_footprint_food: Correct answer to the ranking of electricity footprints"
+    label(e$know_footprint_transport) <- "know_footprint_transport: Correct answer to the ranking of electricity footprints"
+    label(e$know_footprint_region) <- "know_footprint_region: Correct answer to the ranking of electricity footprints"
+  }
 
   e$rush_treatment <- e$duration_treatment_climate < 2.4 | e$duration_treatment_policy < 4.45 # TODO adapt time for climate
   e$rush_treatment[is.na(e$rush_treatment)] <- F
