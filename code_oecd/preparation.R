@@ -662,7 +662,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "lang",
       "consent",
       "gender",
-      "age",
+      "age_quota",
       "zipcode",
       "urbanity",
       "race_white",
@@ -689,18 +689,18 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "home_hosted",
       "couple",
       "marital_status",
-      "nb_children",
-      "hh_size",
+      "Nb_children",
+      "HH_size",
       "heating",
       "heating_expenses",
       "insulation",
       "gas_expenses",
-      "flights",
+      "flights_agg",
       "frequency_beef",
       "transport_work",
       "transport_shopping",
       "transport_leisure",
-      "transport_available",
+      "availability_transport",
       "Q3.7_First",
       "Q3.7_Last",
       "duration_energy",
@@ -769,22 +769,22 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "footprint_reg_order_europe",
       "footprint_reg_order_china",
       "footprint_reg_order_india",
-      "CC_responsible_each",
-      "CC_responsible_rich",
-      "CC_responsible_govt",
-      "CC_responsible_companies",
-      "CC_responsible_past", 
-      "CC_responsible_order_each",
-      "CC_responsible_order_rich",
-      "CC_responsible_order_govt",
-      "CC_responsible_order_companies",
-      "CC_responsible_order_past",
-      "CC_stoppable",
+      "responsible_CC_each", # TODO: rename in CC_responsible_ and change in previous waves?
+      "responsible_CC_rich",
+      "responsible_CC_govt",
+      "responsible_CC_companies",
+      "responsible_CC_past", 
+      "responsible_CC_order_each",
+      "responsible_CC_order_rich",
+      "responsible_CC_order_govt",
+      "responsible_CC_order_companies",
+      "responsible_CC_order_past",
+      "net_zero_feasible", # TODO rename in CC_stoppable and change name in previous waves?
       "CC_affects_self",
       "pro_ambitious_policies",
       "CC_will_end",
-      "effect_policies_economy",
-      "effect_policies_lifestyle",
+      "effect_halt_CC_economy",
+      "effect_halt_CC_lifestyle",
       "willing_limit_flying",
       "willing_limit_driving",
       "willing_electric_car",
@@ -929,7 +929,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "trust_people",
       "trust_govt",
       "statist",
-      "inequality_problem",
+      "problem_inequality",
       "future_gdp",
       "interest_politics", 
       "member_environmental_orga",
@@ -1515,13 +1515,13 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 
 # e <- prepare(country = "US")
 # e <- read_csv("../data/US_pilot.csv") #[-c(1:2),]
-# e <- relabel_and_rename(e)
+# e <- relabel_and_rename(e, country="US", wave = "pilot3")
 
 convert <- function(e, country, wave = NULL) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", 
                  "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "PNR")
   text_yes <- c("US" = "Yes")
-  text_no <- c("US" = "No")
+  text_no <- c("US" = "No", "US" = "No or I don't have a partner")
   names_policies <- c("standard", "investments", "tax_transfers")
   
   for (i in 1:length(e)) {
@@ -1530,8 +1530,9 @@ convert <- function(e, country, wave = NULL) {
   }
 
   variables_duration <<- names(e)[grepl('duration', names(e))]
-  for (i in c(variables_duration, intersect(c( # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
-    "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "nb_children", "age", "zipcode"
+  if (grepl('footprint', names(e))) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
+  for (i in c(variables_duration, variables_footprint, intersect(c( # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
+    "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "age", "zipcode", "donation"
   ), names(e)))) {
     lab <- label(e[[i]])
     e[[i]] <- as.numeric(as.vector(e[[i]]))
@@ -1539,18 +1540,19 @@ convert <- function(e, country, wave = NULL) {
   }
   for (v in variables_duration) e[[v]] <- e[[v]]/60
   
-  if (country=="US") {
+  if (country=="US" & "km_driven" %in% names(e)) {
     e$miles_driven <- e$km_driven
     e$km_driven <- 1.60934 * e$miles_driven
     label(e$km_driven) <- "km_driven: How many kilometers have you and your household members driven in 2019?" }
-  e$hh_size <- e$hh_adults + e$hh_children
+  if ("hh_children" %in% names(e)) {
+    e$hh_size <- e$hh_adults + e$hh_children
   # e$bad_quality <- 0 # TODO
   # e$bad_quality[e$hh_size > 12] <- 1.3 + e$bad_quality[e$hh_size > 12] # 
   # e$bad_quality[e$hh_children > 10] <- 1 + e$bad_quality[e$hh_children > 10] # 
-  e$hh_size <- pmin(e$hh_size, 12)
-  e$hh_children <- pmin(e$hh_children, 10)
-  e$hh_adults <- pmin(e$hh_adults, 5)
-  label(e$hh_size) <- "hh_size: How many people are in you household?"
+    e$hh_size <- pmin(e$hh_size, 12)
+    label(e$hh_size) <- "hh_size: How many people are in you household?" }
+  if ("hh_children" %in% names(e)) e$hh_children <- pmin(e$hh_children, 10)
+  if ("hh_adults" %in% names(e)) e$hh_adults <- pmin(e$hh_adults, 5)
   # e$bad_quality[e$km_driven > 10^6] <- 1 + e$bad_quality[e$km_driven > 10^6] # 
   # e$bad_quality[e$flights >= 100] <- 1 + e$bad_quality[e$flights >= 100] # 
   # label(e$bad_quality) <- "bad_quality: Indicator of aberrant answers at hh_size, km_driven or flights."
@@ -1558,7 +1560,7 @@ convert <- function(e, country, wave = NULL) {
   # TODO relative_environmentalist
   if (country=="US") yes_no_names <- c("","No","PNR","Yes")
   if (country=="FR") yes_no_names <- c("","Non","PNR","Oui")
-  for (j in intersect(c("change_lifestyle", "pro_global_assembly", "pro_global_tax", "pro_tax_1p", "tax_transfers_trust", "investments_trust",
+  for (j in intersect(c("couple", "CC_real", "CC_dynamic", "change_lifestyle", "pro_global_assembly", "pro_global_tax", "pro_tax_1p", "tax_transfers_trust", "investments_trust",
                         "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_support", "investments_support",
                         "standard_support", "hit_by_covid", "member_environmental_orga", "relative_environmentalist", "standard_exists"
               ), names(e))) {
@@ -1594,12 +1596,14 @@ convert <- function(e, country, wave = NULL) {
   variables_race <<- names(e)[grepl('race_', names(e))]
   variables_home <<- names(e)[grepl('home_', names(e))]
   variables_transport <<- names(e)[grepl('transport_', names(e))]
-  variables_CC_factor <<- names(e)[grepl('CC_factor_', names(e))]
-  variables_CC_responsible <<- names(e)[grepl('CC_responsible_', names(e)) & !grepl("order_", names(e))]
-  variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
-  variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
-  variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
-  variables_kaya <<- names(e)[grepl('kaya_', names(e))]
+  if (grepl('CC_factor_', names(e))) variables_CC_factor <<- names(e)[grepl('CC_factor_', names(e))]
+  if (grepl('CC_responsible_', names(e))) variables_CC_responsible <<- names(e)[grepl('CC_responsible_', names(e)) & !grepl("order_", names(e))]
+  if (grepl('responsible_CC_', names(e)))variables_responsible_CC <<- names(e)[grepl('responsible_CC_', names(e)) & !grepl("order_", names(e))]
+  if (grepl('CC_affected_', names(e)))variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
+  if (grepl('change_condition_', names(e)))variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
+  if (grepl('effect_policies_', names(e)))variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
+  if (grepl('effect_halt_CC_', names(e)))variables_effect_policies <<- names(e)[grepl('effect_halt_CC_', names(e))]
+  if (grepl('kaya_', names(e)))variables_kaya <<- names(e)[grepl('kaya_', names(e))]
   variables_scale <<- names(e)[grepl('scale_', names(e))]
   variables_beef <<- names(e)[grepl('beef_', names(e)) & !grepl("order_", names(e))]
   variables_burden_sharing <<- names(e)[grepl('burden_sharing_', names(e))]
@@ -1610,7 +1614,7 @@ convert <- function(e, country, wave = NULL) {
   variables_standard <<- c("standard_support", "standard_trust", "standard_effective", "standard_employment", "standard_side_effects", variables_standard_incidence)
   variables_investments <<- c("investments_support", "investments_trust", "investments_effective", "investments_employment", "investments_side_effects", variables_investments_incidence)
   variables_tax_transfers <<- c("tax_transfers_support", "tax_transfers_trust", "tax_transfers_effective", "tax_transfers_employment", "tax_transfers_side_effects", variables_tax_transfers_incidence)
-  variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
+  if (grepl('_side_effects', names(e)))variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
   variables_employment <<- names(e)[grepl('_employment', names(e))]
   variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
   variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_", names(e))]
@@ -1622,22 +1626,28 @@ convert <- function(e, country, wave = NULL) {
   
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
-  text_neutral <- c( "US" = "Neither agree or disagree",  "US" = "I neither agree nor disagree")
+  text_neutral <- c( "US" = "Neither agree or disagree",  "US" = "Neither agree nor disagree",  "US" = "I neither agree nor disagree")
   text_somewhat_disagree <- c( "US" = "Somewhat disagree",  "US" = "I somewhat disagree")
   text_strongly_disagree <- c("US" = "Strongly disagree", "US" = "Fully disagree")
   #  variables_incidence variables_burden_sharing
   
-  text_support_absolutely <- c("US" = "Yes, absolutely", "US" = "Strongly support") # first: policy / second: tax
-  text_support_somewhat <- c("US" = "Yes, somewhat", "US" = "Rather support")
-  text_support_indifferent <- c("US" = "Indifferent")
-  text_support_not_really <- c("US" = "No, not really", "US" = "Rather oppose")
+  text_support_strongly <- c("US" = "Yes, absolutely", "US" = "Strongly support") # first: policy / second: tax
+  text_support_somewhat <- c("US" = "Yes, somewhat", "US" = "Rather support", "US" = "Somewhat support")
+  text_support_indifferent <- c("US" = "Indifferent", "US" = "Neither support nor oppose")
+  text_support_not_really <- c("US" = "No, not really", "US" = "Rather oppose", "US" = "Somewhat oppose")
   text_support_not_at_all <- c("US" = "No, not at all", "US" = "Strongly oppose")
   
+  text_excellent <- c("US" = "Excellent")
+  text_good <- c("US" = "Good")
+  text_fair <- c("US" = "Fair")
+  text_poor <- c("US" = "Poor")
+  text_very_poor <- c("US" = "Very poor")
+  
   text_rural <- c("US" = "A rural area")
-  text_small_town <- c("US" = "A small town (between 5,000 and 20,000 inhabitants)")
-  text_large_town <- c("US" = "A large town (between 20,000 and 50,000 inhabitants)")
-  text_small_city <- c("US" = "A small city (between 50,000 and 250,000 inhabitants)")
-  text_medium_city <- c("US" = " A medium-size city (between 250,000 and 3,000,000 inhabitants)")
+  text_small_town <- c("US" = "A small town (between 5,000 and 20,000 inhabitants)", "US" = "A small town (5,000 – 20,000 inhabitants)")
+  text_large_town <- c("US" = "A large town (between 20,000 and 50,000 inhabitants)", "US" = "A large town (20,000 – 50,000 inhabitants)")
+  text_small_city <- c("US" = "A small city (between 50,000 and 250,000 inhabitants)", "US" = "A small city (50,000 – 250,000 inhabitants)")
+  text_medium_city <- c("US" = " A medium-size city (between 250,000 and 3,000,000 inhabitants)", "US" = "A medium-sized city (250,000 – 3,000,000 inhabitants)")
   text_large_city <- c("US" = "A large city (more than 3 million inhabitants)")
   
   text_speaks_native <- c("US" = "Native")
@@ -1674,6 +1684,29 @@ convert <- function(e, country, wave = NULL) {
   text_transport_available_not_so_much <- c("US" = "Not so much, public transport is available but with many limitations")
   text_transport_available_not_at_all <- c("US" = "No, there is no public transport")
   
+  text_none <- c("US" = "None")
+  text_a_little <- c("US" = "A little")
+  text_some <- c("US" = "Some")
+  text_a_lot <- c("US" = "A lot")
+  text_most <- c("US" = "Most")
+  
+  text_intensity_not <- c("US" = "Not at all")
+  text_intensity_little <- c("US" = "A little")
+  text_intensity_some <- c("US" = "Moderately")
+  text_intensity_lot <- c("US" = "A lot")
+  text_intensity_great_deal <- c("US" = "A great deal")
+  
+  text_very_unlikely <- c("US" = "Very unlikely")
+  text_somewhat_unlikely <- c("US" = "Somewhat unlikely")
+  text_somewhat_likely <- c("US" = "Somewhat likely")
+  text_very_likely <- c("US" = "Very likely")
+  
+  text_very_negative_effects <- c("US" = "Very negative effects")
+  text_negative_effects <- c("US" = "Somewhat negative effects")
+  text_no_effects <- c("US" = "No noticeable effects")
+  text_positive_effects <- c("US" = "Somewhat positive effects")
+  text_very_positive_effects <- c("US" = "Very positive effects")
+  
   text_trust_govt_always <- c("US" = "Nearly all the time")
   text_trust_govt_often <- c("US" = "Most of the time")
   text_trust_govt_sometimes <- c("US" = "Only some of the time")
@@ -1688,6 +1721,12 @@ convert <- function(e, country, wave = NULL) {
   text_future_richer <- c("US" = "Richer, for example thanks to technological progress")
   text_future_poorer <- c("US" = "Poorer, for example due to resource depletion and/or climate change")
   text_future_as_rich <- c("US" = "About as rich as now on average")
+  
+  text_much_richer <- c("US" = "Much richer")
+  text_richer <- c("US" = "Richer")
+  text_as_rich <- c("US" = "As rich as now")
+  text_poorer <- c("US" = "Poorer")
+  text_much_poorer <- c("US" = "Much poorer")
   
   text_envi_pro_envi <- c("US" = "We should make our society as sustainable as possible to avoid irreversible damages")
   text_envi_anti_envi <- c("US" = "I believe we have more important goals than sustainability")
@@ -1743,7 +1782,28 @@ convert <- function(e, country, wave = NULL) {
   
   text_incidence_win <- c("US" = "Would win", "US" = "Win")
   text_incidence_lose <- c("US" = "Would lose", "US" = "Would be lose", "US" = "Lose")
-  text_incidence_unaffected <- c("US" = "Would not be severely affected", "US" = "Be unaffected")
+  text_incidence_unaffected <- c("US" = "Would not be severely affected", "US" = "Neither win nor lose", "US" = "Be unaffected")
+  
+  text_incidence_win_a_lot <- c("US" = "Win a lot")
+  text_incidence_mostly_win <- c("US" = "Mostly win")
+  text_incidence_mostly_lose <- c("US" = "Mostly lose")
+  text_incidence_lose_a_lot <- c("US" = "Lose a lot")
+  
+  text_much_more <- c("US" = "Much more")
+  text_more <- c("US" = "More")
+  text_same <- c("US" = "About the same")
+  text_less <- c("US" = "Less")
+  text_much_less <- c("US" = "Much less")
+  
+  text_govt_do_too_much <- c("US" = "Government is doing too much")
+  text_govt_doing_right <- c("US" = "Government is doing just the right amount")
+  text_govt_should_do_more <- c("US" = "Government should do more")
+  
+  text_issue_not <- c("US" = "Not an issue at all")
+  text_issue_small <- c("US" = "A small issue")
+  text_issue_issue <- c("US" = "An issue")
+  text_issue_serious <- c("US" = "A serious issue")
+  text_issue_very_serious <- c("US" = "A very serious issue")
   
   text_CC_worries_very <- c("US" = "Very worried")
   text_CC_worries_worried <- c("US" = "Worried")
@@ -1784,7 +1844,7 @@ convert <- function(e, country, wave = NULL) {
   text_survey_biased_left <- c("US" = "Yes, left-wing biased")
   text_survey_biased_right <- c("US" = "Yes, right-wing biased")
   
-  for (v in c(variables_burden_sharing, "trust_public_spending")) { 
+  for (v in interesect(names(e), c(variables_burden_sharing, "trust_public_spending"))) { 
     temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                           names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
@@ -1792,9 +1852,9 @@ convert <- function(e, country, wave = NULL) {
   }
 
   for (v in c(variables_policy , variables_tax)) { 
-    temp <-  2 * (e[[v]] %in% text_support_absolutely) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr)
+    temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                          names = c("No, not at all","No, not really","Indifferent","Yes, somewhat","Yes, absolutely","PNR")),
+                          names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
   
