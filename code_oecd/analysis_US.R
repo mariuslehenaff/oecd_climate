@@ -8,6 +8,8 @@ decrit("treatment_climate", data = e)
 decrit("variant_flight_quota", data = e)
 any(duplicated(e$PSID))
 
+# TODO! ranking vs. order
+
 
 ##### Durations ######
 decrit("duration", data = e) # median 19 min / mean 23.5

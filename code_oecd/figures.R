@@ -19,7 +19,7 @@
 (gender_US <- barres(vars = "gender_factor", df = e, miss = F, labels="Gender"))
 save_plotly(gender_US, width= 470, height=140)
 
-(age_quota_US <- barres(vars = "age_quota", df = e, miss=F, rev = F, labels="Age"))
+(age_quota_US <- barres(vars = "age_quota", df = e[e$age_quota!="Below 18",], miss=F, rev = F, labels="Age"))
 save_plotly(age_quota_US, width= 500, height=140) 
 
 (region_US <- barres(vars = "region", df = e, miss=F, labels="Region"))
@@ -41,7 +41,7 @@ save_plotly(education_US, width= 1080, height=140)
 save_plotly(employment_status_US, width= 630, height=140)
 
 (occupation_US <- barres(vars = "occupation", df = e, miss=F, labels="Main occupation?"))
-save_plotly(occupation_US, width= 885, height=240)
+save_plotly(occupation_US, width= 520, height=140)
 
 #(sector_US <- barres(vars = "sector", df = e, miss=F, labels="What is your primary line of business?"))
 #save_plotly(sector_US, width= 630, height=140)
@@ -74,21 +74,21 @@ save_plotly(heating_US, width= 525, height=140)
 (heating_expenses_US <- barres(vars = "heating_expenses", df = e, miss=T, fr="Included", labels="Monthly heating expenses", rev = F))
 save_plotly(heating_expenses_US, width= 950, height=140)
 
-(insulation_US <- barres(vars = "insulation", df = e, miss=F, labels="Quality accommodation's insulation", rev = F))
-save_plotly(insulation_US, width= 625, height=140)
+(insulation_US <- barres(vars = "insulation", df = e, miss=F, rev_color = T, labels="Quality of insulation", rev = F))
+save_plotly(insulation_US, width= 600, height=140)
 
 (gas_expenses_US <- barres(vars = "gas_expenses", df = e, miss=F, labels="Monthly gas expenses", rev = F))
-save_plotly(gas_expenses_US, width= 800, height=200)
+save_plotly(gas_expenses_US, width= 800, height=140)
 
-(flights_desagg_US <- barres(vars = "flights_agg", df = e, miss=F, labels="Round-trip flights taken in 2019?"))
-save_plotly(flights_desagg_US, width= 1194, height=140)
+(flights_desagg_US <- barres(vars = "flights_agg", df = e, miss=F, rev = F, labels="Round-trip flights in 2019"))
+save_plotly(flights_desagg_US, width= 640, height=140)
 
 (frequency_beef_US <- barres(vars = "frequency_beef", df = e, miss=F, rev = F, labels="How often do you eat beef?"))
 save_plotly(frequency_beef_US, width= 530, height=140)
 
 variables_transport_graph <- c("transport_work", "transport_shopping", "transport_leisure")
 labels_transport <- c("Work", "Shopping", "Leisure")
-(transport_US <- barres(vars = variables_transport_graph, df = e, rev = F, miss = T, labels=labels_transport))
+(transport_US <- barres(vars = variables_transport_graph, df = e, rev = F, miss = F,rev_color = T,  labels=labels_transport))
 save_plotly(transport_US, width= 850, height=275) 
 
 (availability_transport_US <- barres(vars = "availability_transport", df = e, miss=F, labels="Quality and availability of public transport near your home"))
@@ -99,17 +99,17 @@ save_plotly(availability_transport_US, width= 850, height=140)
 
 ## 3. Treatment feedback: local climate
 (watched_climate_US <- barres(vars = "watched_climate", df = e, miss=F, labels="Able to watch the video until the end (local)"))
-save_plotly(watched_climate_US, width= 850, height=140)
+save_plotly(watched_climate_US, width= 900, height=140) # TODO! correlation knowledge
 
-(know_treatment_climate_US <- barres(vars = "know_treatment_climate", df = e, miss=T, labels="Score knowledge climate video"))
-save_plotly(know_treatment_climate_US, width= 850, height=140)
+(know_treatment_climate_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, df = e, miss=F, labels="Score knowledge climate video"))
+save_plotly(know_treatment_climate_US, width= 580, height=140)
 
 ## 4. Treatment feedback: local policy
 (watched_policy_US <- barres(vars = "watched_policy", df = e, miss=F, labels="Able to watch the video until the end (policy)"))
-save_plotly(watched_policy_US, width= 850, height=140)
+save_plotly(watched_policy_US, width= 900, height=140)
 
-(know_treatment_policy_US <- barres(vars = "know_treatment_policy", df = e, miss=T, labels="Score knowledge policy video"))
-save_plotly(know_treatment_policy_US, width= 850, height=140)
+(know_treatment_policy_US <- barres(vars = "know_treatment_policy", df = e, rev = F, rev_color = T, miss=F, labels="Score knowledge policy video"))
+save_plotly(know_treatment_policy_US, width= 580, height=140)
 
 ## 5. Climate knowledge
 
@@ -119,56 +119,59 @@ save_plotly(CC_talks_US, width= 760, height=140)
 (CC_real_US <- barres(vars = "CC_real", df = e, miss=F, labels="Climate change real?"))
 save_plotly(CC_real_US, width= 540, height=140)
 
-(CC_anthropogenic_US <- barres(vars = "CC_anthropogenic", df = e, miss=F, labels="Part of climate change anthropogenic"))
-save_plotly(CC_anthropogenic_US, width= 640, height=140)
+(CC_anthropogenic_US <- barres(vars = "CC_anthropogenic", rev = F, rev_color = T, df = e, miss=F, labels="Part of climate change anthropogenic"))
+save_plotly(CC_anthropogenic_US, width= 660, height=140)
 
 (CC_problem_US <- barres(vars = "CC_problem", df = e, miss=F, labels="Climate change is an important problem."))
-save_plotly(CC_problem_US, width= 800, height=200)
+save_plotly(CC_problem_US, width= 1125, height=140) # TODO! check miss=F/T everywhere
 
 (CC_knowledgeable_US <- barres(vars = "CC_knowledgeable", df = e, miss=F, labels="How knowledgeable about climate change"))
 save_plotly(CC_knowledgeable_US, width= 800, height=140)
 
-(score_GHG_US <- barres(vars = "score_GHG", df = e, miss=T, labels="Knowledge score on GHG"))
-save_plotly(score_GHG_US, width= 540, height=140)
+(score_GHG_US <- barres(vars = "score_GHG", df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG"))
+save_plotly(score_GHG_US, width= 500, height=140)
 
-(CC_dynamic_US <- barres(vars = "CC_dynamic", df = e, miss=F, labels="Cutting GHG emissions by half <br> sufficient to stop temperatures from rising"))
-save_plotly(CC_dynamic_US, width= 540, height=140)
+(CC_dynamic_US <- barres(vars = "CC_dynamic", df = e, miss=F, labels="Cutting GHG emissions by half <br> sufficient to stop rise in temperatures"))
+save_plotly(CC_dynamic_US, width= 600, height=140)
 
-(score_footprint_transport_US <- barres(vars = "score_footprint_transport", df = e, miss=F, labels="Score knowledge transport"))
-save_plotly(score_footprint_transport_US, width= 540, height=140)
+(score_footprint_transport_US <- barres(vars = "score_footprint_transport", rev = F, df = e, miss=F, labels="Distance true ranking<br>transport footprint"))
+save_plotly(score_footprint_transport_US, width= 520, height=140) # TODO! combine graphs
 
-(score_footprint_food_US <- barres(vars = "score_footprint_food", df = e, miss=F, labels="Score knowledge food"))
-save_plotly(score_footprint_food_US, width= 540, height=140)
+(score_footprint_food_US <- barres(vars = "score_footprint_food", rev = F, df = e, miss=F, labels="Distance true ranking<br>food footprint"))
+save_plotly(score_footprint_food_US, width= 520, height=140)
 
-(score_footprint_region_US <- barres(vars = "score_footprint_region", df = e, miss=F, labels="Score knowledge region"))
-save_plotly(score_footprint_region_US, width= 540, height=140)
+(score_footprint_region_US <- barres(vars = "score_footprint_region", rev = F, df = e, miss=F, labels="Distance to true ranking of<br>regional per capita footprint"))
+save_plotly(score_footprint_region_US, width= 520, height=140)
 
-(score_footprint_elec_US <- barres(vars = "score_footprint_elec", df = e, miss=F, labels="Score knowledge electricity"))
-save_plotly(score_footprint_elec_US, width= 540, height=140)
+(score_footprint_elec_US <- barres(vars = "score_footprint_elec", rev = F, df = e, miss=F, labels="Distance true ranking<br>electricity footprint"))
+save_plotly(score_footprint_elec_US, width= 520, height=140)
+
+(scores_footprint_US <- barres(vars = c("score_footprint_transport", "score_footprint_elec", "score_footprint_food"), rev = F, df = e, miss=F, labels=c("Transport", "Electricity","Food")))
+save_plotly(scores_footprint_US, width= 500, height=240)
 
 labels_CC_impacts <- c()
 for (v in variables_CC_impacts) labels_CC_impacts <- c(labels_CC_impacts, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(CC_impacts_US <- barres(vars = variables_CC_impacts, df = e, miss=F, labels=labels_CC_impacts))
-save_plotly(CC_impacts_US, width= 1150, height=325) 
+(CC_impacts_US <- barres(vars = variables_CC_impacts, df = e, miss=F, rev_color=T, labels=labels_CC_impacts))
+save_plotly(CC_impacts_US, width= 800, height=400) 
 
 ## 6. Climate Change (attitudes and risks)
-label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal")
+label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal") # TODO! move
 labels_responsible <- c()
 for (v in variables_responsible_CC) labels_responsible <- c(labels_responsible, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (CC_responsible_US <- barres(vars = variables_responsible_CC, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_responsible, hover= label_great_deal))
-save_plotly(CC_responsible_US, width= 680, height=250) 
+save_plotly(CC_responsible_US, width= 720, height=300) 
 
-(net_zero_feasible_US <- barres(vars = "net_zero_feasible", df = e, miss=T, rev = F, labels="Technically feasible to stop GHG emissions <br> while maintaining satisfactory standards of living in the U.S."))
-save_plotly(net_zero_feasible_US, width= 1200, height=140)
+(net_zero_feasible_US <- barres(vars = "net_zero_feasible", df = e, miss=T, rev = F, labels="Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S."))
+save_plotly(net_zero_feasible_US, width= 620, height=140)
 
-(CC_affects_self_US <- barres(vars = "CC_affects_self", df = e, miss = F, labels="Climate change negatively affects your personal life"))
-save_plotly(CC_affects_self_US, width= 820, height=140)
+(CC_affects_self_US <- barres(vars = "CC_affects_self", df = e, rev = F, miss = F, labels="Climate change negatively affects personal life"))
+save_plotly(CC_affects_self_US, width= 800, height=140)
 
 (pro_ambitious_policies_US <- barres(vars = "pro_ambitious_policies", df = e, miss = F, labels="Ambitious public policies to halt climate change"))
 save_plotly(pro_ambitious_policies_US, width= 820, height=140)
 
-(CC_will_end_US <- barres(vars = "CC_will_end", df = e, miss = F, labels="Likely to halt climate change by the end of the century"))
-save_plotly(CC_will_end_US, width= 820, height=140)
+(CC_will_end_US <- barres(vars = "CC_will_end", df = e, miss = F, labels="Likely to halt CC by the end of the century"))
+save_plotly(CC_will_end_US, width= 855, height=140)
 
 (effect_halt_CC_economy_US <- barres(vars = "effect_halt_CC_economy", df = e, miss = F, labels="Effects of ambitious policies <br> on the U.S economy and employment"))
 save_plotly(effect_halt_CC_economy_US, width= 820, height=140)
@@ -179,17 +182,17 @@ save_plotly(effect_halt_CC_lifestyle_US, width= 680, height=140)
 labels_willing <- c()
 for (v in variables_willing) labels_willing <- c(labels_willing, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (willing_US <- barres(vars = variables_willing, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_willing, hover=label_great_deal))
-save_plotly(willing_US, width= 820, height=220) 
+save_plotly(willing_US, width= 800, height=320) 
 
 labels_condition <- c()
 for (v in variables_condition) labels_condition <- c(labels_condition, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (condition_US <- barres(vars = variables_condition, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_condition, hover = label_great_deal))
-save_plotly(condition_US, width= 820, height=220) 
+save_plotly(condition_US, width= 805, height=250) 
 
 ## 7. Pref 1: emission standards (full)
 
 labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor disagree", "Somewhat agree", "Strongly agree")
-labels_standard_effects <- c()
+labels_standard_effects <- c() # TODO reduce width/labels
 for (v in variables_standard_effect) labels_standard_effects <- c(labels_standard_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (standard_effect_US <- barres(vars = variables_standard_effect, df = e, rev_color = T , rev = F, miss = F, showLegend=T, labels=labels_standard_effects, hover=labels_agree))
 save_plotly(standard_effect_US, width= 1100, height=320) 
@@ -202,13 +205,13 @@ labels_standard_win_lose[5] <- "Your household financially"
 save_plotly(standard_win_lose_US, width= 1100, height=320) 
 
 (standard_fair_US <- barres(vars = "standard_fair", df = e, miss=F, labels="An emission limit for cars is fair"))
-save_plotly(standard_fair_US, width= 640, height=200)
+save_plotly(standard_fair_US, width= 1100, height=140) # TODO! fair 3 policies
 
-(standard_support_US <- barres(vars = "standard_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
-save_plotly(standard_support_US, width= 1075, height=140)
+(standard_support_US <- barres(vars = "standard_support", df = e, miss=F, labels="Emission limit for cars"))
+save_plotly(standard_support_US, width= 980, height=140)
 
-(standard_public_transport_support_US <- barres(vars = "standard_public_transport_support", df = e, miss=F, labels="Support or oppose an emission limit for cars <br>with alternatives such as public transports available"))
-save_plotly(standard_public_transport_support_US, width= 810, height=240)
+(standard_public_transport_support_US <- barres(vars = "standard_public_transport_support", df = e, miss=F, labels="Emission limit for cars <br>with alternatives such as public transports available"))
+save_plotly(standard_public_transport_support_US, width= 810, height=140)
 
 ## 8. Pref 2: Green investments
 
@@ -223,11 +226,11 @@ labels_investments_win_lose[5] <- "Your household financially"
 (investments_win_lose_US <- barres(vars = variables_investments_win_lose, df = e, rev_color = T,rev = F, miss = F, showLegend=T, labels=labels_investments_win_lose, hover = labels_win_lose))
 save_plotly(investments_win_lose_US, width= 1100, height=320) 
 
-(investments_fair_US <- barres(vars = "investments_fair", df = e, miss=F, labels="An emission limit for cars is fair"))
-save_plotly(investments_fair_US, width= 640, height=200)
+(investments_fair_US <- barres(vars = "investments_fair", df = e, miss=F, labels="Green infrastructure program is fair"))
+save_plotly(investments_fair_US, width= 1120, height=140)
 
-(investments_support_US <- barres(vars = "investments_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
-save_plotly(investments_support_US, width= 1075, height=140)
+(investments_support_US <- barres(vars = "investments_support", df = e, miss=F, labels="Green infrastructure program"))
+save_plotly(investments_support_US, width= 980, height=140)
 
 labels_investments_funding <- c()
 for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -235,7 +238,7 @@ for (v in variables_investments_funding) labels_investments_funding <- c(labels_
 save_plotly(investments_funding_pnr_US, width= 880, height=143)  
 
 ## 9. Pref 3: Tax and dividend
-labels_tax_transfers_effects <- c()
+labels_tax_transfers_effects <- c() # TODO reduce width/labels
 for (v in variables_tax_transfers_effect) labels_tax_transfers_effects <- c(labels_tax_transfers_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (tax_transfers_effect_US <- barres(vars = variables_tax_transfers_effect, df = e, rev_color = T , rev = F, miss = F, showLegend=T, labels=labels_tax_transfers_effects, hover=labels_agree))
 save_plotly(tax_transfers_effect_US, width= 1100, height=320) 
@@ -246,11 +249,11 @@ labels_tax_transfers_win_lose[5] <- "Your household financially"
 (tax_transfers_win_lose_US <- barres(vars = variables_tax_transfers_win_lose, df = e, rev_color = T,rev = F, miss = F, showLegend=T, labels=labels_tax_transfers_win_lose, hover = labels_win_lose))
 save_plotly(tax_transfers_win_lose_US, width= 1100, height=320) 
 
-(tax_transfers_fair_US <- barres(vars = "tax_transfers_fair", df = e, miss=F, labels="An emission limit for cars is fair"))
-save_plotly(tax_transfers_fair_US, width= 640, height=200)
+(tax_transfers_fair_US <- barres(vars = "tax_transfers_fair", df = e, miss=F, labels="Tax with cash transfers is fair"))
+save_plotly(tax_transfers_fair_US, width= 1100, height=140)
 
-(tax_transfers_support_US <- barres(vars = "tax_transfers_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
-save_plotly(tax_transfers_support_US, width= 1075, height=140)
+(tax_transfers_support_US <- barres(vars = "tax_transfers_support", df = e, miss=F, labels="Tax with cash transfers"))
+save_plotly(tax_transfers_support_US, width= 980, height=140)
 
 
 ## 10. Pref on climate policies
@@ -259,13 +262,16 @@ save_plotly(tax_transfers_support_US, width= 1075, height=140)
 labels_support <- c("Strongly oppose", "Somewhat oppose", "Indifferent", "Somewhat support", "Strongly support")
 labels_policy <- c()
 for (v in variables_policy) labels_policy <- c(labels_policy, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+labels_policy[5] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
+labels_policy[6] <- "Financing clean energy in low-income countries" 
+labels_policy[2] <- "National tax on fossil fuels (+$0.40/gallon)" 
 (policy_US <- barres(vars = variables_policy, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_policy, hover=labels_support))
-save_plotly(policy_US, width= 1500, height=400)
+save_plotly(policy_US, width= 920, height=340)
 
 labels_tax <- c()
 for (v in variables_tax) labels_tax <- c(labels_tax, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (tax_US <- barres(vars = variables_tax, df = e, rev = F, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
-save_plotly(tax_US, width= 1500, height=400)
+save_plotly(tax_US, width= 850, height=430)
 
 ## 11. WTP
 
@@ -307,13 +313,13 @@ for (v in variables_scale) labels_scale <- c(labels_scale, sub('.* - ', '', sub(
 (scale_US <- barres(vars = variables_scale, df = e, rev = F, miss = T, showLegend=F, labels=labels_scale))
 save_plotly(scale_US, width= 460, height=250) 
 
-(should_fight_CC_US <- barres(vars = "should_fight_CC", df = e, miss=F, rev = F, rev_color = T, labels=" U.S. should take measures to fight climate change"))
-save_plotly(should_fight_CC_US, width= 950, height=140)
+(should_fight_CC_US <- barres(vars = "should_fight_CC", df = e, miss=F, rev = F, rev_color = T, labels=" U.S. should fight CC"))
+save_plotly(should_fight_CC_US, width= 1075, height=140)
 
 labels_if_other_do <- c()
 for (v in variables_if_other_do) labels_if_other_do <- c(labels_if_other_do, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (if_other_do_US <- barres(vars = variables_if_other_do, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_if_other_do, hover=c("Much less", "Less", "About the same", "More", "Much more")))
-save_plotly(if_other_do_US, width= 960, height=250) 
+save_plotly(if_other_do_US, width= 830, height=200) 
 
 labels_burden_sharing <- c()
 for (v in variables_burden_sharing) labels_burden_sharing <- c(labels_burden_sharing, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -323,20 +329,20 @@ labels_burden_sharing[5] <- "The richest countries should pay even more <br> to 
 (burden_sharing_US <- barres(vars = variables_burden_sharing, df = e, miss=F, labels=labels_burden_sharing))
 save_plotly(burden_sharing_US, width= 1150, height=325) 
 
-(global_assembly_support_US <- barres(vars = "global_assembly_support", df = e, miss=T, labels="Support for global democratic assembly"))
-save_plotly(global_assembly_support_US, width= 1200, height=140)
+(global_assembly_support_US <- barres(vars = "global_assembly_support", df = e, miss=F, labels="Global democratic assembly"))
+save_plotly(global_assembly_support_US, width= 990, height=140)
 
-(global_tax_support_US <- barres(vars = "global_tax_support", df = e, miss=F, labels="Support for global tax on GHG to finance a global basic income"))
-save_plotly(global_tax_support_US, width= 1050, height=140)
+(global_tax_support_US <- barres(vars = "global_tax_support", df = e, miss=F, labels="Global tax on GHG<br> financing a global basic income"))
+save_plotly(global_tax_support_US, width= 780, height=140)
 
-(tax_1p_support_US <- barres(vars = "tax_1p_support", df = e, miss=F, labels="Support tax on millionaires <br> to finance low-income countries"))
-save_plotly(tax_1p_support_US, width= 1050, height=140)
+(tax_1p_support_US <- barres(vars = "tax_1p_support", df = e, miss=F, labels="Global tax on millionaires <br> to finance low-income countries"))
+save_plotly(tax_1p_support_US, width= 780, height=140)
 
 
 ## 13. Pref for bans vs. incentives
 
-(will_insulate_US <- barres(vars = "will_insulate", df = e, miss=F, labels="Likely to insulate or replace heating system <br> over the next 5 years."))
-save_plotly(will_insulate_US, width= 550, height=140)
+(will_insulate_US <- barres(vars = "will_insulate", df = e, miss=F, labels="Insulate or replace heating<br>over the next 5 years"))
+save_plotly(will_insulate_US, width= 600, height=140)
 
 labels_obstacles_insulation <- c()
 for (v in variables_obstacles_insulation) labels_obstacles_insulation <- c(labels_obstacles_insulation, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -350,6 +356,9 @@ save_plotly(insulation_subsidies_support_US, width= 850, height=170)
 (insulation_mandatory_support_US <- barres(vars = "insulation_mandatory_support", df = e, miss=F, labels="Support for making insulation mandatory"))
 save_plotly(insulation_mandatory_support_US, width= 850, height=170)
 
+(insulation_support_US <- barres(vars = c("insulation_subsidies_support", "insulation_mandatory_support"), df = e, miss=F, labels=c("Insulation subsidized", "...and mandatory")))
+save_plotly(insulation_support_US, width= 960, height=200)
+
 labels_beef <- c()
 for (v in variables_beef) labels_beef <- c(labels_beef, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (beef_US <- barres(vars = variables_beef, df = e, rev = F, miss = F, labels=labels_beef,showLegend=T, hover= labels_support))
@@ -358,25 +367,25 @@ save_plotly(beef_US, width= 900, height=240)
 
 ## 14. Trust, perceptions of institutions, etc.
 
-(can_trust_people_US <- barres(vars = "can_trust_people", df = e, miss=T, rev_color = T, rev=F, labels="Trust other people"))
-save_plotly(can_trust_people_US, width= 815, height=140)
+(can_trust_people_US <- barres(vars = "can_trust_people", df = e, miss=F, rev_color = T, rev=F, labels="Trust other people"))
+save_plotly(can_trust_people_US, width= 1060, height=140) # TODO! consistent left-right disagree/oppose - agree/support - a great deal
 
-(can_trust_govt_US <- barres(vars = "can_trust_govt", df = e, miss=T, rev_color = T, rev=F, labels="Trust the U.S. federal government <br> over the last decade to do what is right"))
-save_plotly(can_trust_govt_US, width= 800, height=140)
+(can_trust_govt_US <- barres(vars = "can_trust_govt", df = e, miss=F, rev_color = T, rev=F, labels="Trust the U.S. federal government <br> over the last decade to do what is right"))
+save_plotly(can_trust_govt_US, width= 875, height=140)
 
-(view_govt_US <- barres(vars = "view_govt", df = e, miss=T, rev_color = T, rev=F, labels="Pro government intervention"))
-save_plotly(view_govt_US, width= 800, height=140)
+(view_govt_US <- barres(vars = "view_govt", df = e, miss=F, rev_color = T, rev=F, labels="View on government intervention"))
+save_plotly(view_govt_US, width= 700, height=140)
 
-(problem_inequality_US <- barres(vars = "problem_inequality", df = e, miss=F, labels="Importance income inequality is in the U.S."))
-save_plotly(problem_inequality_US, width= 1120, height=140)
+(problem_inequality_US <- barres(vars = "problem_inequality", df = e, miss=F, labels="Income inequality in the U.S."))
+save_plotly(problem_inequality_US, width= 950, height=140)
 
-(future_richness_US <- barres(vars = "future_richness", df = e, miss=F, labels="Will people in the world be richer in 100 years from now"))
+(future_richness_US <- barres(vars = "future_richness", df = e, miss=F, labels="In 100 years, people in the world will be..."))
 save_plotly(future_richness_US, width= 850, height=140)
 
 ## 15. Political views
 
-(interested_politics_US <- barres(vars = "interested_politics", df = e, miss=T, labels="Interested in politics"))
-save_plotly(interested_politics_US, width= 800, height=140)
+(interested_politics_US <- barres(vars = "interested_politics", df = e, miss=F, labels="Interested in politics"))
+save_plotly(interested_politics_US, width= 700, height=140)
 
 (member_environmental_orga_US <- barres(vars = "member_environmental_orga", df = e, miss=F, labels="Member of an<br> environmental organization"))
 save_plotly(member_environmental_orga_US, width= 622, height=140)
@@ -399,8 +408,20 @@ save_plotly(vote_US, width= 650, height=140)
 (vote_2016_US <- barres(vars = "vote_2016", df = e, rev_color = T, miss=T, labels="In 2016, voted for"))
 save_plotly(vote_2016_US, width= 650, height=140) 
 
-(liberal_conservative_US <- barres(vars = "liberal_conservative", df = e, rev_color = T, miss=T, labels="On economic policy matters, where do you see yourself on the liberal/conservative spectrum?"))
-save_plotly(liberal_conservative_US, width= 650, height=140)
+(vote_voters_US <- barres(vars = "vote_voters", df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
+save_plotly(vote_voters6_US, width= 650, height=140) 
+
+(vote_non_voters_US <- barres(vars = "vote_non_voters", df = e, rev_color = T, miss=T, labels="In 2020, voted for (non-voters)"))
+save_plotly(vote_non_voters_US, width= 650, height=140)
+
+(vote_voters_2016_US <- barres(vars = "vote_voters_2016", df = e, rev_color = T, miss=T, labels="In 2016, voted for (voters)"))
+save_plotly(vote_voters_2016_US, width= 650, height=140) 
+
+(vote_non_voters_2016_US <- barres(vars = "vote_non_voters_2016", df = e, rev_color = T, miss=T, labels="In 2016, voted for (non-voters)"))
+save_plotly(vote_non_voters_2016_US, width= 650, height=140)
+
+(liberal_conservative_US <- barres(vars = "liberal_conservative", df = e, rev_color = T, miss=T, labels="On economic policy matters, are you..."))
+save_plotly(liberal_conservative_US, width= 950, height=140)
 
 (political_affiliation_US <- barres(vars = "political_affiliation", df = e, rev_color = T, miss=F, labels="Political affiliation"))
 save_plotly(political_affiliation_US, width= 800, height=140)

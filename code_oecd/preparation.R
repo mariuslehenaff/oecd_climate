@@ -78,7 +78,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
     "race_pnr",
     "race_other",
     "speaks_well",
-    "education", 
+    "education", # IRL: 45% have a college degree, 13% a master
     "employment_status",
     "hit_by_covid",
     "income",
@@ -1943,7 +1943,7 @@ convert <- function(e, country, wave = NULL) {
                                                        names = c("Very poor", "Poor", "Fair", "Good", "Excellent", "PNR")),
                               annotation=Label(e$insulation))
   
-  if ("CC_anthropogenic" %in% names(e)) temp <- 2 * (e$CC_anthropogenic %in% text_most) + (e$CC_anthropogenic %in% text_a_lot) - (e$CC_anthropogenic %in% text_a_little) - 2 * (e$CC_anthropogenic %in% text_none) - 0.1 * (e$CC_anthropogenic %in% text_pnr | is.na(e$CC_anthropogenic))
+  if ("CC_anthropogenic" %in% names(e)) temp <- 2 * (e$CC_anthropogenic %in% text_most) + (e$CC_anthropogenic %in% text_a_lot) - (e$CC_anthropogenic %in% text_a_little) - 2 * (e$CC_anthropogenic %in% text_none | e$CC_real == 'No') - 0.1 * ((e$CC_anthropogenic %in% text_pnr | is.na(e$CC_anthropogenic)) & e$CC_real == 'Yes')
   if ("CC_anthropogenic" %in% names(e)) e$CC_anthropogenic <- as.item(temp, labels = structure(c(-2:2,-0.1),
                                                                                    names = c("None", "A little", "Some", "A lot", "Most", "PNR")),
                                                           annotation=Label(e$CC_anthropogenic))
@@ -1978,7 +1978,7 @@ convert <- function(e, country, wave = NULL) {
   if ("liberal_conservative" %in% names(e)) temp <- -2 * (e$liberal_conservative %in% text_very_liberal) - (e$liberal_conservative %in% text_liberal) + (e$liberal_conservative %in% text_conservative) + 2 * (e$liberal_conservative %in% text_very_conservative) - 0.1 * (e$liberal_conservative %in% text_pnr | is.na(e$liberal_conservative))
   if ("liberal_conservative" %in% names(e)) e$liberal_conservative <- as.item(temp, labels = structure(c(-2:2,-0.1),
                               names = c("Very liberal", "Liberal", "Moderate", "Conservative", "Very conservative", "PNR")),
-                                                                    annotation=Label(e$liberal_conservative))
+                              missing.values=-0.1, annotation=Label(e$liberal_conservative))
   
   if ("transport_available" %in% names(e)) temp <-  (e$transport_available %in% text_transport_available_yes_limited) + 2 * (e$transport_available %in% text_transport_available_yes_easily) - (e$transport_available %in% text_transport_available_not_at_all) - 0.1*(e$transport_available %in% text_pnr)
   if ("transport_available" %in% names(e)) e$transport_available <- as.item(temp, labels = structure(c(-1:2,-0.1),
@@ -2082,7 +2082,7 @@ convert <- function(e, country, wave = NULL) {
                       missing.values=-0.1, annotation=Label(e$CC_worries))
   
   if ("occupation" %in% names(e)) temp <-  (e$occupation %in% text_clerc) - (e$occupation %in% text_skilled) - 2 * (e$occupation %in% text_manual) + 2 * (e$occupation %in% text_independent)
-  if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2), names = c("Manual","Skilled","PNR", "Clerc","Indpendent")),
+  if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2), names = c("Manual","Skilled","PNR", "Clerc","Independent")),
                                                           missing.values=0, annotation=Label(e$occupation))
   
   if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses == "Less than $20") + 50*(e$heating_expenses == "$20 – $75") + 100*(e$heating_expenses == "$76 – $125") + 167*(e$heating_expenses == "$126 – $200") + 225*(e$heating_expenses == "$201 – $250") + 275*(e$heating_expenses == "$251 – $300") + 
@@ -2241,7 +2241,10 @@ convert <- function(e, country, wave = NULL) {
   if (!("flights_agg" %in% names(e))) {
     e$flights_agg <- 1.8*(e$flights %in% 1:2) + 5*(e$flights %in% 3:7) + 11*(e$flights %in% 8:14) + 25*(e$flights > 14)
     e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1.8,5,11,25), names = c("0", "1 or 2", "3 to 7", "8 to 14", "15 or more")), annotation=attr(e$flights, "label"))
-  } # TODO: else flights_agg as item
+  } else {
+    e$flights_agg <- 1*(e$flights_agg == "1") + 2*(e$flights_agg == "2") + 3.5*(e$flights_agg == "3 or 4") + 7*(e$flights_agg == "5 to 10") + 12*(e$flights_agg == "10 or more")
+    e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1,2,3.5,7,12), names = c("0", "1", "2", "3 or 4", "5 to 10", "10 or more")), annotation=attr(e$flights_agg, "label"))
+  } 
   
   if ("km_driven" %in% names(e)) {
     e$km_driven_agg <- 3000*(e$km_driven > 1000 & e$km_driven <= 5000) + 7500*(e$km_driven > 5000 & e$km_driven <= 10000) + 15000*(e$km_driven > 10000 & e$km_driven <= 20000) + 25000*(e$km_driven > 20000 & e$km_driven <= 30000) + 60000*(e$km_driven > 30000)
@@ -2354,7 +2357,7 @@ convert <- function(e, country, wave = NULL) {
     e$age_quota[e$age %in% 25:34] <- "25-34"
     e$age_quota[e$age %in% 35:49] <- "35-49"
     e$age_quota[e$age %in% 50:64] <- "50-64"
-    e$age_quota[e$age > 64] <- "65+"
+    e$age_quota[e$age > 64] <- "65+" # TODO "> 65" instead
   } else { 
     e$age_quota[e$age_quota == "18 to 24"] <- "18-24"
     e$age_quota[e$age_quota == "25 to 34"] <- "25-34"
