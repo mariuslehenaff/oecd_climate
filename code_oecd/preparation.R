@@ -726,7 +726,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "know_standard",
       "CC_talks",
       "CC_real",
-      "CC_antrhopogenic",
+      "CC_anthropogenic",
       "CC_problem",
       "CC_knowledgeable",
       "GHG_CO2",
@@ -928,7 +928,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "beef_order_ban_intensive_support",
       "can_trust_people",
       "can_trust_govt",
-      "statist",
+      "view_govt",
       "problem_inequality",
       "future_richness",
       "interested_politics", 
@@ -1842,6 +1842,12 @@ convert <- function(e, country, wave = NULL) {
   text_interest_politics_little <- c("US" = "A little")
   text_interest_politics_lot <- c("US" = "A lot")
   
+  text_very_liberal <- c("US" = "Very liberal")
+  text_liberal <- c("US" = "Liberal")
+  text_moderate <- c("US" = "Moderate")
+  text_conservative <- c("US" = "Conservative")
+  text_very_conservative <- c("US" = "Very conservative")
+  
   text_media_TV_public <- c("US" = "TV (mostly public broadcasting channels)")
   text_media_TV_private <- c("US" = "TV (mostly private channels)")
   text_media_radio <- c("US" = "Radio")
@@ -1867,8 +1873,6 @@ convert <- function(e, country, wave = NULL) {
                           names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
-  
-  # insulation excellent, CC_anthropogenic none-most, effect_halt_CC_economy effects, if_other less-more, statist, problem_inequality, future_richness, liberal-conservative, 
   # TODO! know_
   
   for (v in intersect(names(e), c(variables_CC_impacts, "will_insulate", "CC_will_end"))) { 
@@ -1877,7 +1881,6 @@ convert <- function(e, country, wave = NULL) {
                                                names = c("Very unlikely","Somewhat unlikely","Somewhat likely","Very likely","PNR")),
                       missing.values=-0.1, annotation=Label(e[[v]]))
   }
-  
   
   for (v in intersect(names(e), c(variables_responsible_CC, variables_willing, variables_condition, "CC_knowledgeable", "net_zero_feasible", "CC_affects_self", "pro_ambitious_policies", "effect_halt_CC_lifestyle", "interested_politics"))) { 
     temp <-  2 * (e[[v]] %in% text_intensity_great_deal) + (e[[v]] %in% text_intensity_lot) - (e[[v]] %in% text_intensity_little) - 2 * (e[[v]] %in% text_intensity_not) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
@@ -1923,6 +1926,48 @@ convert <- function(e, country, wave = NULL) {
   e$frequency_beef <- as.item(temp, labels = structure(c(0:3),
                         names = c("Never", "Rarely", "Weekly", "Daily")),
                       annotation=Label(e$frequency_beef))
+  
+  if ("insulation" %in% names(e)) temp <- 2 * (e$insulation %in% text_excellent) + (e$insulation %in% text_good) - (e$insulation %in% text_poor) - 2 * (e$insulation %in% text_very_poor) - 0.1 * (e$insulation %in% text_pnr | is.na(e$insulation))
+  if ("insulation" %in% names(e)) e$insulation <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                                                       names = c("Very poor", "Poor", "Fair", "Good", "Excellent", "PNR")),
+                              annotation=Label(e$insulation))
+  
+  if ("CC_anthropogenic" %in% names(e)) temp <- 2 * (e$CC_anthropogenic %in% text_most) + (e$CC_anthropogenic %in% text_a_lot) - (e$CC_anthropogenic %in% text_a_little) - 2 * (e$CC_anthropogenic %in% text_none) - 0.1 * (e$CC_anthropogenic %in% text_pnr | is.na(e$CC_anthropogenic))
+  if ("CC_anthropogenic" %in% names(e)) e$CC_anthropogenic <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                                                                                   names = c("None", "A little", "Some", "A lot", "Most", "PNR")),
+                                                          annotation=Label(e$CC_anthropogenic))
+  
+  
+  if ("effect_halt_CC_economy" %in% names(e)) temp <- 2 * (e$effect_halt_CC_economy %in% text_very_positive_effects) + (e$effect_halt_CC_economy %in% text_positive_effects) - (e$effect_halt_CC_economy %in% text_negative_effects) - 2 * (e$effect_halt_CC_economy %in% text_very_negative_effects) - 0.1 * (e$effect_halt_CC_economy %in% text_pnr | is.na(e$effect_halt_CC_economy))
+  if ("effect_halt_CC_economy" %in% names(e)) e$effect_halt_CC_economy <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                                                                                               names = c("Very negative", "Negative", "None", "Positive", "Very positive", "PNR")),
+                                                                      annotation=Label(e$effect_halt_CC_economy))
+  
+  
+  for (v in intersect(names(e), c("if_other_do_more", "if_other_do_less"))) {
+  temp <- 2 * (e[[v]] %in% text_much_more) + (e[[v]] %in% text_more) - (e[[v]] %in% text_less) - 2 * (e[[v]] %in% text_much_less) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
+  e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Much less", "Less", "About the same", "More", "Much more", "PNR")),
+                                                                                  annotation=Label(e[[v]])) }
+  
+  if ("view_govt" %in% names(e)) temp <- (e$view_govt %in% text_govt_should_do_more) - (e$view_govt %in% text_govt_do_too_much) - 0.1 * (e$view_govt %in% text_pnr | is.na(e$view_govt))
+  if ("view_govt" %in% names(e)) e$view_govt <- as.item(temp, labels = structure(c(-1:1,-0.1), names = c("Does too much", "Doing right amount", "Should do more", "PNR")),
+                                                                                  annotation=Label(e$view_govt))
+  
+  
+  if ("problem_inequality" %in% names(e)) temp <- 2 * (e$problem_inequality %in% text_issue_very_serious) + (e$problem_inequality %in% text_issue_serious) - (e$problem_inequality %in% text_issue_small) - 2 * (e$problem_inequality %in% text_issue_not) - 0.1 * (e$problem_inequality %in% text_pnr | is.na(e$problem_inequality))
+  if ("problem_inequality" %in% names(e)) e$problem_inequality <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                                                                                                           names = c("Not an issue at all", "A small issue", "An issue", "A serious issue", "A very serious issue", "PNR")),
+                                                                                  annotation=Label(e$problem_inequality))
+  
+  if ("future_richness" %in% names(e)) temp <- 2 * (e$future_richness %in% text_much_richer) + (e$future_richness %in% text_richer) - (e$future_richness %in% text_poorer) - 2 * (e$future_richness %in% text_much_poorer) - 0.1 * (e$future_richness %in% text_pnr | is.na(e$future_richness))
+  if ("future_richness" %in% names(e)) e$future_richness <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                                                                                                   names = c("Much poorer", "Poorer", "As rich as now", "Richer", "Much richer", "PNR")),
+                                                                          annotation=Label(e$future_richness))
+  
+  if ("liberal_conservative" %in% names(e)) temp <- -2 * (e$liberal_conservative %in% text_very_liberal) - (e$liberal_conservative %in% text_liberal) + (e$liberal_conservative %in% text_conservative) + 2 * (e$liberal_conservative %in% text_very_conservative) - 0.1 * (e$liberal_conservative %in% text_pnr | is.na(e$liberal_conservative))
+  if ("liberal_conservative" %in% names(e)) e$liberal_conservative <- as.item(temp, labels = structure(c(-2:2,-0.1),
+                              names = c("Very liberal", "Liberal", "Moderate", "Conservative", "Very conservative", "PNR")),
+                                                                    annotation=Label(e$liberal_conservative))
   
   if ("transport_available" %in% names(e)) temp <-  (e$transport_available %in% text_transport_available_yes_limited) + 2 * (e$transport_available %in% text_transport_available_yes_easily) - (e$transport_available %in% text_transport_available_not_at_all) - 0.1*(e$transport_available %in% text_pnr)
   if ("transport_available" %in% names(e)) e$transport_available <- as.item(temp, labels = structure(c(-1:2,-0.1),
