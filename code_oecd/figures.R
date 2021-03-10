@@ -226,7 +226,6 @@ for (v in variables_standard_effect) labels_standard_effects <- c(labels_standar
 (standard_effect_US <- barres(vars = variables_standard_effect, df = e, rev_color = T ,error_margin=T, rev = F, miss = F, showLegend=T, labels=labels_standard_effects, hover=labels_agree))
 save_plotly(standard_effect_US, width= 1100, height=320) 
 
-# BP: Need to delete self win or lose variable from this in preparation or keep relabel as I did
 labels_win_lose <- c("Lose a lot", "Mostly lose", "Neither win nor lose", "Mostly win", "Win a lot")
 labels_standard_win_lose <- c()
 for (v in variables_standard_win_lose) labels_standard_win_lose <- c(labels_standard_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -234,16 +233,12 @@ labels_standard_win_lose[5] <- "Your household financially"
 (standard_win_lose_US <- barres(vars = variables_standard_win_lose, df = e, error_margin=T, rev_color = T,rev = F, miss = F, showLegend=T, labels=labels_standard_win_lose, hover = labels_win_lose))
 save_plotly(standard_win_lose_US, width= 1100, height=320) 
 
-#(standard_win_lose_self_US <- barres(vars = "standard_win_lose_self", df = e, miss=F, labels="Do you think that financially your household would win or lose from an emission limit for cars?"))
-#save_plotly(standard_incidence_self_US, width= 600, height=140)
-
 (standard_fair_US <- barres(vars = "standard_fair", df = e, miss=F, labels="An emission limit for cars is fair"))
 save_plotly(standard_fair_US, width= 640, height=200)
 
 # BP : problem all are indifferent here ?
 (standard_support_US <- barres(vars = "standard_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
 save_plotly(standard_support_US, width= 640, height=200)
-
 
 (standard_public_transport_support_US <- barres(vars = "standard_public_transport_support", df = e, miss=F, labels="Support or oppose an emission limit for cars <br>with alternatives such as public transports available"))
 save_plotly(standard_public_transport_support_US, width= 800, height=240)
@@ -255,15 +250,11 @@ for (v in variables_investments_effect) labels_investments_effects <- c(labels_i
 (investments_effect_US <- barres(vars = variables_investments_effect, df = e, rev_color = T ,error_margin=T, rev = F, miss = F, showLegend=T, labels=labels_investments_effects, hover=labels_agree))
 save_plotly(investments_effect_US, width= 1100, height=320) 
 
-# BP: Need to delete self win or lose variable from this in preparation or keep relabel as I did
 labels_investments_win_lose <- c()
 for (v in variables_investments_win_lose) labels_investments_win_lose <- c(labels_investments_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 labels_investments_win_lose[5] <- "Your household financially"
 (investments_win_lose_US <- barres(vars = variables_investments_win_lose, df = e, error_margin=T, rev_color = T,rev = F, miss = F, showLegend=T, labels=labels_investments_win_lose, hover = labels_win_lose))
 save_plotly(investments_win_lose_US, width= 1100, height=320) 
-
-#(investments_win_lose_self_US <- barres(vars = "investments_win_lose_self", df = e, miss=F, labels="Do you think that financially your household would win or lose from an emission limit for cars?"))
-#save_plotly(investments_incidence_self_US, width= 600, height=140)
 
 (investments_fair_US <- barres(vars = "investments_fair", df = e, miss=F, labels="An emission limit for cars is fair"))
 save_plotly(investments_fair_US, width= 640, height=200)
@@ -279,42 +270,39 @@ for (v in variables_investments_funding) labels_investments_funding <- c(labels_
 save_plotly(investments_funding_pnr_US, width= 640, height=280)  
 
 ## 9. Pref 3: Tax and dividend
+labels_tax_transfers_effects <- c()
+for (v in variables_tax_transfers_effect) labels_tax_transfers_effects <- c(labels_tax_transfers_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+(tax_transfers_effect_US <- barres(vars = variables_tax_transfers_effect, df = e, rev_color = T ,error_margin=T, rev = F, miss = F, showLegend=T, labels=labels_tax_transfers_effects, hover=labels_agree))
+save_plotly(tax_transfers_effect_US, width= 1100, height=320) 
 
-# BP: Need to create variable_tax_transfers ?
-labels_tax_transfers <- c()
-for (v in variables_tax_transfers) labels_tax_transfers <- c(labels_tax_transfers, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(tax_transfers_US <- barres(vars = variables_tax_transfers, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_tax_transfers, hover=labels_tax_transfers))
-save_plotly(tax_transfers_US, width= 575, height=320) 
+labels_tax_transfers_win_lose <- c()
+for (v in variables_tax_transfers_win_lose) labels_tax_transfers_win_lose <- c(labels_tax_transfers_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+labels_tax_transfers_win_lose[5] <- "Your household financially"
+(tax_transfers_win_lose_US <- barres(vars = variables_tax_transfers_win_lose, df = e, error_margin=T, rev_color = T,rev = F, miss = F, showLegend=T, labels=labels_tax_transfers_win_lose, hover = labels_win_lose))
+save_plotly(tax_transfers_win_lose_US, width= 1100, height=320) 
 
-# BP: Need to create variable_tax_transfers_incidence ?
-labels_tax_transfers_incidence <- c()
-for (v in variables_tax_transfers_incidence) labels_tax_transfers_incidence <- c(labels_tax_transfers_incidence, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(tax_transfers_incidence_US <- barres(vars = variables_tax_transfers_incidence, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_tax_transfers_incidence, hover=labels_tax_transfers_incidence))
-save_plotly(tax_transfers_incidence_US, width= 575, height=320) 
+(tax_transfers_fair_US <- barres(vars = "tax_transfers_fair", df = e, miss=F, labels="An emission limit for cars is fair"))
+save_plotly(tax_transfers_fair_US, width= 640, height=200)
 
-(tax_transfers_incidence_self_US <- barres(vars = "tax_transfers_incidence_self", df = e, miss=F, labels="Do you think that financially your household would win or lose from an emission limit for cars?"))
-save_plotly(tax_transfers_incidence_self_US, width= 600, height=140)
-
-(tax_transfers_fair_US <- barres(vars = "tax_transfers_fair", df = e, miss=F, labels="Do you agree or disagree with the following statement: 'An emission limit for cars is fair'?"))
-save_plotly(tax_transfers_fair_US, width= 600, height=140)
-
-(tax_transfers_support_US <- barres(vars = "tax_transfers_support", df = e, miss=F, labels="Do you support or oppose an emission limit for cars?"))
-save_plotly(tax_transfers_support_US, width= 600, height=140)
+# BP : problem all are indifferent here ?
+(tax_transfers_support_US <- barres(vars = "tax_transfers_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
+save_plotly(tax_transfers_support_US, width= 640, height=200)
 
 
 ## 10. Pref on climate policies
 
 # BP : for the trick question on ABC/CNBC --> do we need a graph. If yes, just need nbr of people tricked.
-
-# BP: Need to create/update variable_policy ?
+labels_support <- c("Strongly oppose", "Somewhat oppose", "Indifferent", "Somewhat support", "Strongly support")
 labels_policy <- c()
-for (v in variable_policy) labels_policy <- c(labels_policy, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(policy_US <- barres(vars = variable_policy, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_policy, hover=labels_policy
+for (v in variables_policy) labels_policy <- c(labels_policy, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+(policy_US <- barres(vars = variables_policy, df = e, error_margin=T, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_policy, hover=labels_support))
+save_plotly(policy_US, width= 1500, height=400)
 
-# BP: Need to create/update variable_tax ?
 labels_tax <- c()
-for (v in variable_tax) labels_tax <- c(labels_tax, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(tax_US <- barres(vars = variable_tax, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_tax, hover=labels_tax
+variables_tax <- variables_tax[1:9]#BP: removed tax_1p_support
+for (v in variables_tax) labels_tax <- c(labels_tax, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+(tax_US <- barres(vars = variables_tax, df = e, error_margin=T, rev = F, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
+save_plotly(tax_US, width= 1500, height=400)
 
 ## 11. WTP
 
@@ -334,10 +322,9 @@ grid() # TODO legend
 par(mar = mar_old, cex = cex_old)
 
 
-# BP: need to adapt the code here ?
 (donation_US <- barres(vars = "donation", df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="Donation to climate charity ($/year)"))
 save_plotly(donation_US, width= 1050, height=200)
-
+# BP : need to create donation_agg
 (donation_agg_US <- barres(vars = "donation_agg", df = e, miss=F, rev = F, rev_color = T, labels="Donation to climate charity ($/year)"))
 save_plotly(donation_agg_US, width= 950, height=140)
 
@@ -354,24 +341,22 @@ par(mar = mar_old, cex = cex_old)
 
 labels_scale <- c()
 for (v in variables_scale) labels_scale <- c(labels_scale, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-labels_scale[5] <- "PNR"
-(scale_US <- barres(vars = variables_scale, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_scale, hover=labels_scale))
-save_plotly(scale_US, width= 260, height=250) 
+(scale_US <- barres(vars = variables_scale, df = e, error_margin=T, rev = F, miss = T, showLegend=F, labels=labels_scale))
+save_plotly(scale_US, width= 460, height=250) 
 
-(should_fight_CC_US <- barres(vars = "should_fight_CC", df = e, miss=F, rev = F, rev_color = T, labels="Do you agree or disagree with the following statement: 'The U.S. should take measures to fight climate change.'"))
+(should_fight_CC_US <- barres(vars = "should_fight_CC", df = e, miss=F, rev = F, rev_color = T, labels=" U.S. should take measures to fight climate change"))
 save_plotly(should_fight_CC_US, width= 950, height=140)
 
-# BP : need to create variables_if_other_do
 labels_if_other_do <- c()
 for (v in variables_if_other_do) labels_if_other_do <- c(labels_if_other_do, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(if_other_do_US <- barres(vars = variables_if_other_do, df = e, error_margin=T, rev = F, miss = F, showLegend=F, labels=labels_if_other_do, hover=labels_if_other_do))
+(if_other_do_US <- barres(vars = variables_if_other_do, df = e, error_margin=T, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_if_other_do, hover=c("Much less", "Less", "About the same", "More", "Much more")))
 save_plotly(if_other_do_US, width= 260, height=250) 
 
 labels_burden_sharing <- c()
 for (v in variables_burden_sharing) labels_burden_sharing <- c(labels_burden_sharing, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-#labels_burden_sharing[3] <- "Countries should pay in proportion to their past emissions <br> (from 1990 onwards)"
-#labels_burden_sharing[4] <- "The richest countries should pay it all, so that<br> the poorest countries do not have to pay anything"
-#labels_burden_sharing[5] <- "The richest countries should pay even more, <br> vulnerable countries would then receive money instead of paying"
+labels_burden_sharing[4] <- "The richest countries should pay it all, <br> so that the poorest countries do not have to pay anything"
+labels_burden_sharing[3] <- "Countries should pay in proportion to <br> their past emissions (from 1990 onwards)"
+labels_burden_sharing[5] <- "The richest countries should pay even more <br> to help vulnerable countries face adverse consequences" 
 (burden_sharing_US <- barres(vars = variables_burden_sharing, df = e, miss=F, labels=labels_burden_sharing))
 save_plotly(burden_sharing_US, width= 1150, height=325) 
 
@@ -381,8 +366,8 @@ save_plotly(global_assembly_support_US, width= 1200, height=140)
 (global_tax_support_US <- barres(vars = "global_tax_support", df = e, miss=F, labels="Support for global tax on GHG to finance a global basic income"))
 save_plotly(global_tax_support_US, width= 1050, height=140)
 
-(tax_1p_support_US <- barres(vars = "tax_1p_support", df = e, miss=F, labels="Support tax on millionaires to finance low-income countries"))
-save_plotly(tax_1p_support_US, width= 600, height=140)
+(tax_1p_support_US <- barres(vars = "tax_1p_support", df = e, miss=F, labels="Support tax on millionaires <br> to finance low-income countries"))
+save_plotly(tax_1p_support_US, width= 1050, height=140)
 
 
 ## 13. Pref for bans vs. incentives
