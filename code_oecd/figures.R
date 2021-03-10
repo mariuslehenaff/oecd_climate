@@ -71,8 +71,8 @@ save_plotly(hh_size_US, width= 470, height=140)
 (heating_US <- barres(vars = "heating", df = e, miss=T, labels="Heating type", rev = F, legend=c("Electricity", "Gas", "Oil", "Other", "PNR")))
 save_plotly(heating_US, width= 525, height=140)
 
-(heating_expenses_US <- barres(vars = "heating_expenses", df = e, miss=F, labels="Monthly heating expenses", rev = F))
-save_plotly(heating_expenses_US, width= 840, height=425)
+(heating_expenses_US <- barres(vars = "heating_expenses", df = e, miss=T, fr="Included", labels="Monthly heating expenses", rev = F))
+save_plotly(heating_expenses_US, width= 950, height=140)
 
 (insulation_US <- barres(vars = "insulation", df = e, miss=F, labels="Quality accommodation's insulation", rev = F))
 save_plotly(insulation_US, width= 625, height=140)
@@ -205,7 +205,7 @@ save_plotly(standard_win_lose_US, width= 1100, height=320)
 save_plotly(standard_fair_US, width= 640, height=200)
 
 (standard_support_US <- barres(vars = "standard_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
-save_plotly(standard_support_US, width= 740, height=200)
+save_plotly(standard_support_US, width= 1075, height=140)
 
 (standard_public_transport_support_US <- barres(vars = "standard_public_transport_support", df = e, miss=F, labels="Support or oppose an emission limit for cars <br>with alternatives such as public transports available"))
 save_plotly(standard_public_transport_support_US, width= 810, height=240)
@@ -227,7 +227,7 @@ save_plotly(investments_win_lose_US, width= 1100, height=320)
 save_plotly(investments_fair_US, width= 640, height=200)
 
 (investments_support_US <- barres(vars = "investments_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
-save_plotly(investments_support_US, width= 740, height=200)
+save_plotly(investments_support_US, width= 1075, height=140)
 
 labels_investments_funding <- c()
 for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -250,7 +250,7 @@ save_plotly(tax_transfers_win_lose_US, width= 1100, height=320)
 save_plotly(tax_transfers_fair_US, width= 640, height=200)
 
 (tax_transfers_support_US <- barres(vars = "tax_transfers_support", df = e, miss=F, labels="Support or oppose an emission limit for cars"))
-save_plotly(tax_transfers_support_US, width= 740, height=200)
+save_plotly(tax_transfers_support_US, width= 1075, height=140)
 
 
 ## 10. Pref on climate policies
@@ -263,7 +263,6 @@ for (v in variables_policy) labels_policy <- c(labels_policy, sub('.* - ', '', s
 save_plotly(policy_US, width= 1500, height=400)
 
 labels_tax <- c()
-variables_tax <- variables_tax[1:9]#BP: removed tax_1p_support
 for (v in variables_tax) labels_tax <- c(labels_tax, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (tax_US <- barres(vars = variables_tax, df = e, rev = F, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
 save_plotly(tax_US, width= 1500, height=400)
@@ -289,8 +288,8 @@ par(mar = mar_old, cex = cex_old)
 (donation_US <- barres(vars = "donation", df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="Donation to climate charity ($/year)"))
 save_plotly(donation_US, width= 1050, height=200)
 
-(donation_agg_US <- barres(vars = "donation_agg", df = e, miss=F, rev = F, rev_color = T, labels="Donation to climate charity ($/year)"))
-save_plotly(donation_agg_US, width= 950, height=140)
+(donation_agg_US <- barres(vars = "donation_agg", df = e, miss=F, rev = F, rev_color = T, labels="Donation to climate charity (in $)"))
+save_plotly(donation_agg_US, width= 670, height=140)
 
 mar_old <- par()$mar
 cex_old <- par()$cex
@@ -341,9 +340,9 @@ save_plotly(will_insulate_US, width= 550, height=140)
 
 labels_obstacles_insulation <- c()
 for (v in variables_obstacles_insulation) labels_obstacles_insulation <- c(labels_obstacles_insulation, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-labels_obstacles_insulation[1] <- "Not applicable"
-(obstacles_insulation_US <- barres(vars = variables_obstacles_insulation, df = e, rev = F, miss = T, showLegend=F, labels=labels_obstacles_insulation))
-save_plotly(obstacles_insulation_US, width= 1050, height=250) 
+labels_obstacles_insulation[1] <- "The choice is not mine"
+(obstacles_insulation_US <- barres(vars = variables_obstacles_insulation, df = e, error_margin=F, rev = F, miss = F, showLegend=F, labels=labels_obstacles_insulation, hover=labels_obstacles_insulation))
+save_plotly(obstacles_insulation_US, width= 550, height=230) 
 
 (insulation_subsidies_support_US <- barres(vars = "insulation_subsidies_support", df = e, miss=F, labels="Support for subsidies of insulation"))
 save_plotly(insulation_subsidies_support_US, width= 850, height=170)

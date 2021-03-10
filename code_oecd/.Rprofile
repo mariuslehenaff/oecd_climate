@@ -398,7 +398,7 @@ oui_non <- function(vars, file, labels = vars, data = s, display_value = T, sort
     hover_non <- paste('Non<br>', non, '% des réponses<br>',n, '% des réponses exprimées')
     hover_nsp <- paste('NSP<br>', true_nsp, '% des réponses')  
     Text <- en
-    if (length(Text ==2)) Text <- c(Text, 'PNR')}
+    if (length(Text) ==2) Text <- c(Text, 'PNR')}
   if (display_value) {
     hover_oui <- paste(oui, '%')
     hover_non <- paste(non, '%')
@@ -507,7 +507,7 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
   if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
   else if (is.null(annotation(v))) levels <- levels(v)
   else levels <- labels(v)@.Data
-  levels <- levels[!(levels %in% c("NSP", "PNR", "Non concerné·e"))]
+  levels <- levels[!(levels %in% c("NSP", "PNR", "Non concerné·e", "Included"))]
   if (rev_legend) levels <- rev(levels) # new (05/20)
   if (weights) N <- sum(data[['weight']][!is.missing(v) & (!(v %in% c("NSP", "Non concerné·e")))])
   else N <- length(which(!is.missing(v) & (!(v %in% c("NSP", "Non concerné·e")))))
@@ -523,8 +523,9 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
       if (weights) mat <- c(mat, sum(data[['weight']][which(is.missing(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
       else mat <- c(mat, length(which(is.missing(v) & !is.na(v)))/N) } } # mais ça semble équivalent pck les NSP sont missing dans ces cas-là
   if (max(nchar(levels))==3 & 'Oui' %in% levels & 'Non' %in% levels) { if (which(levels=='Non') < which(levels=='Oui')) mat[2:1] <- mat[1:2]; levels[c(which(levels=='Oui'),which(levels=='Non'))] <- c('Non', 'Oui') }
-  if ((return %in% c("levels", "legend")) & miss & fr) return(c(levels, 'NSP'))
-  else if ((return %in% c("levels", "legend")) & miss & (!(fr))) return(c(levels, 'PNR'))
+  if ((return %in% c("levels", "legend")) & miss & fr==TRUE) return(c(levels, 'NSP'))
+  else if ((return %in% c("levels", "legend")) & miss & (fr==FALSE)) return(c(levels, 'PNR'))
+  else if ((return %in% c("levels", "legend")) & miss & is.character(fr)) return(c(levels, fr))
   else if ((return %in% c("levels", "legend")) & (!(miss))) return(levels)
   else if (return == "N") return(N)
   else return(matrix(mat, ncol=1))
@@ -683,8 +684,8 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
       }
     }
     else {
-      if (is.element(hover[length(hover)],c("PNR", "NSP"))) hover <- hover[1:(length(hover)-1)]
-      if (is.element(legend[length(legend)],c("PNR", "NSP"))) legend <- legend[1:(length(legend)-1)]
+      if (is.element(hover[length(hover)],c("PNR", "NSP", "Included"))) hover <- hover[1:(length(hover)-1)]
+      if (is.element(legend[length(legend)],c("PNR", "NSP", "Included"))) legend <- legend[1:(length(legend)-1)]
       for (i in 1:length(hover)) { 
         for (j in 1:length(labels)) {
           hovers <- c(hovers, paste(hover[i], '<br>', round(100*data[i, j]), '% des réponses exprimées<br>') )

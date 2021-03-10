@@ -1585,8 +1585,8 @@ convert <- function(e, country, wave = NULL) {
 
   for (j in names(e)) {
     if ((grepl('race_|home_|CC_factor_|CC_responsible_|CC_affected_|change_condition_|effect_policies_|kaya_|scale_|Beef_|far_left|left|center$', j)
-        | grepl('right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice|GHG_', j))
-        & !(grepl('_other$|order_', j))) {
+        | grepl('right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice|GHG_|investments_funding_|obstacles_insulation_', j))
+        & !(grepl('_other$|order_|liberal_conservative', j))) {
       temp <- label(e[[j]])
       e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
       e[[j]][is.na(e[[j]])] <- FALSE
@@ -1631,7 +1631,7 @@ convert <- function(e, country, wave = NULL) {
   if (length(grep('condition_', names(e)))>0) variables_condition <<- names(e)[grepl('condition_', names(e))]
   if (length(grep('CC_impacts_', names(e)))>0) variables_CC_impacts <<- names(e)[grepl('CC_impacts_', names(e))]
   variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
-  variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_", names(e))]
+  variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p", names(e))]
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "core_metropolitan", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "core_metropolitan")
@@ -1874,6 +1874,11 @@ convert <- function(e, country, wave = NULL) {
   text_survey_biased_left <- c("US" = "Yes, left-wing biased")
   text_survey_biased_right <- c("US" = "Yes, right-wing biased")
   
+  text_independent <- c("US" = "Manager or independent (e.g. manager, executive, health or independent professional, teacher, lawyer, architect, researcher, artist...)")
+  text_clerc <- c("US" = "Clerical support or services (e.g. caring, sales, leisure, administrative...)")
+  text_skilled <- c("US" = "Skilled work (e.g. craft worker, plants and machine operator, farmer...)")
+  text_manual <- c("US" = "Manual operations (e.g. cleaning, agriculture, delivery, transport, military...)")
+  
   for (v in intersect(names(e), c(variables_burden_sharing, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
     temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
@@ -2075,6 +2080,19 @@ convert <- function(e, country, wave = NULL) {
   if ("CC_worries" %in% names(e)) e$CC_worries <- as.item(temp, labels = structure(c(-2:1,-0.1),
                         names = c("No worried at all","Not worried", "Worried","Very worried","PNR")),
                       missing.values=-0.1, annotation=Label(e$CC_worries))
+  
+  if ("occupation" %in% names(e)) temp <-  (e$occupation %in% text_clerc) - (e$occupation %in% text_skilled) - 2 * (e$occupation %in% text_manual) + 2 * (e$occupation %in% text_independent)
+  if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2), names = c("Manual","Skilled","PNR", "Clerc","Indpendent")),
+                                                          missing.values=0, annotation=Label(e$occupation))
+  
+  if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses == "Less than $20") + 50*(e$heating_expenses == "$20 – $75") + 100*(e$heating_expenses == "$76 – $125") + 167*(e$heating_expenses == "$126 – $200") + 225*(e$heating_expenses == "$201 – $250") + 275*(e$heating_expenses == "$251 – $300") + 
+          350*(e$heating_expenses == "More than $300")  - 0.1*(e$heating_expenses == "I am not in charge of paying for heating; utilities are included in my rent") - 0.1*is.na(e$heating_expenses) #
+  if ("heating_expenses" %in% names(e)) e$heating_expenses <- as.item(temp, labels = structure(c(-0.1, 10, 50, 100, 167, 225, 275, 350), names = c("Included","< 20","21-75", "76-125","126-200", "201-250", "251-300", "> 300")),
+                                                                      missing.values=-0.1, annotation=Label(e$heating_expenses))
+  
+  if ("gas_expenses" %in% names(e)) temp <-  15*(e$gas_expenses == "$5 – $25") + 50*(e$gas_expenses == "$26 – $75") + 100*(e$gas_expenses== "$76 – $125") + 150*(e$gas_expenses == "$126 – $175") + 200*(e$gas_expenses== "$176 – $225") + 250*(e$gas_expenses == "More than $225")
+  if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 15, 50, 100, 150, 200, 250), names = c("< 5","5-25","26-75", "76-125","126-175", "176-225", "> 225")),
+                                                          annotation=Label(e$gas_expenses))
   
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_mandatory] <- "Mandatory"
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_voluntary] <- "Voluntary"
