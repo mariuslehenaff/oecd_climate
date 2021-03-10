@@ -314,7 +314,7 @@ save_plotly(should_fight_CC_US, width= 950, height=140)
 labels_if_other_do <- c()
 for (v in variables_if_other_do) labels_if_other_do <- c(labels_if_other_do, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (if_other_do_US <- barres(vars = variables_if_other_do, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_if_other_do, hover=c("Much less", "Less", "About the same", "More", "Much more")))
-save_plotly(if_other_do_US, width= 260, height=250) 
+save_plotly(if_other_do_US, width= 960, height=250) 
 
 labels_burden_sharing <- c()
 for (v in variables_burden_sharing) labels_burden_sharing <- c(labels_burden_sharing, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
