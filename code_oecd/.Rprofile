@@ -223,9 +223,9 @@ export_stats_desc <- function(data, file, miss = TRUE, sorted_by_n = FALSE, retu
     nb_manquants <<- des_miss     }
   if (return) return(output)
 }
-desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = cov_lab, weights = data$weight,
-                       save_folder = "../tables/", dep.var.labels = dep_vars, dep.var.caption = NULL, digits= 3, mean_control = FALSE,
-                       mean_above = T, only_mean = F, keep = indep_vars) {
+desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = control_variables, weights = data$weight,
+                       save_folder = "../tables/", dep.var.labels = dep_vars, dep.var.caption = c(""), digits= 3, mean_control = FALSE,
+                       mean_above = T, only_mean = F, keep = indep_vars, nolabel = F) {
   # Wrapper for stargazer
   # dep_vars accepts expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
   models <- list()
@@ -244,11 +244,15 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   else file_path <- paste(save_folder, filename, ".tex", sep="")
   if (only_mean) mean_above <- T
   if (mean_above) { 
-    table <- do.call(stargazer, c(models,
+    if (nolabel) table <- do.call(stargazer, c(models,
+                                    list(out=NULL, header=F, model.numbers = F, add.lines = list(c(mean_text, means)),
+                                         dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
+                                         multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
+                                    )))
+    else  table <- do.call(stargazer, c(models,
                                   list(out=NULL, header=F, model.numbers = F,
                                        covariate.labels = indep_labels, add.lines = list(c(mean_text, means)),
-                                       dep.var.labels = dep.var.labels,
-                                       dep.var.caption = dep.var.caption,
+                                       dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
                                        multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
                                   )))
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
@@ -258,13 +262,18 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
     } else table <- write_clip(gsub(indep_labels[1], paste(mean_line, '\\\\\\\\ \\\\hline \\\\\\\\[-1.8ex]', indep_labels[1]), 
                                     gsub('(Mean|Control group mean) &.*', '', table)), collapse=' ')
     cat(paste(table, collapse="\n"), file = file_path)
-  } else table <- do.call(stargazer, c(models,
-                                       list(out=file_path, header=F,
-                                            covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
-                                            dep.var.labels = dep.var.labels,
-                                            dep.var.caption = dep.var.caption,
-                                            multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
-                                       )))
+  } else {
+      if (nolabel) table <- do.call(stargazer, c(models,
+                                         list(out=file_path, header=F, add.lines =list(c(mean_text, means)),
+                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
+                                              multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
+                                         )))
+      else table <- do.call(stargazer, c(models,
+                                                 list(out=file_path, header=F,
+                                                      covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
+                                                      dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
+                                                      multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
+                                                 ))) }
   return(table)
 }
 CImedian <- function(vec) { # 95% confidence interval

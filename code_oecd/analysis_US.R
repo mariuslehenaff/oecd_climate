@@ -127,11 +127,11 @@ decrit("pro_tax_1p", data = e)
 
 
 ##### Treatment effects #####
-end_formula <- paste(paste(variables_main_controls, collapse = ' + '), " + wave + treatment") #  treatment_climate * treatment_policy
+end_formula12 <- paste(paste(variables_main_controls_pilot12, collapse = ' + '), " + wave + treatment") #  treatment_climate * treatment_policy
 
 ## Placebo tests (questions asked before treatment)
-summary(lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
-summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("equal_quota > 0 ~", end_formula12)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
+summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula12)), data = e, weights = e$weight)) 
 # summary(lm(country_should_act=='Yes' ~ treatment_climate * treatment_policy, data = e, weights = e$weight)) # /!\ Placebo test fails: there is an effect!
 # summary(lm(equal_quota > 0 ~ treatment_climate * treatment_policy, data = e, weights = e$weight))
 # summary(lm(change_lifestyle=='Yes' ~ treatment_climate * treatment_policy, data = e, weights = e$weight))
@@ -139,12 +139,12 @@ summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data 
 
 # Table 1
 ## Placebo tests (questions asked before treatment)
-summary(reg_quota <- lm(as.formula(paste("equal_quota > 0 ~", end_formula)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
-summary(reg_anthro <- lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, weights = e$weight)) 
+summary(reg_quota <- lm(as.formula(paste("equal_quota > 0 ~", end_formula12)), data = e, weights = e$weight))  # /!\ Placebo test fails: there is a (non significant) effect!
+summary(reg_anthro <- lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula12)), data = e, weights = e$weight)) 
 ## Genuine treatment effects
-summary(reg_worry <- lm(as.formula(paste("CC_worries >= 0 ~ ", end_formula)), data = e, weights = e$weight)) 
-summary(reg_act <- lm(as.formula(paste("country_should_act=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight))
-summary(reg_lifestyle <- lm(as.formula(paste("change_lifestyle=='Yes' ~ wave*treatment +", end_formula)), data = e, weights = e$weight)) 
+summary(reg_worry <- lm(as.formula(paste("CC_worries >= 0 ~ ", end_formula12)), data = e, weights = e$weight)) 
+summary(reg_act <- lm(as.formula(paste("country_should_act=='Yes' ~ ", end_formula12)), data = e, weights = e$weight))
+summary(reg_lifestyle <- lm(as.formula(paste("change_lifestyle=='Yes' ~ ", end_formula12)), data = e, weights = e$weight)) 
 temp <- c()
 for (dep_var in c("equal_quota >0", "CC_exists == 1", "CC_worries >= 0", "country_should_act == 'Yes'", "change_lifestyle == 'Yes'")) {
   temp <- c(temp, round(wtd.mean(eval(parse(text = paste( "(e$", parse(text = dep_var), ")[data$treatment_agg=='None']", sep=""))), weights = weights[e$treatment=='None'], na.rm = T), d = 3)) }
@@ -156,49 +156,49 @@ stargazer(reg_quota, reg_anthro, reg_worry, reg_act, reg_lifestyle, header=F, mo
           multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=c("treatment","wave"),  order = c("^treatment","2$","wave"))
 
 # Table 2
-summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~", end_formula)), data = e, weights = e$weight))  # /!\ negative effect of climate video
-summary(lm(as.formula(paste("investments_support=='Yes' ~", end_formula)), data = e, weights = e$weight)) 
-summary(lm(as.formula(paste("standard_support=='Yes' ~", end_formula)), data = e, weights = e$weight))  
-summary(lm(as.formula(paste("policies_support ~", end_formula)), data = e, weights = e$weight)) # effect of interaction
+summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~", end_formula12)), data = e, weights = e$weight))  # /!\ negative effect of climate video
+summary(lm(as.formula(paste("investments_support=='Yes' ~", end_formula12)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("standard_support=='Yes' ~", end_formula12)), data = e, weights = e$weight))  
+summary(lm(as.formula(paste("policies_support ~", end_formula12)), data = e, weights = e$weight)) # effect of interaction
 
 # Table 3
-summary(lm(as.formula(paste("policies_trust ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("policies_effective ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("policies_self ~", end_formula)), data = e, weights = e$weight)) # effect of interaction
-summary(lm(as.formula(paste("policies_poor ~", end_formula)), data = e, weights = e$weight)) 
-summary(lm(as.formula(paste("policies_employment ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("policies_side_effects ~", end_formula)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_trust ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_effective ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_self ~", end_formula12)), data = e, weights = e$weight)) # effect of interaction
+summary(lm(as.formula(paste("policies_poor ~", end_formula12)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("policies_employment ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_side_effects ~", end_formula12)), data = e, weights = e$weight))
 
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
-desc_table(dep_vars = c("equal_quota >0", "CC_exists == 1", "CC_worries >= 0", "country_should_act == 'Yes'", "change_lifestyle == 'Yes'"), filename = "table_1",
+desc_table(dep_vars = c("equal_quota >0", "CC_exists == 1", "CC_worries >= 0", "country_should_act == 'Yes'", "change_lifestyle == 'Yes'"), filename = "USP1_1",
            dep.var.labels = c("Approve global equal quota", "CC Anthropogenic", "Worried about CC", "US should act", "Willing to change lifestyle"),
            dep.var.caption = c("\\multicolumn{2}{c}{Placebo tets} & \\multicolumn{3}{c}{Genuine treatment effects}"), data = e, keep = c("treatment","wave"), 
            indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
 )
 
-desc_table(dep_vars = c("tax_transfers_support == 'Yes'", "investments_support == 'Yes'", "standard_support == 'Yes'", "policies_support"), filename = "table_2bis",
+desc_table(dep_vars = c("tax_transfers_support == 'Yes'", "investments_support == 'Yes'", "standard_support == 'Yes'", "policies_support"), filename = "USP1_2bis",
            dep.var.labels = c("Carbon tax with transfers", "Green Infrastructure Program", "Standard emission for cars", "Average over 3 policies"),
            dep.var.caption = c("Support"), data = e, keep = c("treatment","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
 )
 
-desc_table(dep_vars = c("policies_trust", "policies_effective", "policies_self", "policies_poor", "policies_employment", "policies_side_effects"), filename = "table_3",
+desc_table(dep_vars = c("policies_trust", "policies_effective", "policies_self", "policies_poor", "policies_employment", "policies_side_effects"), filename = "USP1_3",
            dep.var.labels =  c("Trust implementation", "Effective", "Effect on my HH", "Effect on poorest", "Effect on employment", "Other side effects"),
            dep.var.caption = c(""), data = e, keep = c("treatment","wave"), indep_vars = control_variables, indep_labels = label_treat_wave, mean_control = T
 )
 
 
-summary(lm(as.formula(paste("standard_exists=='Yes' ~", end_formula)), data = e, weights = e$weight)) # /!\ effect although we expect none
+summary(lm(as.formula(paste("standard_exists=='Yes' ~", end_formula12)), data = e, weights = e$weight)) # /!\ effect although we expect none
 summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~ treatment_climate +", paste(variables_main_controls, collapse = ' + '))), data = e, weights = e$weight)) 
-summary(lm(as.formula(paste("tax_transfers_trust=='Yes' ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("tax_transfers_effective=='Yes' ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("tax_transfers_employment=='Positive' ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("tax_transfers_side_effects=='Positive' ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("tax_transfers_incidence_self=='Win' ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("tax_transfers_incidence_poor=='Win' ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("tax_transfers_incidence_rich=='Lose' ~", end_formula)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("policies_incidence ~", end_formula)), data = e)) # stupid dependent variable
+summary(lm(as.formula(paste("tax_transfers_trust=='Yes' ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_effective=='Yes' ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_employment=='Positive' ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_side_effects=='Positive' ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_incidence_self=='Win' ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_incidence_poor=='Win' ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_incidence_rich=='Lose' ~", end_formula12)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_incidence ~", end_formula12)), data = e)) # stupid dependent variable
 # summary(lm(CC_worries >= 0 ~ treatment_climate * treatment_policy, data = e))
 # summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy, data = e)) # /!\ negative effect of climate video
 # summary(lm(policies_support ~ treatment_climate * treatment_policy, data = e)) # effect of interaction
@@ -223,10 +223,10 @@ summary(lm(investments_support=='Yes' ~ investments_employment + investments_sid
             investments_incidence_self + treatment, data = e))
 summary(lm(tax_transfers_support=='Yes' ~ tax_transfers_employment + tax_transfers_side_effects + 
              tax_transfers_incidence_self + treatment, data = e))
-summary(lm(as.formula(paste("policies_support ~ policies_trust + policies_effective + policies_employment + policies_side_effects + standard_incidence_self +", end_formula)), data = e)) # negative effect of policy_treatment, indicating that effect is mediating by a motive
-summary(lm(as.formula(paste("standard_support=='Yes' ~ standard_employment + standard_side_effects + standard_incidence_self +", end_formula)), data = e))
-summary(lm(as.formula(paste("investments_support=='Yes' ~ investments_employment + investments_side_effects + investments_incidence_self +", end_formula)), data = e))
-summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~ tax_transfers_employment + tax_transfers_side_effects + tax_transfers_incidence_self +", end_formula)), data = e))
+summary(lm(as.formula(paste("policies_support ~ policies_trust + policies_effective + policies_employment + policies_side_effects + standard_incidence_self +", end_formula12)), data = e)) # negative effect of policy_treatment, indicating that effect is mediating by a motive
+summary(lm(as.formula(paste("standard_support=='Yes' ~ standard_employment + standard_side_effects + standard_incidence_self +", end_formula12)), data = e))
+summary(lm(as.formula(paste("investments_support=='Yes' ~ investments_employment + investments_side_effects + investments_incidence_self +", end_formula12)), data = e))
+summary(lm(as.formula(paste("tax_transfers_support=='Yes' ~ tax_transfers_employment + tax_transfers_side_effects + tax_transfers_incidence_self +", end_formula12)), data = e))
 
 ## Heterogenous effects
 # Heterogenous effects: duration > 15. Nothing different for these ones.
@@ -242,8 +242,8 @@ summary(lm(policies_self ~ treatment_climate * treatment_policy, data = e, subse
 
 # Heterogenous effects: rush. Negative climate results driven by Trump supporters.
 summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
-summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula)), data = e, subset = !rush)) 
-summary(lm(as.formula(paste("CC_worries >= 0 ~", end_formula)), data = e, subset = !rush)) 
+summary(lm(as.formula(paste("CC_exists=='Anthropogenic' ~", end_formula12)), data = e, subset = !rush)) 
+summary(lm(as.formula(paste("CC_worries >= 0 ~", end_formula12)), data = e, subset = !rush)) 
 summary(lm(tax_transfers_incidence_self=="Win" ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
 summary(lm(tax_transfers_incidence_rich=="Lose" ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
 summary(lm(tax_transfers_effective=='Yes' ~ treatment_climate * treatment_policy, data = e, subset = !rush)) 
@@ -254,6 +254,66 @@ summary(lm(policies_self ~ treatment_climate * treatment_policy, data = e, subse
 summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e)) 
 summary(lm(policies_support ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e)) 
 summary(lm(policies_self ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e))
+
+
+##### Pilot 3: Treatment effects #####
+# Those who haven't watched the video are much more wrong than the others on knowledge questions
+summary(lm(know_treatment_climate ~ watched_climate=='Yes', data = e))
+summary(lm(know_treatment_policy ~ watched_policy=='Yes', data = e))
+summary(lm((age_quota %in% c("50-64", "65+")) ~  watched_policy=='Yes', data = e)) # old people have *less* technical problems
+
+end_formula3 <- paste(paste(variables_main_controls_pilot3, collapse = ' + '), " +  treatment") #  treatment_climate * treatment_policy
+
+summary(lm(as.formula(paste("CC_anthropogenic > 0 ~ ", end_formula3)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("CC_impacts_extinction>0 ~ ", end_formula3)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("donation ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("pro_ambitious_policies>0 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("willing_limit_driving>0 ~ ", end_formula3)), data = e, weights = e$weight)) 
+
+summary(lm(as.formula(paste("CC_problem==2 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("CC_impacts_more_migration==2 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("wtp >= 50 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("net_zero_feasible>0 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("CC_affects_self>0 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("CC_will_end>0 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("effect_halt_CC_economy>0 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("effect_halt_CC_lifestyle>0 ~ ", end_formula3)), data = e, weights = e$weight))
+
+# Table 2
+summary(lm(as.formula(paste("tax_transfers_support>0 ~", end_formula3)), data = e, weights = e$weight))  # /!\ negative effect of climate video
+summary(lm(as.formula(paste("investments_support>0 ~", end_formula3)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("standard_support>0 ~", end_formula3)), data = e, weights = e$weight))  
+summary(lm(as.formula(paste("policies_support>0 ~", end_formula3)), data = e, weights = e$weight)) # effect of interaction
+
+# Table 3
+summary(lm(as.formula(paste("policies_fair>0 ~", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_self>0 ~", end_formula3)), data = e, weights = e$weight)) # effect of interaction
+summary(lm(as.formula(paste("policies_poor>0 ~", end_formula3)), data = e, weights = e$weight)) 
+summary(lm(as.formula(paste("policies_large_effect>0 ~", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_negative_effect>0 ~", end_formula3)), data = e, weights = e$weight))
+
+summary(lm(as.formula(paste("policies_cost_effective>0 ~", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("tax_transfers_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("investments_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("standard_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
+
+## Generate tables
+label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
+
+desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "pro_ambitious_policies > 0", "willing_limit_driving > 0"), filename = "USP3_1",
+           dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "Ambitious policies needed", "Willing to limit driving"),
+           data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
+)
+
+desc_table(dep_vars = c("tax_transfers_support > 0", "investments_support > 0", "standard_support > 0", "policies_support > 0"), filename = "USP3_2",
+           dep.var.labels = c("Carbon tax with transfers", "Green Infrastructure Program", "Emission standard for cars", "Average over 3 policies"),
+           dep.var.caption = c("Support"), data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
+)
+
+desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_negative_effect > 0"), filename = "USP3_3",
+           dep.var.labels =  c("Fair", "HH would win", "Poor would win", "Large economic effect", "Negative economic effect"),
+           data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
+)
 
 
 ##### Treatment Feedback #####

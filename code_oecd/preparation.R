@@ -1635,7 +1635,8 @@ convert <- function(e, country, wave = NULL) {
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "core_metropolitan", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "core_metropolitan")
-  variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
+  variables_main_controls_pilot12 <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
+  variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "liberal_conservative", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
   variables_know_treatment_climate <<- c("know_frequence_heatwaves", "know_temperature_2100")
   variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
@@ -1900,7 +1901,7 @@ convert <- function(e, country, wave = NULL) {
                       missing.values=-0.1, annotation=Label(e[[v]]))
   }
 
-  for (v in c(variables_policy , variables_tax, variables_support)) { 
+  for (v in c(variables_policy , variables_tax, variables_support)) { # TODO! compatibility pilots 1, 2
     temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                           names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
@@ -2197,9 +2198,19 @@ convert <- function(e, country, wave = NULL) {
   if ("standard_employment" %in% names(e)) e$policies_employment <- ((e$standard_employment=="Positive") + (e$investments_employment=="Positive") + (e$tax_transfers_employment=="Positive") - (e$standard_employment=="Negative") - (e$investments_employment=="Negative") - (e$tax_transfers_employment=="Negative"))/3
   if ("standard_employment" %in% names(e)) label(e$policies_employment) <- "policies_employment: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative impact on employment? Postive impacts/No notable impact/Negative impacts/PNR"
   if ("standard_side_effects" %in% names(e)) e$policies_side_effects <- ((e$standard_side_effects=="Positive") + (e$investments_side_effects=="Positive") + (e$tax_transfers_side_effects=="Positive") - (e$standard_side_effects=="Negative") - (e$investments_side_effects=="Negative") - (e$tax_transfers_side_effects=="Negative"))/3
-  if ("standard_side_effects" %in% names(e)) label(e$policies_side_effects) <- "policies_side_effects: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative side effects overall? Postive impacts/No notable impact/Negative impacts/PNR"
-  e$policies_support <- ((e$standard_support=="Yes") + (e$investments_support=="Yes") + (e$tax_transfers_support=="Yes") - (e$standard_support=="No") - (e$investments_support=="No") - (e$tax_transfers_support=="No"))/3
-  label(e$policies_support) <- "policies_support: Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
+  if ("standard_side_effects" %in% names(e)) label(e$policies_side_effects) <- "policies_side_effects: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative side effects overall? Positive impacts/No notable impact/Negative impacts/PNR"
+  if ("standard_large_effect" %in% names(e)) e$policies_large_effect <- (e$standard_large_effect + e$investments_large_effect + e$tax_transfers_large_effect)/3
+  if ("standard_large_effect" %in% names(e)) label(e$policies_large_effect) <- "policies_large_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have large effect on the economy and employment? Strongly disagree-agree"
+  if ("standard_negative_effect" %in% names(e)) e$policies_negative_effect <- (e$standard_negative_effect + e$investments_negative_effect + e$tax_transfers_negative_effect)/3
+  if ("standard_negative_effect" %in% names(e)) label(e$policies_negative_effect) <- "policies_negative_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have negative effect on the economy and employment? Strongly disagree-agree"
+  if ("standard_fair" %in% names(e)) e$policies_fair <- (e$standard_fair + e$investments_fair + e$tax_transfers_fair)/3
+  if ("standard_fair" %in% names(e)) label(e$policies_fair) <- "policies_fair: An emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers is fair? Strongly disagree - strongly agree"
+  if ("standard_cost_effective" %in% names(e)) e$policies_cost_effective <- (e$standard_cost_effective + e$investments_cost_effective + e$tax_transfers_cost_effective)/3
+  if ("standard_cost_effective" %in% names(e)) label(e$policies_cost_effective) <- "policies_cost_effective: An emission limit for cars, a green infrastrcuture program and a carbon tax would be cost-effective to fight climate change. Strongly disagree - strongly sagree"
+  # e$policies_support <- ((e$standard_support=="Yes") + (e$investments_support=="Yes") + (e$tax_transfers_support=="Yes") - (e$standard_support=="No") - (e$investments_support=="No") - (e$tax_transfers_support=="No"))/3
+  # label(e$policies_support) <- "policies_support: Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR" # TODO compatibility pilots 1, 2
+  e$policies_support <- (e$standard_support + e$investments_support + e$tax_transfers_support) / 3
+  label(e$policies_support) <- "policies_support: Average of responses in [-2;+2] to Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers?"
   e$policies_self <- e$policies_incidence <- e$policies_poor <- e$policies_middle <- e$policies_rich <- e$policies_rural <- e$policies_urban <- 0
   label(e$policies_self) <- "policies_self: Would your household win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
   label(e$policies_poor) <- "policies_self: Would the poorest win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels

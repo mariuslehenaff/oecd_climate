@@ -99,10 +99,13 @@ save_plotly(availability_transport_US, width= 850, height=140)
 
 ## 3. Treatment feedback: local climate
 (watched_climate_US <- barres(vars = "watched_climate", df = e, miss=F, labels="Able to watch the video until the end (local)"))
-save_plotly(watched_climate_US, width= 900, height=140) # TODO!! correlation knowledge
+save_plotly(watched_climate_US, width= 900, height=140) # TODO!! correlation knowledge, corr between policies
 
 (know_treatment_climate_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, df = e, miss=F, labels="Score knowledge climate video"))
 save_plotly(know_treatment_climate_US, width= 580, height=140)
+
+# (know_treatment_climate_watched_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, df = e[e$watched_climate=='Yes',], miss=F, labels="Score knowledge climate video"))
+# save_plotly(know_treatment_climate_watched_US, width= 580, height=140)
 
 ## 4. Treatment feedback: local policy
 (watched_policy_US <- barres(vars = "watched_policy", df = e, miss=F, labels="Able to watch the video until the end (policy)"))
@@ -329,8 +332,11 @@ save_plotly(policy_US, width= 920, height=340)
 
 labels_tax <- c()
 for (v in variables_tax) labels_tax <- c(labels_tax, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-(tax_US <- barres(vars = variables_tax, df = e, rev = F, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
-save_plotly(tax_US, width= 850, height=430)
+labels_tax[7] <- "Funding environmental infrastructures (e.g. public transport)"
+labels_tax[1] <- "Cash transfers to HH with no alternative to fossil fuels"
+labels_tax[8] <- "Subsidizing low-carbon technologies, including renewables"
+(tax_US <- barres(vars = variables_tax, df = e, rev = F, rev_color = T, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
+save_plotly(tax_US, width= 930, height=400) # TODO vérifier ordre labels autres questions
 
 ## 11. WTP
 
