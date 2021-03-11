@@ -129,7 +129,7 @@ save_plotly(CC_problem_US, width= 1125, height=140) # TODO! check miss=F/T every
 save_plotly(CC_knowledgeable_US, width= 800, height=140)
 
 (score_GHG_US <- barres(vars = "score_GHG", df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG"))
-save_plotly(score_GHG_US, width= 500, height=140)
+save_plotly(score_GHG_US, width= 550, height=140)
 
 (CC_dynamic_US <- barres(vars = "CC_dynamic", df = e, miss=F, labels="Cutting GHG emissions by half <br> sufficient to stop rise in temperatures"))
 save_plotly(CC_dynamic_US, width= 600, height=140)
