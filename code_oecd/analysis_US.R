@@ -1,3 +1,10 @@
+# TODO full wording of the question above the charts in the slides; and to have all the questions; add the survey flow at beginning; and announce questions at beginning of each section
+# TODO For key questions, plot by low/high incomes and Rep/Dem in a section Heterogeneity
+# TODO check (and drop?) rushed responses
+# TODO Regress key questions on an array of personal characteristics, ranging from exogenous ones (gender, age, income, education, political views, etc..) to more endogenous ones (how much they drive, where they live, etc..) (just for internal use)
+# TODO prepare an LDA analysis 
+# TODO Perhaps also do a principal component analysis, and/or a decision tree for key questions
+
 ##### Metadata #####
 decrit("finished", data = e)
 decrit("excluded", data = e)
@@ -333,8 +340,10 @@ decrit("standard_employment", data = e)
 decrit("standard_side_effects", data = e)
 for (v in variables_standard_incidence) print(decrit(v, data = e))
 decrit("standard_support", data = e)
-data_cor_standard <- e[,variables_standard] 
-names(data_cor_standard) <- variables_standard
+# data_cor_standard <- e[,variables_standard] 
+# names(data_cor_standard) <- variables_standard
+data_cor_standard <- e[,grepl("standard_", names(e))]
+names(data_cor_standard) <- names(e)[grepl("standard_", names(e))]
 corr_standard <- cor(data_cor_standard, use="complete.obs")
 p.mat <- cor.mtest(data_cor_standard) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
 corrplot(corr_standard, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
@@ -347,8 +356,10 @@ decrit("investments_employment", data = e)
 decrit("investments_side_effects", data = e)
 for (v in variables_investments_incidence) print(decrit(v, data = e))
 decrit("investments_support", data = e)
-data_cor_investments <- e[,variables_investments] 
-names(data_cor_investments) <- variables_investments
+# data_cor_investments <- e[,variables_investments] 
+# names(data_cor_investments) <- variables_investments
+data_cor_investments <- e[,names(e)[grepl("investments_", names(e))][2:14]]
+names(data_cor_investments) <- names(e)[grepl("investments_", names(e))][2:14]
 corr_investments <- cor(data_cor_investments, use="complete.obs")
 p.mat <- cor.mtest(data_cor_investments) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
 corrplot(corr_investments, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
@@ -361,8 +372,10 @@ decrit("tax_transfers_employment", data = e)
 decrit("tax_transfers_side_effects", data = e)
 for (v in variables_tax_transfers_incidence) print(decrit(v, data = e))
 decrit("tax_transfers_support", data = e)
-data_cor_tax_transfers <- e[,variables_tax_transfers] 
-names(data_cor_tax_transfers) <- variables_tax_transfers
+# data_cor_tax_transfers <- e[,variables_tax_transfers] 
+# names(data_cor_tax_transfers) <- variables_tax_transfers
+data_cor_tax_transfers <- e[,grepl("tax_transfers_", names(e))]
+names(data_cor_tax_transfers) <- names(e)[grepl("tax_transfers_", names(e))]
 corr_tax_transfers <- cor(data_cor_tax_transfers, use="complete.obs")
 p.mat <- cor.mtest(data_cor_tax_transfers) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
 corrplot(corr_tax_transfers, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
@@ -372,6 +385,69 @@ corrplot(corr_tax_transfers, method='color', p.mat = p.mat, sig.level = 0.01, di
 decrit("CC_worries", data = e)
 for (v in variables_policy) print(decrit(v, data = e))
 for (v in variables_tax) print(decrit(v, data = e)) 
+
+
+
+##### Correlograms #####
+data_cor_fair <- e[,grepl("_fair", names(e))]
+names(data_cor_fair) <- names(e)[grepl("_fair", names(e))]
+corr_fair <- cor(data_cor_fair, use="complete.obs")
+p.mat <- cor.mtest(data_cor_fair) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_fair, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_cost_effective <- e[,grepl("_cost_effective", names(e))]
+names(data_cor_cost_effective) <- names(e)[grepl("_cost_effective", names(e))]
+corr_cost_effective <- cor(data_cor_cost_effective, use="complete.obs")
+p.mat <- cor.mtest(data_cor_cost_effective) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_cost_effective, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_support <- e[,c(paste(names_policies, "support", sep="_"), "policies_support")]
+names(data_cor_support) <- c(paste(names_policies, "support", sep="_"), "policies_support")
+corr_support <- cor(data_cor_support, use="complete.obs")
+p.mat <- cor.mtest(data_cor_support) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_support, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_win_lose_poor <- e[,grepl("_win_lose_poor", names(e))]
+names(data_cor_win_lose_poor) <- names(e)[grepl("_win_lose_poor", names(e))]
+corr_win_lose_poor <- cor(data_cor_win_lose_poor, use="complete.obs")
+p.mat <- cor.mtest(data_cor_win_lose_poor) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_win_lose_poor, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_win_lose_rich <- e[,grepl("_win_lose_rich", names(e))]
+names(data_cor_win_lose_rich) <- names(e)[grepl("_win_lose_rich", names(e))]
+corr_win_lose_rich <- cor(data_cor_win_lose_rich, use="complete.obs")
+p.mat <- cor.mtest(data_cor_win_lose_rich) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_win_lose_rich, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_win_lose_middle <- e[,grepl("_win_lose_middle", names(e))]
+names(data_cor_win_lose_middle) <- names(e)[grepl("_win_lose_middle", names(e))]
+corr_win_lose_middle <- cor(data_cor_win_lose_middle, use="complete.obs")
+p.mat <- cor.mtest(data_cor_win_lose_middle) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_win_lose_middle, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_win_lose_self <- e[,grepl("_win_lose_self", names(e))]
+names(data_cor_win_lose_self) <- names(e)[grepl("_win_lose_self", names(e))]
+corr_win_lose_self <- cor(data_cor_win_lose_self, use="complete.obs")
+p.mat <- cor.mtest(data_cor_win_lose_self) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_win_lose_self, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_win_lose_rural <- e[,grepl("_win_lose_rural", names(e))]
+names(data_cor_win_lose_rural) <- names(e)[grepl("_win_lose_rural", names(e))]
+corr_win_lose_rural <- cor(data_cor_win_lose_rural, use="complete.obs")
+p.mat <- cor.mtest(data_cor_win_lose_rural) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_win_lose_rural, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_large_effect <- e[,grepl("_large_effect", names(e))]
+names(data_cor_large_effect) <- names(e)[grepl("_large_effect", names(e))]
+corr_large_effect <- cor(data_cor_large_effect, use="complete.obs")
+p.mat <- cor.mtest(data_cor_large_effect) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_large_effect, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+
+data_cor_negative_effect <- e[,grepl("_negative_effect", names(e))]
+names(data_cor_negative_effect) <- names(e)[grepl("_negative_effect", names(e))]
+corr_negative_effect <- cor(data_cor_negative_effect, use="complete.obs")
+p.mat <- cor.mtest(data_cor_negative_effect) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+corrplot(corr_negative_effect, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
 
 ##### Preference for bans vs. incentives ######
@@ -416,3 +492,7 @@ decrit("political_affiliation", data = e)
 decrit("survey_biased", data = usp1) # 40% Pro-envi biased. TODO: Change?
 decrit("survey_biased", data = usp2)
 e$comment_field # Most don't leave a comment, many "Good survey", many (but less) critics that it's pro-envi biased, a few critics that some options are missing (but no example): c(3, 46, 135, 192)
+
+
+##### Insulation #####
+e$obstacles_insulation_other[!is.na(e$obstacles_insulation_other)]

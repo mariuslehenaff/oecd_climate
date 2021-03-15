@@ -94,6 +94,8 @@ save_plotly(transport_US, width= 850, height=275)
 (availability_transport_US <- barres(vars = "availability_transport", df = e, miss=F, labels="Quality and availability of public transport near your home"))
 save_plotly(availability_transport_US, width= 850, height=140)
 
+rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70)
+rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = c("climate", "change"))
 
 ## POST-TREATMENT
 
@@ -125,6 +127,14 @@ save_plotly(CC_real_US, width= 540, height=140)
 (CC_anthropogenic_US <- barres(vars = "CC_anthropogenic", rev = F, rev_color = T, df = e, miss=F, labels="Part of climate change anthropogenic"))
 save_plotly(CC_anthropogenic_US, width= 660, height=140)
 
+(CC_anthropogenic_US_inc <- barres12(vars = "CC_anthropogenic", df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", 
+                                 rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic"))
+save_plotly(CC_anthropogenic_US_inc, width= 870, height=220)
+
+(CC_anthropogenic_US_pol <- barres12(vars = "CC_anthropogenic", df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", 
+                                     rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic"))
+save_plotly(CC_anthropogenic_US_pol, width= 870, height=220)
+
 (CC_problem_US <- barres(vars = "CC_problem", df = e, miss=F, labels="Climate change is an important problem."))
 save_plotly(CC_problem_US, width= 1125, height=140) # TODO! check miss=F/T everywhere
 
@@ -134,7 +144,7 @@ save_plotly(CC_knowledgeable_US, width= 800, height=140)
 (score_GHG_US <- barres(vars = "score_GHG", df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG"))
 save_plotly(score_GHG_US, width= 550, height=140)
 
-(CC_dynamic_US <- barres(vars = "CC_dynamic", df = e, miss=F, labels="Cutting GHG emissions by half <br> sufficient to stop rise in temperatures"))
+(CC_dynamic_US <- barres(vars = "CC_dynamic", df = e, rev_color=T, miss=F, labels="Cutting GHG emissions by half <br> sufficient to stop rise in temperatures"))
 save_plotly(CC_dynamic_US, width= 600, height=140)
 
 (score_footprint_transport_US <- barres(vars = "score_footprint_transport", rev = F, df = e, miss=F, labels="Distance true ranking<br>transport footprint"))
@@ -163,8 +173,8 @@ labels_responsible <- c()
 for (v in variables_responsible_CC) labels_responsible <- c(labels_responsible, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (CC_responsible_US <- barres(vars = variables_responsible_CC, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_responsible, hover= label_great_deal))
 save_plotly(CC_responsible_US, width= 720, height=300) 
-
-(net_zero_feasible_US <- barres(vars = "net_zero_feasible", df = e, miss=T, rev = F, labels="Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S."))
+# TODO! read insulation_other
+(net_zero_feasible_US <- barres(vars = "net_zero_feasible", df = e, miss=F, rev = F, rev_color=T, labels="Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S."))
 save_plotly(net_zero_feasible_US, width= 620, height=140)
 
 (CC_affects_self_US <- barres(vars = "CC_affects_self", df = e, rev = F, miss = F, labels="Climate change negatively affects personal life"))

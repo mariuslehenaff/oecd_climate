@@ -13,6 +13,7 @@ names(Paths) = c("Bluebii", "afabre")
 setwd(Paths[Sys.info()[7]])
 
 package("plyr")
+package("tm")
 package("memisc")
 package('tidyverse')
 package("xtable")
@@ -74,6 +75,10 @@ package("np")
 package("AMR")
 package("KSgeneral")
 package("dgof")
+package("SnowballC")
+package("wordcloud")
+package("RCurl")
+package("XML")
 package("equivalence")
 package("RMallow")
 package("Peacock.test")
@@ -566,7 +571,7 @@ data12 <- function(vars, df = list(e, e2), miss=T, weights = T, fr=F, rev=FALSE,
     }
     return(data)
   } }
-barres12 <- function(vars, df=list(e, e2), labels, legend=hover, comp = "V2", miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, sort=TRUE, thin=T, return="", showLegend=T) {
+barres12 <- function(vars, df=list(e, e2), labels, legend=hover, comp = "V2", orig = NULL, miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, sort=TRUE, thin=T, return="", showLegend=T) {
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
   data1 <- dataKN(vars, data=df[[1]], miss=miss, weights = weights, return = "", fr=fr, rev=rev)
@@ -576,17 +581,17 @@ barres12 <- function(vars, df=list(e, e2), labels, legend=hover, comp = "V2", mi
   agree <- order_agree(data = data1, miss = miss)
   if (is.logical(df[[1]][[vars[1]]])) agree <- rev(agree)
   if (return=="data") return(data12(vars[agree], df = df, miss=miss, weights = weights, fr=fr, rev=rev, return = ""))
-  else if (return=="labels") return(labels12(labels[agree], en = !fr))
+  else if (return=="labels") return(labels12(labels[agree], en = !fr, comp = comp, orig = orig))
   else if (return=="legend") return(legend)
   else return(barres(data = data12(vars[agree], df = df, miss=miss, weights = weights, fr=fr, rev=rev, return = ""), 
-                     labels=labels12(labels[agree], en = !fr, comp = comp), legend=legend, 
+                     labels=labels12(labels[agree], en = !fr, comp = comp, orig = orig), legend=legend, 
                      miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend))
 }
 
-labels12 <- function(labels, en=F, comp = "V2") {
+labels12 <- function(labels, en=F, comp = "V2", orig = NULL) {
   new_labels <- c()
   lab2 <- ifelse(comp=="V2", ifelse(en, "Wave 2 (W2)", "Vague 2 (V2)"), comp)
-  lab1 <- ifelse(en, "(W1)", "(V1)")  
+  lab1 <- ifelse(missing(orig), ifelse(en, "(W1)", "(V1)"), orig)
   for (l in labels) {
     new_labels <- c(new_labels, lab2, paste(l, lab1))
     lab2 <- paste("", lab2) }
@@ -1227,4 +1232,44 @@ cor.mtest <- function(mat, ...) {
   }
   colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
   p.mat
+}
+rquery.wordcloud <- function(x, type=c("text", "url", "file"), lang="english", excludeWords=NULL, 
+                            textStemming=FALSE,  colorPalette="Dark2", min.freq=3, max.words=200) { 
+  # http://www.sthda.com/english/wiki/word-cloud-generator-in-r-one-killer-function-to-do-everything-you-need
+  if(type[1]=="file") text <- readLines(x)
+  else if(type[1]=="url") text <- html_to_text(x)
+  else if(type[1]=="text") text <- x
+  
+  # Load the text as a corpus
+  docs <- Corpus(VectorSource(text))
+  # Convert the text to lower case
+  docs <- tm_map(docs, content_transformer(tolower))
+  # Remove numbers
+  docs <- tm_map(docs, removeNumbers)
+  # Remove stopwords for the language 
+  docs <- tm_map(docs, removeWords, stopwords(lang))
+  # Remove punctuations
+  docs <- tm_map(docs, removePunctuation)
+  # Eliminate extra white spaces
+  docs <- tm_map(docs, stripWhitespace)
+  # Remove your own stopwords
+  if(!is.null(excludeWords)) 
+    docs <- tm_map(docs, removeWords, excludeWords) 
+  # Text stemming
+  if(textStemming) docs <- tm_map(docs, stemDocument)
+  # Create term-document matrix
+  tdm <- TermDocumentMatrix(docs)
+  m <- as.matrix(tdm)
+  v <- sort(rowSums(m),decreasing=TRUE)
+  d <- data.frame(word = names(v),freq=v)
+  # check the color palette name 
+  if(!colorPalette %in% rownames(brewer.pal.info)) colors = colorPalette
+  else colors = brewer.pal(8, colorPalette) 
+  # Plot the word cloud
+  set.seed(1234)
+  wordcloud(d$word,d$freq, min.freq=min.freq, max.words=max.words,
+            random.order=FALSE, rot.per=0.35, 
+            use.r.layout=FALSE, colors=colors)
+  
+  invisible(list(tdm=tdm, freqTable = d))
 }

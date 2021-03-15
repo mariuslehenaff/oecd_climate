@@ -2386,14 +2386,26 @@ convert <- function(e, country, wave = NULL) {
   # # e[e$vote_participation == 2, "vote_dum"] <- "Other" # add non-voters as others
   # # e$vote_dum <- as.factor(e$vote_dum)
   # # e$vote_dum <- relevel(e$vote_dum, ref ="Other")
+  
+  e$race <- "Other"
+  e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
+  e$race[e$race_hispanic==T] <- "Hispanic"
+  e$race[e$race_black==T] <- "Black"
+  label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
 
+  e$vote_2020 <- "Other/Non-voter"
+  e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
+  e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
+  e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
+  label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
+  
   e$income_factor <- as.factor(e$income)
   
   # e <- e[, -c(9:17)] 
   return(e)
 }
 
-weighting <- function(data, printWeights = T) { 
+weighting <- function(data, printWeights = T, vote = F) { 
   d <- data 
   d$core_metropolitan[is.na(d$core_metropolitan)] <- "NA"
   d$age_quota[is.na(d$age_quota)] <- "NA"
@@ -2426,10 +2438,14 @@ weighting <- function(data, printWeights = T) {
   # revenu <- data.frame(revenu = c(), Freq=nrow(d)*c())
   # diplome4 <- data.frame(diplome4 = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"), 
   #                        Freq=nrow(d)*c(0.290, 0.248, 0.169, 0.293))
+  race <- data.frame(race = c("White only", "Hispanic", "Black", "Other"), Freq=nrow(d)*c(.601, .185, .134, .080))
+  vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, .33)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
   
-  raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota),
-                                                            population.margins = list(gender,income,region,core_metropolitan,age_quota))     
-  
+  if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race,~vote_2020),
+                                                            population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))     
+  else raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race),
+                     population.margins = list(gender,income,region,core_metropolitan,age_quota,race))     
+
   if (printWeights) {    print(summary(weights(raked))  )
     print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique   
     print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
@@ -2457,6 +2473,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
     e <- convert(e, country = country, wave = wave)
    
     e$weight <- weighting(e) 
+    e$weight_vote <- weighting(e, vote = T)
   
     # e$left_right_na <- as.numeric(e$left_right)
     # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
