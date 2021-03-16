@@ -590,11 +590,11 @@ barres12 <- function(vars, df=list(e, e2), labels, legend=hover, comp = "V2", or
 
 labels12 <- function(labels, en=F, comp = "V2", orig = NULL) {
   new_labels <- c()
-  lab2 <- ifelse(comp=="V2", ifelse(en, "Wave 2 (W2)", "Vague 2 (V2)"), comp)
-  lab1 <- ifelse(missing(orig), ifelse(en, "(W1)", "(V1)"), orig)
+  lab2 <- ifelse(comp=="V2", ifelse(en, " Wave 2 (W2)", " Vague 2 (V2)"), comp)
+  lab1 <- ifelse(missing(orig), ifelse(en, " (W1)", " (V1)"), orig)
   for (l in labels) {
-    new_labels <- c(new_labels, lab2, paste(l, lab1))
-    lab2 <- paste("", lab2) }
+    new_labels <- c(new_labels, lab2, paste(l, lab1, sep=""))
+    lab2 <- paste("", lab2, sep="") }
   return(new_labels)
 }
 color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
@@ -1268,7 +1268,7 @@ rquery.wordcloud <- function(x, type=c("text", "url", "file"), lang="english", e
   # Plot the word cloud
   set.seed(1234)
   wordcloud(d$word,d$freq, min.freq=min.freq, max.words=max.words,
-            random.order=FALSE, rot.per=0.35, 
+            random.order=FALSE, rot.per=0, #0.35, 
             use.r.layout=FALSE, colors=colors)
   
   invisible(list(tdm=tdm, freqTable = d))

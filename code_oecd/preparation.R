@@ -2284,12 +2284,12 @@ convert <- function(e, country, wave = NULL) {
   }
   
   if ("GHG_methane" %in% names(e)) {
-    e$score_GHG <- e$GHG_CO2 + e$GHG_methane - e$GHG_H2 - e$GHG_particulates
+    e$score_GHG <- e$GHG_CO2 + e$GHG_methane - e$GHG_H2 - e$GHG_particulates + 2
     e$know_GHG_CO2 <- e$GHG_CO2
     e$know_GHG_methane <- e$GHG_methane
     e$know_GHG_H2 <- ifelse(e$GHG_H2, F, T)
     e$know_GHG_particulates <- ifelse(e$GHG_particulates, F, T)
-    label(e$score_GHG) <- "score_GHG: Score to the knowledge of GHG [-2;+2] = CO2 + methane - H2 - particulates"
+    label(e$score_GHG) <- "score_GHG: Score to the knowledge of GHG [0;+4] = CO2 + methane - H2 - particulates + 2"
     label(e$know_GHG_CO2) <- "know_GHG_CO2: Correct answer that CO2 is a GHG"
     label(e$know_GHG_methane) <- "know_GHG_methane: Correct answer that methane is a GHG"
     label(e$know_GHG_H2) <- "know_GHG_H2: Correct answer that H2 is not a GHG"
@@ -2397,7 +2397,9 @@ convert <- function(e, country, wave = NULL) {
   e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
   e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
   e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
-  label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
+  e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
+  missing.values(e$vote_2020) <- "PNR/no right"
+  # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
   
   e$income_factor <- as.factor(e$income)
   
@@ -2442,7 +2444,7 @@ weighting <- function(data, printWeights = T, vote = F) {
   vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, .33)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
   
   if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race,~vote_2020),
-                                                            population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))     
+                                                              population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))     
   else raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race),
                      population.margins = list(gender,income,region,core_metropolitan,age_quota,race))     
 
