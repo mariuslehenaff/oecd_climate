@@ -91,7 +91,7 @@ save_plotly(gas_expenses_US, width= 800, height=140)
 save_plotly(flights_desagg_US, width= 640, height=140)
 
 (frequency_beef_US <- barres(vars = "frequency_beef", df = e, miss=F, rev = F, labels="How often do you eat beef?"))
-save_plotly(frequency_beef_US, width= 530, height=140)
+save_plotly(frequency_beef_US, width= 720, height=140)
 
 variables_transport_graph <- c("transport_work", "transport_shopping", "transport_leisure")
 labels_transport <- c("Work", "Shopping", "Leisure")
