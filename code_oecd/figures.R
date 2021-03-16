@@ -99,7 +99,7 @@ labels_transport <- c("Work", "Shopping", "Leisure")
 save_plotly(transport_US, width= 850, height=275) 
 
 (availability_transport_US <- barres(vars = "availability_transport", df = e, miss=F, labels="Quality and availability of public transport near your home"))
-save_plotly(availability_transport_US, width= 850, height=140)
+save_plotly(availability_transport_US, width= 870, height=140)
 
 # TODO: analysis CC_field, feedback
 rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70)
