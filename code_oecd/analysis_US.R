@@ -2,6 +2,7 @@
 # TODO Regress key questions on an array of personal characteristics, ranging from exogenous ones (gender, age, income, education, political views, etc..) to more endogenous ones (how much they drive, where they live, etc..) (just for internal use)
 # TODO prepare an LDA analysis 
 # TODO>Perhaps also do a principal component analysis, and/or a decision tree for key questions
+# TODO!Redo analysis with full sample
 
 ##### Metadata #####
 decrit("finished", data = e)
@@ -417,4 +418,5 @@ e$obstacles_insulation_other[!is.na(e$obstacles_insulation_other)]
 
 
 ##### Decision trees #####
-rpart.plot(tree_support <- rpart(as.formula(paste("policies_support>0 ~", end_formula3)), e))
+rpart.plot(tree_support <- rpart(as.formula(paste("policies_support>0 ~", end_formula3)), e)) # instead of formula, could be: var ~ . 
+prp(tree_support, box.palette = "Blues", tweak = 1.2)

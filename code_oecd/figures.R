@@ -276,7 +276,6 @@ for (v in variables_condition) labels_condition <- c(labels_condition, sub('.* -
 save_plotly(condition_US, width= 805, height=250) 
 
 ##### 7. Pref 1: emission standards #####
-
 labels_standard_effects <- c()
 for (v in variables_standard_effect) labels_standard_effects <- c(labels_standard_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 labels_standard_effects[4] <- "have a negative effect<br>on the U.S. economy and employment"
@@ -301,7 +300,6 @@ save_plotly(standard_support_US, width= 980, height=140)
 save_plotly(standard_public_transport_support_US, width= 950, height=140)
 
 ##### 8. Pref 2: Green investments #####
-
 labels_investments_effects <- c()
 for (v in variables_investments_effect) labels_investments_effects <- c(labels_investments_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (investments_effect_US <- barres(vars = variables_investments_effect, df = e, rev_color = T , rev = F, miss = F, showLegend=T, labels=labels_investments_effects, hover=labels_agree))
@@ -385,23 +383,23 @@ save_plotly(policies_all_support_US, width= 790, height=270)
 save_plotly(standard_effects_US, width= 1100, height=200)
 
 (standard_all_US <- barres(vars = c("standard_fair", "standard_cost_effective", "standard_negative_effect", "standard_large_effect", "standard_effect_less_pollution", "standard_effect_less_emission"), sort = F,rev = F, rev_color = T, 
-                           df = e, miss=F, labels=c("Is fair", "Cost-effective way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce CO2 emissions from cars")))
+                           df = e, miss=F, labels=c("Be fair", "Cost-effective way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce CO2 emissions from cars")))
 save_plotly(standard_all_US, width= 1100, height=380)
 
 (investments_effects_US <- barres(vars = c("investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), sort = F,rev = F, rev_color = T, 
                                   df = e, miss=F, labels=c("Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
 save_plotly(investments_effects_US, width= 1150, height=240)
 
-(investments_all_US <- barres(vars = c("investments_fair", "investments_cost_effective", "investments_negative_effect", "investments_large_effect", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), sort = F, rev = F, rev_color = T, 
-                              df = e, miss=F, labels=c("Is fair", "Cost-effective way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
+(investments_all_US <- barres(vars = c("investments_cost_effective", "investments_negative_effect", "investments_large_effect", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), sort = F, rev = F, rev_color = T, 
+                              df = e, miss=F, labels=c("Cost-effective way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
 save_plotly(investments_all_US, width= 1150, height=400)
 
 (tax_transfers_effects_US <- barres(vars = c("tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F,rev = F, rev_color = T, 
                                     df = e, miss=F, labels=c("Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
 save_plotly(tax_transfers_effects_US, width= 1100, height=280)
 
-(tax_transfers_all_US <- barres(vars = c("tax_transfers_fair", "tax_transfers_cost_effective", "tax_transfers_negative_effect", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F, rev = F, rev_color = T, 
-                                df = e, miss=F, labels=c("Is fair", "Cost-effective way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
+(tax_transfers_all_US <- barres(vars = c("tax_transfers_cost_effective", "tax_transfers_negative_effect", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F, rev = F, rev_color = T, 
+                                df = e, miss=F, labels=c("Cost-effective way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
 save_plotly(tax_transfers_all_US, width= 1150, height=430)
 
 
