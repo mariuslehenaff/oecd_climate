@@ -11,6 +11,7 @@ package <- function(p) {
 Paths = c("/Users/Bluebii/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Documents/www/oecd_climate/code_oecd")
 names(Paths) = c("Bluebii", "afabre")
 setwd(Paths[Sys.info()[7]])
+# .libPaths(c("C:/Users/afabre/R-4.0.3/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")) # TODO execute this only on my computer
 
 package("plyr")
 package("tm")
@@ -81,6 +82,13 @@ package("RCurl")
 package("XML")
 package("equivalence")
 package("RMallow")
+package("rpart")
+package("readr")
+package("caTools")
+package("dplyr")
+package("party")
+package("partykit")
+package("rpart.plot")
 package("Peacock.test")
 package("devtools")
 # install_github("rstudio/webshot2")
@@ -138,7 +146,7 @@ decrit <- function(variable, miss = TRUE, weights = NULL, numbers = FALSE, data 
     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
 }
 
-# decrit <- function(variable, miss = FALSE, weights = NULL, numbers = FALSE, data = e, which = NULL, weight = T) { # TODO!: allow for boolean weights
+# decrit <- function(variable, miss = FALSE, weights = NULL, numbers = FALSE, data = e, which = NULL, weight = T) { 
 #   # if (!missing(data)) variable <- data[[variable]]
 #   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
 #   if (!missing(which)) variable <- variable[which] 
@@ -167,7 +175,7 @@ decrit <- function(variable, miss = TRUE, weights = NULL, numbers = FALSE, data 
 #       else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
 #     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
 # }
-# decrit <- function(variable, miss = FALSE, weights = NULL, numbers = FALSE, data = e, which = NULL, weight = T) { # TODO!: allow for boolean weights
+# decrit <- function(variable, miss = FALSE, weights = NULL, numbers = FALSE, data = e, which = NULL, weight = T) { 
 #   # if (!missing(data)) variable <- data[[variable]]
 #   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
 #   if (!missing(which)) variable <- variable[which] 
@@ -798,6 +806,14 @@ save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '..
   #   server$close()
   # }
   if (trim) image_write(image_trim(image_read(file)), file)
+}
+correlogram <- function(grep = NULL, vars = NULL, df = e) {
+  if (missing(vars)) vars <- names(df)[grepl(grep, names(df))]
+  data <- df[,vars]
+  names(data) <- vars
+  corr <- cor(data, use="complete.obs")
+  p.mat <- cor.mtest(data) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
+  corrplot(corr, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 }
 
 

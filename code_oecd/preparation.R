@@ -498,7 +498,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q140_Last",
       "duration_treatment_climate",
       "Q140_Click",
-      "watched_climate", # TODO
+      "watched_climate", 
       "enjoyed_climate",
       "learned_climate",
       "Q141_First",
@@ -554,7 +554,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q143_Last", 
       "duration_policies",
       "Q143_Click",
-      "inattentive", # TODO
+      "inattentive", 
       "policy_tax_flying",
       "policy_tax_fuels",
       "policy_insulation",
@@ -623,12 +623,12 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "political_identity_other",
       "media",
       "vote_participation",
-      "vote_participation_2016", # TODO
+      "vote_participation_2016", 
       "vote_voters",
       "vote_non_voters",
       "vote_voters_2016",
       "vote_non_voters_2016",
-      "liberal_conservative", # TODO
+      "liberal_conservative", 
       "political_affiliation",
       "survey_biased", 
       "comment_field",
@@ -714,7 +714,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q140_Last",
       "duration_treatment_climate",
       "Q140_Click",
-      "watched_climate", # TODO
+      "watched_climate", 
       "know_temperature_2100",
       "know_frequence_heatwaves",
       "Q141_First",
@@ -769,7 +769,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "footprint_reg_order_europe",
       "footprint_reg_order_china",
       "footprint_reg_order_india",
-      "responsible_CC_each", # TODO: rename in CC_responsible_ and change in previous waves?
+      "responsible_CC_each", # TODO!!: rename in CC_responsible_ and change in previous waves?
       "responsible_CC_rich",
       "responsible_CC_govt",
       "responsible_CC_companies",
@@ -779,7 +779,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "responsible_CC_order_govt",
       "responsible_CC_order_companies",
       "responsible_CC_order_past",
-      "net_zero_feasible", # TODO rename in CC_stoppable and change name in previous waves?
+      "net_zero_feasible", # TODO!! rename in CC_stoppable and change name in previous waves?
       "CC_affects_self",
       "pro_ambitious_policies",
       "CC_will_end",
@@ -935,12 +935,12 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "member_environmental_orga",
       "relative_environmentalist",
       "vote_participation",
-      "vote_participation_2016", # TODO
+      "vote_participation_2016", 
       "vote_voters",
       "vote_non_voters",
       "vote_voters_2016",
       "vote_non_voters_2016",
-      "liberal_conservative", # TODO
+      "liberal_conservative", 
       "political_affiliation",
       "survey_biased", 
       "comment_field",
@@ -1026,7 +1026,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # names(e)[56] <- "statist"
   # names(e)[57] <- "inequality_problem"
   # names(e)[58] <- "future_gdp"
-  # names(e)[59] <- "envi" # longer name? TODO
+  # names(e)[59] <- "envi" # longer name? 
   # names(e)[60] <- "envi_order_collapse"
   # names(e)[61] <- "envi_order_progress"
   # names(e)[62] <- "envi_order_pro_envi"
@@ -1046,7 +1046,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # names(e)[76] <- "Q144_Last"
   # names(e)[77] <- "duration_policies_field"
   # names(e)[78] <- "Q144_Click"
-  # names(e)[79] <- "policies_field" # specify climate? TODO
+  # names(e)[79] <- "policies_field" # specify climate? 
   # names(e)[80] <- "CC_exists" 
   # names(e)[81] <- "CC_dynamics"
   # names(e)[82] <- "CC_factor_beef"
@@ -1123,7 +1123,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # names(e)[153] <- "country_should_act"
   # names(e)[154] <- "country_should_act_condition" # If yes to country_should_act
   # names(e)[155] <- "pro_global_assembly"
-  # names(e)[156] <- "pro_global_tax" # TODO: check % & allowed
+  # names(e)[156] <- "pro_global_tax" 
   # names(e)[157] <- "pro_tax_1p"
   # names(e)[158] <- "Q140_First"
   # names(e)[159] <- "Q140_Last"
@@ -1210,7 +1210,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # names(e)[240] <- "tax_order_reduction_personal_tax"
   # names(e)[241] <- "tax_order_other"
   # names(e)[242] <- "insulation_compulsory"
-  # names(e)[243] <- "flight_quota_1000km" # TODO variant
+  # names(e)[243] <- "flight_quota_1000km" 
   # names(e)[244] <- "flight_quota_3000km"
   # names(e)[245] <- "flight_quota_one_trip"
   # names(e)[246] <- "beef_tax"
@@ -1546,7 +1546,7 @@ convert <- function(e, country, wave = NULL) {
     label(e$km_driven) <- "km_driven: How many kilometers have you and your household members driven in 2019?" }
   if ("hh_children" %in% names(e)) {
     e$hh_size <- e$hh_adults + e$hh_children
-  # e$bad_quality <- 0 # TODO! inattention question 
+  # e$bad_quality <- 0 # TODO inattention question 
   # e$bad_quality[e$hh_size > 12] <- 1.3 + e$bad_quality[e$hh_size > 12] # 
   # e$bad_quality[e$hh_children > 10] <- 1 + e$bad_quality[e$hh_children > 10] # 
     e$hh_size <- pmin(e$hh_size, 12)
@@ -1561,7 +1561,7 @@ convert <- function(e, country, wave = NULL) {
   if (country=="US") yes_no_names <- c("","No","PNR","Yes")
   if (country=="FR") yes_no_names <- c("","Non","PNR","Oui")
   for (j in intersect(c("couple", "CC_real", "CC_dynamic", "change_lifestyle", "pro_global_assembly", "pro_global_tax", "pro_tax_1p", "tax_transfers_trust", "investments_trust",
-                        "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_supports", "investments_supports", # TODO! in pilot1, 2 add an "s" to [policies]_supports & add cap to Beef, incl. in other files
+                        "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_supports", "investments_supports", # TODO! in pilot1, 2 add an "s" to [policies]_supports & add cap to Beef, incl. in other .R files
                         "standard_supports", "hit_by_covid", "member_environmental_orga", "relative_environmentalist", "standard_exists"
               ), names(e))) {
     temp <- 1*(e[j][[1]] %in% text_yes) - (e[j][[1]] %in% text_no) - 0.1*(e[j][[1]] %in% text_pnr)
@@ -1896,14 +1896,14 @@ convert <- function(e, country, wave = NULL) {
   }
   
   for (v in intersect(names(e), c(variables_CC_impacts, "will_insulate", "CC_will_end"))) { 
-    temp <-  2 * (e[[v]] %in% text_very_likely) + (e[[v]] %in% text_somewhat_likely) - (e[[v]] %in% text_somewhat_unlikely) - 2 * (e[[v]] %in% text_very_unlikely) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
+    temp <-  2 * (e[[v]] %in% text_very_likely) + (e[[v]] %in% text_somewhat_likely) - (e[[v]] %in% text_somewhat_unlikely) - 2 * (e[[v]] %in% text_very_unlikely) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO! accommodate NA everywhere?
     e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1),
                                                names = c("Very unlikely","Somewhat unlikely","Somewhat likely","Very likely","PNR")),
                       missing.values=-0.1, annotation=Label(e[[v]]))
   }
   
   for (v in intersect(names(e), c(variables_responsible_CC, variables_willing, variables_condition, "CC_knowledgeable", "net_zero_feasible", "CC_affects_self", "pro_ambitious_policies", "effect_halt_CC_lifestyle", "interested_politics"))) { 
-    temp <-  2 * (e[[v]] %in% text_intensity_great_deal) + (e[[v]] %in% text_intensity_lot) - (e[[v]] %in% text_intensity_little) - 2 * (e[[v]] %in% text_intensity_not) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
+    temp <-  2 * (e[[v]] %in% text_intensity_great_deal) + (e[[v]] %in% text_intensity_lot) - (e[[v]] %in% text_intensity_little) - 2 * (e[[v]] %in% text_intensity_not) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) 
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                                                names = c("Not at all","A little","Moderately","A lot","A great deal","PNR")),
                       missing.values=-0.1, annotation=Label(e[[v]]))
@@ -2034,7 +2034,7 @@ convert <- function(e, country, wave = NULL) {
     e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_optimistic] <- "Progress will suffice"
     e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_policies] <- "Policies & awareness will"
     e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_pessimistic] <- "Should but not happening"
-    e$CC_stoppable <- relevel(relevel(relevel(relevel(relevel(as.factor(e$CC_stoppable), "No influence"), "Better to adapt"), "Should but not happening"), "Policies & awareness will"), "Progress will suffice") # TODO! uncomment
+    e$CC_stoppable <- relevel(relevel(relevel(relevel(relevel(as.factor(e$CC_stoppable), "No influence"), "Better to adapt"), "Should but not happening"), "Policies & awareness will"), "Progress will suffice") 
   }
   
   temp <-  (e$CC_talks %in% text_CC_talks_monthly) - (e$CC_talks %in% text_CC_talks_never) - 0.1 * (e$CC_talks %in% text_pnr)
@@ -2064,14 +2064,14 @@ convert <- function(e, country, wave = NULL) {
                                                                      names = c("Free-riding","Reciprocity", "Compensation")),
                                              annotation=Label(e$country_should_act))
   
-  for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { # TODO bug when variables_side_effects is not yet defined
+  for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { # TODO! bug when variables_side_effects is not yet defined
     temp <-  (e[[v]] %in% text_effects_positive) - (e[[v]] %in% text_effects_negative) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
                           names = c("Negative","None notable","Positive","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }  
 
-  for (v in intersect(names(e), c(variables_incidence))) { # TODO! why 0 missing?
+  for (v in intersect(names(e), c(variables_incidence))) { 
     temp <-  (e[[v]] %in% text_incidence_win) - (e[[v]] %in% text_incidence_lose) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
                           names = c("Lose","Unaffected","Win","PNR")),
@@ -2138,7 +2138,6 @@ convert <- function(e, country, wave = NULL) {
   if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-1:1,-0.1),
                         names = c("Not really or not at all","A little", "A lot","PNR")),
                       missing.values=-0.1, annotation=Label(e$interest_politics))
-  # TODO! intensity questions
   
   if ("media" %in% names(e)) {
     e$media[e$media %in% text_media_other] <- "Other"
@@ -2176,7 +2175,7 @@ convert <- function(e, country, wave = NULL) {
   e$wtp_agg <- 5 * (e$wtp > 0 & e$wtp <= 10) + 50 * (e$wtp > 10 & e$wtp <= 70) + 100 * (e$wtp > 70 & e$wtp <= 100) + 200 * (e$wtp > 100 & e$wtp <= 300) + 500 * (e$wtp > 300 & e$wtp <= 500) + 1000 * (e$wtp > 500)
   e$wtp_agg <- as.item(e$wtp_agg, labels = structure(c(0,5,50,100,200,500,1000), names = c("0", "From 0.5 to 10", "30 to 70", "100", "150 to 300", "500", "1000 or more")), annotation=Label(e$wtp_agg))
   
-  # TODO: Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, nb_policies_supported, score_knowlege_CC, score_trust, zipcode, race, standard of living
+  # TODO!!: Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, nb_policies_supported, score_knowlege_CC, score_trust, zipcode, race, standard of living
   
   if ("left" %in% names(e)) {
     e$left_right <- pmax(-2,pmin(2,-2 * e$far_left - 1*e$left + 1*e$right + 2 * e$far_right))
@@ -2199,7 +2198,6 @@ convert <- function(e, country, wave = NULL) {
   e$wave <- wave
   label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"
 
-  # TODO! policies_cost_effective, employment, side_effects
   if ("standard_trust" %in% names(e)) e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
   if ("standard_trust" %in% names(e)) label(e$policies_trust) <- "policies_trust: Could the U.S. federal government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
   if ("standard_effective" %in% names(e)) e$policies_effective <- ((e$standard_effective=="Yes") + (e$investments_effective=="Yes") + (e$tax_transfers_effective=="Yes") - (e$standard_effective=="No") - (e$investments_effective=="No") - (e$tax_transfers_effective=="No"))/3
@@ -2221,12 +2219,12 @@ convert <- function(e, country, wave = NULL) {
   e$policies_support <- (e$standard_support + e$investments_support + e$tax_transfers_support) / 3
   label(e$policies_support) <- "policies_support: Average of responses in [-2;+2] to Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers?"
   e$policies_self <- e$policies_incidence <- e$policies_poor <- e$policies_middle <- e$policies_rich <- e$policies_rural <- e$policies_urban <- 0
-  label(e$policies_self) <- "policies_self: Would your household win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  label(e$policies_poor) <- "policies_self: Would the poorest win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  label(e$policies_middle) <- "policies_self: Would the middle class win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  label(e$policies_rich) <- "policies_self: Would the richest financially win or lose from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  label(e$policies_rural) <- "policies_self: Would rural financially win or lose from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
-  label(e$policies_urban) <- "policies_self: Would urban dwellers win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Win/Lose/Be unaffected/PNR" # TODO labels
+  label(e$policies_self) <- "policies_self: Would your household win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
+  label(e$policies_poor) <- "policies_poor: Would the poorest win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
+  label(e$policies_middle) <- "policies_middle: Would the middle class win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
+  label(e$policies_rich) <- "policies_rich: Would the richest financially win or lose from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
+  label(e$policies_rural) <- "policies_rural: Would rural financially win or lose from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
+  label(e$policies_urban) <- "policies_urban: Would urban dwellers win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]" 
   # for (v in variables_incidence) e$policies_incidence <- e$policies_incidence + e[[v]]/length(variables_incidence) # this variable makes no sense
   text_incidence <- ifelse("standard_incidence_poor" %in% names(e), "incidence", "win_lose")
   for (v in names_policies) e$policies_self <- e$policies_self + e[[paste(v, text_incidence, "self", sep="_")]]/3
@@ -2333,14 +2331,14 @@ convert <- function(e, country, wave = NULL) {
     }
   }
 
-  e$rush_treatment <- e$duration_treatment_climate < 2.4 | e$duration_treatment_policy < 4.45 # TODO adapt time for climate
+  e$rush_treatment <- e$duration_treatment_climate < 2.4 | e$duration_treatment_policy < 4.45 # TODO!! adapt time for climate
   e$rush_treatment[is.na(e$rush_treatment)] <- F
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
 
   
   e$rush <- e$rush_treatment | (e$duration < 15)
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
-  # race TODO: problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
+  # [deprecated] problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
   e$race_white_only <- 0
   e$race_white_only[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE] <- 1
   #e[e$race_black == TRUE, "race"] <- "Black"
@@ -2386,7 +2384,7 @@ convert <- function(e, country, wave = NULL) {
     e$age_quota[e$age %in% 25:34] <- "25-34"
     e$age_quota[e$age %in% 35:49] <- "35-49"
     e$age_quota[e$age %in% 50:64] <- "50-64"
-    e$age_quota[e$age > 64] <- "65+" # TODO "> 65" instead
+    e$age_quota[e$age > 64] <- "65+" # TODO! "> 65" instead
   } else { 
     e$age_quota[e$age_quota == "18 to 24"] <- "18-24"
     e$age_quota[e$age_quota == "25 to 34"] <- "25-34"
@@ -2411,7 +2409,7 @@ convert <- function(e, country, wave = NULL) {
   e$race[e$race_black==T] <- "Black"
   label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
 
-  e$vote_2020 <- "Other/Non-voter"
+  e$vote_2020 <- "Other/Non-voter" # TODO!! swap names vote and vote_2020
   e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
   e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
   e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
@@ -2459,7 +2457,7 @@ weighting <- function(data, printWeights = T, vote = F) {
   # diplome4 <- data.frame(diplome4 = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"), 
   #                        Freq=nrow(d)*c(0.290, 0.248, 0.169, 0.293))
   race <- data.frame(race = c("White only", "Hispanic", "Black", "Other"), Freq=nrow(d)*c(.601, .185, .134, .080))
-  vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, 0.345006)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
+  if ("vote_2020" %in% names(d)) vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, 0.345006)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
   
   if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race,~vote_2020),
                                                               population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))     
@@ -2470,7 +2468,7 @@ weighting <- function(data, printWeights = T, vote = F) {
     print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique   
     print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
   }
-  return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE))) # TODO! race
+  return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
 }
 
 
@@ -2491,9 +2489,9 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   if (only_finished) { # TODO: le faire marcher même pour les autres
     e <- e[e$finished==1,] 
     e <- convert(e, country = country, wave = wave)
-   
+    
     e$weight <- weighting(e) 
-    e$weight_vote <- weighting(e, vote = T)
+    if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)
   
     # e$left_right_na <- as.numeric(e$left_right)
     # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)

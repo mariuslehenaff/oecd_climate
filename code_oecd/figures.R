@@ -16,8 +16,9 @@
 ##### Pre-treatment ## #####
 
 ##### 1. Demographics #####
-# TODO! comparisons true + weighted; non-weighted
 labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
+label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal")
+labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor disagree", "Somewhat agree", "Strongly agree")
 data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
 data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
@@ -25,7 +26,7 @@ data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weig
 data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), c(.134, .185, .080, .601))
 data_income <- cbind(dataKN("income", data=e, miss=F, weights = F), dataKN("income", data=e, miss=F, weights = T), c(0.2034,0.239,0.2439,0.3137))
 data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), c(0.342171, 0.345006, 0.312823, 0))
-# data_urbanity <- cbind(dataKN("urbanity", data=e, miss=F, weights = F), dataKN("urbanity", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_urbanity <- cbind(dataKN("urbanity", data=e, miss=F, weights = F), dataKN("urbanity", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: find official freq for these ones and plot figures
 # data_education <- cbind(dataKN("education", data=e, miss=F, weights = F), dataKN("education", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_wealth <- cbind(dataKN("wealth", data=e, miss=F, weights = F), dataKN("wealth", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_occupation <- cbind(dataKN("occupation", data=e, miss=F, weights = F), dataKN("occupation", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
@@ -149,7 +150,7 @@ rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWord
 
 ##### 3. Treatment feedback: local climate #####
 (watched_climate_US <- barres(vars = "watched_climate", df = e, miss=F, labels="Able to watch the video until the end (local)"))
-save_plotly(watched_climate_US, width= 900, height=140) # TODO!! correlation knowledge, corr between policies
+save_plotly(watched_climate_US, width= 900, height=140)
 
 # (know_treatment_climate_US <- barres(vars = c("know_temperature_2100", "know_frequence_heatwaves"), rev = F, rev_color = T, df = e, miss=F, labels="Knowledge climate video"))
 # save_plotly(know_treatment_climate_US, width= 580, height=140) # TODO decomposed
@@ -237,8 +238,7 @@ for (v in variables_CC_impacts) labels_CC_impacts <- c(labels_CC_impacts, sub('.
 (CC_impacts_US <- barres(vars = variables_CC_impacts, df = e, miss=F, rev_color=T, labels=labels_CC_impacts))
 save_plotly(CC_impacts_US, width= 800, height=400) 
 
-##### 6. Climate Change (attitudes and risks) #####
-label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal") # TODO! move
+##### 6. Climate Change (attitudes and risks) ##### 
 labels_responsible <- c()
 for (v in variables_responsible_CC) labels_responsible <- c(labels_responsible, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (CC_responsible_US <- barres(vars = variables_responsible_CC, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_responsible, hover= label_great_deal))
@@ -277,11 +277,12 @@ save_plotly(condition_US, width= 805, height=250)
 
 ##### 7. Pref 1: emission standards #####
 
-labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor disagree", "Somewhat agree", "Strongly agree")
-labels_standard_effects <- c() # TODO reduce width/labels
+labels_standard_effects <- c()
 for (v in variables_standard_effect) labels_standard_effects <- c(labels_standard_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+labels_standard_effects[4] <- "have a negative effect<br>on the U.S. economy and employment"
+labels_standard_effects[3] <- "have a large  effect<br>on the U.S. economy and employment"
 (standard_effect_US <- barres(vars = variables_standard_effect, df = e, rev_color = T , rev = F, miss = F, showLegend=T, labels=labels_standard_effects, hover=labels_agree))
-save_plotly(standard_effect_US, width= 1100, height=320) 
+save_plotly(standard_effect_US, width= 890, height=320) 
 
 labels_win_lose <- c("Lose a lot", "Mostly lose", "Neither win nor lose", "Mostly win", "Win a lot")
 labels_standard_win_lose <- c()
@@ -324,10 +325,13 @@ for (v in variables_investments_funding) labels_investments_funding <- c(labels_
 save_plotly(investments_funding_US, width= 880, height=143)  
 
 ##### 9. Pref 3: Tax and dividend #####
-labels_tax_transfers_effects <- c() # TODO reduce width/labels
+labels_tax_transfers_effects <- c() 
 for (v in variables_tax_transfers_effect) labels_tax_transfers_effects <- c(labels_tax_transfers_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+labels_tax_transfers_effects[3] <- "reduce the use of fossil fuels<br>and greenhouse gas emissions"
+labels_tax_transfers_effects[5] <- "have a large effect<br>on the U.S. economy and employment"
+labels_tax_transfers_effects[6] <- "have a negative effect<br>on the U.S. economy and employment"
 (tax_transfers_effect_US <- barres(vars = variables_tax_transfers_effect, df = e, rev_color = T , rev = F, miss = F, showLegend=T, labels=labels_tax_transfers_effects, hover=labels_agree))
-save_plotly(tax_transfers_effect_US, width= 1100, height=320) 
+save_plotly(tax_transfers_effect_US, width= 960, height=380) 
 
 labels_tax_transfers_win_lose <- c()
 for (v in variables_tax_transfers_win_lose) labels_tax_transfers_win_lose <- c(labels_tax_transfers_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -402,8 +406,6 @@ save_plotly(tax_transfers_all_US, width= 1150, height=430)
 
 
 ##### 10. Pref on climate policies #####
-
-# BP TODO: for the trick question on ABC/CNBC --> do we need a graph. If yes, just need nbr of people tricked.
 labels_support <- c("Strongly oppose", "Somewhat oppose", "Indifferent", "Somewhat support", "Strongly support")
 labels_policy <- c()
 for (v in variables_policy) labels_policy <- c(labels_policy, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -419,7 +421,7 @@ labels_tax[7] <- "Funding environmental infrastructures (e.g. public transport)"
 labels_tax[1] <- "Cash transfers to HH with no alternative to fossil fuels"
 labels_tax[8] <- "Subsidizing low-carbon technologies, including renewables"
 (tax_US <- barres(vars = variables_tax, df = e, rev = F, rev_color = T, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
-save_plotly(tax_US, width= 930, height=400) # TODO vérifier ordre labels autres questions
+save_plotly(tax_US, width= 930, height=400) 
 
 ##### 11. WTP #####
 
@@ -700,3 +702,21 @@ for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.
 for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.03, .05)) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
 for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.01, .03)) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
 for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) < .01) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+
+
+##### Correlograms #####
+correlogram("_fair")
+correlogram("_cost_effective")
+correlogram(vars = c(paste(names_policies, "support", sep="_"), "policies_support"))
+correlogram("_win_lose_self")
+correlogram("_win_lose_poor")
+correlogram("_win_lose_rich")
+correlogram("_win_lose_middle")
+correlogram("_win_lose_rural")
+correlogram("_large_effect")
+correlogram("_negative_effect")
+correlogram("standard_")
+correlogram("investments_")
+correlogram("tax_transfers_")
+
+
