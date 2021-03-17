@@ -2459,7 +2459,7 @@ weighting <- function(data, printWeights = T, vote = F) {
   # diplome4 <- data.frame(diplome4 = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"), 
   #                        Freq=nrow(d)*c(0.290, 0.248, 0.169, 0.293))
   race <- data.frame(race = c("White only", "Hispanic", "Black", "Other"), Freq=nrow(d)*c(.601, .185, .134, .080))
-  vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, .33)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
+  vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, 0.345006)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
   
   if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race,~vote_2020),
                                                               population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))     

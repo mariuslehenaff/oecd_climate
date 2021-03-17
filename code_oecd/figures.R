@@ -18,12 +18,12 @@
 ##### 1. Demographics #####
 # TODO! comparisons true + weighted; non-weighted
 data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
-data_age <- cbind(dataKN("age_quota", data=e, miss=F, weights = F), dataKN("age_quota", data=e, miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118,0))
+data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
 data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
-data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), c(0.7324))
 data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), c(.134, .185, .080, .601))
 data_income <- cbind(dataKN("income", data=e, miss=F, weights = F), dataKN("income", data=e, miss=F, weights = T), c(0.2034,0.239,0.2439,0.3137))
-data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), c(0.342171, .33, 0.312823))
+data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), c(0.342171, 0.345006, 0.312823, 0))
 # data_urbanity <- cbind(dataKN("urbanity", data=e, miss=F, weights = F), dataKN("urbanity", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_education <- cbind(dataKN("education", data=e, miss=F, weights = F), dataKN("education", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_wealth <- cbind(dataKN("wealth", data=e, miss=F, weights = F), dataKN("wealth", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
@@ -33,7 +33,29 @@ data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vot
 # data_Nb_children <- cbind(dataKN("Nb_children", data=e, miss=F, weights = F), dataKN("Nb_children", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_HH_size <- cbind(dataKN("HH_size", data=e, miss=F, weights = F), dataKN("HH_size", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_home <- cbind(dataKN("home", data=e, miss=F, weights = F), dataKN("home", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
-dataKN("vote_2020", data=e, miss=F, weights = F, return="legend")
+# dataKN("vote_2020", data=e, miss=F, weights = F, return="legend")
+
+labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
+(gender_US_comp <- barres(data = data_gender, df = e, miss = F, sort = F, labels=labels_comp, legend = dataKN("gender", data=e, miss=F, return="legend")))
+save_plotly(gender_US_comp, width= 470, height=240)
+
+(age_US_comp <- barres(data = data_age, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("age_quota", data=e, miss=F, return="legend")[1:5]))
+save_plotly(age_US_comp, width= 560, height=240) 
+
+(region_US_comp <- barres(data = data_region, df = e, miss=F, sort = F, labels=labels_comp, legend = dataKN("region", data=e, miss=F, return="legend")))
+save_plotly(region_US_comp, width= 560, height=240)
+
+(core_metropolitan_US_comp <- barres(data = data_core_metropolitan, df = e, sort = F, miss=F, rev_color = T, rev = F, labels=labels_comp, showLegend = F, legend="Core metropolitan"))
+save_plotly(core_metropolitan_US_comp, width= 660, height=240)
+
+(race_US_comp <- barres(data = data_race, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("race", data=e, miss=F, return="legend")))
+save_plotly(race_US_comp, width= 540, height=240)
+
+(income_US_comp <- barres(data = data_income, df = e, miss=F, rev_color = T, sort = F, rev = F, labels=labels_comp, legend = dataKN("income", data=e, miss=F, return="legend")))
+save_plotly(income_US_comp, width= 510, height=240) # 35/70/120
+
+(vote_US_comp <- barres(data = data_vote, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_2020", data=e, miss=T, return="legend")))
+save_plotly(vote_US_comp, width= 550, height=240)
 
 (gender_US <- barres(vars = "gender_factor", df = e, miss = F, labels="Gender"))
 save_plotly(gender_US, width= 470, height=140)
@@ -225,8 +247,8 @@ save_plotly(CC_responsible_US, width= 720, height=300)
 (net_zero_feasible_US <- barres(vars = "net_zero_feasible", df = e, miss=F, rev = F, rev_color=T, labels="Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S."))
 save_plotly(net_zero_feasible_US, width= 620, height=140)
 
-(CC_affects_self_US <- barres(vars = "CC_affects_self", df = e, rev = F, miss = F, labels="Climate change negatively affects personal life"))
-save_plotly(CC_affects_self_US, width= 800, height=140) # color!
+(CC_affects_self_US <- barres(vars = "CC_affects_self", df = e, rev = F, rev_color = T, miss = F, labels="Climate change negatively affects personal life"))
+save_plotly(CC_affects_self_US, width= 800, height=140) 
 
 (pro_ambitious_policies_US <- barres(vars = "pro_ambitious_policies", df = e,rev = F, rev_color = T, miss = F, labels="Ambitious public policies needed<br>to halt climate change"))
 save_plotly(pro_ambitious_policies_US, width= 670, height=140)
@@ -573,7 +595,7 @@ rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey
                                      rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic"))
 save_plotly(CC_anthropogenic_US_inc, width= 870, height=220)
 
-(CC_affects_self_US_inc <- barres12(vars = "CC_affects_self", rev = F, df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", miss = F, labels="CC negatively affects personal life"))
+(CC_affects_self_US_inc <- barres12(vars = "CC_affects_self", rev = F, rev_color = T, df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", miss = F, labels="CC negatively affects personal life"))
 save_plotly(CC_affects_self_US_inc, width= 800, height=220)
 
 (net_zero_feasible_US_inc <- barres12(vars = "net_zero_feasible", df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", miss=F, rev = F, rev_color=T, labels="Feasible to stop GHG emissions")) #  while maintaining<br>satisfactory standards of living in the U.S.
@@ -623,7 +645,7 @@ save_plotly(global_assembly_support_US_inc, width= 990, height=220)
                                      rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic"))
 save_plotly(CC_anthropogenic_US_pol, width= 870, height=220)
 
-(CC_affects_self_US_pol <- barres12(vars = "CC_affects_self", rev = F, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss = F, labels="CC negatively affects personal life"))
+(CC_affects_self_US_pol <- barres12(vars = "CC_affects_self", rev = F, rev_color = T, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss = F, labels="CC negatively affects personal life"))
 save_plotly(CC_affects_self_US_pol, width= 800, height=220)
 
 (net_zero_feasible_US_pol <- barres12(vars = "net_zero_feasible", df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss=F, rev = F, rev_color=T, labels="Feasible to stop GHG emissions")) # <br>while maintaining satisfactory<br>standards of living in the U.S.
