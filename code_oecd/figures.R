@@ -17,6 +17,7 @@
 
 ##### 1. Demographics #####
 # TODO! comparisons true + weighted; non-weighted
+labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
 data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
 data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
@@ -35,7 +36,6 @@ data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vot
 # data_home <- cbind(dataKN("home", data=e, miss=F, weights = F), dataKN("home", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # dataKN("vote_2020", data=e, miss=F, weights = F, return="legend")
 
-labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
 (gender_US_comp <- barres(data = data_gender, df = e, miss = F, sort = F, labels=labels_comp, legend = dataKN("gender", data=e, miss=F, return="legend")))
 save_plotly(gender_US_comp, width= 470, height=240)
 
