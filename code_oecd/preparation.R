@@ -2509,6 +2509,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
 usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 e <- usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
+e <- usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
 usp12 <- merge(usp1, usp2, all = T)
 us <- merge(usp3, usp12, all = T, by="date")
 

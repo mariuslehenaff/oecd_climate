@@ -13,7 +13,6 @@ decrit("treatment_policy", data = e)
 decrit("treatment_climate", data = e)
 decrit("variant_flight_quota", data = e)
 any(duplicated(e$PSID))
-
 # TODO ranking vs. order of display
 
 

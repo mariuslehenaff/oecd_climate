@@ -563,7 +563,7 @@ save_plotly(vote_2020, width= 610, height=140)
 save_plotly(vote_2016_US, width= 650, height=140) 
 
 (vote_voters_US <- barres(vars = "vote_voters", df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
-save_plotly(vote_voters6_US, width= 650, height=140) 
+save_plotly(vote_voters_US, width= 650, height=140) 
 
 (vote_non_voters_US <- barres(vars = "vote_non_voters", df = e, rev_color = T, miss=T, labels="In 2020, voted for (non-voters)"))
 save_plotly(vote_non_voters_US, width= 650, height=140)
