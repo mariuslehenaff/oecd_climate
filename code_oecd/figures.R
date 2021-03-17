@@ -17,6 +17,24 @@
 
 ##### 1. Demographics #####
 # TODO! comparisons true + weighted; non-weighted
+data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+data_age <- cbind(dataKN("age_quota", data=e, miss=F, weights = F), dataKN("age_quota", data=e, miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118,0))
+data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
+data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), c(.134, .185, .080, .601))
+data_income <- cbind(dataKN("income", data=e, miss=F, weights = F), dataKN("income", data=e, miss=F, weights = T), c(0.2034,0.239,0.2439,0.3137))
+data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), c(0.342171, .33, 0.312823))
+# data_urbanity <- cbind(dataKN("urbanity", data=e, miss=F, weights = F), dataKN("urbanity", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_education <- cbind(dataKN("education", data=e, miss=F, weights = F), dataKN("education", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_wealth <- cbind(dataKN("wealth", data=e, miss=F, weights = F), dataKN("wealth", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_occupation <- cbind(dataKN("occupation", data=e, miss=F, weights = F), dataKN("occupation", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_employment_agg <- cbind(dataKN("employment_agg", data=e, miss=F, weights = F), dataKN("employment_agg", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_marital_status <- cbind(dataKN("marital_status", data=e, miss=F, weights = F), dataKN("marital_status", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_Nb_children <- cbind(dataKN("Nb_children", data=e, miss=F, weights = F), dataKN("Nb_children", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_HH_size <- cbind(dataKN("HH_size", data=e, miss=F, weights = F), dataKN("HH_size", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+# data_home <- cbind(dataKN("home", data=e, miss=F, weights = F), dataKN("home", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+dataKN("vote_2020", data=e, miss=F, weights = F, return="legend")
+
 (gender_US <- barres(vars = "gender_factor", df = e, miss = F, labels="Gender"))
 save_plotly(gender_US, width= 470, height=140)
 
@@ -103,7 +121,7 @@ save_plotly(availability_transport_US, width= 870, height=140)
 
 # TODO: analysis CC_field, feedback
 rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70)
-rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = c("climate", "change"))
+rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = c("climate", "change", "government"))
 
 ##### POST-TREATMENT #####
 
@@ -546,6 +564,8 @@ save_plotly(political_affiliation_US, width= 800, height=140)
 save_plotly(survey_biased_US, width= 810, height=140)
 
 rquery.wordcloud(paste(e$comment_field, collapse=" \n "), max.words = 70)
+rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", max.words = 70)
+rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", colorPalette = "Blues", max.words = 70) # Spectral
 
 ##### Heterogeneity ####
 ## By income
