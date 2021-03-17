@@ -1636,7 +1636,7 @@ convert <- function(e, country, wave = NULL) {
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "core_metropolitan", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "core_metropolitan")
   variables_main_controls_pilot12 <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
-  variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "liberal_conservative", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
+  variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "liberal_conservative", "vote_dum", "as.factor(urbanity)", "core_metropolitan", "rush")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
   variables_know_treatment_climate <<- c("know_frequence_heatwaves", "know_temperature_2100")
   variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
@@ -1645,6 +1645,13 @@ convert <- function(e, country, wave = NULL) {
   if (length(grep('investments_funding_', names(e)))>0) variables_investments_funding <<- names(e)[grepl('investments_funding_', names(e))]
   if (length(grep('if_other_do_', names(e)))>0) variables_if_other_do <<- names(e)[grepl('if_other_do_', names(e))]
   if (length(grep('obstacles_insulation_', names(e)))>0) variables_obstacles_insulation <<- names(e)[grepl('obstacles_insulation_', names(e)) & !grepl('other$', names(e))]
+  if (length(grep('footprint', names(e)))>0) {
+    Variables_footprint <<- Labels_footprint <<- list()
+    for (v in c("el", "fd", "tr", "reg")) {
+      Variables_footprint[[v]] <<- names(e)[grepl(paste("footprint_", v, "_", sep=""), names(e)) & !grepl("order", names(e))]
+      Labels_footprint[[v]] <<- capitalize(sub(paste("footprint_", v, "_", sep=""), "", Variables_footprint[[v]]))
+    }
+  }
 
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
@@ -1879,6 +1886,7 @@ convert <- function(e, country, wave = NULL) {
   text_clerc <- c("US" = "Clerical support or services (e.g. caring, sales, leisure, administrative...)")
   text_skilled <- c("US" = "Skilled work (e.g. craft worker, plants and machine operator, farmer...)")
   text_manual <- c("US" = "Manual operations (e.g. cleaning, agriculture, delivery, transport, military...)")
+  text_none_above <- c("US" = "None of the above")
   
   for (v in intersect(names(e), c(variables_burden_sharing, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
     temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
@@ -2082,9 +2090,9 @@ convert <- function(e, country, wave = NULL) {
                         names = c("No worried at all","Not worried", "Worried","Very worried","PNR")),
                       missing.values=-0.1, annotation=Label(e$CC_worries))
   
-  if ("occupation" %in% names(e)) temp <-  (e$occupation %in% text_clerc) - (e$occupation %in% text_skilled) - 2 * (e$occupation %in% text_manual) + 2 * (e$occupation %in% text_independent)
-  if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2), names = c("Manual","Skilled","PNR", "Clerc","Independent")),
-                                                          missing.values=0, annotation=Label(e$occupation))
+  if ("occupation" %in% names(e)) temp <-  (e$occupation %in% text_clerc) - 2*(e$occupation %in% text_none_above) - 1 * (e$occupation %in% text_manual) + 2 * (e$occupation %in% text_independent) - 0.1*(is.na(e$occupation))
+  if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Other","Manual","Skilled", "Clerc","Independent","PNR")),
+                                                          missing.values=-0.1, annotation=Label(e$occupation))
   
   if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses == "Less than $20") + 50*(e$heating_expenses == "$20 – $75") + 100*(e$heating_expenses == "$76 – $125") + 167*(e$heating_expenses == "$126 – $200") + 225*(e$heating_expenses == "$201 – $250") + 275*(e$heating_expenses == "$251 – $300") + 
           350*(e$heating_expenses == "More than $300")  - 0.1*(e$heating_expenses == "I am not in charge of paying for heating; utilities are included in my rent") - 0.1*is.na(e$heating_expenses) #
@@ -2162,6 +2170,7 @@ convert <- function(e, country, wave = NULL) {
   e$survey_biased[e$survey_biased %in% text_survey_biased_left] <- "Yes, left"
   e$survey_biased[e$survey_biased %in% text_survey_biased_right] <- "Yes, right"
   e$survey_biased[e$survey_biased %in% text_survey_biased_no] <- "No"
+  if ("Yes, right" %in% levels(as.factor(e$survey_biased))) e$survey_biased <- relevel(relevel(as.factor(e$survey_biased), "Yes, right"), "No")
   
   e$wtp <- as.numeric(as.vector(gsub('[[:alpha:] $]', '', e$wtp))) # /!\ Careful with different currencies and use of cents vs. currency (for US $, not pb as cents are not used)
   e$wtp_agg <- 5 * (e$wtp > 0 & e$wtp <= 10) + 50 * (e$wtp > 10 & e$wtp <= 70) + 100 * (e$wtp > 70 & e$wtp <= 100) + 200 * (e$wtp > 100 & e$wtp <= 300) + 500 * (e$wtp > 300 & e$wtp <= 500) + 1000 * (e$wtp > 500)
@@ -2313,6 +2322,15 @@ convert <- function(e, country, wave = NULL) {
     label(e$know_footprint_food) <- "know_footprint_food: Correct answer to the ranking of electricity footprints"
     label(e$know_footprint_transport) <- "know_footprint_transport: Correct answer to the ranking of electricity footprints"
     label(e$know_footprint_region) <- "know_footprint_region: Correct answer to the ranking of electricity footprints"
+    e$most_footprint_el <- e$most_footprint_fd <- e$most_footprint_tr <- e$most_footprint_reg <- e$least_footprint_el <- e$least_footprint_fd <- e$least_footprint_tr <- e$least_footprint_reg <- "PNR"
+    for (v in c("el", "fd", "tr", "reg")) {
+      for (i in Variables_footprint[[v]]) {
+        e[[paste("most_footprint", v, sep="_")]][e[[i]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+        e[[paste("least_footprint", v, sep="_")]][e[[i]]==3] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+      }
+      label(e[[paste("most_footprint", v, sep="_")]]) <- paste("most_footprint_", v, ": Largest footprint of type ", v, " according to the respondent", sep="")
+      label(e[[paste("least_footprint", v, sep="_")]]) <- paste("least_footprint_", v, ": Smallest footprint of type ", v, " according to the respondent", sep="")
+    }
   }
 
   e$rush_treatment <- e$duration_treatment_climate < 2.4 | e$duration_treatment_policy < 4.45 # TODO adapt time for climate
@@ -2320,7 +2338,7 @@ convert <- function(e, country, wave = NULL) {
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
 
   
-  e$rush <- e$rush_treatment | (e$duration < 12)
+  e$rush <- e$rush_treatment | (e$duration < 15)
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
   # race TODO: problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
   e$race_white_only <- 0

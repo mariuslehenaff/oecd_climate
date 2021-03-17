@@ -594,7 +594,7 @@ labels12 <- function(labels, en=F, comp = "V2", orig = NULL) {
   lab1 <- ifelse(missing(orig), ifelse(en, " (W1)", " (V1)"), orig)
   for (l in labels) {
     new_labels <- c(new_labels, lab2, paste(l, lab1, sep=""))
-    lab2 <- paste("", lab2, sep="") }
+    lab2 <- paste("", lab2) }
   return(new_labels)
 }
 color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen

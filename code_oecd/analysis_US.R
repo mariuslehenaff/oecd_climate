@@ -1,10 +1,7 @@
 # TODO full wording of the question above the charts in the slides; and to have all the questions; add the survey flow at beginning; and announce questions at beginning of each section
-# TODO>For key questions, plot by low/high incomes and Rep/Dem in a section Heterogeneity
-# TODO>check (and drop?) rushed responses
 # TODO Regress key questions on an array of personal characteristics, ranging from exogenous ones (gender, age, income, education, political views, etc..) to more endogenous ones (how much they drive, where they live, etc..) (just for internal use)
 # TODO prepare an LDA analysis 
 # TODO>Perhaps also do a principal component analysis, and/or a decision tree for key questions
-# TODO>Consistent blue/red
 
 ##### Metadata #####
 decrit("finished", data = e)
@@ -39,6 +36,9 @@ decrit("duration_policies", data = e) # 1 min
 
 
 ##### Socio-demographics ####
+xtabs(~sector_choice, e)
+e$sector_other[grepl("specify", e$sector_choice)]
+sum(grepl("nformation|IT|^it$|software", e$sector_other)) # TODO! /!\ 10% work in IT
 decrit("gender", data = e)
 decrit("age", data = e)
 decrit("age_quota", data = e)
