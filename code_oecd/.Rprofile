@@ -1,21 +1,26 @@
 library(utils)
 
 # options(download.file.method = "wget"); # For Ubuntu 14.04
-package <- function(p) { 
+package <- function(p, version = NULL) { 
   if (!is.element(p, installed.packages()[,1])) {
-    install.packages(p); 
+    if (missing(version)) install.packages(p)
+    else {
+      package("remotes")
+      install_version(p, version = version, repos = "http://cran.us.r-project.org", upgrade = "never")
+    }
   }
+  else { if(!missing(version)) warning(paste("'", p, "' is already installed with a (potentially) newer version. You may want to install the required version (", version, ") to avoid bugs.", sep=""))}
   library(p, character.only = TRUE)
 } # loads packages with automatical install if needed
 
 Paths = c("/Users/Bluebii/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Documents/www/oecd_climate/code_oecd")
 names(Paths) = c("Bluebii", "afabre")
 setwd(Paths[Sys.info()[7]])
-# .libPaths(c("C:/Users/afabre/R-4.0.3/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")) # TODO execute this only on my computer
+if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.0.3/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")) 
 
 package("plyr")
 package("tm")
-package("memisc")
+package("memisc", version = "0.99.22")
 package('tidyverse')
 package("xtable")
 package("rms")
