@@ -124,9 +124,9 @@ Label <- function(var) {
 is.pnr <- function(variable, void_as_pnr = T) {
   if (void_as_pnr) {
     if (is.null(annotation(variable))) return(is.na(variable)|variable=="")
-    else return(is.missing(variable))
+    else return(is.missing(variable)|variable=="")
   } else {
-    if (is.null(annotation(variable))) return(is.na(variable)|variable=="")
+    if (is.null(annotation(variable))) return(is.na(variable))
     else return(is.missing(variable))    
   }
 }
