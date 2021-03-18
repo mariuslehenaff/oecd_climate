@@ -121,8 +121,8 @@ Label <- function(var) {
   if (length(annotation(var))==1) { annotation(var)[1] }
   else { label(var)  }
 }
-is.pnr <- function(variable, void_as_pnr = T) {
-  if (void_as_pnr) {
+is.pnr <- function(variable, empty_as_pnr = T) {
+  if (empty_as_pnr) {
     if (is.null(annotation(variable))) return(is.na(variable)|variable=="")
     else return(is.missing(variable)|variable=="")
   } else {

@@ -695,11 +695,11 @@ save_plotly(global_assembly_support_US_pol, width= 990, height=220)
 save_plotly(wtp_agg_US_anthropogenic, width= 830, height=220)
 
 # PNR
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) > 0.4) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.05, .4)) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.03, .05)) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.01, .03)) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) < .01) print(paste(round(mean(is.na(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) > 0.4) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.05, .4)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.03, .05)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.01, .03)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) < .01) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
 
 
 ##### Correlograms #####
