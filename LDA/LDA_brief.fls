@@ -286,6 +286,8 @@ INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/base/inputenc.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/base/inputenc.sty
 INPUT LDA_brief.aux
 INPUT LDA_brief.aux
+INPUT bu.aux
+INPUT bu.aux
 OUTPUT LDA_brief.aux
 INPUT /usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -354,7 +356,10 @@ INPUT topic3.tex
 INPUT topic3.tex
 INPUT topic4.tex
 INPUT topic4.tex
+OUTPUT bu.aux
 INPUT LDA_brief.aux
+INPUT bu.aux
+INPUT bu.aux
 INPUT ./LDA_brief.out
 INPUT ./LDA_brief.out
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
