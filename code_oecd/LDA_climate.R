@@ -14,6 +14,15 @@ library(stargazer)
 df <- usp3
 colnames(df)
 
+# Function to scale-up probabilities from the beta vectors. Does not account for mutually exclusive answers.
+beta_transformation <- function(beta, nbr_question=107) {
+  prob <- 0
+  for (i in 1:nbr_question){
+    prob <- prob + beta*(1-beta)^(i-1)
+  }
+  return(prob)
+}
+
 
 ######## Classify each question into clear cut categories
 
@@ -744,10 +753,13 @@ lda_out2 <- LDA(dfm, method="Gibbs", k=2, control=list(seed=42))
 
 terms(lda_out2, 20)
 
-# Per-topic-per-word probabilities (prob of answer for each profile)
+# Per-topic-per-word probabilities
 lda_topics2 <- lda_out2 %>%
   tidy(matrix = "beta") %>%
   arrange(topic, desc(beta))
+
+# Transform beta to have natural interpretation: overall probability that a feature.answer appears for a chosen profile
+lda_topics2[,4] <- beta_transformation(lda_topics2[,3]) %>% rename(prob=beta)
 
 # Per-document-per-topic probabilities (% of each profile for each respondent)
 lda_gamma2 <- lda_out2 %>%
@@ -803,10 +815,14 @@ lda_out3 <- LDA(dfm, method="Gibbs", k=3, control=list(seed=42))
 
 terms(lda_out3, 6)
 
-# Per-topic-per-word probabilities (prob of answer for each profile)
+# Per-topic-per-word probabilities
 lda_topics3 <- lda_out3 %>%
   tidy(matrix = "beta") %>%
   arrange(topic, desc(beta))
+
+# Transform beta to have natural interpretation: overall probability that a feature.answer appears for a chosen profile
+lda_topics3[,4] <- beta_transformation(lda_topics3[,3]) %>% rename(prob=beta)
+
 
 # Per-document-per-topic probabilities (% of each profile for each respondent)
 lda_gamma3 <- lda_out3 %>%
@@ -854,10 +870,13 @@ lda_out4 <- LDA(dfm, method="Gibbs", k=4, control=list(seed=42))
 
 terms(lda_out4, 6)
 
-# Per-topic-per-word probabilities (prob of answer for each profile)
+# Per-topic-per-word probabilities
 lda_topics4 <- lda_out4 %>%
   tidy(matrix = "beta") %>%
   arrange(topic, desc(beta))
+
+# Transform beta to have natural interpretation: overall probability that a feature.answer appears for a chosen profile
+lda_topics4[,4] <- beta_transformation(lda_topics4[,3]) %>% rename(prob=beta)
 
 # Per-document-per-topic probabilities (% of each profile for each respondent)
 lda_gamma4 <- lda_out4 %>%
