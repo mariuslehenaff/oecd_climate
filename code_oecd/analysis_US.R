@@ -38,6 +38,17 @@ decrit("duration_policies", data = e) # 1 min
 ##### Socio-demographics ####
 xtabs(~sector_choice, e)
 e$sector_other[grepl("specify", e$sector_choice)]
+# AGR Agriculture 01 - 03
+# CHM Chemical Industry 20 - 21
+# MCH Machinery and Equipment 26 - 30, 33
+# EGY Energy (Electricity, Oil, Gas, Heat) 19, 35, 38
+# CON Construction 41 - 43
+# TRN Transportation 49 - 52
+# BNK Banking and Financial Services 64
+# INS Insurances 65
+# HEA Health 86
+# OSE Other Services 36 - 39, 45 - 47, 53 - 63, 68 - 97
+# OIN Other Industries
 sum(grepl("nformation|IT|^it$|software", e$sector_other)) # TODO! /!\ 10% work in IT
 decrit("gender", data = e)
 decrit("age", data = e)
