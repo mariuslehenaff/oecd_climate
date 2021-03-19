@@ -14,7 +14,7 @@ library(stargazer)
 df <- usp3
 colnames(df)
 
-# Function to scale-up probabilities from the beta vectors
+# Function to scale-up probabilities from the beta vectors. Does not account for mutually exclusive answers.
 beta_transformation <- function(beta, nbr_question=107) {
   prob <- 0
   for (i in 1:nbr_question){
