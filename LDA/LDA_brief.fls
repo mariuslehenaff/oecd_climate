@@ -357,6 +357,8 @@ INPUT topic3.tex
 INPUT topic4.tex
 INPUT topic4.tex
 OUTPUT bu.aux
+INPUT LDA_brief.bbl
+INPUT LDA_brief.bbl
 INPUT LDA_brief.aux
 INPUT bu.aux
 INPUT bu.aux
