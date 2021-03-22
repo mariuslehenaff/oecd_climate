@@ -349,6 +349,14 @@ INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5
 INPUT /usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
+INPUT cohesion_score.png
+INPUT cohesion_score.png
+INPUT ./cohesion_score.png
+INPUT ./cohesion_score.png
+INPUT cohesion_score_draca_schwarz.png
+INPUT cohesion_score_draca_schwarz.png
+INPUT ./cohesion_score_draca_schwarz.png
+INPUT ./cohesion_score_draca_schwarz.png
 INPUT topic2.tex
 INPUT topic2.tex
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmti8.tfm
@@ -376,5 +384,6 @@ INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
+INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb

@@ -1,9 +1,22 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Bouma}{Bouma}{2009}]{bouma2009normalized}
+Bouma, G. (2009).
+\newblock Normalized (pointwise) mutual information in collocation extraction.
+\newblock {\em Proceedings of GSCL\/}, 31--40.
+
 \bibitem[\protect\citeauthoryear{Draca and Schwarz}{Draca and
   Schwarz}{2020}]{draca2020polarized}
 Draca, M. and C.~Schwarz (2020).
 \newblock How polarized are citizens? measuring ideology from the ground-up.
 \newblock {\em Measuring Ideology from the Ground-Up (January 30, 2020)\/}.
+
+\bibitem[\protect\citeauthoryear{Lau and Baldwin}{Lau and
+  Baldwin}{2016}]{lau2016sensitivity}
+Lau, J.~H. and T.~Baldwin (2016).
+\newblock The sensitivity of topic coherence evaluation to topic cardinality.
+\newblock In {\em Proceedings of the 2016 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies}, pp.\  483--487.
 
 \end{thebibliography}
