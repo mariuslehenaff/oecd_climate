@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex LDA_brief"] 1616412093 "LDA_brief.aux" "LDA_brief.bbl" "LDA_brief" 1616412095
+["bibtex LDA_brief"] 1616412093 "LDA_brief.aux" "LDA_brief.bbl" "LDA_brief" 1616412360
   "/usr/local/texlive/2019/texmf-dist/bibtex/bst/chicago/chicago.bst" 1198629289 37416 2ae04276c51f11eda70770f4081293b7 ""
-  "LDA_brief.aux" 1616412095 2533 b1e9600068b6bd217b9511297893e0f7 "pdflatex"
+  "LDA_brief.aux" 1616412360 2533 b1e9600068b6bd217b9511297893e0f7 "pdflatex"
   "My_Library.bib" 1616411382 792 691a95a80b8d7bbbed91114f11f8f125 ""
-  "bu.aux" 1616412095 219 05d7db9e73fba5957b8ce4c2e7c4998d "pdflatex"
+  "bu.aux" 1616412360 219 05d7db9e73fba5957b8ce4c2e7c4998d "pdflatex"
   (generated)
-  "LDA_brief.blg"
   "LDA_brief.bbl"
-["pdflatex"] 1616412093 "LDA_brief.tex" "LDA_brief.pdf" "LDA_brief" 1616412095
-  "/dev/null" 1616412087 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "LDA_brief.blg"
+["pdflatex"] 1616412358 "LDA_brief.tex" "LDA_brief.pdf" "LDA_brief" 1616412360
+  "/dev/null" 1616412349 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -217,11 +217,11 @@
   "/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1557342064 3277517 23507ed665b4dd9046f0f2a94bbef2be ""
   "/usr/local/texlive/2019/texmf-var/web2c/pdftex/pdflatex.fmt" 1560865359 4259636 088f8ead81ceadd283a44d58e53c1155 ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
-  "LDA_brief.aux" 1616412095 2533 b1e9600068b6bd217b9511297893e0f7 "pdflatex"
+  "LDA_brief.aux" 1616412360 2533 b1e9600068b6bd217b9511297893e0f7 "pdflatex"
   "LDA_brief.bbl" 1616412093 948 76942e52ad7dba43a6dd09b8317b419c "bibtex LDA_brief"
-  "LDA_brief.out" 1616412095 398 ab32fb277f38b2874ca98c6529b700de "pdflatex"
-  "LDA_brief.tex" 1616412091 20709 e14be379a20617f8740b1139c6dccf2c ""
-  "bu.aux" 1616412095 219 05d7db9e73fba5957b8ce4c2e7c4998d "pdflatex"
+  "LDA_brief.out" 1616412360 398 ab32fb277f38b2874ca98c6529b700de "pdflatex"
+  "LDA_brief.tex" 1616412358 20704 492b7417e6b95f2d84f69dd64d5864a5 ""
+  "bu.aux" 1616412360 219 05d7db9e73fba5957b8ce4c2e7c4998d "pdflatex"
   "cohesion_score.png" 1616407513 42257 5dd258e5aa455f89413b3ff57a82bcbc ""
   "cohesion_score_draca_schwarz.png" 1616411879 59124 b3ce9f3bcd412f8f659129767fcf033e ""
   "draft_preamble.tex" 1600643437 2923 13f402edc14737c0e25a2961c3e7d30c ""
@@ -229,8 +229,8 @@
   "topic3.tex" 1616410170 1990 c7ba871fb352794d4f48a51ceb2bc25d ""
   "topic4.tex" 1616149990 2405 ac3caef8ed8ceca30b3006cf956d2fec ""
   (generated)
+  "LDA_brief.log"
+  "bu.aux"
   "LDA_brief.out"
   "LDA_brief.pdf"
-  "bu.aux"
   "LDA_brief.aux"
-  "LDA_brief.log"
