@@ -33,34 +33,41 @@ NPMI <- function(NPMI_matrix){
 # dfm: a dfm matrix for package topicmodels
 # nbr_profiles: nbr of profiles for the LDA
 # nbr_topics: nbr of top topics for the NPMI average
-cohesion <- function(dfm, nbr_profiles=2, nbr_topics=5){
+cohesion <- function(dfm, nbr_profiles=2, nbr_topics=c(5)){
   #Top answers for each profile
-  terms<-terms(LDA(dfm, method="Gibbs", k=nbr_profiles, control=list(seed=42)), nbr_topics)
-  
-  #Joint probability matrix
-  dfm <- as.matrix(dfm)
-  joint_prob <- (t(dfm) %*% dfm)/NROW(dfm)
-  
-  # Calculate avg of NPMI for each profile
-  NPMI_avg <- c()
-  for(k in 1:nbr_profiles){
-    #Matrix of joint prob for top topics of the profile
-    B_prob <- joint_prob[terms[,k],terms[,k]]
+  lda <- LDA(dfm, method="Gibbs", k=nbr_profiles, control=list(seed=42))
+  m <- 0
+  cohesion <- c()
+  for(l in nbr_topics){
+    terms<-terms(lda, as.integer(l))
+    m <- m + 1
     
-    # Apply NPMI to all pair
-    NPMI_matrix <- c()
-    for(j in terms[,k]){
-      for(i in terms[,k]){
-        NPMI_matrix<-c(NPMI_matrix,NPMI(B_prob[c(j,i),c(j,i)]))
+    topics_int <- as.integer(nbr_topics[m])
+    #Joint probability matrix
+    dfm <- as.matrix(dfm)
+    joint_prob <- (t(dfm) %*% dfm)/NROW(dfm)
+    
+    # Calculate avg of NPMI for each profile
+    NPMI_avg <- c()
+    for(k in 1:nbr_profiles){
+      #Matrix of joint prob for top topics of the profile
+      B_prob <- joint_prob[terms[,k],terms[,k]]
+      
+      # Apply NPMI to all pair
+      NPMI_matrix <- c()
+      for(j in terms[,k]){
+        for(i in terms[,k]){
+          NPMI_matrix<-c(NPMI_matrix,NPMI(B_prob[c(j,i),c(j,i)]))
+        }
       }
+      dim(NPMI_matrix) <- c(topics_int, topics_int)
+      
+      # Avg of NPMIs within a profile
+      NPMI_avg[k] <- (sum(NPMI_matrix*(upper.tri(NPMI_matrix)+lower.tri(NPMI_matrix)))/(topics_int*(topics_int-1)))
     }
-    dim(NPMI_matrix) <- c(nbr_topics, nbr_topics)
-    
-    # Avg of NPMIs within a profile
-    NPMI_avg[k] <- (sum(NPMI_matrix*(upper.tri(NPMI_matrix)+lower.tri(NPMI_matrix)))/(nbr_topics*(nbr_topics-1)))
+    # Avg of NPMI_avg of all profiles
+    cohesion[m] <- sum(NPMI_avg)/nbr_profiles
   }
-  # Avg of NPMI_avg of all profiles
-  cohesion <- sum(NPMI_avg)/nbr_profiles
   return(cohesion)
 }
 
@@ -787,11 +794,11 @@ dfm <- quanteda::convert(dfm, to ="topicmodels")
 #topics <- c(5,10,15,20)
 #profiles <-c(2:10)
 # main function
-#cohesion_matrix<-sapply(profiles, function(profiles) sapply(topics,cohesion,dfm=dfm, nbr_profiles=profiles))
+#cohesion_matrix<-sapply(profiles,cohesion,dfm=dfm, nbr_topics=topics)
 #colnames(cohesion_matrix) <- paste("Profiles", profiles, sep="_")
 #rownames(cohesion_matrix) <- paste("Topics", topics, sep="_")
 #cohesion_avg <- colSums(cohesion_matrix)/length(topics)
-
+#
 #cohesion_df <- data.frame(profiles, cohesion_avg)
 #ggplot(cohesion_df, aes(x=profiles, y=cohesion_avg)) + geom_line() + xlab("Number of Profiles") + ylab("Cohesion Score")
 
@@ -805,7 +812,6 @@ dfm <- quanteda::convert(dfm, to ="topicmodels")
 
 #### 2 topics ####
 lda_out2 <- LDA(dfm, method="Gibbs", k=2, control=list(seed=42))
-
 
 terms(lda_out2, 20)
 
