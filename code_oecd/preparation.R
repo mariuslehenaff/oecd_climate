@@ -2291,7 +2291,7 @@ convert <- function(e, country, wave = NULL) {
   }
   
   if ("GHG_methane" %in% names(e)) {
-    e$score_GHG <- e$GHG_CO2 + e$GHG_methane - e$GHG_H2 - e$GHG_particulates + 2
+    e$score_GHG <- e$GHG_CO2 + e$GHG_methane - e$GHG_H2 - e$GHG_particulates + 2 # TODO: don't know
     e$know_GHG_CO2 <- e$GHG_CO2
     e$know_GHG_methane <- e$GHG_methane
     e$know_GHG_H2 <- ifelse(e$GHG_H2, F, T)
