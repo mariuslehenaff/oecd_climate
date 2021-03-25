@@ -128,8 +128,8 @@ save_plotly(insulation_US, width= 600, height=140)
 (gas_expenses_US <- barres(vars = "gas_expenses", df = e, miss=F, labels="Monthly gas expenses", rev = F))
 save_plotly(gas_expenses_US, width= 800, height=140)
 
-(flights_desagg_US <- barres(vars = "flights_agg", df = e, miss=F, rev = F, labels="Round-trip flights in 2019"))
-save_plotly(flights_desagg_US, width= 640, height=140)
+(flights_3y_US <- barres(vars = "flights_agg", df = e, miss=F, rev = F, labels="Round-trip flights between 2017 and 2019"))
+save_plotly(flights_3y_US, width= 640, height=140)
 
 (frequency_beef_US <- barres(vars = "frequency_beef", df = e, miss=F, rev = F, labels="How often do you eat beef?"))
 save_plotly(frequency_beef_US, width= 720, height=140)
@@ -203,8 +203,17 @@ save_plotly(footprint_transport_US, width= 400, height=220)
 (footprint_food_US <- barres(vars = Variables_footprint$fd[c(2,3,1)], df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$fd[c(2,3,1)]))
 save_plotly(footprint_food_US, width= 400, height=220) 
 
-(footprint_region_US <- barres(vars = Variables_footprint$reg[4:1], df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$reg[4:1]))
+(footprint_region_US <- barres(vars = paste(Variables_footprint$reg, "original", sep="_")[c(4,2,1,3)], df = e, rev = F, rev_color = T, miss=T, sort = F, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$reg[c(4,2,1,3)]))
 save_plotly(footprint_region_US, width= 400, height=280) 
+
+(footprint_region_no_miss_US <- barres(vars = Variables_footprint$reg[c(4,2,1,3)], df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$reg[c(4,2,1,3)]))
+save_plotly(footprint_region_no_miss_US, width= 400, height=280) 
+
+(footprint_pc_US <- barres(vars = paste(Variables_footprint$pc, "original", sep="_")[4:1], df = e, rev = F, rev_color = T, miss=T, sort = F, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$pc[4:1]))
+save_plotly(footprint_pc_US, width= 400, height=280) 
+
+(footprint_pc_no_miss_US <- barres(vars = Variables_footprint$pc[4:1], df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$pc[4:1]))
+save_plotly(footprint_pc_no_miss_US, width= 400, height=280) 
 
 (footprint_elec_US_extr <- barres(vars = c("least_footprint_el", "most_footprint_el"), df = e, miss=F, sort = F, labels=c("Smallest footprint", "Largest footprint")))
 save_plotly(footprint_elec_US_extr, width= 470, height=200) 
@@ -215,8 +224,11 @@ save_plotly(footprint_transport_US_extr, width= 470, height=200)
 (footprint_food_US_extr <- barres(vars = c("least_footprint_fd", "most_footprint_fd"), df = e, miss=F, sort = F, labels=c("Smallest footprint", "Largest footprint")))
 save_plotly(footprint_food_US_extr, width= 470, height=200) 
 
-(footprint_region_US_extr <- barres(vars = c("least_footprint_reg", "most_footprint_reg"), df = e, miss=F, sort = F, labels=c("Smallest footprint", "Largest footprint")))
+(footprint_region_US_extr <- barres(vars = c("least_footprint_reg", "most_footprint_reg"), df = e, miss=T, sort = F, labels=c("Smallest footprint", "Largest footprint")))
 save_plotly(footprint_region_US_extr, width= 470, height=200) 
+
+(footprint_pc_US_extr <- barres(vars = c("least_footprint_pc", "most_footprint_pc"), df = e, miss=T, sort = F, labels=c("Smallest footprint", "Largest footprint")))
+save_plotly(footprint_pc_US_extr, width= 470, height=200) 
 
 (score_footprint_transport_US <- barres(vars = "score_footprint_transport", rev = F, df = e, miss=F, labels="Distance true ranking<br>transport footprint"))
 save_plotly(score_footprint_transport_US, width= 520, height=140) 
@@ -224,7 +236,10 @@ save_plotly(score_footprint_transport_US, width= 520, height=140)
 (score_footprint_food_US <- barres(vars = "score_footprint_food", rev = F, df = e, miss=F, labels="Distance true ranking<br>food footprint"))
 save_plotly(score_footprint_food_US, width= 520, height=140)
 
-(score_footprint_region_US <- barres(vars = "score_footprint_region", rev = F, df = e, miss=F, labels="Distance to true ranking of<br>regional per capita footprint"))
+(score_footprint_pc_US <- barres(vars = "score_footprint_pc", rev = F, df = e, miss=F, labels="Distance to true ranking of<br>regional per capita footprint"))
+save_plotly(score_footprint_pc_US, width= 520, height=140)
+
+(score_footprint_region_US <- barres(vars = "score_footprint_region", rev = F, df = e, miss=F, labels="Distance to true ranking of<br>regional total footprint"))
 save_plotly(score_footprint_region_US, width= 520, height=140)
 
 (score_footprint_elec_US <- barres(vars = "score_footprint_elec", rev = F, df = e, miss=F, labels="Distance true ranking<br>electricity footprint"))
@@ -422,9 +437,11 @@ labels_tax[8] <- "Subsidizing low-carbon technologies, including renewables"
 save_plotly(tax_US, width= 930, height=400) 
 
 ##### 11. WTP #####
+(wtp_US <- barres(vars = rev(variables_wtp), df = e, miss=F, sort = F, labels=rev(c("WTP to limit global warming ($/year): 10", "30", "50", "100", "300", "500", "1000"))))
+save_plotly(wtp_US, width= 680, height=340)
 
-(wtp_US <- barres(vars = "wtp", df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="WTP to limit global warming ($/year)"))
-save_plotly(wtp_US, width= 1050, height=200)
+# (wtp_US <- barres(vars = "wtp", df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="WTP to limit global warming ($/year)"))
+# save_plotly(wtp_US, width= 1050, height=200)
 
 (wtp_agg_US <- barres(vars = "wtp_agg", df = e, miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
 save_plotly(wtp_agg_US, width= 950, height=140)
@@ -494,6 +511,12 @@ save_plotly(global_policies_US, width= 800, height=250)
 
 (will_insulate_US <- barres(vars = "will_insulate", df = e, miss=F, labels="Insulate or replace heating<br>over the next 5 years"))
 save_plotly(will_insulate_US, width= 600, height=140)
+
+(insulation_support_US <- barres(vars = "insulation_support", df = e, miss=F, labels="Mandatory insulation with subsidies"))
+save_plotly(insulation_support_US, width= 1030, height=140)
+
+(insulation_support_variant_US <- barres12(vars = "insulation_support", df = list(e[e$insulation_disruption_variant==T,], e[e$insulation_disruption_variant==F,]), orig="<br>Control", comp = "Priming: renovation cause disruption", miss=F, labels="Mandatory insulation with subsidies"))
+save_plotly(insulation_support_variant_US, width= 1035, height=140)
 
 labels_obstacles_insulation <- c()
 for (v in variables_obstacles_insulation) labels_obstacles_insulation <- c(labels_obstacles_insulation, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))

@@ -3,6 +3,7 @@
 # TODO prepare an LDA analysis 
 # TODO>Perhaps also do a principal component analysis, and/or a decision tree for key questions
 # TODO!Redo analysis with full sample
+# TODO Carbon footprint (corr vote, etc.)
 
 ##### Metadata #####
 decrit("finished", data = e)
@@ -12,6 +13,7 @@ decrit("urban_category", data = e)
 decrit("treatment_policy", data = e)
 decrit("treatment_climate", data = e)
 decrit("variant_flight_quota", data = e)
+decrit("attentive", data = e)
 any(duplicated(e$PSID))
 # TODO ranking vs. order of display
 
@@ -36,8 +38,9 @@ decrit("duration_policies", data = e) # 1 min
 
 
 ##### Socio-demographics ####
-xtabs(~sector_choice, e)
-e$sector_other[grepl("specify", e$sector_choice)]
+xtabs(~sector, e)
+xtabs(~sector_choice, usp3all)
+usp3all$sector_other[grepl("specify", usp3all$sector_choice)]
 # AGR Agriculture 01 - 03
 # CHM Chemical Industry 20 - 21
 # MCH Machinery and Equipment 26 - 30, 33
@@ -49,7 +52,7 @@ e$sector_other[grepl("specify", e$sector_choice)]
 # HEA Health 86
 # OSE Other Services 36 - 39, 45 - 47, 53 - 63, 68 - 97
 # OIN Other Industries
-sum(grepl("nformation|IT|^it$|software", e$sector_other)) # TODO! /!\ 10% work in IT
+sum(grepl("nformation|IT|^it$|software", usp3all$sector_other)) # TODO! /!\ 10% work in IT
 decrit("gender", data = e)
 decrit("age", data = e)
 decrit("age_quota", data = e)
@@ -76,6 +79,7 @@ decrit("hh_adults", data = e)
 decrit("heating", data = e)
 decrit("km_driven", data = e)
 decrit("flights", data = e)
+decrit("flights_agg", data = e)
 decrit("frequency_beef", data = e) # 7/23/54/17%
 for (v in variables_transport) print(decrit(v, data = e)) # available but using car
 
@@ -292,7 +296,8 @@ summary(lm(as.formula(paste("willing_limit_driving>0 ~ ", end_formula3)), data =
 
 summary(lm(as.formula(paste("CC_problem==2 ~ ", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("CC_impacts_more_migration==2 ~ ", end_formula3)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("wtp >= 50 ~ ", end_formula3)), data = e, weights = e$weight))
+# summary(lm(as.formula(paste("WTP >= 50 ~ ", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("wtp == 'Yes' ~ ", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("net_zero_feasible>0 ~ ", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("CC_affects_self>0 ~ ", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("CC_will_end>0 ~ ", end_formula3)), data = e, weights = e$weight))
@@ -380,6 +385,8 @@ for (v in variables_tax) print(decrit(v, data = e))
 
 
 ##### Preference for bans vs. incentives ######
+decrit("insulation_support", data = e)
+decrit("insulation_disruption_variant", data = e)
 decrit("insulation_compulsory", data = e)
 decrit("flights", data = e)
 decrit("flights", data = e, which = e$flights == 0) # 54
@@ -399,6 +406,8 @@ decrit("ban_incentives", data = e)
 
 ##### WTP ######
 decrit("wtp", data = e)
+decrit("WTP", data = usp3all)
+CrossTable(e$wtp, e$wtp_variant, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
 
 
 ##### Poltical views and media consumption ######
