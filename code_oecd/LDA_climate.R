@@ -71,7 +71,78 @@ cohesion <- function(dfm, nbr_profiles=2, nbr_topics=c(5)){
   return(cohesion)
 }
 
+# Function to get within-person concentration
+gini_slant <- function(lda_gamma){
+  gini_vect <- c()
+  for(i in 1:max(lda_gamma$document)){
+    #get the type shares for each types
+    shares <- lda_gamma$gamma[lda_gamma$document==i]
+    #take distance between those two
+    matrix_diff <- abs(outer(shares,shares,FUN="-"))
+    #compute Gini measure
+    gini_vect[i]<- sum(matrix_diff)/(2*(max(lda_gamma$topic)-1)*sum(shares))
+  }
+  return(gini_vect)
+}
 
+
+#Input a LDA from Topicmodels package
+polarisation <- function(lda_out, nu = 0.5){
+  # Nbr of persons per type
+  topics_vect <- topics(lda_out)
+  
+  nbr_profiles <- 1:max(topics_vect)
+  pop_profile <- sapply(nbr_profiles, function(x) sum(topics_vect==x))
+  
+  #Get beta vectors
+  lda_topics <- lda_out %>%
+    tidy(matrix = "beta") %>%
+    arrange(topic, desc(beta))
+  
+  #Get gamma matrix
+  gamma_df <- lda_out %>%
+    tidy(matrix = "gamma")
+  # Sort matrix in terms of id of respondent and % of each profile
+  gamma_df$document <- substr(gamma_df$document, 5, 10)
+  gamma_df$document <- as.numeric(gamma_df$document)
+  gamma_df <- gamma_df %>%
+    arrange(document)
+  #Add assigned group to gamma matrix
+  gamma_df$assigned <- rep(topics_vect, each=max(topics_vect))
+  #Share of each type for each type
+  gamma_mean<- gamma_df %>%
+    group_by(assigned, topic) %>% 
+    summarise(gamma = mean(gamma))
+  gamma_mean <- gamma_mean$gamma
+  dim(gamma_mean) <- c(max(topics_vect),max(topics_vect))
+  # [1,2]: share of type 1 for dominant group 2 (i.e on avg what share of type 1 do member of type 2 have)
+  # [2,1]: share of type 2 for dominant group 1:
+  # we can check this matrix to have a sense of polarization (do each column differ a lot?/
+  # do a profile only has a few share of the others?)
+  
+  kappa<- sum(pop_profile)^(-(2+nu))
+  polarisation <- 0
+  # Compute Polarisation
+  for(t in 1:max(topics_vect)){
+    sum_j <- 0
+    #Multiply by share
+    for(j in 1:max(topics_vect)){
+      diff_tk <- 0
+      # Distance for each share + rho. k is second subscript in equation.
+      for(k in 1:max(topics_vect)){
+        beta_t<-lda_topics$beta[lda_topics$topic==t]
+        beta_k<-lda_topics$beta[lda_topics$topic==k]
+        rho_tk <- (3-cor(beta_t,beta_k))/2
+        
+        diff_tk <- diff_tk + abs(gamma_mean[t,k]-gamma_mean[j,k])*rho_tk
+      }
+      sum_j <- sum_j + diff_tk*pop_profile[j]*pop_profile[t]^(1+nu)
+    }
+    polarisation <- polarisation+sum_j
+  }
+  polarisation <- polarisation*kappa
+  return(polarisation)
+}
 
 ######## Classify each question into clear cut categories
 
@@ -931,6 +1002,9 @@ desc_table(dep_vars = c("topic3_1", "topic3_2", "topic3_3"), filename = "../LDA/
 lda_out4 <- LDA(dfm, method="Gibbs", k=4, control=list(seed=42))
 
 terms(lda_out4, 6)
+
+# polarisation
+polarisation(lda_out4, nu=0.5)
 
 # Per-topic-per-word probabilities
 lda_topics4 <- lda_out4 %>%
