@@ -11,7 +11,7 @@ remove_id <- function(file, folder = "../data/") {
 }
 for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US")) remove_id(file)
 
-# TODO!!: nb_policies_supported, score_knowlege_CC, score_trust, standard of living, zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
+# TODO!!: nb_policies_supported, consistency_answers, score_knowlege_CC, score_trust, standard of living, zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
 # temp <- prepare(country = "US", wave = "pilot2", duration_min = 0, exclude_screened = F, only_finished = F)
 # comp <- read_csv2("../data/complete_PSID.csv" )
 # psid <- as.matrix(comp$IdParameter, ncol=1)
@@ -993,7 +993,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "wealth",
       "education", 
       "employment_status",
-      "polluting_sector_active",
+      "polluting_sector_active", # TODO! combined
       "polluting_sector_inactive",
       "sector_active", 
       "sector_inactive",
@@ -1262,7 +1262,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "region",
       "winner_latent",
       "winner",
-      "clicked_petition"
+      "clicked_petition" # TODO! right-click: 2/ left: 1
     )
     e <- e[,-c(302:313)]
   }
@@ -2204,6 +2204,8 @@ convert <- function(e, country, wave = NULL) {
   text_know_ban <- c("US" = "A ban on combustion-engine cars")
   text_know_investments_funding <- c("US" = "Additional government debt")
   
+  text_sector_no <- c("US" = "No, none of the above")
+  
   if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% text_a_little
   
   for (v in intersect(names(e), c(variables_burden_sharing, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
@@ -2431,6 +2433,9 @@ convert <- function(e, country, wave = NULL) {
     e$sector[e$employment_agg == "Student"] <- "Student"
     e$sector[e$inactive == T] <- e$sector_inactive[e$inactive == T]
     e$sector[e$employment_agg == "Working"] <- e$sector_active[e$employment_agg == "Working"]
+    e$which_polluting_sector[e$employment_agg == "Working"] <- e$polluting_sector_active[e$employment_agg == "Working"]
+    e$which_polluting_sector[e$inactive == T] <- e$polluting_sector_inactive[e$inactive == T]
+    e$polluting_sector <- !(e$which_polluting_sector %in% c(text_sector_no, "Other energy industries")) & !is.pnr(e$which_polluting_sector)
     
   }
   
@@ -2653,6 +2658,8 @@ convert <- function(e, country, wave = NULL) {
     e$know_treatment_climate <- (e$know_temperature_2100 %in% text_know_temperature_2100) + (e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves)
     if ("know_standard" %in% names(e)) e$know_treatment_policy <- (e$know_standard  %in% text_know_standard) + (e$know_investments_jobs  %in% text_know_investments_jobs)
     else e$know_treatment_policy <- (e$know_ban  %in% text_know_ban) + (e$know_investments_funding  %in% text_know_investments_funding)
+    e$know_treatment_climate[e$treatment_climate == 0] <- NA
+    e$know_treatment_policy[e$treatment_policy == 0] <- NA
     label(e$know_treatment_climate) <- "know_treatment_climate: Number of good responses among the 2 knowledge questions related to treatment content: temperature_2100 = 8°F & frequence_heatwaves = 70 days per year"
     label(e$know_treatment_policy) <- "know_treatment_policy: Number of good responses among the 2 knowledge questions related to treatment content: ban = A ban on combustion-engine cars & investments_funding = 1.5 million"
   }
@@ -2776,7 +2783,7 @@ convert <- function(e, country, wave = NULL) {
     }
   }
 
-  e$rush_treatment <- e$duration_treatment_climate < 2.4 | e$duration_treatment_policy < 4.45 # TODO!! adapt time for climate
+  e$rush_treatment <- e$duration_treatment_climate/60 < 3 | e$duration_treatment_policy/60 < 4.75 # TODO!! adapt time for pilots
   e$rush_treatment[is.na(e$rush_treatment)] <- F
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
 
@@ -2950,7 +2957,7 @@ usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
 usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
-e <- us <- prepare(country = "US", wave = "full", duration_min = 686, weighting = F)
+e <- us <- prepare(country = "US", wave = "full", duration_min = 686)
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T, by="date")
 

@@ -325,17 +325,17 @@ summary(lm(as.formula(paste("standard_win_lose_poor>0 ~", end_formula3)), data =
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
-desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "pro_ambitious_policies > 0", "willing_limit_driving > 0"), filename = "USP3_1",
-           dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "Ambitious policies needed", "Willing to limit driving"),
+desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC > 0", "willing_limit_driving > 0"), filename = "US_1",
+           dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "US should fight CC", "Willing to limit driving"),
            data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
-desc_table(dep_vars = c("tax_transfers_support > 0", "investments_support > 0", "standard_support > 0", "policies_support > 0"), filename = "USP3_2",
+desc_table(dep_vars = c("tax_transfers_support > 0", "investments_support > 0", "standard_support > 0", "policies_support > 0"), filename = "US_2",
            dep.var.labels = c("Carbon tax with transfers", "Green Infrastructure Program", "Emission standard for cars", "Average over 3 policies"),
            dep.var.caption = c("Support"), data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
-desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_negative_effect > 0"), filename = "USP3_3",
+desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_negative_effect > 0"), filename = "US_3",
            dep.var.labels =  c("Fair", "HH would win", "Poor would win", "Large economic effect", "Negative economic effect"),
            data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
@@ -429,6 +429,7 @@ decrit("political_affiliation", data = e)
 ##### Feedback ######
 decrit("survey_biased", data = usp1) # 40% Pro-envi biased. 
 decrit("survey_biased", data = usp2)
+decrit("survey_biased", data = e)
 e$comment_field # Most don't leave a comment, many "Good survey", many (but less) critics that it's pro-envi biased, a few critics that some options are missing (but no example): c(3, 46, 135, 192)
 
 

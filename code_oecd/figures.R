@@ -26,7 +26,7 @@ data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weig
 data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), c(.134, .185, .080, .601))
 data_income <- cbind(dataKN("income", data=e, miss=F, weights = F), dataKN("income", data=e, miss=F, weights = T), c(0.2034,0.239,0.2439,0.3137))
 data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), c(0.342171, 0.345006, 0.312823, 0))
-# data_urbanity <- cbind(dataKN("urbanity", data=e, miss=F, weights = F), dataKN("urbanity", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: find official freq for these ones and plot figures
+# data_urbanity <- cbind(dataKN("urbanity", data=e, miss=F, weights = F), dataKN("urbanity", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: find official freq for these ones and plot figures, also on polluting sector
 # data_education <- cbind(dataKN("education", data=e, miss=F, weights = F), dataKN("education", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_wealth <- cbind(dataKN("wealth", data=e, miss=F, weights = F), dataKN("wealth", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
 # data_occupation <- cbind(dataKN("occupation", data=e, miss=F, weights = F), dataKN("occupation", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
@@ -94,6 +94,9 @@ save_plotly(occupation_US, width= 610, height=140)
 #(sector_US <- barres(vars = "sector", df = e, miss=F, labels="What is your primary line of business?"))
 #save_plotly(sector_US, width= 630, height=140)
 
+(polluting_sector_US <- barres(vars = "polluting_sector", df = e, miss=F, showLegend = F, rev_color = T, rev = F, labels="Current (or last) job is in a polluting sector."))
+save_plotly(polluting_sector_US, width= 600, height=140)
+
 (hit_by_covid_US <- barres(vars = "hit_by_covid", df = e, miss=F, labels="Hit by covid"))
 save_plotly(hit_by_covid_US, width= 420, height=140)
 
@@ -157,6 +160,7 @@ save_plotly(watched_climate_US, width= 900, height=140)
 
 (know_treatment_climate_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, df = e, miss=F, labels="Score knowledge climate video"))
 save_plotly(know_treatment_climate_US, width= 580, height=140)
+# TODO! know four
 
 # (know_treatment_climate_watched_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, df = e[e$watched_climate=='Yes',], miss=F, labels="Score knowledge climate video"))
 # save_plotly(know_treatment_climate_watched_US, width= 580, height=140)
@@ -211,7 +215,7 @@ save_plotly(footprint_region_no_miss_US, width= 400, height=280)
 
 (footprint_pc_US <- barres(vars = paste(Variables_footprint$pc, "original", sep="_")[4:1], df = e, rev = F, rev_color = T, miss=T, sort = F, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$pc[4:1]))
 save_plotly(footprint_pc_US, width= 400, height=280) 
-
+# TODO! polluting_sector
 (footprint_pc_no_miss_US <- barres(vars = Variables_footprint$pc[4:1], df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$pc[4:1]))
 save_plotly(footprint_pc_no_miss_US, width= 400, height=280) 
 
@@ -335,7 +339,7 @@ save_plotly(investments_support_US, width= 980, height=140)
 labels_investments_funding <- c()
 for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (investments_funding_US <- barres(vars = variables_investments_funding, df = e, rev = F, miss = T, labels=labels_investments_funding,showLegend=F))
-save_plotly(investments_funding_US, width= 880, height=143)  
+save_plotly(investments_funding_US, width= 880, height=143) # TODO! size 
 
 ##### 9. Pref 3: Tax and dividend #####
 labels_tax_transfers_effects <- c() 
@@ -422,8 +426,10 @@ save_plotly(tax_transfers_all_US, width= 1150, height=430)
 labels_support <- c("Strongly oppose", "Somewhat oppose", "Indifferent", "Somewhat support", "Strongly support")
 labels_policy <- c()
 for (v in variables_policy) labels_policy <- c(labels_policy, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-labels_policy[5] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
-labels_policy[6] <- "Financing clean energy in low-income countries" 
+# labels_policy[5] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
+# labels_policy[6] <- "Financing clean energy in low-income countries" 
+labels_policy[4] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
+labels_policy[5] <- "Financing clean energy in low-income countries" 
 labels_policy[2] <- "National tax on fossil fuels (+$0.40/gallon)" 
 (policy_US <- barres(vars = variables_policy, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_policy, hover=labels_support))
 save_plotly(policy_US, width= 920, height=340)
@@ -516,7 +522,7 @@ save_plotly(will_insulate_US, width= 600, height=140)
 save_plotly(insulation_support_US, width= 1030, height=140)
 
 (insulation_support_variant_US <- barres12(vars = "insulation_support", df = list(e[e$insulation_disruption_variant==T,], e[e$insulation_disruption_variant==F,]), orig="<br>Control", comp = "Priming: renovation cause disruption", miss=F, labels="Mandatory insulation with subsidies"))
-save_plotly(insulation_support_variant_US, width= 1035, height=140)
+save_plotly(insulation_support_variant_US, width= 1035, height=140) # TODO! include in overleaf
 
 labels_obstacles_insulation <- c()
 for (v in variables_obstacles_insulation) labels_obstacles_insulation <- c(labels_obstacles_insulation, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -740,4 +746,4 @@ correlogram("standard_")
 correlogram("investments_")
 correlogram("tax_transfers_")
 
-
+# TODO! pro_ambitious_policies_US CC_attitude_US policy_US wtp_agg_US cdf_wtp_US cdf_donation_US  vote_voters_2016_US vote_participation_2016_US  insulation_support_US insulation_subsidies_support_US  occupation_US  correlogram("investments_") wtp_agg_US_anthropogenic 
