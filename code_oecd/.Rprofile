@@ -838,7 +838,7 @@ save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '..
   if (trim) image_write(image_trim(image_read(file)), file)
 }
 correlogram <- function(grep = NULL, vars = NULL, df = e) {
-  if (missing(vars)) vars <- names(df)[grepl(grep, names(df))]
+  if (missing(vars)) vars <- names(df)[grepl(grep, names(df)) & !grepl("_funding|_correct", names(df))]
   data <- df[,vars]
   names(data) <- vars
   corr <- cor(data, use="complete.obs")

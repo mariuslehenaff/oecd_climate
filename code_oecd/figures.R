@@ -19,7 +19,7 @@
 labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
 label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal")
 labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor disagree", "Somewhat agree", "Strongly agree")
-data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
+data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: remove 0 if there is not "Other" in data
 data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
 data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
 data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), c(0.7324))
@@ -145,8 +145,7 @@ save_plotly(transport_US, width= 850, height=275)
 (availability_transport_US <- barres(vars = "availability_transport", df = e, rev_color = T, miss=F, labels="Quality and availability of public transport near your home"))
 save_plotly(availability_transport_US, width= 870, height=140)
 
-# TODO: analysis CC_field, feedback
-rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70)
+rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70) # TODO: update
 rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = c("climate", "change", "government"))
 
 ##### POST-TREATMENT #####
@@ -156,11 +155,10 @@ rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWord
 save_plotly(watched_climate_US, width= 900, height=140)
 
 # (know_treatment_climate_US <- barres(vars = c("know_temperature_2100", "know_frequence_heatwaves"), rev = F, rev_color = T, df = e, miss=F, labels="Knowledge climate video"))
-# save_plotly(know_treatment_climate_US, width= 580, height=140) # TODO decomposed
+# save_plotly(know_treatment_climate_US, width= 580, height=140)
 
 (know_treatment_climate_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, df = e, miss=F, labels="Score knowledge climate video"))
 save_plotly(know_treatment_climate_US, width= 580, height=140)
-# TODO! know four
 
 # (know_treatment_climate_watched_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, df = e[e$watched_climate=='Yes',], miss=F, labels="Score knowledge climate video"))
 # save_plotly(know_treatment_climate_watched_US, width= 580, height=140)
@@ -172,6 +170,11 @@ save_plotly(watched_policy_US, width= 900, height=140)
 (know_treatment_policy_US <- barres(vars = "know_treatment_policy", df = e, rev = F, rev_color = T, miss=F, labels="Score knowledge policy video"))
 save_plotly(know_treatment_policy_US, width= 580, height=140)
 
+# labels_know_treatment <- c("Knows CC would cause 70 days of<br>heatwaves per year in the US by 2100", "Knows temperature would be +8°F<br>by 2100 with current trend emissions", "Knows first policy presented is<br>ban on combustion-engine cars", "Knows green infrastructure program<br>described would be debt-funded")
+labels_know_treatment <- c("Knows CC would cause 70 days of<br>heatwaves per year in the US by 2100", "Knows temperature would be +8 Fahrenheit<br>by 2100 with current trend emissions", "Knows first policy presented is<br>ban on combustion-engine cars", "Knows green infrastructure program<br>described would be debt-funded")
+(know_treatment_US <- barres(vars = paste0(variables_know_treatment, "_correct"), df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=labels_know_treatment))
+save_plotly(know_treatment_US, width= 830, height=280)
+
 ##### 5. Climate knowledge #####
 
 (CC_talks_US <- barres(vars = "CC_talks", df = e, rev = F, rev_color = T, miss=F, labels="How often do you talk about climate change?"))
@@ -182,6 +185,9 @@ save_plotly(CC_real_US, width= 540, height=140)
 
 (CC_anthropogenic_US <- barres(vars = "CC_anthropogenic", rev = F, rev_color = T, df = e, miss=F, labels="Part of climate change anthropogenic"))
 save_plotly(CC_anthropogenic_US, width= 660, height=140)
+
+(CC_anthropogenic_non_deniers_US <- barres(vars = "CC_anthropogenic", rev = F, rev_color = T, df = e[e$CC_real!="No",], miss=F, labels="Part of climate change anthropogenic"))
+save_plotly(CC_anthropogenic_non_deniers_US, width= 660, height=140)
 
 (CC_problem_US <- barres(vars = "CC_problem", df = e, miss=F, rev = F, rev_color = T, labels="Climate change is an important problem."))
 save_plotly(CC_problem_US, width= 1125, height=140) 
@@ -215,7 +221,7 @@ save_plotly(footprint_region_no_miss_US, width= 400, height=280)
 
 (footprint_pc_US <- barres(vars = paste(Variables_footprint$pc, "original", sep="_")[4:1], df = e, rev = F, rev_color = T, miss=T, sort = F, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$pc[4:1]))
 save_plotly(footprint_pc_US, width= 400, height=280) 
-# TODO! polluting_sector
+# TODO? polluting_sector
 (footprint_pc_no_miss_US <- barres(vars = Variables_footprint$pc[4:1], df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$pc[4:1]))
 save_plotly(footprint_pc_no_miss_US, width= 400, height=280) 
 
@@ -246,6 +252,9 @@ save_plotly(score_footprint_pc_US, width= 520, height=140)
 (score_footprint_region_US <- barres(vars = "score_footprint_region", rev = F, df = e, miss=F, labels="Distance to true ranking of<br>regional total footprint"))
 save_plotly(score_footprint_region_US, width= 520, height=140)
 
+(score_footprint_regions_US <- barres(vars = c("score_footprint_pc", "score_footprint_region"), rev = F, sort = F, df = e, miss=T, labels=c("per capita regional footprint", "Distance to true ranking of<br>regional total footprint")))
+save_plotly(score_footprint_regions_US, width= 550, height=200)
+
 (score_footprint_elec_US <- barres(vars = "score_footprint_elec", rev = F, df = e, miss=F, labels="Distance true ranking<br>electricity footprint"))
 save_plotly(score_footprint_elec_US, width= 520, height=140)
 
@@ -272,8 +281,11 @@ save_plotly(CC_affects_self_US, width= 800, height=140)
 (pro_ambitious_policies_US <- barres(vars = "pro_ambitious_policies", df = e,rev = F, rev_color = T, miss = F, labels="Ambitious public policies needed<br>to halt climate change"))
 save_plotly(pro_ambitious_policies_US, width= 670, height=140)
 
-(CC_attitude_US <- barres(vars = c("net_zero_feasible", "CC_affects_self", "pro_ambitious_policies"), df = e,rev = F, rev_color = T, sort = F, miss = F, labels=c("Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S.", "Climate change negatively affects personal life", "Ambitious public policies needed<br>to halt climate change")))
-save_plotly(CC_attitude_US, width= 770, height=250)
+# (CC_attitude_US <- barres(vars = c("net_zero_feasible", "CC_affects_self", "pro_ambitious_policies"), df = e,rev = F, rev_color = T, sort = F, miss = F, labels=c("Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S.", "Climate change negatively affects personal life", "Ambitious public policies needed<br>to halt climate change")))
+# save_plotly(CC_attitude_US, width= 770, height=250)
+
+(CC_attitude_US <- barres(vars = c("net_zero_feasible", "CC_affects_self"), df = e,rev = F, rev_color = T, sort = F, miss = F, labels=c("Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S.", "Climate change negatively affects personal life")))
+save_plotly(CC_attitude_US, width= 750, height=220)
 
 (CC_will_end_US <- barres(vars = "CC_will_end", df = e, miss = F, labels="Likely to halt CC by the end of the century"))
 save_plotly(CC_will_end_US, width= 855, height=140)
@@ -339,7 +351,7 @@ save_plotly(investments_support_US, width= 980, height=140)
 labels_investments_funding <- c()
 for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
 (investments_funding_US <- barres(vars = variables_investments_funding, df = e, rev = F, miss = T, labels=labels_investments_funding,showLegend=F))
-save_plotly(investments_funding_US, width= 880, height=143) # TODO! size 
+save_plotly(investments_funding_US, width= 560, height=260)
 
 ##### 9. Pref 3: Tax and dividend #####
 labels_tax_transfers_effects <- c() 
@@ -452,15 +464,14 @@ save_plotly(wtp_US, width= 680, height=340)
 (wtp_agg_US <- barres(vars = "wtp_agg", df = e, miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
 save_plotly(wtp_agg_US, width= 950, height=140)
 
-mar_old <- par()$mar
-cex_old <- par()$cex
-par(mar = c(3.4, 3.4, 1.1, 0.1), cex=1.5)
-cdf_wtp_US <- Ecdf(e$wtp, weights = e$weight)
-plot(cdf_wtp_US$x, cdf_wtp_US$y, lwd=2, log='x', type='s', col="red", xlab="", ylab="")
-title(ylab=expression("Proportion <= x"), xlab="WTP (in $/year)", line=2.3)
-grid() # TODO legend
-par(mar = mar_old, cex = cex_old)
-
+# mar_old <- par()$mar
+# cex_old <- par()$cex
+# par(mar = c(3.4, 3.4, 1.1, 0.1), cex=1.5)
+# cdf_wtp_US <- Ecdf(e$wtp, weights = e$weight)
+# plot(cdf_wtp_US$x, cdf_wtp_US$y, lwd=2, log='x', type='s', col="red", xlab="", ylab="")
+# title(ylab=expression("Proportion <= x"), xlab="WTP (in $/year)", line=2.3)
+# grid() # TODO legend
+# par(mar = mar_old, cex = cex_old)
 
 (donation_US <- barres(vars = "donation", df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="Donation to climate charity ($/year)"))
 save_plotly(donation_US, width= 1050, height=200)
@@ -519,10 +530,10 @@ save_plotly(global_policies_US, width= 800, height=250)
 save_plotly(will_insulate_US, width= 600, height=140)
 
 (insulation_support_US <- barres(vars = "insulation_support", df = e, miss=F, labels="Mandatory insulation with subsidies"))
-save_plotly(insulation_support_US, width= 1030, height=140)
+save_plotly(insulation_support_US, width= 1035, height=140)
 
 (insulation_support_variant_US <- barres12(vars = "insulation_support", df = list(e[e$insulation_disruption_variant==T,], e[e$insulation_disruption_variant==F,]), orig="<br>Control", comp = "Priming: renovation cause disruption", miss=F, labels="Mandatory insulation with subsidies"))
-save_plotly(insulation_support_variant_US, width= 1035, height=140) # TODO! include in overleaf
+save_plotly(insulation_support_variant_US, width= 1035, height=240) 
 
 labels_obstacles_insulation <- c()
 for (v in variables_obstacles_insulation) labels_obstacles_insulation <- c(labels_obstacles_insulation, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -591,8 +602,11 @@ save_plotly(vote_2020, width= 610, height=140)
 (vote_2016_US <- barres(vars = "vote_2016", df = e, rev_color = T, miss=T, labels="In 2016, voted for"))
 save_plotly(vote_2016_US, width= 650, height=140) 
 
+(vote_all_US <- barres(vars = c("vote_non_voters", "vote_voters", "vote"), df = e, rev_color = T, miss=F, sort = F, labels=c("Non-voters", "Voters", "2020 vote: Voters and non-voters")))
+save_plotly(vote_all_US, width= 600, height=250) # TODO make it work even if Jorgensen/Hawkins don't appear everywhere
+
 (vote_voters_US <- barres(vars = "vote_voters", df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
-save_plotly(vote_voters_US, width= 650, height=140) 
+save_plotly(vote_voters_US, width= 650, height=140) #
 
 (vote_non_voters_US <- barres(vars = "vote_non_voters", df = e, rev_color = T, miss=T, labels="In 2020, voted for (non-voters)"))
 save_plotly(vote_non_voters_US, width= 650, height=140)
@@ -720,8 +734,11 @@ save_plotly(global_assembly_support_US_pol, width= 990, height=220)
 # save_plotly(tax_1p_support_US_pol, width= 780, height=220)
 
 ## Other
-(wtp_agg_US_anthropogenic <- barres12(vars = "wtp_agg", df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
-save_plotly(wtp_agg_US_anthropogenic, width= 830, height=220)
+# (wtp_agg_US_anthropogenic <- barres12(vars = "wtp_agg", df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
+# save_plotly(wtp_agg_US_anthropogenic, width= 830, height=220)
+
+(wtp_US_anthropogenic <- barres12(vars = "wtp", df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, labels="WTP to limit global warming ($/year)"))
+save_plotly(wtp_US_anthropogenic, width= 830, height=220)
 
 # PNR
 for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) > 0.4) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
@@ -745,5 +762,3 @@ correlogram("_negative_effect")
 correlogram("standard_")
 correlogram("investments_")
 correlogram("tax_transfers_")
-
-# TODO! pro_ambitious_policies_US CC_attitude_US policy_US wtp_agg_US cdf_wtp_US cdf_donation_US  vote_voters_2016_US vote_participation_2016_US  insulation_support_US insulation_subsidies_support_US  occupation_US  correlogram("investments_") wtp_agg_US_anthropogenic 

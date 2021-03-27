@@ -11,7 +11,7 @@ remove_id <- function(file, folder = "../data/") {
 }
 for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US")) remove_id(file)
 
-# TODO!!: nb_policies_supported, consistency_answers, score_knowlege_CC, score_trust, standard of living, zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
+# TODO!!: CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_knowlege_CC, score_trust, standard of living,// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
 # temp <- prepare(country = "US", wave = "pilot2", duration_min = 0, exclude_screened = F, only_finished = F)
 # comp <- read_csv2("../data/complete_PSID.csv" )
 # psid <- as.matrix(comp$IdParameter, ncol=1)
@@ -993,7 +993,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "wealth",
       "education", 
       "employment_status",
-      "polluting_sector_active", # TODO! combined
+      "polluting_sector_active", 
       "polluting_sector_inactive",
       "sector_active", 
       "sector_inactive",
@@ -1262,7 +1262,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "region",
       "winner_latent",
       "winner",
-      "clicked_petition" # TODO! right-click: 2/ left: 1
+      "clicked_petition" 
     )
     e <- e[,-c(302:313)]
   }
@@ -1853,7 +1853,7 @@ convert <- function(e, country, wave = NULL) {
     label(e$km_driven) <- "km_driven: How many kilometers have you and your household members driven in 2019?" }
   if ("hh_children" %in% names(e)) {
     e$hh_size <- e$hh_adults + e$hh_children
-  # e$bad_quality <- 0 # TODO inattention question 
+  # e$bad_quality <- 
   # e$bad_quality[e$hh_size > 12] <- 1.3 + e$bad_quality[e$hh_size > 12] # 
   # e$bad_quality[e$hh_children > 10] <- 1 + e$bad_quality[e$hh_children > 10] # 
     e$hh_size <- pmin(e$hh_size, 12)
@@ -2662,6 +2662,17 @@ convert <- function(e, country, wave = NULL) {
     e$know_treatment_policy[e$treatment_policy == 0] <- NA
     label(e$know_treatment_climate) <- "know_treatment_climate: Number of good responses among the 2 knowledge questions related to treatment content: temperature_2100 = 8°F & frequence_heatwaves = 70 days per year"
     label(e$know_treatment_policy) <- "know_treatment_policy: Number of good responses among the 2 knowledge questions related to treatment content: ban = A ban on combustion-engine cars & investments_funding = 1.5 million"
+    e$know_temperature_2100_correct <- e$know_temperature_2100 %in% text_know_temperature_2100
+    e$know_frequence_heatwaves_correct <- e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves
+    e$know_temperature_2100_correct[e$treatment_climate == 0] <- e$know_frequence_heatwaves_correct[e$treatment_climate == 0] <- NA
+    if ("know_standard" %in% names(e)) {
+      e$know_standard_correct <- e$know_standard  %in% text_know_standard
+      e$know_investments_jobs_correct <- e$know_investments_jobs  %in% text_know_investments_jobs
+      e$know_standard_correct[e$treatment_policy == 0] <- e$know_investments_jobs_correct[e$treatment_policy == 0] <- NA
+    } else {
+      e$know_investments_funding_correct <- e$know_investments_funding  %in% text_know_investments_funding
+      e$know_ban_correct <- e$know_ban  %in% text_know_ban
+      e$know_investments_funding_correct[e$treatment_policy == 0] <- e$know_ban_correct[e$treatment_policy == 0] <- NA }
   }
   
   if ("GHG_methane" %in% names(e)) {
@@ -2690,7 +2701,7 @@ convert <- function(e, country, wave = NULL) {
         ranking[max(tie)] <- 3
       } 
       if (max(sum(ranking==1), sum(ranking==4))==4) ranking <- 1:4 # too generous with respondents as those who have no idea of the ranking are considered as knowing the full ranking.
-      if (sum(ranking==1)==3) { # TODO: as robustness check, define distance original_ranking, true_ranking as sum_i |original_ranking[i]-i|
+      if (sum(ranking==1)==3) { # TODO!!: as robustness check, define distance original_ranking, true_ranking as sum_i |original_ranking[i]-i|
         tie <- which(ranking == 1)
         ranking[tie[1]] <- 1
         ranking[tie[2]] <- 2
@@ -2862,6 +2873,14 @@ convert <- function(e, country, wave = NULL) {
   e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
   missing.values(e$vote_2020) <- "PNR/no right"
   # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
+  
+  if ("clicked_petition" %in% names(e)) {
+    e$right_click_petition <- e$clicked_petition == 2
+    e$left_click_petition <- e$clicked_petition == 1
+    e$clicked_petition <- e$clicked_petition %in% 1:2
+    e$signed_petition <- e$clicked_petition | e$petition == "Yes"
+    label(e$signed_petition) <- "signed_petition: Answered that is willing to sign petition or clicked on the petition link."
+  }
   
   e$income_factor <- as.factor(e$income)
   
