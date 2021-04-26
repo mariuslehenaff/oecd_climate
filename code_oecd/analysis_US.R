@@ -1,12 +1,24 @@
 ##### Metadata #####
 decrit("finished", data = e)
 decrit("excluded", data = e)
+sum(is.na(e$excluded) & e$finished == 1)
+decrit("duration", data = e)
+decrit("duration", data = e, which = n(e$duration) > 686)
 decrit("language", data = e)
 decrit("urban_category", data = e) 
+decrit("treatment", data = e)
 decrit("treatment_policy", data = e)
 decrit("treatment_climate", data = e)
 decrit("variant_flight_quota", data = e)
 decrit("attentive", data = e)
+decrit("survey_biased", data = e)
+decrit("signed_petition", data = e)
+decrit("clicked_petition", data = e)
+decrit("left_click_petition", data = e)
+decrit("right_click_petition", data = e)
+decrit("petition", data = e)
+decrit("petition", data = e, which = e$variant_petition_real == T)
+decrit("polluting_sector", data = e)
 any(duplicated(e$PSID))
 # TODO ranking vs. order of display
 
@@ -117,7 +129,10 @@ usp2$policies_field
 
 ##### Climate change (attitudes and risks) ######
 decrit("CC_exists", data = e) # 50% anthropogenic
-decrit("CC_dynamics", data = e) # 47% good
+decrit("CC_dynamic", data = e) # 47% good
+summary(lm(CC_dynamic == 'Yes' ~ treatment, data = e)) # * of Policy, Both.. but not Climate where we say it
+decrit("net_zero_feasible", data = e) # mixed
+summary(lm(net_zero_feasible > 0 ~ treatment, data = e)) # . Both but not Climate alone where we say it
 for (v in variables_CC_factor) print(decrit(v, data = e)) # 40-70% true
 for (v in variables_CC_responsible) print(decrit(v, data = e))
 decrit("CC_stoppable", data = e) 
@@ -315,6 +330,7 @@ summary(lm(as.formula(paste("tax_transfers_win_lose_poor>0 ~", end_formula3)), d
 summary(lm(as.formula(paste("investments_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("standard_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
 
+##### Tables treatment effects #####
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
@@ -433,3 +449,11 @@ e$obstacles_insulation_other[!is.na(e$obstacles_insulation_other)]
 ##### Decision trees #####
 rpart.plot(tree_support <- rpart(as.formula(paste("policies_support>0 ~", end_formula3)), e)) # instead of formula, could be: var ~ . 
 prp(tree_support, box.palette = "Blues", tweak = 1.2)
+
+# To check (quality, autres consignes)
+# - duration is fine: 24.5 min in median (28 in mean, 17-34 quartiles).
+# - comprehension question (for the videos): results in-line with the first survey, though improved for the policy video where almost everyone gets that we talk of a ban on combustion-engine cars. Still about half of people who get it wrong for the other questions (even when there is no number: probably due to a lack of attention because only 3% didn't watch until the end).
+# - 35% are excluded from the final sample (the one I analyzed) either because they were too fast or failed the attention test. I will code some variables to check the consistency of responses, but for the moment we don't have further info on the quality.
+# - 95% do/did not work in the list of polluting sectors we present them, which I find surprisingly low (but here again, may be due to sample size).
+# - for the petition it is funny because 30% say they are willing to sign but only 3% click on the link.
+# - apart from that, answers to new questions make sense (e.g. China more frequently put "most" for total rather than per capita, only 11% choosing "Other" for the sector question), although for the WTP the answers do not seem to really depend on the amount proposed (but here low sample size may be at play).

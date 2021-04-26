@@ -822,7 +822,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
 # dev.copy(png, filename="test.png") # save plot from R (not plotly)
 # dev.off()
 # orca(example, file = "image.png") # BEST METHOD, cf. below
-save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
+save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../images/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
   file <- paste(folder, filename, ".png", sep='')
   print(file)
   if (grepl('webshot', method)) { # four times faster: 2.5s (vs. 10s) but saves useless widgets and doesn't exactly respect the display

@@ -11,7 +11,7 @@ remove_id <- function(file, folder = "../data/") {
 }
 for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US")) remove_id(file)
 
-# TODO!!: CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_knowlege_CC, score_trust, standard of living,// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
+# TODO!!: burden_sharing, CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_knowlege_CC, score_trust, standard of living,// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
 # temp <- prepare(country = "US", wave = "pilot2", duration_min = 0, exclude_screened = F, only_finished = F)
 # comp <- read_csv2("../data/complete_PSID.csv" )
 # psid <- as.matrix(comp$IdParameter, ncol=1)
@@ -2877,9 +2877,11 @@ convert <- function(e, country, wave = NULL) {
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
     e$left_click_petition <- e$clicked_petition == 1
+    e$variant_petition_real <- e$clicked_petition == 3
     e$clicked_petition <- e$clicked_petition %in% 1:2
     e$signed_petition <- e$clicked_petition | e$petition == "Yes"
     label(e$signed_petition) <- "signed_petition: Answered that is willing to sign petition or clicked on the petition link."
+    label(e$variant_petition_real) <- "variant_petition_real: True iff the respondent faces the new version of the question, without link to petition but with a real stake, as they are informed that 'we will send the results to the President of the United States’ office, informing him what share of people who took this survey were willing to support the following petition'"
   }
   
   e$income_factor <- as.factor(e$income)
@@ -2976,6 +2978,7 @@ usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
 usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
+us_all <- prepare(country = "US", wave = "full", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
 e <- us <- prepare(country = "US", wave = "full", duration_min = 686)
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T, by="date")
