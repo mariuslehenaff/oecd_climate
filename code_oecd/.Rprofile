@@ -101,6 +101,7 @@ package("quanteda")
 package("topicmodels")
 package("broom")
 package("tidytext")
+package("modelsummary")
 
 # package("forcats")
 # package("quanteda")
@@ -175,7 +176,14 @@ decrit <- function(variable, miss = TRUE, weights = NULL, numbers = FALSE, data 
       else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
 }
-
+Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE) {
+  return(decrit(variable, miss = miss, numbers = numbers, data = data)$values$value)
+  # if (is.character(var) & length(var)==1) var <- data[[var]]
+  # if (length(annotation(var))>0) { # works but cubmbersome and doesn't allow to get rid of missings
+  #   if (is.character(var)) levels(as.factor(include.missings(var)))
+  #   else return(as.vector(labels(var))) }
+  # else return(levels(as.factor(var))) # as.factor may cause issues as it converts to string
+}
 # decrit <- function(variable, miss = FALSE, weights = NULL, numbers = FALSE, data = e, which = NULL, weight = T) { 
 #   # if (!missing(data)) variable <- data[[variable]]
 #   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
@@ -595,6 +603,9 @@ dataN2 <- function(var, df = list(c, e), miss=T, weights = T, fr=F, rev=FALSE, r
 dataN3 <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
   if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
   else return(cbind(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[2]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[3]], miss = miss, weights = weights, fr = fr, rev = rev))) }
+dataNK <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
+  if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
+  else return(do.call(cbind, lapply(df, function (d) {dataN(var, d, miss = miss, weights = weights, fr = fr, rev = rev)}))) }
 data12 <- function(vars, df = list(e, e2), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
   if (length(vars)==1) return(dataN2(var=vars, df=list(df[[2]], df[[1]]), miss=miss, weights=weights, fr=fr, rev=rev, return=return))
   else {
@@ -634,6 +645,36 @@ labels12 <- function(labels, en=F, comp = "V2", orig = NULL) {
     new_labels <- c(new_labels, lab2, paste(l, lab1, sep=""))
     lab2 <- paste("", lab2) }
   return(new_labels)
+}
+labelsN <- function(labels, levels) {
+  new_labels <- c()
+  labs_other <- paste0("(", levels[1:(length(levels)-1)], ")")
+  labs_main <- paste0(labels, " (", levels[length(levels)], ")")
+  for (l in seq_along(labels)) new_labels <- c(new_labels, labs_other, labs_main[l])
+  return(new_labels) # version var (lev1) / (lev2) / ...
+  # return(sapply(labels, function(l) {return(paste(l, levels, sep=": "))})) # version var: lev1 / var: lev2 / ...
+}
+barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T) {
+  if (is.data.frame(df)) df <- list(df)
+  if (!missing(along)) levels <- Levels(df[[1]][[along]])
+  if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
+  if (!missing(along) & missing(labels)) labels <- paste(along, levels, sep=": ")
+  if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels) 
+  if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
+  if (!missing(miss)) nsp <- miss
+  data1 <- dataKN(vars, data=df[[1]], miss=miss, weights = weights, return = "", fr=fr, rev=rev)
+  if (missing(legend) & missing(hover)) { 
+    if (is.logical(df[[1]][[vars[1]]])) hover <- legend <- labels # data1(var = vars[1], data=df, weights = weights) # before: uncommented and "else" next line
+    else hover <- legend <- dataN(var = vars[1], data=df[[1]], miss=miss, weights = weights, return = "legend", fr=fr, rev_legend = rev) } 
+  agree <- order_agree(data = data1, miss = miss)
+  if (is.logical(df[[1]][[vars[1]]])) agree <- rev(agree)
+  if (return=="data") return(dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = ""))
+  else if (return=="levels") {if (is.null(levels)) {return(labels)} else {return(levels)}}
+  else if (return=="labels") return(labels) # labels12(labels[agree], en = !fr, comp = comp, orig = orig)
+  else if (return=="legend") return(legend)
+  else return(barres(data = dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = ""), 
+                     labels=labels, legend=legend, # labels12(labels[agree], en = !fr, comp = comp, orig = orig) # /!\ doesn't currently support multiple vars
+                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend))
 }
 color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
 color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') {
@@ -822,6 +863,8 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
 # dev.copy(png, filename="test.png") # save plot from R (not plotly)
 # dev.off()
 # orca(example, file = "image.png") # BEST METHOD, cf. below
+fig_height <- function(nb_bars, large = F) return(ifelse(nb_bars == 1, 140, 220 + 30*(nb_bars - 2)) + 10*nb_bars*large) # 2 ~ 220, 3 ~ 250, 4 ~ 280, 5 ~ 325, 6 ~ 360, 7 ~ 380, TRUE ~ 400 # 2 ~ 200-240, 3 ~ 240-275, 4 ~ 270-340, 5 ~ 320-340, 6 ~ 400, 7 ~ 340-430, 
+
 save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../images/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
   file <- paste(folder, filename, ".png", sep='')
   print(file)

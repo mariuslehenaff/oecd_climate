@@ -130,7 +130,7 @@ usp2$policies_field
 ##### Climate change (attitudes and risks) ######
 decrit("CC_exists", data = e) # 50% anthropogenic
 decrit("CC_dynamic", data = e) # 47% good
-summary(lm(CC_dynamic == 'Yes' ~ treatment, data = e)) # * of Policy, Both.. but not Climate where we say it
+modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e)) # * of Policy, Both.. but not Climate where we say it
 decrit("net_zero_feasible", data = e) # mixed
 summary(lm(net_zero_feasible > 0 ~ treatment, data = e)) # . Both but not Climate alone where we say it
 for (v in variables_CC_factor) print(decrit(v, data = e)) # 40-70% true
@@ -387,6 +387,10 @@ for (v in variables_tax_transfers_incidence) print(decrit(v, data = e))
 decrit("tax_transfers_support", data = e)
 
 
+##### Specific policies #####
+CrossTable(e$age_quota, e$policies_support>0, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
+
+
 ##### Preferences on climate policies ######
 decrit("CC_worries", data = e)
 for (v in variables_policy) print(decrit(v, data = e))
@@ -457,3 +461,4 @@ prp(tree_support, box.palette = "Blues", tweak = 1.2)
 # - 95% do/did not work in the list of polluting sectors we present them, which I find surprisingly low (but here again, may be due to sample size).
 # - for the petition it is funny because 30% say they are willing to sign but only 3% click on the link.
 # - apart from that, answers to new questions make sense (e.g. China more frequently put "most" for total rather than per capita, only 11% choosing "Other" for the sector question), although for the WTP the answers do not seem to really depend on the amount proposed (but here low sample size may be at play).
+

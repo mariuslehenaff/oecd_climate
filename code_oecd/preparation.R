@@ -1927,6 +1927,7 @@ convert <- function(e, country, wave = NULL) {
   variables_tax_transfers_incidence <<- names(e)[grepl('tax_transfers_incidence_', names(e))]
   variables_win_lose <<- names(e)[grepl('win_lose_', names(e))]
   variables_standard_win_lose <<- names(e)[grepl('standard_win_lose_', names(e))]
+  if (length(variables_standard_win_lose)==5) variables_standard_win_lose <<- variables_standard_win_lose[c(3:1,4:5)]
   variables_investments_win_lose <<- names(e)[grepl('investments_win_lose_', names(e))]
   variables_tax_transfers_win_lose <<- names(e)[grepl('tax_transfers_win_lose_', names(e))]
   variables_standard <<- c("standard_support", "standard_trust", "standard_effective", "standard_employment", "standard_side_effects", variables_standard_incidence, variables_standard_win_lose)
@@ -1961,6 +1962,7 @@ convert <- function(e, country, wave = NULL) {
     }
   }
   variables_wtp <<- names(e)[grepl('wtp_', names(e))]
+  variables_knowledge <<- c("CC_real", "CC_anthropogenic", "CC_impacts_volcanos", "footprint_pc_US", "footprint_reg_US", "footprint_el_gas", "footprint_fd_beef", "footprint_tr_car", "CC_knowledgeable", "GHG_CO2", "CC_dynamic")
 
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
@@ -2532,13 +2534,13 @@ convert <- function(e, country, wave = NULL) {
     e$wtp_variant[!is.na(e$wtp_1000)] <- 1000
     label(e$wtp_variant) <- "wtp_variant: The amount that respondent faces in the WTP dichotmous choice, in $/year: 10/30/50/100/300/500/1000"
     e$wtp <- NA
-    e$wtp[!is.na(e$wtp_10)] <- e$wtp_10
-    e$wtp[!is.na(e$wtp_30)] <- e$wtp_30
-    e$wtp[!is.na(e$wtp_50)] <- e$wtp_50
-    e$wtp[!is.na(e$wtp_100)] <- e$wtp_100
-    e$wtp[!is.na(e$wtp_300)] <- e$wtp_300
-    e$wtp[!is.na(e$wtp_500)] <- e$wtp_500
-    e$wtp[!is.na(e$wtp_1000)] <- e$wtp_1000   
+    e$wtp[!is.na(e$wtp_10)] <- e$wtp_10[!is.na(e$wtp_10)]
+    e$wtp[!is.na(e$wtp_30)] <- e$wtp_30[!is.na(e$wtp_30)]
+    e$wtp[!is.na(e$wtp_50)] <- e$wtp_50[!is.na(e$wtp_50)]
+    e$wtp[!is.na(e$wtp_100)] <- e$wtp_100[!is.na(e$wtp_100)]
+    e$wtp[!is.na(e$wtp_300)] <- e$wtp_300[!is.na(e$wtp_300)]
+    e$wtp[!is.na(e$wtp_500)] <- e$wtp_500[!is.na(e$wtp_500)]
+    e$wtp[!is.na(e$wtp_1000)] <- e$wtp_1000   [!is.na(e$wtp_1000)]
     label(e$wtp) <- "wtp: Whether the respondent is willing to pay wtp_variant (in 10/30/50/100/300/500/1000) $/year to limit global warming to safe levels (2°C) through investments in clean technologies (e.g. wtp_100)."
     e$wtp <- 1*(e$wtp %in% text_yes) - 0.1*(is.na(e$wtp) | e$wtp=="")
     e$wtp <- as.item(e$wtp, labels = structure(c(-0.1,0,1), names = c("PNR","No","Yes")), missing.values = c("",NA,"PNR"), annotation=attr(e$wtp, "label"))
@@ -2624,15 +2626,17 @@ convert <- function(e, country, wave = NULL) {
   }
   
   if (!("flights_agg" %in% names(e)) & ("flights" %in% names(e))) {
-    e$flights_agg <- 1.8*(e$flights %in% 1:2) + 5*(e$flights %in% 3:7) + 11*(e$flights %in% 8:14) + 25*(e$flights > 14)
-    e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1.8,5,11,25), names = c("0", "1 or 2", "3 to 7", "8 to 14", "15 or more")), annotation=attr(e$flights, "label"))
+    e$flights_agg <- 1.8*(e$flights %in% 1:2) + 5*(e$flights %in% 3:7) + 11*(e$flights %in% 8:14) + 25*(e$flights > 14) # pb: condition unverified for usp1,2
+    e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1.8,5,11,25), names = c("0", "1 or 2", "3 to 7", "8 to 14", "15 or more")), annotation="flights_agg: Round-trip flights taken per year (on average).")
+    e$flights_agg <- e$flights_agg/5
   } else {
     if ("flights_3y" %in% names(e)) {
       e$flights_agg <- 1*(e$flights_3y == "1") + 2*(e$flights_3y == "2") + 3.5*(e$flights_3y == "3 or 4") + 6*(e$flights_3y == "5 to 7") + 11*(e$flights_3y == "8 to 14") + 20*(e$flights_3y == "15 or more")
-      e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1,2,3.5,6,11,20), names = c("0", "1", "2", "3 or 4", "5 to 7", "8 to 14", "15 or more")), annotation=attr(e$flights_3y, "label"))      
+      e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1,2,3.5,6,11,20), names = c("0", "1", "2", "3 or 4", "5 to 7", "8 to 14", "15 or more")), annotation="flights_agg: Round-trip flights taken per year (on average).")      
+      e$flights_agg <- round(e$flights_agg/3, 3)
     } else {
       e$flights_agg <- 1*(e$flights_agg == "1") + 2*(e$flights_agg == "2") + 3.5*(e$flights_agg == "3 or 4") + 7*(e$flights_agg == "5 to 10") + 12*(e$flights_agg == "10 or more")
-      e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1,2,3.5,7,12), names = c("0", "1", "2", "3 or 4", "5 to 10", "10 or more")), annotation=attr(e$flights_agg, "label")) }
+      e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1,2,3.5,7,12), names = c("0", "1", "2", "3 or 4", "5 to 10", "10 or more")), annotation="flights_agg: Round-trip flights taken per year (on average).") } # attr(e$flights_agg, "label")
   } 
   
   if ("km_driven" %in% names(e)) {
@@ -2687,6 +2691,12 @@ convert <- function(e, country, wave = NULL) {
     label(e$know_GHG_H2) <- "know_GHG_H2: Correct answer that H2 is not a GHG"
     label(e$know_GHG_particulates) <- "know_GHG_particulates: Correct answer that particulates is not a GHG"
   }
+  
+  if (all(c("CC_impacts_droughts", "CC_impacts_sea_rise", "CC_impacts_volcanos") %in% names(e))) {
+    e$score_CC_impacts <- (e$CC_impacts_droughts>0) + (e$CC_impacts_sea_rise>0) + (e$CC_impacts_volcanos==-2) + (e$CC_impacts_volcanos<=-1)
+    label(e$score_CC_impacts) <- "score_CC_impacts: Score of knowledge of impacts from CC. Droughts > 0 (somewhat/very likely) + sea-level rise > 0 + volcanos <= -1 (somewhat unlikely) + volcanos == -2 (very unlikely)"
+  }
+  
   
   if ("footprint_reg_US" %in% names(e)) {
     rerank_fully <- function(original_ranking) {
@@ -2793,11 +2803,30 @@ convert <- function(e, country, wave = NULL) {
       e[[paste("least_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_", v, ": Smallest footprint of type ", v, " according to the respondent", sep=""))
     }
   }
+  
+  variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
+  if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
+    temp <- e[,variables_knowledge]
+    for (i in 1:7) { 
+      temp[[i]] <- as.numeric(temp[[i]]) # imputes the mean of variables for missing values (rather than removing the corresponding obs. from the dataframe)
+      temp[[i]][is.missing(temp[[i]])] <- wtd.mean(temp[[i]], weights = e$weight, na.rm=T) }
+    temp$knows_anthropogenic <- temp$CC_anthropogenic == 2
+    loadings <- as.numeric(factanal(temp, 1)$loadings)
+    # unlist(cronbach(temp))
+    # # pca <- principal(temp, 1)
+    
+    e$knowledge_simple <- as.numeric((e$CC_anthropogenic==2) + e$CC_anthropogenic + e$CC_real - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - 0.4*(e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) )
+    # e$knowledge_unitary <- e$CC_real + e$CC_anthropogenic - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - (e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) 
+    e$knowledge_efa <- 0
+    for (i in 1:length(variables_knowledge)) e$knowledge_efa <- e$knowledge_efa + loadings[i]*temp[[i]]
+    e$knowledge_efa <- (e$knowledge_efa - wtd.mean(e$knowledge_efa, weights = e$weight, na.rm = T))/sqrt(wtd.var(e$knowledge_efa, weights = e$weight, na.rm = T))
+    cor(e$knowledge_efa, e$knowledge_simple, use = "complete.obs") # 0.872
+    # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
+  }
 
   e$rush_treatment <- e$duration_treatment_climate/60 < 3 | e$duration_treatment_policy/60 < 4.75 # TODO!! adapt time for pilots
   e$rush_treatment[is.na(e$rush_treatment)] <- F
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
-
   
   e$rush <- e$rush_treatment | (e$duration < 15)
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
@@ -2866,13 +2895,17 @@ convert <- function(e, country, wave = NULL) {
   e$race[e$race_black==T] <- "Black"
   label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
 
-  e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
-  e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
-  e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
-  e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
-  e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
-  missing.values(e$vote_2020) <- "PNR/no right"
-  # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
+  if (country == "US") {
+    e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
+    e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
+    e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
+    e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
+    e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
+    missing.values(e$vote_2020) <- "PNR/no right"
+    # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
+    e$vote3 <- e$vote_2020
+    e$vote3[e$vote_2020 %in% c("PNR/no right", "Other/Non-voter")] <- "other"
+  }
   
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
@@ -2882,6 +2915,32 @@ convert <- function(e, country, wave = NULL) {
     e$signed_petition <- e$clicked_petition | e$petition == "Yes"
     label(e$signed_petition) <- "signed_petition: Answered that is willing to sign petition or clicked on the petition link."
     label(e$variant_petition_real) <- "variant_petition_real: True iff the respondent faces the new version of the question, without link to petition but with a real stake, as they are informed that 'we will send the results to the President of the United States’ office, informing him what share of people who took this survey were willing to support the following petition'"
+  }
+  
+  if (country == "US") {
+    # temp <- read.csv2("../data/zipcodes/US_zipcode_state.csv")
+    temp <- read.csv2("../data/zipcodes/US_zipcode_state.csv")
+    zipcode_state <- temp[,2]
+    names(zipcode_state) <- temp[,1]
+    # write.csv(Levels(zipcode_state), "../data/zipcodes/US_states.csv", quote = F, row.names = F, col.names = "State")
+    e$state <- zipcode_state[as.character(e$zipcode)]
+    temp <- read.csv("../data/zipcodes/US_elec.csv") # sources: $/MWh: https://www.eia.gov/electricity/state/ CO2/MWh: https://www.epa.gov/egrid/data-explorer
+    CO2_factor <- temp[,8]
+    names(CO2_factor) <- temp[,1]
+    
+    # Carbon footprint of heating gas: 3.79 kgCO2/$. Using: $1.40 per 100,000 BTU (https://energysvc.com/the-real-cost-of-heating); 53.07 kgCO2/MBTU (https://www.eia.gov/environment/emissions/co2_vol_mass.php)
+    # Carbon footprint of heating oil: 3.17 kgCO2/$. Using: $3.20 per 138,500 BTU (https://energysvc.com/the-real-cost-of-heating); 73.16 kgCO2/MBTU (https://www.eia.gov/environment/emissions/co2_vol_mass.php)
+    # datasummary(heating_expenses*mean ~ Factor(heating), data=us) # TODO: disaggregate
+    # Carbon footprint of gasoline: 2.76 kgCO2/$. Using 8.887 kgCO2/gallon (https://www.epa.gov/energy/greenhouse-gases-equivalencies-calculator-calculations-and-references) and 3.221 gallon/$ (https://www.globalpetrolprices.com/USA/gasoline_prices/)
+    # in the US gasoline much more used as diesel https://rentar.com/no-diesel-cars-u-s-diesel-popular-abroad/ (Carbon footprint of diesel: 3.31 kgCO2/$. Using 10.18 kgCO2/gallon (https://www.epa.gov/energy/greenhouse-gases-equivalencies-calculator-calculations-and-references) and 3.078 gallon/$ (https://www.globalpetrolprices.com/USA/diesel_prices/))
+    # unused because we use State-wide values. Carbon footprint of electricity (US mean): 3.96 kgCO2/$. cf. US_elec.csv From https://www.eia.gov/electricity/state/unitedstates/
+    # Carbon footprint of round-trip flight (US): 0.584*2.483 = 1450 kgCO2 https://www.icao.int/annual-report-2018/Documents/Annual.Report.2018_Air%20Transport%20Statistics.pdf
+    e$CO2_emission_heating <- 12*(include.missings(e$heating_expenses) + 0.1) * (3.79*(e$heating %in% c("Gas", "PNR")) + CO2_factor[e$state]*(e$heating=="Electricity") + 3.17*(e$heating=="Heating oil"))/1000
+    e$CO2_emission_gas <- 12*2.76*e$gas_expenses/1000 # pb: are questions are at individual level but not clearly
+    e$CO2_emission <- e$CO2_emission_heating + e$CO2_emission_gas + 1.45*e$flights_agg  + (12+e$income)/1.6 # cf. Fig. 5 Green & Knittel (2020) for footprint beyond transit & housing, divided by mean nb of "adult" per HH, from questionnaire/income quota.xlsx. I do not subtract official average round-trip pc from flights because conso data do not includes flights.(e$flights_agg - 2.483)
+    label(e$CO2_emission_heating) <- "CO2_emission_heating: CO2 emissions (in t/year) from heating of the respondent estimated from their heating expenses and country average emission factors of electricity, heating oil and gas."
+    label(e$CO2_emission_gas) <- "CO2_emission_gas: CO2 emissions (in t/year) from gasoline of the respondent estimated from their gas expenses and emission factor of gasoline."
+    label(e$CO2_emission) <- "CO2_emission: CO2 emissions (in t/year) of the respondent estimated from their heating & gas expenses, flights and income." # Official average: 17.59 per capita vs. 15.63 per respondent here (we pbly underestimate then because we assume children have 0 emission).
   }
   
   e$income_factor <- as.factor(e$income)
@@ -2979,7 +3038,8 @@ usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
 usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
 us_all <- prepare(country = "US", wave = "full", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
-e <- us <- prepare(country = "US", wave = "full", duration_min = 686)
+us <- prepare(country = "US", wave = "full", duration_min = 686)
+e <- us
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T, by="date")
 
