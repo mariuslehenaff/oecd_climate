@@ -901,10 +901,10 @@ desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor
 
 e <- us
 # TODO
+#  ! updated script for Marco (at least for Spain)
 #  correlation CC_problem / anthropogenic / other knowledge
 #  !Denmark: list municipality; lib-cons => left-right; no race; New York - Toronto => 700 km from Copenhagen to Stockholm (plane>car>train) / 800 km Bordeaux - Nice / 500 km Paris - London / 800 km Munich - Hambourg / 1000 km Munich - Copenhagen (mais seulement avec 1 ou 2 passagers pour ces deux derniers !)
 #  ! Poland, Indonesia, Italy
-#  ! qualtrics footprint force response
 # Questions: 
 #  wealth distribution (converted from $), income (individual); political parties
 #  merge heating > 200? gas > 175?

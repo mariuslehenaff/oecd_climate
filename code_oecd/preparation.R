@@ -1826,9 +1826,12 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 
 convert <- function(e, country, wave = NULL) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
-                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR")
-  text_yes <- c("US" = "Yes")
-  text_no <- c("US" = "No", "US" = "No or I don't have a partner")
+                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
+                 "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas")
+  text_yes <- c("US" = "Yes", 
+                "FR" = "Oui")
+  text_no <- c("US" = "No", "US" = "No or I don't have a partner", 
+               "FR" = "Non ou je n'ai pas de partenaire")
   names_policies <- c("standard", "investments", "tax_transfers")
   
   for (i in 1:length(e)) {
@@ -1983,36 +1986,71 @@ convert <- function(e, country, wave = NULL) {
   text_poor <- c("US" = "Poor")
   text_very_poor <- c("US" = "Very poor")
   
-  text_rural <- c("US" = "A rural area")
-  text_small_town <- c("US" = "A small town (between 5,000 and 20,000 inhabitants)", "US" = "A small town (5,000 – 20,000 inhabitants)")
-  text_large_town <- c("US" = "A large town (between 20,000 and 50,000 inhabitants)", "US" = "A large town (20,000 – 50,000 inhabitants)")
-  text_small_city <- c("US" = "A small city (between 50,000 and 250,000 inhabitants)", "US" = "A small city (50,000 – 250,000 inhabitants)")
-  text_medium_city <- c("US" = " A medium-size city (between 250,000 and 3,000,000 inhabitants)", "US" = "A medium-sized city (250,000 – 3,000,000 inhabitants)")
-  text_large_city <- c("US" = "A large city (more than 3 million inhabitants)")
+  text_male <- c("US" = "Male", "FR" = "Homme")
+  text_female <- c("US" = "Female", "FR" = "Femme")
+  text_other <- c("US" = "Other", "FR" = "Autre")
+  
+  text__18 <- c("US" = "18 to 24", "FR" = "Moins de 18 ans")
+  text_18_24 <- c("US" = "18 to 24", "FR" = "Entre 18 et 24 ans")
+  text_25_34 <- c("US" = "25 to 34", "FR" = "Entre 25 et 34 ans")
+  text_35_49 <- c("US" = "35 to 49", "FR" = "Entre 35 et 49 ans")
+  text_50_64 <- c("US" = "50 to 64", "FR" = "Entre 50 et 64 ans")
+  text_65_ <- c("US" = "65 or above", "FR" = "65 ans ou plus")
+  
+  text_rural <- c("US" = "A rural area", 
+                  "FR" = "en zone rurale")
+  text_small_town <- c("US" = "A small town (between 5,000 and 20,000 inhabitants)", "US" = "A small town (5,000 – 20,000 inhabitants)", 
+                       "FR" = "dans une petite ville (entre 5 000 et 20 000 habitants)")
+  text_large_town <- c("US" = "A large town (between 20,000 and 50,000 inhabitants)", "US" = "A large town (20,000 – 50,000 inhabitants)", 
+                       "FR" = "dans une ville moyenne (entre 20 000 et 50 000 habitants)")
+  text_small_city <- c("US" = "A small city (between 50,000 and 250,000 inhabitants)", "US" = "A small city (50,000 – 250,000 inhabitants)", 
+                       "FR" = "dans une grande ville (entre 50 000 et 250 000 habitants)")
+  text_medium_city <- c("US" = " A medium-size city (between 250,000 and 3,000,000 inhabitants)", "US" = "A medium-sized city (250,000 – 3,000,000 inhabitants)", 
+                        "FR" = "dans une métropole (plus de 250 000 habitants, hors Paris)")
+  text_large_city <- c("US" = "A large city (more than 3 million inhabitants)", 
+                       "FR" = "en région parisienne")
+  
+  text_4_ <- c("US" = "4 or more", "FR" = "4 ou plus")
+  text_5_ <- c("US" = "5 or more", "FR" = "5 ou plus")
   
   text_speaks_native <- c("US" = "Native")
   text_speaks_well <- c("US" = "Well or very well")
   text_speaks_somewhat <- c("US" = "Somewhat well")
   text_speaks_no <- c("US" = "I cannot speak English")
   
-  text_education_no <- c("US" = "No schooling completed")
-  text_education_primary <- c("US" = "Primary school")
-  text_education_secondary <- c("US" = "Lower secondary school")
-  text_education_vocational <- c("US" = "Vocational degree")
-  text_education_high <- c("US" = "High school")
-  text_education_college <- c("US" = "College degree")
-  text_education_master <- c("US" = "Master's degree or above")
+  text_education_no <- c("US" = "No schooling completed", 
+                         "FR" = "Aucun")
+  text_education_primary <- c("US" = "Primary school", 
+                              "FR" = "École primaire")
+  text_education_secondary <- c("US" = "Lower secondary school", 
+                                "FR" = "Brevet")
+  text_education_vocational <- c("US" = "Vocational degree", 
+                                 "FR" = "CAP ou BEP")
+  text_education_high <- c("US" = "High school", 
+                           "FR" = "Baccalauréat")
+  text_education_college <- c("US" = "College degree", 
+                              "FR" = "Bac +2 ou Bac +3 (licence, BTS, DUT, DEUG...)")
+  text_education_master <- c("US" = "Master's degree or above", 
+                             "FR" = "Bac +5 ou plus (master, école d'ingénieur ou de commerce, doctorat, médecine, maîtrise, DEA, DESS...)")
   
-  text_income_q1 <- c("US" = "less than $35,000")
-  text_income_q2 <- c("US" = "between $35,000 and $70,000")
-  text_income_q3 <- c("US" = "between $70,000 and $120,000")
-  text_income_q4 <- c("US" = "more than $120,000")
+  text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 1350€/mois")
+  text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 1351 et 2200€/mois")
+  text_income_q3 <- c("US" = "between $70,000 and $120,000", "FR" = "Entre 2201 et 3800€/mois")
+  text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 3800 €/mois")
   
-  text_wealth_q1 <- c("US" = "Less than $0 (I have a net debt)")
-  text_wealth_q2 <- c("US" = "Close to $0")
-  text_wealth_q3 <- c("US" = "Between $4,000 and $120,000")
-  text_wealth_q4 <- c("US" = "Between $120,000 and $380,000")
-  text_wealth_q5 <- c("US" = "More than $380,000")
+  text_wealth_q1 <- c("US" = "Less than $0 (I have a net debt)", "FR" = "Moins de 10 000€")
+  text_wealth_q2 <- c("US" = "Close to $0", "FR" = "Entre 10 001€ et 60 000€")
+  text_wealth_q3 <- c("US" = "Between $4,000 and $120,000", "FR" = "Entre 60 001€ et 180 000€")
+  text_wealth_q4 <- c("US" = "Between $120,000 and $380,000", "FR" = "Entre 180 001€ et 350 000€")
+  text_wealth_q5 <- c("US" = "More than $380,000", "FR" = "Plus de 350 001€")
+  
+  text_full_time <- c("US" = "Full-time employed", "FR" = "Employé⋅e à temps plein")
+  text_part_time ~ c("US" = "Part-time employed", "FR" = "Employé⋅e à temps partiel")
+  text_self_employed <- c("US" = "Self-employed", "FR" = "Indépendant⋅e")
+  text_student <- c("US" = "Student", "FR" = "Étudiante⋅e")
+  text_retired <- c("US" = "Retired", "FR" = "Retraité⋅e")
+  text_unemployed <- c("US" = "Unemployed (searching for a job)", "FR" = "Au chômage (en recherche d'emploi)")
+  text_inactive <- c("US" = "Inactive (not searching for a job)", "FR" = "Inactif (sans recherche d'emploi)")
   
   text_frequency_beef_daily <- c("US" = "Almost or at least daily")
   text_frequency_beef_weekly <- c("US" = "One to four times per week")
@@ -2422,6 +2460,14 @@ convert <- function(e, country, wave = NULL) {
   if ("occupation" %in% names(e)) temp <-  (e$occupation %in% text_clerc) - 2*(e$occupation %in% text_none_above) - 1 * (e$occupation %in% text_manual) + 2 * (e$occupation %in% text_independent) - 0.1*(is.na(e$occupation))
   if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Other","Manual","Skilled", "Clerc","Independent","PNR")),
                                                           missing.values=-0.1, annotation=Label(e$occupation))
+  
+  e$employment_status <- caes_when(e$employment_status %in% text_full_time ~ "Full-time employed",
+                                   e$employment_status %in% text_part_time ~ "Part-time employed",
+                                   e$employment_status %in% text_self_employed ~ "Self-employed",
+                                   e$employment_status %in% text_student ~ "Student",
+                                   e$employment_status %in% text_retired ~ "Retired",
+                                   e$employment_status %in% text_unemployed ~ "Unemployed",
+                                   e$employment_status %in% text_inactive ~ "Inactive")
   
   e$employment_agg <-  "Not working"
   e[e$employment_status == "Student", "employment_agg"] <- "Student"
@@ -2839,7 +2885,7 @@ convert <- function(e, country, wave = NULL) {
   e$race_white_only <- as.factor(e$race_white_only)
   
   #gender: Other set as Male for the moment, see if lot of similar answers in final data
-  e$gender_dum <- as.character(e$gender)
+  e$gender_dum <- as.character(e$gender) # TODO! country
   e[e$gender == "Other", "gender_dum"] <- "Male"
   e$gender_dum <- as.factor(e$gender_dum)
   e$gender_factor <- as.factor(e$gender)
@@ -2852,8 +2898,11 @@ convert <- function(e, country, wave = NULL) {
   if ("nb_children" %in% names(e)) e$nb_children_ceiling_4 <- pmin(e$nb_children, 4)
   else if ("Nb_children" %in% names(e)) {
     e$nb_children_ceiling_4 <- e$Nb_children
-    e$nb_children_ceiling_4[e$Nb_children == "4 or more"] <- 4
+    e$nb_children_ceiling_4[e$Nb_children %in% text_4_] <- 4
     e$nb_children_ceiling_4 <- as.numeric(as.vector(e$nb_children_ceiling_4)) }
+  if ("HH_size" %in% names(e)) {
+    e$HH_size[e$HH_size %in% text_5_] <- 5
+    e$HH_size <- as.item(as.numeric(e$HH_size), labels = structure(c(1:5), names = c("1", "2", "3", "4", "5 or more")), annotation=attr(e$HH_size, "label"))  }
   
   e$college <- "No college"
   e[e$education >= 5, "college"] <- "College Degree"
@@ -2870,13 +2919,13 @@ convert <- function(e, country, wave = NULL) {
     e$age_quota[e$age %in% 25:34] <- "25-34"
     e$age_quota[e$age %in% 35:49] <- "35-49"
     e$age_quota[e$age %in% 50:64] <- "50-64"
-    e$age_quota[e$age > 64] <- "65+" # TODO! "> 65" instead
+    e$age_quota[e$age > 64] <- "65+" # TODO! "> 65" instead, countr
   } else { 
-    e$age_quota[e$age_quota == "18 to 24"] <- "18-24"
-    e$age_quota[e$age_quota == "25 to 34"] <- "25-34"
-    e$age_quota[e$age_quota == "35 to 49"] <- "35-49"
-    e$age_quota[e$age_quota == "50 to 64"] <- "50-64"
-    e$age_quota[e$age_quota == "65 or above"] <- "65+" 
+    e$age_quota[e$age_quota %in% text_18_24] <- "18-24"
+    e$age_quota[e$age_quota %in% text_25_34] <- "25-34"
+    e$age_quota[e$age_quota %in% text_35_49] <- "35-49"
+    e$age_quota[e$age_quota %in% text_50_64] <- "50-64"
+    e$age_quota[e$age_quota %in% text_65_] <- "65+" 
   }
   
   # political position
