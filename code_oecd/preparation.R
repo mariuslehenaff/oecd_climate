@@ -3103,6 +3103,8 @@ for (c in euro_countries) {
   inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
   inc_quartiles[c,2] <- inc_deciles[c,5]
   inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
+countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")
+# countries[sample(1:12, 1)]
 
 # e <- read_csv("../data/US_pilot3.csv") 
 # e <- e[-c(1:2),]
