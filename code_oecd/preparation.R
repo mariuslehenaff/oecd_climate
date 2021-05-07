@@ -3092,6 +3092,18 @@ e <- us
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T, by="date")
 
+qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
+euro_countries <- c("DK", "FR", "DE", "UK", "ES", "IT", "PL")
+year_countries <- c(2020, 2019, 2019, 2018, 2019, 2019, 2019)
+names(year_countries) <- euro_countries
+inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised income deciles in LCU
+for (i in 1:9) for (c in euro_countries) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", year_countries[c])]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)]))
+inc_quartiles <- matrix(NA, nrow = 7, ncol = 3, dimnames = list(euro_countries, c("Q1", "Q2", "Q3")))
+for (c in euro_countries) {
+  inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
+  inc_quartiles[c,2] <- inc_deciles[c,5]
+  inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
+
 # e <- read_csv("../data/US_pilot3.csv") 
 # e <- e[-c(1:2),]
 # sum((is.na(e$Q18.2_6) | is.na(e$Q18.2_1)) & !is.na(e$Q18.3_1), na.rm=T)/sum(!is.na(e$Q18.3_1)) # error rate attention test

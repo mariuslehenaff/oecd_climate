@@ -95,6 +95,7 @@ package("party")
 package("partykit")
 package("rpart.plot")
 package("Peacock.test")
+package("openxlslx")
 package("devtools")
 # LDA
 package("quanteda")
@@ -177,7 +178,11 @@ decrit <- function(variable, miss = TRUE, weights = NULL, numbers = FALSE, data 
     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
 }
 Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE) {
-  return(decrit(variable, miss = miss, numbers = numbers, data = data)$values$value)
+  Levs <- decrit(variable, miss = miss, numbers = numbers, data = data)$values$value
+  if (is.null(Levs)) {
+    if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
+    Levs <- unique(variable) }
+  return(Levs)
   # if (is.character(var) & length(var)==1) var <- data[[var]]
   # if (length(annotation(var))>0) { # works but cubmbersome and doesn't allow to get rid of missings
   #   if (is.character(var)) levels(as.factor(include.missings(var)))
@@ -620,7 +625,7 @@ data12 <- function(vars, df = list(e, e2), miss=T, weights = T, fr=F, rev=FALSE,
     }
     return(data)
   } }
-barres12 <- function(vars, df=list(e, e2), labels, legend=hover, comp = "V2", orig = NULL, miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, sort=TRUE, thin=T, return="", showLegend=T) {
+barres12 <- function(vars, df=list(e, e2), labels, legend=hover, comp = "V2", orig = NULL, miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, sort=TRUE, thin=T, return="", showLegend=T, export_xls = F) {
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
   data1 <- dataKN(vars, data=df[[1]], miss=miss, weights = weights, return = "", fr=fr, rev=rev)
@@ -634,7 +639,7 @@ barres12 <- function(vars, df=list(e, e2), labels, legend=hover, comp = "V2", or
   else if (return=="legend") return(legend)
   else return(barres(data = data12(vars[agree], df = df, miss=miss, weights = weights, fr=fr, rev=rev, return = ""), 
                      labels=labels12(labels[agree], en = !fr, comp = comp, orig = orig), legend=legend, 
-                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend))
+                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls))
 }
 
 labels12 <- function(labels, en=F, comp = "V2", orig = NULL) {
@@ -654,7 +659,7 @@ labelsN <- function(labels, levels) {
   return(new_labels) # version var (lev1) / (lev2) / ...
   # return(sapply(labels, function(l) {return(paste(l, levels, sep=": "))})) # version var: lev1 / var: lev2 / ...
 }
-barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T) {
+barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F) {
   if (is.data.frame(df)) df <- list(df)
   if (!missing(along)) levels <- Levels(df[[1]][[along]])
   if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
@@ -674,7 +679,7 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
   else if (return=="legend") return(legend)
   else return(barres(data = dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = ""), 
                      labels=labels, legend=legend, # labels12(labels[agree], en = !fr, comp = comp, orig = orig) # /!\ doesn't currently support multiple vars
-                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend))
+                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls))
 }
 color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
 color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') {
@@ -716,7 +721,7 @@ order_agree <- function(data, miss, rev = T, n = ncol(data)) {
     else if (nrow(data)==7) { for (i in 1:n) { agree <- c(agree, data[6, i] + data[7, i]) } }
     else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
   return(order(agree, decreasing = rev)) }
-barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, margin_r=0, margin_l=NA, online=FALSE, 
+barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, margin_r=0, margin_l=NA, online=FALSE, export_xls = F,
                    display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA) {
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
@@ -857,7 +862,11 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   } }
   if (online) { api_create(bars, filename=file, sharing="public") }
   if (!missing(file) & save) save_plotly(bars, filename = file) # new
-  return(bars)
+  if (export_xls) {
+    table <- as.data.frame(data_income, row.names = dataKN("income", data=e, miss=F, return="legend"))
+    names(table) <- labels_comp
+    return(table) }
+  else return(bars)
 }
 # plot(1:3,1:3) # example
 # dev.copy(png, filename="test.png") # save plot from R (not plotly)
@@ -865,20 +874,25 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
 # orca(example, file = "image.png") # BEST METHOD, cf. below
 fig_height <- function(nb_bars, large = F) return(ifelse(nb_bars == 1, 140, 220 + 30*(nb_bars - 2)) + 10*nb_bars*large) # 2 ~ 220, 3 ~ 250, 4 ~ 280, 5 ~ 325, 6 ~ 360, 7 ~ 380, TRUE ~ 400 # 2 ~ 200-240, 3 ~ 240-275, 4 ~ 270-340, 5 ~ 320-340, 6 ~ 400, 7 ~ 340-430, 
 
-save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../images/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
-  file <- paste(folder, filename, ".png", sep='')
-  print(file)
-  if (grepl('webshot', method)) { # four times faster: 2.5s (vs. 10s) but saves useless widgets and doesn't exactly respect the display
-    saveWidget(politiques_1, 'temp.html')
-    webshot('temp.html', file, delay = 0.1, vwidth = width, vheight = height)  
-    file.remove('temp.html')}
-  else orca(plot, file = file, width = width, height = height) # bug with encoding in Windows
-  # else {
-  #   server <- orca_serve() # doesn't work within a function because requires admin rights
-  #   server$export(plot, file = file, width = width, height = height)
-  #   server$close()
-  # }
-  if (trim) image_write(image_trim(image_read(file)), file)
+save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
+  if (class(plot)=="data.frame") {
+    # file <- paste(folder, "xls/", filename, ".xlsx", sep='')
+    file <- paste("../xlsx/", filename, ".xlsx", sep='')
+    write.xlsx(plot, file, row.names = T)  
+  } else {
+    file <- paste(folder, filename, ".png", sep='')
+    print(file)
+    if (grepl('webshot', method)) { # four times faster: 2.5s (vs. 10s) but saves useless widgets and doesn't exactly respect the display
+      saveWidget(politiques_1, 'temp.html')
+      webshot('temp.html', file, delay = 0.1, vwidth = width, vheight = height)  
+      file.remove('temp.html')}
+    else orca(plot, file = file, width = width, height = height) # bug with encoding in Windows
+    # else {
+    #   server <- orca_serve() # doesn't work within a function because requires admin rights
+    #   server$export(plot, file = file, width = width, height = height)
+    #   server$close()
+    # }
+    if (trim) image_write(image_trim(image_read(file)), file) }
 }
 correlogram <- function(grep = NULL, vars = NULL, df = e) {
   if (missing(vars)) vars <- names(df)[grepl(grep, names(df)) & !grepl("_funding|_correct", names(df))]
