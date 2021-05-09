@@ -2973,7 +2973,7 @@ convert <- function(e, country, wave = NULL) {
     names(zipcode_state) <- temp[,1]
     # write.csv(Levels(zipcode_state), "../data/zipcodes/US_states.csv", quote = F, row.names = F, col.names = "State")
     e$state <- zipcode_state[as.character(e$zipcode)]
-    temp <- read.csv("../data/zipcodes/US_elec.csv") # sources: $/MWh: https://www.eia.gov/electricity/state/ CO2/MWh: https://www.epa.gov/egrid/data-explorer
+    temp <- read.csv("../data/zipcodes/US_elec.csv") # sources: $/MWh: https://www.eia.gov/electricity/state/ CO2/MWh: https://www.epa.gov/egrid/data-explorer, alternative source: https://www.carbonfootprint.com/docs/2020_09_emissions_factors_sources_for_2020_electricity_v14.pdf TODO: use latter to have harmonized source
     CO2_factor <- temp[,8]
     names(CO2_factor) <- temp[,1]
     
@@ -3096,7 +3096,7 @@ qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "UK", "ES", "IT", "PL")
 year_countries <- c(2020, 2019, 2019, 2018, 2019, 2019, 2019)
 names(year_countries) <- euro_countries
-inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised income deciles in LCU
+inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised disposable income deciles in LCU
 for (i in 1:9) for (c in euro_countries) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", year_countries[c])]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)]))
 inc_quartiles <- matrix(NA, nrow = 7, ncol = 3, dimnames = list(euro_countries, c("Q1", "Q2", "Q3")))
 for (c in euro_countries) {

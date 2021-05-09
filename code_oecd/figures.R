@@ -914,6 +914,7 @@ datasummary(vote3 ~ (CO2_emission + CO2_emission_heating + CO2_emission_gas + fl
 datasummary((CO2_emission < 13.7) + (CO2_emission %between% c(13.7, 21.5)) + (CO2_emission >= 21.5) ~ (policies_support + tax_transfers_support + CC_problem + CC_anthropogenic) * Mean, e)
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # TODO: heterogenous treatment Red/Dem; maps; 
+# Pessimistic w.r.t. future more or less climate friendly?
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
 # names(knowledge_all) <- c("Knowledge", "GhG", "Activities",  "Anthropogenic", "Exists", "Target", "Region")
