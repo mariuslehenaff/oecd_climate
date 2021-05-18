@@ -3275,7 +3275,7 @@ convert <- function(e, country, wave = NULL) {
     label(e$variant_petition_real) <- "variant_petition_real: True iff the respondent faces the new version of the question, without link to petition but with a real stake, as they are informed that 'we will send the results to the President of the United States’ office, informing him what share of people who took this survey were willing to support the following petition'"
   }
   
-  if (country == "US") {
+  if (country == "US" & "heating_expenses" %in% names(e)) {
     # temp <- read.csv2("../data/zipcodes/US_zipcode_state.csv")
     temp <- read.csv2("../data/zipcodes/US_zipcode_state.csv")
     zipcode_state <- temp[,2]
