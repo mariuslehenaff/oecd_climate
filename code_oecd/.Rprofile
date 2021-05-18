@@ -96,7 +96,7 @@ package("party")
 package("partykit")
 package("rpart.plot")
 package("Peacock.test")
-package("openxlslx")
+package("openxlsx")
 package("devtools")
 # LDA
 package("quanteda")

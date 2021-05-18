@@ -14,7 +14,7 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
 # TO ADJUST:
-e <- us[us$treatment="None",]
+e <- us[us$treatment=="None",]
 export_xls <- F
 
 ##### Pre-treatment ## #####
