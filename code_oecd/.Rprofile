@@ -18,6 +18,7 @@ names(Paths) = c("Bluebii", "afabre")
 setwd(Paths[Sys.info()[7]])
 if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.0.3/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")) 
 
+chooseCRANmirror(ind = 1)
 package("plyr")
 package("tm")
 package("memisc", version = "0.99.22")
