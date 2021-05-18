@@ -2354,7 +2354,7 @@ convert <- function(e, country, wave = NULL) {
   text_wealth_q5 <- c("US" = "More than $380,000", "FR" = "Plus de 350 001€")
   
   text_full_time <- c("US" = "Full-time employed", "FR" = "Employé⋅e à temps plein")
-  text_part_time ~ c("US" = "Part-time employed", "FR" = "Employé⋅e à temps partiel")
+  text_part_time <- c("US" = "Part-time employed", "FR" = "Employé⋅e à temps partiel")
   text_self_employed <- c("US" = "Self-employed", "FR" = "Indépendant⋅e")
   text_student <- c("US" = "Student", "FR" = "Étudiante⋅e")
   text_retired <- c("US" = "Retired", "FR" = "Retraité⋅e")
@@ -2770,7 +2770,7 @@ convert <- function(e, country, wave = NULL) {
   if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Other","Manual","Skilled", "Clerc","Independent","PNR")),
                                                           missing.values=-0.1, annotation=Label(e$occupation))
   
-  e$employment_status <- caes_when(e$employment_status %in% text_full_time ~ "Full-time employed",
+  e$employment_status <- case_when(e$employment_status %in% text_full_time ~ "Full-time employed",
                                    e$employment_status %in% text_part_time ~ "Part-time employed",
                                    e$employment_status %in% text_self_employed ~ "Self-employed",
                                    e$employment_status %in% text_student ~ "Student",
