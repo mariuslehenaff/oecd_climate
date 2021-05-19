@@ -3319,6 +3319,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
     label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values." }
 
+if (all(variables_affected_index %in% names(e))) {
     e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, df = e, weight = weighting)
     label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values." }
 
