@@ -2275,8 +2275,13 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }
   variables_wtp <<- names(e)[grepl('wtp_', names(e))]
   variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
-  variables_knowledge_index <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
-  negatives_knowledge_index <<- c(T, T, T, T, T, T, F, F, F, F, F)
+  variables_knowledge_index <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "score_GHG")
+  negatives_knowledge_index <<- c(T, T, T, T, T, T, F, F, F, F)
+  e$affected_transport <- (e$transport_work=="Car or Motorbike") + (e$transport_shopping=="Car or Motorbike") + (e$transport_leisure=="Car or Motorbike")
+  label(e$affected_transport) <- "affected_transport: Sum of activities for which a car or motorbike is used"
+  variables_affected_index <<- c("polluting_sector", "affected_transport", "gas_expenses", "heating_expenses", "availability_transport", "urbanity", "core_metropolitan")
+  negatives_affected_index <<- c(T, T, T, T, F, F, F)
+
   
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
@@ -3312,7 +3317,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }
   if (all(variables_knowledge_index %in% names(e))) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
-    label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights and impute mean of treatment group to missing values." }
+    label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values." }
+
+    e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, df = e, weight = weighting)
+    label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values." }
 
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
