@@ -881,6 +881,7 @@ correlogram("_negative_effect")
 correlogram("standard_")
 correlogram("investments_")
 correlogram("tax_transfers_")
+correlogram("knowledge")
 
 ##### Tables treatment effects #####
 ## Generate tables
@@ -909,10 +910,10 @@ e <- us
 # Questions: 
 #  merge heating > 200? gas > 175? => not
 # Ana: traduction
-# Bluebery: climate scripts
 datasummary(CC_problem + as.numeric(CC_anthropogenic) ~ vote3 * Mean, e)
 datasummary(vote3 ~ (CO2_emission + CO2_emission_heating + CO2_emission_gas + flights_agg) * Mean, e)
 datasummary((CO2_emission < 13.7) + (CO2_emission %between% c(13.7, 21.5)) + (CO2_emission >= 21.5) ~ (policies_support + tax_transfers_support + CC_problem + CC_anthropogenic) * Mean, e)
+modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # TODO: heterogenous treatment Red/Dem; maps; 
 # Pessimistic w.r.t. future more or less climate friendly?

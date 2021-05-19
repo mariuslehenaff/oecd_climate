@@ -2275,6 +2275,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }
   variables_wtp <<- names(e)[grepl('wtp_', names(e))]
   variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
+  negatives_knowledge <<- c(T, T, T, T, T, T, F, F, F, F, F)
   variables_knowledge_index <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
   negatives_knowledge_index <<- c(T, T, T, T, T, T, F, F, F, F, F)
   
@@ -3257,31 +3258,12 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     }
   }
   
-  if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
-    temp <- e[,variables_knowledge]
-    for (i in 1:7) { 
-      temp[[i]] <- as.numeric(temp[[i]]) # imputes the mean of variables for missing values (rather than removing the corresponding obs. from the dataframe)
-      temp[[i]][is.missing(temp[[i]])] <- wtd.mean(temp[[i]], weights = e$weight, na.rm=T) }
-    temp$knows_anthropogenic <- temp$CC_anthropogenic == 2
-    loadings <- as.numeric(factanal(temp, 1)$loadings)
-    # unlist(cronbach(temp))
-    # # pca <- principal(temp, 1)
-    
-    e$knowledge_simple <- as.numeric((e$CC_anthropogenic==2) + e$CC_anthropogenic + e$CC_real - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - 0.4*(e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) )
-    # e$knowledge_unitary <- e$CC_real + e$CC_anthropogenic - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - (e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) 
-    e$knowledge_efa <- 0
-    for (i in 1:length(variables_knowledge)) e$knowledge_efa <- e$knowledge_efa + loadings[i]*temp[[i]]
-    e$knowledge_efa <- (e$knowledge_efa - wtd.mean(e$knowledge_efa, weights = e$weight, na.rm = T))/sqrt(wtd.var(e$knowledge_efa, weights = e$weight, na.rm = T))
-    cor(e$knowledge_efa, e$knowledge_simple, use = "complete.obs") # 0.872
-    # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
-  }
-  
   index_zscore <- function(variables, negatives, df=e, weight=T) {
     z_score_computation <- function(pair, df=e, weight=T){
       variable_name <- pair[1]
       variable_name_zscore <-  paste(variable_name,"zscore", sep = "_")
       negative <- pair[2]
-      if (negative) df[[variable_name]] <- - df[[variable_name]]
+      if (negative) df[[variable_name]] <- - 1*df[[variable_name]]
       
       # get mean and sd by treatment groups
       mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
@@ -3313,7 +3295,31 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if (all(variables_knowledge_index %in% names(e))) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
     label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights and impute mean of treatment group to missing values." }
-
+  
+  if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
+    temp <- e[,c("weight", "treatment", variables_knowledge)]
+    temp$knows_anthropogenic <- temp$CC_anthropogenic == 2
+    variables_knowledge2 <- c(variables_knowledge, "knows_anthropogenic")
+    negatives_knowledge2 <- c(negatives_knowledge, F)
+    for (i in seq_along(variables_knowledge2)) temp[[variables_knowledge2[i]]] <- z_score_computation(pair = c(variables_knowledge2[i], negatives_knowledge2[i]), df = temp, weight = T) # impute mean of same treatment group to missings
+    # for (i in seq_along(variables_knowledge2)) temp[[variables_knowledge2[i]]][is.pnr(temp[[variables_knowledge2[i]]])] <- wtd.mean(temp[[variables_knowledge2[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
+    loadings <- as.numeric(factanal(temp[,variables_knowledge2], 1)$loadings)
+    names(loadings) <- variables_knowledge2
+    # unlist(cronbach(temp))
+    # # pca <- principal(temp, 1)
+    # print(loadings_z)
+    
+    e$knowledge_simple <- as.numeric((e$CC_anthropogenic==2) + e$CC_anthropogenic + e$CC_real - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - 0.4*(e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) )
+    # e$knowledge_unitary <- e$CC_real + e$CC_anthropogenic - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - (e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region)
+    e$index_knowledge_efa <- 0
+    for (v in variables_knowledge2) e$index_knowledge_efa <- e$index_knowledge_efa + loadings[v]*temp[[v]]
+    e$index_knowledge_efa <- (e$index_knowledge_efa - wtd.mean(e$index_knowledge_efa, weights = e$weight, na.rm = T))/sqrt(wtd.var(e$index_knowledge_efa, weights = e$weight, na.rm = T))
+    cor(e$index_knowledge_efa, e$knowledge_simple, use = "complete.obs") # 0.872
+    cor(e$index_knowledge_efa, e$index_knowledge, use = "complete.obs") # 0.68
+    # correlogram("knowledge")
+    # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
+  }
+  
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
     e$left_click_petition <- e$clicked_petition == 1

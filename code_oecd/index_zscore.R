@@ -6,7 +6,7 @@ index_zscore <- function(variables, negatives, df=e, weight=T) {
     variable_name <- pair[1]
     variable_name_zscore <-  paste(variable_name,"zscore", sep = "_")
     negative <- pair[2]
-    if (negative) df[[variable_name]] <- - df[[variable_name]]
+    if (negative) df[[variable_name]] <- - 1*df[[variable_name]]
     
     # get mean and sd by treatment groups
     mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
@@ -37,4 +37,3 @@ index_zscore <- function(variables, negatives, df=e, weight=T) {
 }
 
 e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index)
-temp <- index_zscore("CC_anthropogenic", F)
