@@ -3263,33 +3263,33 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     }
   }
   
-  index_zscore <- function(variables, negatives, df=e, weight=T) {
-    z_score_computation <- function(pair, df=e, weight=T){
-      variable_name <- pair[1]
-      variable_name_zscore <-  paste(variable_name,"zscore", sep = "_")
-      negative <- pair[2]
-      if (negative) df[[variable_name]] <- - 1*df[[variable_name]]
-      
-      # get mean and sd by treatment groups
-      mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
-                                      function(x) { if (weight) weights <- x$weight
-                                      else weights <- NULL
-                                      return(c(wtd.mean(x[[variable_name]], w = weights, na.rm=T), sqrt(wtd.var(x[[variable_name]], w = weights, na.rm=T)))) } ))
-      
-      # compute z-score
-      df[[variable_name_zscore]] <- ((df[[variable_name]])-mean_sd[1,1])/mean_sd[2,1]
-      
-      # replace missing values with its group mean
-      df[[variable_name_zscore]][df$treatment == "None"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,1]-mean_sd[1,1])/mean_sd[2,1]
-      df[[variable_name_zscore]][df$treatment == "Climate"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,2]-mean_sd[1,1])/mean_sd[2,1]
-      df[[variable_name_zscore]][df$treatment == "Policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
-      df[[variable_name_zscore]][df$treatment == "Both"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,4]-mean_sd[1,1])/mean_sd[2,1]
-      
-      zscore <- as.numeric(df[[variable_name_zscore]])
-      
-      return(zscore)
-    } 
+  z_score_computation <- function(pair, df=e, weight=T){
+    variable_name <- pair[1]
+    variable_name_zscore <-  paste(variable_name,"zscore", sep = "_")
+    negative <- pair[2]
+    if (negative) df[[variable_name]] <- - 1*df[[variable_name]]
     
+    # get mean and sd by treatment groups
+    mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
+                                    function(x) { if (weight) weights <- x$weight
+                                    else weights <- NULL
+                                    return(c(wtd.mean(x[[variable_name]], w = weights, na.rm=T), sqrt(wtd.var(x[[variable_name]], w = weights, na.rm=T)))) } ))
+    
+    # compute z-score
+    df[[variable_name_zscore]] <- ((df[[variable_name]])-mean_sd[1,1])/mean_sd[2,1]
+    
+    # replace missing values with its group mean
+    df[[variable_name_zscore]][df$treatment == "None"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,1]-mean_sd[1,1])/mean_sd[2,1]
+    df[[variable_name_zscore]][df$treatment == "Climate"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,2]-mean_sd[1,1])/mean_sd[2,1]
+    df[[variable_name_zscore]][df$treatment == "Policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
+    df[[variable_name_zscore]][df$treatment == "Both"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,4]-mean_sd[1,1])/mean_sd[2,1]
+    
+    zscore <- as.numeric(df[[variable_name_zscore]])
+    
+    return(zscore)
+  } 
+
+  index_zscore <- function(variables, negatives, df=e, weight=T) {
     pairs <- list()
     for (i in seq_along(variables)) pairs <- c(pairs, list(c(variables[i], negatives[i])))
     zscores <- as.data.frame(lapply(pairs, z_score_computation, df=df, weight=weight))
@@ -3297,10 +3297,11 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     #colnames(zscore) <- zscore_names
     return(rowMeans(zscores))
   }
+  
   if (all(variables_knowledge_index %in% names(e))) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
-    label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights and impute mean of treatment group to missing values." }
-  
+    label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is standardized with survey weights and impute mean of treatment group to missing values." }
+ 
   if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
     temp <- e[,c("weight", "treatment", variables_knowledge)]
     temp$knows_anthropogenic <- temp$CC_anthropogenic == 2
@@ -3314,18 +3315,19 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # # pca <- principal(temp, 1)
     # print(loadings_z)
     
-    e$knowledge_simple <- as.numeric((e$CC_anthropogenic==2) + e$CC_anthropogenic + e$CC_real - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - 0.4*(e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) )
+    e$index_knowledge_simple <- as.numeric((e$CC_anthropogenic==2) + e$CC_anthropogenic + e$CC_real - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - 0.4*(e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) )
     # e$knowledge_unitary <- e$CC_real + e$CC_anthropogenic - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - (e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region)
     e$index_knowledge_efa <- 0
     for (v in variables_knowledge2) e$index_knowledge_efa <- e$index_knowledge_efa + loadings[v]*temp[[v]]
     e$index_knowledge_efa <- (e$index_knowledge_efa - wtd.mean(e$index_knowledge_efa, weights = e$weight, na.rm = T))/sqrt(wtd.var(e$index_knowledge_efa, weights = e$weight, na.rm = T))
-    cor(e$index_knowledge_efa, e$knowledge_simple, use = "complete.obs") # 0.872
+    label(e$index_knowledge_simple) <- "index_knowledge_simple: Weighted average of (non-standardized) variables in variables_knowledge2. Weights are chosen to fit intuition."
+    label(e$index_knowledge_efa) <- "index_knowledge_efa: Weighted average of z-scores of variables in variables_knowledge2. Weights are loadings from explanatory factor analysis (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+    cor(e$index_knowledge_efa, e$index_knowledge_simple, use = "complete.obs") # 0.872
     cor(e$index_knowledge_efa, e$index_knowledge, use = "complete.obs") # 0.68
     # correlogram("knowledge")
     # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
   }
   
-    label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values." }
 
 if (all(variables_affected_index %in% names(e))) {
     e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, df = e, weight = weighting)
