@@ -2133,7 +2133,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 # e <- read_csv("../data/US_pilot.csv") #[-c(1:2),]
 # e <- relabel_and_rename(e, country="US", wave = "pilot3")
 
-convert <- function(e, country, wave = NULL) {
+convert <- function(e, country, wave = NULL, weighting = T) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                  "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
                  "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas")
@@ -2274,8 +2274,9 @@ convert <- function(e, country, wave = NULL) {
     }
   }
   variables_wtp <<- names(e)[grepl('wtp_', names(e))]
-  variables_knowledge <<- c("CC_real", "CC_anthropogenic", "CC_impacts_volcanos", "footprint_pc_US", "footprint_reg_US", "footprint_el_gas", "footprint_fd_beef", "footprint_tr_car", "CC_knowledgeable", "GHG_CO2", "CC_dynamic")
-
+  variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
+  variables_knowledge_index <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
+  
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
   text_neutral <- c( "US" = "Neither agree or disagree",  "US" = "Neither agree nor disagree",  "US" = "I neither agree nor disagree")
@@ -2623,10 +2624,12 @@ convert <- function(e, country, wave = NULL) {
                         names = c("Never", "Rarely", "Weekly", "Daily")),
                       annotation=Label(e$frequency_beef))
   
-  if ("insulation" %in% names(e)) temp <- 2 * (e$insulation %in% text_excellent) + (e$insulation %in% text_good) - (e$insulation %in% text_poor) - 2 * (e$insulation %in% text_very_poor) - 0.1 * (e$insulation %in% text_pnr | is.na(e$insulation))
-  if ("insulation" %in% names(e)) e$insulation <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                                                       names = c("Very poor", "Poor", "Fair", "Good", "Excellent", "PNR")),
-                                                       missing.values=-0.1, annotation=Label(e$insulation))
+  for (v in c("insulation", "availability_transport")) { 
+    if (v %in% names(e)) {
+      temp <-  2 * (e[[v]] %in% text_excellent) + (e[[v]] %in% text_good) - (e[[v]] %in% text_poor) - 2 * (e[[v]] %in% text_very_poor) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
+      e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Very poor", "Poor", "Fair", "Good", "Excellent", "PNR")),
+                        missing.values=-0.1, annotation=Label(e[[v]])) 
+    } }
 
   if ("CC_anthropogenic" %in% names(e)) temp <- 2 * (e$CC_anthropogenic %in% text_most) + (e$CC_anthropogenic %in% text_a_lot) - (e$CC_anthropogenic %in% text_a_little) - 2 * (e$CC_anthropogenic %in% text_none | e$CC_real == 'No') - 0.1 * ((e$CC_anthropogenic %in% text_pnr | is.na(e$CC_anthropogenic)) & e$CC_real == 'Yes')
   if ("CC_anthropogenic" %in% names(e)) e$CC_anthropogenic <- as.item(temp, labels = structure(c(-2:2,-0.1),
@@ -3012,6 +3015,100 @@ convert <- function(e, country, wave = NULL) {
   e$treatment[e$treatment_climate == 1 & e$treatment_policy == 1] <- "Both"
   e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
   label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
+
+  e$rush_treatment <- e$duration_treatment_climate/60 < 3 | e$duration_treatment_policy/60 < 4.75 # TODO!! adapt time for pilots
+  e$rush_treatment[is.na(e$rush_treatment)] <- F
+  label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
+  
+  e$rush <- e$rush_treatment | (e$duration < 15)
+  label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
+  
+  # [deprecated] problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
+  e$race_white_only <- 0
+  e$race_white_only[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE] <- 1
+  #e[e$race_black == TRUE, "race"] <- "Black"
+  #e[e$race_hispanic == TRUE, "race"] <- "Hispanic"
+  #e[e$race_asian == TRUE | e$race_native == TRUE | e$race_hawaii == TRUE | e$race_other_choice == TRUE | e$race_pnr == TRUE , "race"] <- "Other"
+  e$race_white_only <- as.factor(e$race_white_only)
+  
+  #gender: Other set as Male for the moment, see if lot of similar answers in final data
+  e$gender_dum <- as.character(e$gender) # TODO! country
+  e[e$gender == "Other", "gender_dum"] <- "Male"
+  e$gender_dum <- as.factor(e$gender_dum)
+  e$gender_factor <- as.factor(e$gender)
+  if ("Other" %in% levels(e$gender_factor)) e$gender_factor <- relevel(relevel(as.factor(e$gender), "Other"), "Female")
+  
+  e$children <- 0
+  if ("nb_children" %in% names(e)) e[e$nb_children >= 1, "children"] <- 1
+  else if ("Nb_children" %in% names(e)) e$children[!(e$Nb_children %in% c(0, "0"))] <- 1
+  e$children <- as.factor(e$children)
+  if ("nb_children" %in% names(e)) e$nb_children_ceiling_4 <- pmin(e$nb_children, 4)
+  else if ("Nb_children" %in% names(e)) {
+    e$nb_children_ceiling_4 <- e$Nb_children
+    e$nb_children_ceiling_4[e$Nb_children %in% text_4_] <- 4
+    e$nb_children_ceiling_4 <- as.numeric(as.vector(e$nb_children_ceiling_4)) }
+  if ("HH_size" %in% names(e)) {
+    e$HH_size[e$HH_size %in% text_5_] <- 5
+    e$HH_size <- as.item(as.numeric(e$HH_size), labels = structure(c(1:5), names = c("1", "2", "3", "4", "5 or more")), annotation=attr(e$HH_size, "label"))  }
+  
+  e$college <- "No college"
+  e[e$education >= 5, "college"] <- "College Degree"
+  e$college <- as.factor(e$college)
+  
+  if ("age" %in% names(e)) {
+    e$age_agg <- NULL
+    e[e$age %in% 18:29, "age_agg"] <- "18-29"
+    e[e$age %in% 30:49, "age_agg"] <- "30-49"
+    e[e$age %in% 50:87, "age_agg"] <- "50-87"
+    e$age_agg <- as.factor(e$age_agg)
+    e$age_quota <- NULL
+    e$age_quota[e$age %in% 18:24] <- "18-24"
+    e$age_quota[e$age %in% 25:34] <- "25-34"
+    e$age_quota[e$age %in% 35:49] <- "35-49"
+    e$age_quota[e$age %in% 50:64] <- "50-64"
+    e$age_quota[e$age > 64] <- "65+" # TODO! "> 65" instead, countr
+  } else { 
+    e$age_quota[e$age_quota %in% text_18_24] <- "18-24"
+    e$age_quota[e$age_quota %in% text_25_34] <- "25-34"
+    e$age_quota[e$age_quota %in% text_35_49] <- "35-49"
+    e$age_quota[e$age_quota %in% text_50_64] <- "50-64"
+    e$age_quota[e$age_quota %in% text_65_] <- "65+" 
+  }
+  
+  # political position
+  # AF TODO I'd rather use the dummy vote=='Biden' than a variable vote_dum with 4 modalities
+  e$vote_dum <- as.character(e$vote)
+  if (country == "US") {
+    e$vote_dum[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
+    if ("Other" %in% levels(as.factor(e$vote_dum))) e$vote_dum <- relevel(as.factor(e$vote_dum), "Other") }
+  # # e[e$vote_participation == 2, "vote_dum"] <- "Other" # add non-voters as others
+  # # e$vote_dum <- as.factor(e$vote_dum)
+  # # e$vote_dum <- relevel(e$vote_dum, ref ="Other")
+  
+  e$race <- "Other"
+  e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
+  e$race[e$race_hispanic==T] <- "Hispanic"
+  e$race[e$race_black==T] <- "Black"
+  label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
+  
+  e$income_factor <- as.factor(e$income)
+  
+  if (country == "US") {
+    e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
+    e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
+    e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
+    e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
+    e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
+    missing.values(e$vote_2020) <- "PNR/no right"
+    # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
+    e$vote3 <- e$vote_2020
+    e$vote3[e$vote_2020 %in% c("PNR/no right", "Other/Non-voter")] <- "other"
+  }
+  
+  ### WEIGHTING
+  if (weighting) {
+    e$weight <- weighting(e) # TODO!
+    if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
   
   if ("know_temperature_2100" %in% names(e)) {
     e$know_treatment_climate <- (e$know_temperature_2100 %in% text_know_temperature_2100) + (e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves)
@@ -3159,7 +3256,6 @@ convert <- function(e, country, wave = NULL) {
     }
   }
   
-  variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
   if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
     temp <- e[,variables_knowledge]
     for (i in 1:7) { 
@@ -3178,93 +3274,41 @@ convert <- function(e, country, wave = NULL) {
     cor(e$knowledge_efa, e$knowledge_simple, use = "complete.obs") # 0.872
     # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
   }
-
-  e$rush_treatment <- e$duration_treatment_climate/60 < 3 | e$duration_treatment_policy/60 < 4.75 # TODO!! adapt time for pilots
-  e$rush_treatment[is.na(e$rush_treatment)] <- F
-  label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
   
-  e$rush <- e$rush_treatment | (e$duration < 15)
-  label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
-  # [deprecated] problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
-  e$race_white_only <- 0
-  e$race_white_only[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE] <- 1
-  #e[e$race_black == TRUE, "race"] <- "Black"
-  #e[e$race_hispanic == TRUE, "race"] <- "Hispanic"
-  #e[e$race_asian == TRUE | e$race_native == TRUE | e$race_hawaii == TRUE | e$race_other_choice == TRUE | e$race_pnr == TRUE , "race"] <- "Other"
-  e$race_white_only <- as.factor(e$race_white_only)
-  
-  #gender: Other set as Male for the moment, see if lot of similar answers in final data
-  e$gender_dum <- as.character(e$gender) # TODO! country
-  e[e$gender == "Other", "gender_dum"] <- "Male"
-  e$gender_dum <- as.factor(e$gender_dum)
-  e$gender_factor <- as.factor(e$gender)
-  if ("Other" %in% levels(e$gender_factor)) e$gender_factor <- relevel(relevel(as.factor(e$gender), "Other"), "Female")
- 
-  e$children <- 0
-  if ("nb_children" %in% names(e)) e[e$nb_children >= 1, "children"] <- 1
-  else if ("Nb_children" %in% names(e)) e$children[!(e$Nb_children %in% c(0, "0"))] <- 1
-  e$children <- as.factor(e$children)
-  if ("nb_children" %in% names(e)) e$nb_children_ceiling_4 <- pmin(e$nb_children, 4)
-  else if ("Nb_children" %in% names(e)) {
-    e$nb_children_ceiling_4 <- e$Nb_children
-    e$nb_children_ceiling_4[e$Nb_children %in% text_4_] <- 4
-    e$nb_children_ceiling_4 <- as.numeric(as.vector(e$nb_children_ceiling_4)) }
-  if ("HH_size" %in% names(e)) {
-    e$HH_size[e$HH_size %in% text_5_] <- 5
-    e$HH_size <- as.item(as.numeric(e$HH_size), labels = structure(c(1:5), names = c("1", "2", "3", "4", "5 or more")), annotation=attr(e$HH_size, "label"))  }
-  
-  e$college <- "No college"
-  e[e$education >= 5, "college"] <- "College Degree"
-  e$college <- as.factor(e$college)
-  
-  if ("age" %in% names(e)) {
-    e$age_agg <- NULL
-    e[e$age %in% 18:29, "age_agg"] <- "18-29"
-    e[e$age %in% 30:49, "age_agg"] <- "30-49"
-    e[e$age %in% 50:87, "age_agg"] <- "50-87"
-    e$age_agg <- as.factor(e$age_agg)
-    e$age_quota <- NULL
-    e$age_quota[e$age %in% 18:24] <- "18-24"
-    e$age_quota[e$age %in% 25:34] <- "25-34"
-    e$age_quota[e$age %in% 35:49] <- "35-49"
-    e$age_quota[e$age %in% 50:64] <- "50-64"
-    e$age_quota[e$age > 64] <- "65+" # TODO! "> 65" instead, countr
-  } else { 
-    e$age_quota[e$age_quota %in% text_18_24] <- "18-24"
-    e$age_quota[e$age_quota %in% text_25_34] <- "25-34"
-    e$age_quota[e$age_quota %in% text_35_49] <- "35-49"
-    e$age_quota[e$age_quota %in% text_50_64] <- "50-64"
-    e$age_quota[e$age_quota %in% text_65_] <- "65+" 
+  index_zscore <- function(variables, df=e, weight = T) {
+    z_score_computation <- function(variable_name, df=e, weight=T){
+      variable_name_zscore <-  paste(variable_name,"zscore", sep = "_")
+      
+      # get mean and sd by treatment groups
+      mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
+                                      function(x) { if (weight) weights <- x$weight
+                                      else weights <- NULL
+                                      return(c(wtd.mean(x[[variable_name]], w = weights, na.rm=T), sqrt(wtd.var(x[[variable_name]], w = weights, na.rm=T)))) } ))
+      
+      # compute z-score
+      df[[variable_name_zscore]] <- ((df[[variable_name]])-mean_sd[1,1])/mean_sd[2,1]
+      
+      # replace missing values with its group mean
+      df[[variable_name_zscore]][df$treatment == "None"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,1]-mean_sd[1,1])/mean_sd[2,1]
+      df[[variable_name_zscore]][df$treatment == "Climate"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,2]-mean_sd[1,1])/mean_sd[2,1]
+      df[[variable_name_zscore]][df$treatment == "Policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
+      df[[variable_name_zscore]][df$treatment == "Both"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,4]-mean_sd[1,1])/mean_sd[2,1]
+      
+      zscore <- as.numeric(df[[variable_name_zscore]])
+      
+      return(zscore)
+    }  
+    
+    if (length(variables)==1) variables <- variables[1]
+    zscores <- as.data.frame(sapply(variables, z_score_computation, df=df, weight=weight))
+    #zscore_names<- as.vector(sapply(variables_list,function(x) paste(x,"zscore", sep = "_")))
+    #colnames(zscore) <- zscore_names
+    return(rowMeans(zscores))
   }
-  
-  # political position
-  # AF TODO I'd rather use the dummy vote=='Biden' than a variable vote_dum with 4 modalities
-  e$vote_dum <- as.character(e$vote)
-  if (country == "US") {
-    e$vote_dum[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
-    if ("Other" %in% levels(as.factor(e$vote_dum))) e$vote_dum <- relevel(as.factor(e$vote_dum), "Other") }
-  # # e[e$vote_participation == 2, "vote_dum"] <- "Other" # add non-voters as others
-  # # e$vote_dum <- as.factor(e$vote_dum)
-  # # e$vote_dum <- relevel(e$vote_dum, ref ="Other")
-  
-  e$race <- "Other"
-  e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
-  e$race[e$race_hispanic==T] <- "Hispanic"
-  e$race[e$race_black==T] <- "Black"
-  label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
+  if (all(variables_knowledge_index %in% names(e))) {
+    e$index_knowledge <- index_zscore(variables_knowledge_index, df = e, weight = weighting)
+    label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights and impute mean of treatment group to missing values." }
 
-  if (country == "US") {
-    e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
-    e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
-    e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
-    e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
-    e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
-    missing.values(e$vote_2020) <- "PNR/no right"
-    # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
-    e$vote3 <- e$vote_2020
-    e$vote3[e$vote_2020 %in% c("PNR/no right", "Other/Non-voter")] <- "other"
-  }
-  
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
     e$left_click_petition <- e$clicked_petition == 1
@@ -3300,8 +3344,6 @@ convert <- function(e, country, wave = NULL) {
     label(e$CO2_emission_gas) <- "CO2_emission_gas: CO2 emissions (in t/year) from gasoline of the respondent estimated from their gas expenses and emission factor of gasoline."
     label(e$CO2_emission) <- "CO2_emission: CO2 emissions (in t/year) of the respondent estimated from their heating & gas expenses, flights and income." # Official average: 17.59 per capita vs. 15.63 per respondent here (we pbly underestimate then because we assume children have 0 emission).
   }
-  
-  e$income_factor <- as.factor(e$income)
   
   # e <- e[, -c(9:17)] 
   return(e)
@@ -3372,11 +3414,11 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   if (exclude_speeder) { e <- e[as.numeric(as.vector(e$duration)) > duration_min,] } 
   if (only_finished) { # TODO: le faire marcher même pour les autres
     e <- e[e$finished==1,] 
-    e <- convert(e, country = country, wave = wave)
+    e <- convert(e, country = country, wave = wave, weighting = weighting)
     
-    if (weighting) {
-      e$weight <- weighting(e) # TODO!
-      if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
+    # if (weighting) {
+    #   e$weight <- weighting(e) # TODO!
+    #   if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
   
     # e$left_right_na <- as.numeric(e$left_right)
     # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
