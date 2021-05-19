@@ -916,7 +916,9 @@ datasummary((CO2_emission < 13.7) + (CO2_emission %between% c(13.7, 21.5)) + (CO
 modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # TODO: heterogenous treatment Red/Dem; maps; 
-# Pessimistic w.r.t. future more or less climate friendly?
+# TODO: Pessimistic w.r.t. future more or less climate friendly?
+# TODO: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
+# Interpretation: people lack of info, are too optimistic or think it's too easy to solve
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
 # names(knowledge_all) <- c("Knowledge", "GhG", "Activities",  "Anthropogenic", "Exists", "Target", "Region")
