@@ -2276,6 +2276,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_wtp <<- names(e)[grepl('wtp_', names(e))]
   variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
   variables_knowledge_index <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
+  negatives_knowledge_index <<- c(T, T, T, T, T, T, F, F, F, F, F)
   
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
@@ -3275,9 +3276,12 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
   }
   
-  index_zscore <- function(variables, df=e, weight = T) {
-    z_score_computation <- function(variable_name, df=e, weight=T){
+  index_zscore <- function(variables, negatives, df=e, weight=T) {
+    z_score_computation <- function(pair, df=e, weight=T){
+      variable_name <- pair[1]
       variable_name_zscore <-  paste(variable_name,"zscore", sep = "_")
+      negative <- pair[2]
+      if (negative) df[[variable_name]] <- - df[[variable_name]]
       
       # get mean and sd by treatment groups
       mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
@@ -3297,16 +3301,17 @@ convert <- function(e, country, wave = NULL, weighting = T) {
       zscore <- as.numeric(df[[variable_name_zscore]])
       
       return(zscore)
-    }  
+    } 
     
-    if (length(variables)==1) variables <- variables[1]
-    zscores <- as.data.frame(sapply(variables, z_score_computation, df=df, weight=weight))
+    pairs <- list()
+    for (i in seq_along(variables)) pairs <- c(pairs, list(c(variables[i], negatives[i])))
+    zscores <- as.data.frame(lapply(pairs, z_score_computation, df=df, weight=weight))
     #zscore_names<- as.vector(sapply(variables_list,function(x) paste(x,"zscore", sep = "_")))
     #colnames(zscore) <- zscore_names
     return(rowMeans(zscores))
   }
   if (all(variables_knowledge_index %in% names(e))) {
-    e$index_knowledge <- index_zscore(variables_knowledge_index, df = e, weight = weighting)
+    e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
     label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is normalizeed with survey weights and impute mean of treatment group to missing values." }
 
   if ("clicked_petition" %in% names(e)) {
