@@ -315,3 +315,31 @@ desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_suppo
 dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
 dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa"), indep_labels = c(cov_lab_w_treatment, "Index affected","Index knowledge", "Index knowledge EFA"), mean_control = T
 )
+
+# CO2 emissions
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
+), filename = "support_w_indexes",
+dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "CO2_emission"), indep_labels = c(cov_lab_w_treatment, "Index affected", "CO2 emissions (t/year)"), mean_control = T
+)
+
+# C02 + index
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
+), filename = "support_w_indexes_both",
+dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "CO2_emission"), indep_labels = c(cov_lab_w_treatment, "Index affected","Index knowledge", "CO2 emissions (t/year)"), mean_control = T
+)
+
+# CO2 + EFA
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
+), filename = "support_w_indexes_both",
+dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab_w_treatment, "Index affected","Index knowledge EFA", "CO2 emissions (t/year)"), mean_control = T
+)
+
+# All 3
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
+), filename = "support_w_indexes_both",
+dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab_w_treatment, "Index affected","Index knowledge", "Index knowledge EFA", "CO2 emissions (t/year)"), mean_control = T
+)
