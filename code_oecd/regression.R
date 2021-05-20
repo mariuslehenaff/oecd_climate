@@ -290,8 +290,8 @@ desc_table(dep_vars = c("survey_biased == 'No'", "survey_biased == 'Yes, right'"
 #####
 
 ## Indexes
-desc_table(dep_vars = c("index_affected", "index_knowledge"), filename = "indexes",
-           dep.var.labels = c("Affected Index", "Knowledge Index"),
+desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indexes",
+           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO2 emissions"),
            dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "core_metropolitan == 1"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
 )
 

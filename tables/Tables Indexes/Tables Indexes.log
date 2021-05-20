@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.6.18)  20 MAY 2021 17:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.6.18)  20 MAY 2021 17:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1237,7 +1237,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 99.
 Here is how much of TeX's memory you used:
  31953 strings out of 492616
  603553 string characters out of 6129481
- 830672 words of memory out of 5000000
+ 837672 words of memory out of 5000000
  35343 multiletter control sequences out of 15000+600000
  539054 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1251,7 +1251,7 @@ r/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
 local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loc
 al/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
 l/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on "Tables Indexes.pdf" (9 pages, 116890 bytes).
+Output written on "Tables Indexes.pdf" (9 pages, 117380 bytes).
 PDF statistics:
  119 PDF objects out of 1000 (max. 8388607)
  98 compressed objects within 1 object stream
