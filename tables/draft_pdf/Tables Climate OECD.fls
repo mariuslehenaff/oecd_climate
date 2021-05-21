@@ -426,6 +426,10 @@ INPUT ../US/ineq_intervention_future.tex
 INPUT ../US/ineq_intervention_future.tex
 INPUT ../US/survey_biased.tex
 INPUT ../US/survey_biased.tex
+INPUT ../US/indexes.tex
+INPUT ../US/indexes.tex
+INPUT ../US/support_all_index.tex
+INPUT ../US/support_all_index.tex
 INPUT Tables Climate OECD.aux
 INPUT ./Tables Climate OECD.out
 INPUT ./Tables Climate OECD.out

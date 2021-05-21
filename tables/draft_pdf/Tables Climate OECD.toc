@@ -14,3 +14,4 @@
 \contentsline {subsection}{\numberline {2.9}Housing/Preference for bans vs. incentives}{38}{subsection.49}% 
 \contentsline {subsection}{\numberline {2.10}Trust, perceptions of institution, inequality, and the future}{42}{subsection.53}% 
 \contentsline {subsection}{\numberline {2.11}Feedback}{44}{subsection.56}% 
+\contentsline {section}{\numberline {3}Indexes}{45}{section.58}% 

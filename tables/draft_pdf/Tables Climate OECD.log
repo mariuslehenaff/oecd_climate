@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.6.18)  21 MAY 2021 14:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.6.18)  21 MAY 2021 15:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1299,7 +1299,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [37] (../US/will_insulate.tex)
 
-LaTeX Warning: Float too large for page by 14.22708pt on input line 426.
+LaTeX Warning: Float too large for page by 14.22708pt on input line 427.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1312,7 +1312,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 ] [39] (../US/pref_thermal.tex)
 
-LaTeX Warning: Float too large for page by 23.69019pt on input line 436.
+LaTeX Warning: Float too large for page by 23.69019pt on input line 437.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1329,21 +1329,28 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 ] [43] (../US/survey_biased.tex) [44
 
-]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 491.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 491.
+] (../US/indexes.tex)
+(../US/support_all_index.tex)
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[45
+
+] [46]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 516.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 516.
  (./Tables Climate OECD.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 491.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 491.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 516.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 516.
 Package rerunfilecheck Info: File `"Tables Climate OECD".out' has not changed.
-(rerunfilecheck)             Checksum: 231521F87EFEC3F1327C7BCC466677DB;1156.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 491.
+(rerunfilecheck)             Checksum: 7EEBCD0410FFC466512D4AD7AE5C8BEA;1200.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 516.
  ) 
 Here is how much of TeX's memory you used:
- 32154 strings out of 492616
- 606761 string characters out of 6129481
+ 32167 strings out of 492616
+ 606959 string characters out of 6129481
  782957 words of memory out of 5000000
- 35365 multiletter control sequences out of 15000+600000
+ 35367 multiletter control sequences out of 15000+600000
  540414 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,12n,69p,1341b,430s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1362,10 +1369,10 @@ ve/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl8.pfb></usr/local/texlive
 2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
 19/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive/2019
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on "Tables Climate OECD.pdf" (44 pages, 294464 bytes).
+Output written on "Tables Climate OECD.pdf" (46 pages, 302918 bytes).
 PDF statistics:
- 502 PDF objects out of 1000 (max. 8388607)
- 436 compressed objects within 5 object streams
- 102 named destinations out of 1000 (max. 500000)
- 133 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 526 PDF objects out of 1000 (max. 8388607)
+ 458 compressed objects within 5 object streams
+ 107 named destinations out of 1000 (max. 500000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 
