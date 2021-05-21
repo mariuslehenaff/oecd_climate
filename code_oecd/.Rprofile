@@ -104,6 +104,7 @@ package("topicmodels")
 package("broom")
 package("tidytext")
 package("modelsummary")
+package("dplR")
 
 # package("forcats")
 # package("quanteda")
@@ -290,7 +291,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   # Wrapper for stargazer
   # dep_vars accepts expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
   if (missing(dep.var.labels) & !(is.character(dep_vars))) dep.var.labels <- dep_vars
-  if (is.null(dep.var.labels)) dep.var.labels.include <- F
+  dep.var.labels.include <- ifelse(is.null(dep.var.labels), F, T)
   names(indep_vars) <- indep_vars
   if (class(indep_vars_included)=="list") { if (length(dep_vars)==1) dep_vars <- rep(dep_vars[1], length(indep_vars_included))  }
   else { indep_vars_included <- rep(list(rep(T, length(indep_vars))), length(dep_vars)) }
