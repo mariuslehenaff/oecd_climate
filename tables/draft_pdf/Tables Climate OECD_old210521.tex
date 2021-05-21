@@ -1,0 +1,473 @@
+\documentclass{article}
+\input{draft_preamble.tex}
+\usepackage{amsmath}
+
+
+
+\begin{document}
+
+
+\begin{LARGE}
+	\begin{center}
+		Preliminary Results – OECD Climate surveys	
+	\end{center}
+	
+\end{LARGE}
+	\tableofcontents
+	\listoftables
+
+\clearpage
+
+\section{Pre-treatment}
+
+\subsection{Energie Characteristics}
+
+\begin{table}[h!]
+	\caption{Main way of heating} \label{table heating}
+	\begin{center}
+		\scalebox{0.7}{\input{"../heating.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent indicates that the source of energy was her main way of heating at home. The \textit{Renewable} variable corresponds to the answer ``Wood, solar, geothermal, or heat pump."
+	The \textit{race: White only} indicator variable equals one if the respondent's self reported race is only ``White." The regression includes controls for gender, having children and having completed a college degree. The three \textit{status} indicator variables indicate the difference in mean compared to a reference group of people not working (either unemployed or inactive). The \textit{status: Working} indicator variable includes respondents who self-reported being either ``Full-time employed", ``Part-time employed", or ``Self-employed". The three \textit{Income} indicator variables indicate difference in mean compared to a reference group of people in the first quartile of household's annual income in 2019 (i.e. income $<$ \textdollar 35,000). The two \textit{age} indicator variables indicate difference in mean compared to a reference group of people aged between 18 and 29. The two \textit{vote} indicator variables indicate difference in mean compared to a reference group of people who either did not vote in the 2020 Presidential election or voted for another candidate than Biden or Trump. The \textit{wave: Pilote 2} indicator variable indicate difference in mean for the second wave of the pilote compared to the first wave.
+	\newline  *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Consumption and GHG}
+	\begin{center}
+		\scalebox{0.7}{\input{"../behavior_GHG.tex"}}
+	\end{center}
+	{\footnotesize Note: The \textit{Km drive (2019)} variable is a continous variable corresponding to the self-reported kilometers driven by the respondent's household in 2019. The \textit{Flights (2015-19)} variable corresponds to the self-reported number of round-trip flights taken between 2015 and 2019 included. The \textit{Rarely eat beef} variable is an indicator variable equal to one if the respondent indicates that she never eats beef or eats beef less than once a week.}
+\end{table}	
+
+\begin{landscape}
+\begin{table}[h!]
+	\caption{Main mode of transports used}
+	\begin{center}
+		\scalebox{0.6}{\input{"../transports.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent indicates she mainly uses the mode of transport for the activity in brackets. For instance, the \textit{Car/Bike (work)} variable equals one if the respondent mainly uses a car or a motorbike to go to work, school of university. \textit{Public} variables stand for ``Public Transports", \textit{Bicycle/Walk} stands for ``Walking or cycling", \textit{shop} for ``Grocery shopping" and \textit{leisure} for ``Leisure (excluding holidays)."
+	See note under Table \ref{table heating} for a description of the covariates. \textit{PT not available} is an indicator variable equal to 1, if public transports are not available where the respondent lives.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}	
+\end{table}	
+\end{landscape}
+
+\clearpage
+\subsection{Trust, perceptions of institution, inequality, and the future}
+
+\begin{table}[h!]
+	\caption{Trust in government and others}
+	\begin{center}
+		\scalebox{0.7}{\input{"../trust.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables. The \textit{most people} variable equals one if the respondent assigns a score greather than 5, on a scale from 0 to 10, to the question asking about trusting other people (0: ``One needs to be careful", 5: ``Most people can be trusted"). The \textit{government to do what is right} variable equals one if the respondent indicates trusting the U.S. government to do what is right ``Nearly all the time" or "Most of the time." The \textit{government to spend revenue wisely} variable equals one if the respondent indicates to ``fully agree" or ``somewhat agree" that authorities spend the revenue obtained from taxes and fees in a sensible way.
+	See note under Table \ref{table heating} for a description of the covariates.
+		\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}	
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Intervention, inequality and future}
+	\begin{center}
+		\scalebox{0.7}{\input{"../ineq_intervention_future.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables. The \textit{Active government} variable equals one if the respondent assigns a score greather than 3, on a scale from 1 to 5 asking about the purpose of government (1: ``Government should focus on most basic functions", 5: "Government should play an active role"). The \textit{Inequality serious problem} equals one if the respondent indicates that in the U.S. inequality is ``A serious problem" or ``A very serious problem." The \textit{World poorer or same} variable equals one if the respondent indicates that in 100 years the world will be ``About as rich as now on average" or ``Poorer."
+	See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Environmental views}
+	\begin{center}
+		\scalebox{0.7}{\input{"../envi_views.tex"}}
+	\end{center}
+	{\footnotesize Note: The variables are indicator variables equal to one if the respondent indicates that the statement is the closest to her view on environmental issues. The \textit{Collapse} variable corresponds to the statement ``Our civilization will eventually collapse, it is useless to try making society more sustainable", \textit{Not a problem, progress} to the statement ``Our civilization will develop so much that environmental issues will not be a problem in the distant future", \textit{Need, sustainable society} to the statement ``We should make our society as sustainable as possible to avoir irreversible damages," and \textit{Other goals} to the statement ``I believe we have more important goals than sustainability."}
+\end{table}	
+
+\clearpage
+\subsection{Climate change (attitudes and risks)}
+
+
+\begin{table}[h!]
+	\caption{Climate change existence}
+	\begin{center}
+		\scalebox{0.7}{\input{"../CC_exists.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the statement corresponds to the respondent's belief about climate change. For instance, the variable \textit{not a reality} equals one if the respondent thinks that climate change is not a reality. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}		
+
+\begin{table}[h!]
+	\caption{Halving GHG}
+	\begin{center}
+		\scalebox{0.7}{\input{"../CC_dynamics.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the statement corresponds to the respondent's belief about the effects of halving global GHG emissions. For instance, the variable \textit{has no impact on temperatures} equals one if the respondent thinks that halving global GHG emissions has no impact on temperatures. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}
+
+\begin{table}[h!]
+	\caption{Comparisons of GHG emissions}
+	\begin{center}
+		\scalebox{0.7}{\input{"../comparisons_GHG.tex"}}
+	\end{center}
+	{\footnotesize Note: The variables are indicator variables equal to one if the respondent thinks the statement is true. For instance, the \textit{eating beef vs. two servings of pasta} variable means that the respondent thinks eating one beef steak emits far more GHG than eating two serving of pasta. }
+\end{table}		
+
+\begin{landscape}
+	\begin{table}[h!]
+		\caption{Responsible party for CC}
+		\begin{center}
+			\scalebox{0.6}{\input{"../responsible_GHG.tex"}}
+		\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent thinks the category is predominantly responsible for climate change. For instance, the variable \textit{Each of us} equals one if the respondent thinks that each of us are predominantly responsible for climate change. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+	\end{table}		
+\end{landscape}
+
+\begin{landscape}
+	\begin{table}[h!]
+		\caption{Possible to halt CC}
+		\begin{center}
+			\scalebox{0.6}{\input{"../CC_stoppable.tex"}}
+		\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent thinks the statement is true. For instance, the \textit{Human have no noticeable influence} variable equals one if the respondent thinks humans have no noticeable influence on the climate. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+	\end{table}		
+\end{landscape}
+
+\begin{table}[h!]
+	\caption{Talks often about CC}
+	\begin{center}
+		\scalebox{0.8}{\input{"../CC_talks.tex"}}
+	\end{center}
+	{\footnotesize Note: The variables are indicator variables. For instance, \textit{Never} equals one if the respondent never talks about climate change.}
+\end{table}		
+
+%\begin{table}[h!]
+%	\caption{Most affected generations (first pilote only)}
+%	\begin{center}
+%		\scalebox{0.7}{\input{"../CC_affected.tex"}}
+%	\end{center}
+%	{\footnotesize Note: The variables are indicator variables. For instance, \textit{Born in 1960s} equals one if the respondent thinks the people currently between 50 and 60 will be seriously affected by climate change.}
+%\end{table}		
+
+\begin{table}[h!]
+	\caption{Scenario with worlwide consensus}
+	\begin{center}
+		\scalebox{0.7}{\input{"../change_lifestyle.tex"}}
+	\end{center}
+	{\footnotesize Note: The variable is an indicator variable equal to one, if the respondent is willing to adopt a sustainable lifestyle in a scenario where all countries agree on wide-reaching measures to fight climate change (where non-polluting transports and renewable energy are easily available).}
+\end{table}		
+
+\begin{landscape}
+	\begin{table}[h!]
+		\caption{Conditions to change lifestyle}
+		\begin{center}
+			\scalebox{0.5}{\input{"../change_condition.tex"}}
+		\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent selects the answer. For instance, \textit{Yes, if policies in the good direction} indicates that the respondent is willing to change her lifestyle to fight climate change if policies went in this direction. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+	\end{table}		
+\end{landscape}
+
+\begin{landscape}
+	\begin{table}[h!]
+		\caption{Effects of policies to halt CC}
+		\begin{center}
+			\scalebox{0.6}{\input{"../effect_policies.tex"}}
+		\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables. For instance, the \textit{be an opportunity for our economy and improve our lifestyle} equals one, if the respondent thinks that policies aiming at halting climate change would have such effects. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+	\end{table}		
+\end{landscape}
+
+\begin{landscape}
+	\begin{table}[h!]
+		\caption{Issues to address to halt CC}
+		\begin{center}
+			\scalebox{0.6}{\input{"../kaya.tex"}}
+		\end{center}
+	{\footnotesize Note: The variables are indicator variables equal to one if the respondent thinks the issue should be addressed to halt climate change. For instance, \textit{Level of waste} equals one if the respondent thinks that we need to address the level of waste to halt climate change.}	
+	\end{table}		
+\end{landscape}
+
+\clearpage
+\subsection{International burden-sharing}
+
+\begin{table}[h!]
+	\caption{Best level to implement policies to tackle climate change}
+	\begin{center}
+		\scalebox{0.7}{\input{"../scale.tex"}}
+	\end{center}
+	{\footnotesize Note: The variables are indicator variables equal to one if the respondent thinks public policies to tackle climate change need to be put in place at this level.}
+\end{table}	
+
+\begin{landscape}
+	\begin{table}[h!]
+	\caption{Countries that should bear the costs}
+	\begin{center}
+		\scalebox{0.6}{\input{"../burden_sharing.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent indicates to ``Strongly agree" or ``Somewhat agree" to the proposition regarding how countries should bear the costs of fighting climate change. For instance, \textit{Pay in proportion to income} equals one if the respondent agrees that all countries should pay in proportion to their income. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+\end{landscape}
+
+
+\begin{landscape}
+	\begin{table}[h!]
+	\caption{Right to pollute}
+	\begin{center}
+		\scalebox{0.6}{\input{"../equal_quota.tex"}}
+	\end{center}
+	{\footnotesize Note: The variables are indicator variables equal to one if the respondent is in favor of the proposition regarding the implementation of an equal allowance to emit GHG (where big polluters pay for their excess emissions and those who pollute less receive a monetary compensation). For instance, the \textit{No, should compensate the poorest} variable equals one if the respondent does not agree with the proposal because she thinks ``those who will be hurt more by climate change should be compensated more", \textit{Yes} if the respondent thinks ``this would be a fair solution", \textit{No, if pollute more more rights} if the respondent thinks ``those who currently pollute more should have more rights to pollute", \textit{No, not at individual levels} if the respondent thinks ``rights to pollute should not be defined at the individual level but at another level", and \textit{No, no restrictions of emissions} if the respondent thinks ``we should not restrict GHG emissions."}
+\end{table}	
+\end{landscape}
+
+\begin{table}[h!]
+	\caption{Should the U.S. act?} \label{table US should act}
+	\begin{center}
+		\scalebox{0.7}{\input{"../country_should_act.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables. For instance, the \textit{Yes} variable equals one if the respondent thinks the U.S. should take measures to flight climate change. See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Extent to which the U.S. should act}
+	\begin{center}
+		\scalebox{0.7}{\input{"../country_should_act_condition.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent agrees with the proposition. For instance, \textit{U.S. more ambitious, if others less} equals one if the respondent thinks ``The U.S. should take even more ambitious measures if other countries are less amibitious." The sample includes respondents who answered \textit{Yes} or \textit{Only if fair international agreement} at the question from Table \ref{table US should act}.   See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{landscape}
+	\begin{table}[h!]
+	\caption{International measures}
+	\begin{center}
+		\scalebox{0.6}{\input{"../pro_inter.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent approves the proposition. For instance, \textit{Global democratic assembly to fight CC} equals one if the respondent approves of ``establishing a global democratic assembly which role would be to take action against climate change." See note under Table \ref{table heating} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+\end{landscape}
+
+
+\clearpage
+\section{Post-treatment}
+\subsection{Preferences 1: Emission standards}
+
+\begin{table}[h!]
+	\caption{Opinion on emission standards} \label{table standard opinion}
+	\begin{center}
+		\scalebox{0.7}{\input{"../standard_opinion.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent agrees with the proposition. For instance, \textit{Does exist} equals one if the respondent thinks an emission limits for cars policy already exists in the U.S.. See note under Table \ref{table heating} for a description of the covariates. The three \textit{treatment} indicator variables indicate difference in mean compared to the control group (people who did not see any video).
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Perceived winners of an emission standards policy}
+	\begin{center}
+		\scalebox{0.7}{\input{"../standard_winner.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent perceives the category as winners of an emission limits for cars policy. For instance, the variable \textit{Poorest} equals one if the respondent thinks the poorest would win if such a policy was implemented. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Perceived losers of an emission standards policy}
+	\begin{center}
+		\scalebox{0.7}{\input{"../standard_loser.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent perceives the category as losers of an emission limits for cars policy. For instance, the variable \textit{Poorest} equals one if the respondent thinks the poorest would lose if such a policy was implemented. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\clearpage
+\subsection{Preferences 2: Green investments}
+
+\begin{table}[h!]
+	\caption{Opinion on green investments}
+	\begin{center}
+		\scalebox{0.7}{\input{"../investments_opinion.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent agrees with the proposition. For instance, \textit{Trust federal government} equals one if the respondent thinks she can trust the U.S. government to correctly implement a green infrastructure program. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Perceived winners of a green investments policy}
+	\begin{center}
+		\scalebox{0.7}{\input{"../investments_winner.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent perceives the category as winners of a green infrastructure program. For instance, the variable \textit{Poorest} equals one if the respondent thinks the poorest would win if such a policy was implemented. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Perceived losers of a green investments policy}
+	\begin{center}
+		\scalebox{0.7}{\input{"../investments_loser.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent perceives the category as losers of a green infrastructure program. For instance, the variable \textit{Poorest} equals one if the respondent thinks the poorest would lose if such a policy was implemented. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\clearpage
+\subsection{Preferences 3: Tax and dividend}
+
+\begin{table}[h!]
+	\caption{Opinion on carbon tax with cash transfers}
+	\begin{center}
+		\scalebox{0.7}{\input{"../tax_transfers_opinion.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent agrees with the proposition. For instance, \textit{Trust federal government} equals one if the respondent thinks she can trust the U.S. government to correctly implement a carbon tax with cash transfers. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Perceived winners of a carbon tax with cash transfers policy}
+	\begin{center}
+		\scalebox{0.7}{\input{"../tax_transfers_winner.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent perceives the category as winners of a carbon tax with cash transfers. For instance, the variable \textit{Poorest} equals one if the respondent thinks the poorest would win if such a policy was implemented. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Perceived losers of a carbon tax with cash transfers policy}
+	\begin{center}
+		\scalebox{0.7}{\input{"../tax_transfers_loser.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent perceives the category as losers of a carbon taxwith cash transfers. For instance, the variable \textit{Poorest} equals one if the respondent thinks the poorest would lose if such a policy was implemented. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\clearpage
+\subsection{Preferences on climate policies}
+
+\begin{table}[h!]
+	\caption{Worried about climate change}
+	\begin{center}
+		\scalebox{0.7}{\input{"../CC_worries.tex"}}
+	\end{center}
+	{\footnotesize Note: The \textit{Worried} dependent variable equals one if the respondent indicates she is ``Very worried" or ``Worried" about the impacts of climate change. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Support for climate policies}
+	\begin{center}
+		\scalebox{0.7}{\input{"../policy_climate.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent ``absolutely supports" or ``somewhat supports" the policy. For instance, \textit{Tax on flying} equals one if the respondent supports a tax on flying. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{landscape}
+	\begin{table}[h!]
+	\caption{Support carbon tax, depending on the use of revenues}
+	\begin{center}
+		\scalebox{0.55}{\input{"../revenue_carbon_tax.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent ``Strongly supports" or ``Rather supports" the use of revenues from potential carbon taxes to finance the policy. For instance, the \textit{Transfer to constrained HH} variable equals one if the respondent supports the use of revenues from carbon taxes to finance ``Transfers to households with no alternative to using fossil fuels." \textit{Transfers to poorest} corresponds to ``Transfers to the poorest households", \textit{Equal transfers} to ``Equal cash transfers to all households", \textit{Tax rebates for affected firms} to ``Tax rebates for most affected firms", \textit{Infrastructures projects} to ``Funding environmental infrastructure projects", \textit{Technology subsidies} to ``Subsidizing low-carbon technologies, including renewable nergy", \textit{Reduce deficit} to ``A reduction in the public deficit", \textit{Reduce CIT} to ``A reduction of corporate income tax", and \textit{Reduce PIT} to ``A reduction of personal income tax." See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+\end{landscape}
+
+\clearpage
+\subsection{Preferences for bans vs. incentives}
+
+\begin{table}[h!]
+	\caption{Renovation enforcement}
+	\begin{center}
+		\scalebox{0.7}{\input{"../pref_thermal.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables correspond to indicator variables. For instance, the \textit{made mandatory} variable equals one if the respondent thinks that if the U.S. government would subsidize the thermal renovation of residential housing, it should made it mandatory. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{landscape}
+	\begin{table}[h!]
+	\caption{Flight restrictions enforcement}
+	\begin{center}
+		\scalebox{0.6}{\input{"../pref_flight.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one. The \textit{Rationing} variables equal one if the respondent thinks no one should be allowed to fly more than the quota in brackets between now and 2040. The \textit{Tradable} variables equal one of the respondent thinks people should be able to trade their rights to fly. The quota used to frame the question is randomly selected from three different options. The \textit{(1000km)} variables refer to respondents who are asked about a quota of 1000km/person/year, the \textit{(3000km)} variables to respondents asked about a quota of 3000km/person/year, and the \textit{(0.5 round-trip/year)} to respondents asked about a quota of 1 round-trip/person/2years.  See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+\end{landscape}
+
+\begin{table}[h!]
+	\caption{Cattle consumption restrictions enforcement}
+	\begin{center}
+		\scalebox{0.7}{\input{"../pref_beef.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent would approve the measure in a scenario where the U.S. government decides to limit the consumption of cattle products. The \textit{Tax on cattle products (beefx2)} refers to ``A high tax on cattle products, so that the price of beef doubles", the \textit{Sub. Vegetables} variable to ``Subsidies on organic and local vegetables, fruits and nuts", the \textit{No sub. cattle} variable to ``The removal of subsidies for cattle farming", and the \textit{Ban intensive cattle} to ``The ban of intensive cattle farming." See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Environment protection enforcement}
+	\begin{center}
+		\scalebox{0.7}{\input{"../pref_incentives.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables. The \textit{Force people} variable equals one if the respondent's view is close to ``Governments should force people to protect environment, even if it prevents people from doing what they want", and the \textit{Encourage people} variable equals one if the respondent's view is close to ``Governments should only encourage people to protect the environment, even if it means people do not always do the right thing." See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Willingness to Pay}
+	\begin{center}
+		\scalebox{0.7}{\input{"../wtp.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variable is a continuous variable indicating the amount the respondent would be willing to pay annually to limit global warming to safe levels. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\clearpage
+\subsection{Political views and media consumption}
+
+\begin{table}[h!]
+	\caption{Political views}
+	\begin{center}
+		\scalebox{0.7}{\input{"../pol_views.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables. The \textit{Interest in politics} variable equals one if the respondent is interested in politics ``A lot" or ``A little." The \textit{Environmental org. member} variable equals one if the respondent is a member of an environmental organization, and the \textit{Relative is environmentalist} variable equals one if the respondent has any relatives who are environmentalists. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{landscape}
+	\begin{table}[h!]
+	\caption{Position on political spectrum}
+	\begin{center}
+		\scalebox{0.6}{\input{"../pol_positions.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent defines herself as being part of the category. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+\end{landscape}
+
+
+\begin{table}[h!]
+	\caption{Use of media}
+	\begin{center}
+		\scalebox{0.7}{\input{"../media.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent mainly keep herself informed of current events through this media. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+\begin{table}[h!]
+	\caption{Survey biased}
+	\begin{center}
+		\scalebox{0.7}{\input{"../survey_biased.tex"}}
+	\end{center}
+	{\footnotesize Note: The dependent variables are indicator variables. The \textit{No} variable equals one if the respondent does not feel that the survey was biased, the \textit{Yes, anti environment} variable equals one if the respondent feels the survey was biased towards environmental causes, the \textit{Yes, pro environment} equals one if the respondent feels the survey was biased against environment. See notes under Table \ref{table heating} and Table \ref{table standard opinion} for a description of the covariates.
+	\newline *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+\end{table}	
+
+
+\end{document}

@@ -350,10 +350,10 @@ dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "in
 
 # Test new desc_table
 desc_table(dep_vars = "standard_support > 0", 
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
-indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
-nolabel = T,
-indep_vars_included = list(c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, T, T, T))
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+           nolabel = T,
+           indep_vars_included = list(c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, T, T, T))
 )
 
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
