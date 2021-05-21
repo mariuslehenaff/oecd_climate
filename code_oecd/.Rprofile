@@ -280,57 +280,67 @@ export_stats_desc <- function(data, file, miss = TRUE, sorted_by_n = FALSE, retu
     nb_manquants <<- des_miss     }
   if (return) return(output)
 }
-desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = control_variables, weights = data$weight,
-                       save_folder = "../tables/", dep.var.labels = dep_vars, dep.var.caption = c(""), digits= 3, mean_control = FALSE,
-                       mean_above = T, only_mean = F, keep = indep_vars, nolabel = F) {
+desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = NULL, weights = data$weight,
+                       save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE,
+                       mean_above = T, only_mean = F, keep = indep_vars, nolabel = F, indep_vars_included = T) {
+  # /!\ always run first with nolabel = T to check that the indep_labels
+  # dep_vars: either a variable name (automatically repeated if needed) or a list of variable names (of length the number of columns)
+  # indep_vars
+  # TODO! lignes vides, pb covariates, indep_vars_included
   # Wrapper for stargazer
   # dep_vars accepts expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
+  if (missing(dep.var.labels) & !(is.character(dep_vars))) dep.var.labels <- dep_vars
+  if (is.null(dep.var.labels)) dep.var.labels.include <- F
+  names(indep_vars) <- indep_vars
+  if (class(indep_vars_included)=="list") { if (length(dep_vars)==1) dep_vars <- rep(dep_vars[1], length(indep_vars_included))  }
+  else { indep_vars_included <- rep(list(rep(T, length(indep_vars))), length(dep_vars)) }
   models <- list()
   means <- c()
   for (i in seq_along(dep_vars)) {
-    models[[i]] <- lm(as.formula(paste(dep_vars[i], "~", paste("(", indep_vars, ")", collapse = ' + '))), data = data, weights = weights)
+    models[[i]] <- lm(as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]]], ")", collapse = ' + '))), data = data, weights = weights)
     if (mean_control==FALSE){
       means[i] <- round(wtd.mean(eval(parse(text = paste( "data$", parse(text = dep_vars[i]), sep=""))), weights = weights, na.rm = T), d = digits)
       mean_text <- "Mean"
     } else {
       means[i] <- round(wtd.mean(eval(parse(text = paste( "(data$", parse(text = dep_vars[i]), ")[data$treatment=='None']", sep=""))), weights = weights[data$treatment=='None'], na.rm = T), d = digits)
-      mean_text <- "Control group mean"      
+      mean_text <- "Control group mean"
     }
   }
   if (missing(filename)) file_path <- NULL
   else file_path <- paste(save_folder, filename, ".tex", sep="")
   if (only_mean) mean_above <- T
-  if (mean_above) { 
+  if (mean_above) {
     if (nolabel) table <- do.call(stargazer, c(models,
-                                    list(out=NULL, header=F, model.numbers = F, add.lines = list(c(mean_text, means)),
-                                         dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
-                                         multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
-                                    )))
+                                               list(out=NULL, header=F, model.numbers = F, add.lines = list(c(mean_text, means)),
+                                                    dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
+                                                    multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
+                                               )))
     else  table <- do.call(stargazer, c(models,
-                                  list(out=NULL, header=F, model.numbers = F,
-                                       covariate.labels = indep_labels, add.lines = list(c(mean_text, means)),
-                                       dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
-                                       multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
-                                  )))
+                                        list(out=NULL, header=F, model.numbers = F,
+                                             covariate.labels = indep_labels, add.lines = list(c(mean_text, means)),
+                                             dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
+                                             multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
+                                        )))
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
+    first_lab <- latexify(ifelse(missing(indep_labels), indep_vars[1], indep_labels[1]))
     if (only_mean) {
-      table <- write_clip(gsub(paste(indep_labels[1], ".*"), paste(mean_line, '\\\\\\\\'), table), collapse=' ')
-      table <- table[c(1:grep('(Mean|Control group mean) &[^\\]*', table)[1], (length(table)-3):length(table))]
-    } else table <- write_clip(gsub(indep_labels[1], paste(mean_line, '\\\\\\\\ \\\\hline \\\\\\\\[-1.8ex]', indep_labels[1]), 
-                                    gsub('(Mean|Control group mean) &.*', '', table)), collapse=' ')
+      table <- write_clip(gsub(paste(first_lab, ".*"), paste(mean_line, '\\\\\\\\'), table), collapse=' ')
+      table <- table[c(1:first_lab('(Mean|Control group mean) &[^\\]*', table)[1], (length(table)-3):length(table))]
+    } else table <- write_clip(sub(first_lab, paste(mean_line, '\\\\\\\\ \\\\hline \\\\\\\\[-1.8ex]', first_lab),
+                                   gsub('(Mean|Control group mean) &.*', '', table)), collapse=' ')
     cat(paste(table, collapse="\n"), file = file_path)
   } else {
-      if (nolabel) table <- do.call(stargazer, c(models,
-                                         list(out=file_path, header=F, add.lines =list(c(mean_text, means)),
-                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
-                                              multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
-                                         )))
-      else table <- do.call(stargazer, c(models,
-                                                 list(out=file_path, header=F,
-                                                      covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
-                                                      dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption,
-                                                      multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
-                                                 ))) }
+    if (nolabel) table <- do.call(stargazer, c(models,
+                                               list(out=file_path, header=F, add.lines =list(c(mean_text, means)),
+                                                    dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
+                                                    multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
+                                               )))
+    else table <- do.call(stargazer, c(models,
+                                       list(out=file_path, header=F,
+                                            covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
+                                            dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
+                                            multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
+                                       ))) }
   return(table)
 }
 CImedian <- function(vec) { # 95% confidence interval

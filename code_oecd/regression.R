@@ -21,7 +21,7 @@ setwd(Paths[Sys.info()[7]])
 
 ##### 2. Regressions #####
 
-control_variables <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_quota", "vote_dum")
+control_variables <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum")
 cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 64+", "vote: Biden", "vote: Trump")
 
 ## Block: Policy views and media consumption
@@ -30,9 +30,8 @@ desc_table(dep_vars = c("interested_politics > 0", "member_environmental_orga ==
            dep.var.caption = c("Political views"), data = us, indep_vars = control_variables, indep_labels = cov_lab, mean_control = T
 )
 
-
 desc_table(dep_vars = c("political_affiliation =='Democrat'", "political_affiliation=='Independent'", "political_affiliation=='Republican'"), filename = "pol_positions",
-           dep.var.labels = c("Democrat", "Independent"),
+           dep.var.labels = c("Democrat", "Independent", "Republican"),
            dep.var.caption = c("Political affiliations"), data = us, indep_vars = control_variables, indep_labels = cov_lab, mean_control = T
 )
 
@@ -41,13 +40,13 @@ desc_table(dep_vars = c("political_affiliation =='Democrat'", "political_affilia
 # Heating
 # NB: heating expenses greater than $200
 desc_table(dep_vars = c("heating == 'Electricity'", "heating == 'Gas'", "heating == 'Heating oil'", "heating == 5", "heating_expenses >= 225"), filename = "heating",
-           dep.var.labels = c("Electricity", "Gas", "Heating oil", "Renewable", "Heating expenses \\$200\\+"),
+           dep.var.labels = c("Electricity", "Gas", "Heating oil", "Renewable", "Heating expenses \\textdollar 200+"),
            dep.var.caption = c("At home"), data = us, indep_vars = control_variables, indep_labels = cov_lab)
 
 # Behavior
 # NB: gas expenses greater than $125
 desc_table(dep_vars = c("gas_expenses >=150", "flights_agg >= 2", "frequency_beef >= 2"), filename = "behavior_GHG",
-           dep.var.labels = c("Gas expenses \\$125\\+", "Flights (2015-19) 5\\+ ", "Often eat beef"), mean_above = F,
+           dep.var.labels = c("Gas expenses \\textdollar 125+", "Flights (2015-19) 5+ ", "Often eat beef"), mean_above = F,
            dep.var.caption = c("Own household"), data = us, indep_vars = control_variables, indep_labels = cov_lab, only_mean = T)
 
 # Transports
@@ -55,11 +54,11 @@ desc_table(dep_vars = c("transport_work == 'Car or Motorbike'", "transport_work 
                         "transport_shopping == 'Car or Motorbike'", "transport_shopping == 'Public Transport'", "transport_shopping == 'Walking or Cycling'", 
                         "transport_leisure == 'Car or Motorbike'", "transport_leisure == 'Public Transport'", "transport_leisure == 'Walking or Cycling'"), filename = "transports",
            dep.var.labels = c("Car/Bike (work)", "Public (work)", "Bicycle/Walk (work)", "Car/Bike (shop)", "Public (shop)", "Bicycle/Walk (shop)","Car/Bike (leisure)", "Public (leisure)", "Bicycle/Walk (leisure)"),
-           dep.var.caption = c("Transports"), data = us, indep_vars = c(control_variables, 'availability_transport <= 0'), indep_labels = c(cov_lab, 'PT not available'))
+           dep.var.caption = c("Transports"), data = us, indep_vars = c(control_variables, 'availability_transport < 0'), indep_labels = c(cov_lab, 'PT not available'))
 
 
 ## Post-Treatment
-control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "employment_agg", "income_factor", "age_quota", "vote_dum", "treatment")
+control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "treatment")
 cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 64+", "vote: Biden", "vote: Trump", "Climate treatment only", "Policy treatment only", "Both treatments")
 
 
@@ -170,7 +169,7 @@ desc_table(dep_vars = c("investments_fair >= 1", "investments_support >= 1"), fi
 )
 
 # funding
-desc_table(dep_vars = c("investments_funding_debt == 1", "investments_funding_sales_tax == 1", "investments_funding_wealth_tax == 1", "investments_funding_less_social == 1", "investments_funding_less_military == 1"), filename = "investments_perception",
+desc_table(dep_vars = c("investments_funding_debt == 1", "investments_funding_sales_tax == 1", "investments_funding_wealth_tax == 1", "investments_funding_less_social == 1", "investments_funding_less_military == 1"), filename = "investments_funding",
            dep.var.labels = c("Public debt", "Sales tax", "Wealth tax", "Reduce social spending", "Reduce military spending"),
            dep.var.caption = c("Appropriate source of funding"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
 )
@@ -192,7 +191,7 @@ desc_table(dep_vars = c("tax_transfers_win_lose_poor < 1 ", "tax_transfers_win_l
                         "tax_transfers_win_lose_rural < 1", "tax_transfers_win_lose_self < 1"), filename = "tax_transfer_loser",
            dep.var.labels = c("Poorest", "Middle class", "Richest", "Rural", "Own household"),
            dep.var.caption = c("Losers of carbon tax with cash transfers"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T)
-           
+
 # perceptions
 desc_table(dep_vars = c("tax_transfers_fair >= 1", "tax_transfers_support >= 1"), filename = "tax_transfer_perception",
            dep.var.labels = c("Fair", "Support"),
@@ -219,17 +218,22 @@ desc_table(dep_vars = c("tax_transfer_constrained_hh > 0", "tax_transfer_poor > 
 ## WTP
 desc_table(dep_vars = c("wtp == 'Yes'"), filename = "wtp",
            dep.var.labels = c("WTP"),
-           dep.var.caption = c("WTP to limit global warming to safe levels"), data = us, indep_vars = c(control_variables_w_treatment, "as.factor(wtp_variant)"), indep_labels = c(cov_lab_w_treatment, "WTP 30", "WTP 50", "WTP 100", "WTP 300", "WTP 500", "WTP 1000"), only_mean = T
+           dep.var.caption = c("WTP to limit global warming to safe levels"), data = us, indep_vars = c(control_variables_w_treatment, "as.factor(wtp_variant)"), indep_labels = c(cov_lab_w_treatment, "WTP 30", "WTP 50", "WTP 100", "WTP 300", "WTP 500", "WTP 1000"), mean_control = T
 )
 
 ## Donation/Petition
-desc_table(dep_vars = c("donation", "petition == 1"), filename = "altruism",
-           dep.var.labels = c("Donation to charity \\$", "Signed petition"),
-           dep.var.caption = c("Altruism"), data = us, indep_vars = c(control_variables_w_treatment), indep_labels = c(cov_lab_w_treatment), only_mean = T
+desc_table(dep_vars = c("donation", "petition == 'Yes'"), filename = "altruism",
+           dep.var.labels = c("Donation to charity \\textdollar", "Signed petition"),
+           dep.var.caption = c("Altruism"), data = us, indep_vars = c(control_variables_w_treatment), indep_labels = c(cov_lab_w_treatment), mean_control = T
 )
 
 
 ## Block International burden-sharing
+
+# Level for PP to tackle CC
+desc_table(dep_vars = c("scale_local", "scale_state", "scale_federal", "scale_global"), filename = "scale",
+           dep.var.labels = c("Local","State", "Federal", "Global"),
+           dep.var.caption = c("Policy level"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, only_mean = T)
 
 # US should act
 desc_table(dep_vars = c("should_fight_CC > 0", "if_other_do_more > 0", "if_other_do_less > 0"), filename = "country_should_act_condition",
@@ -244,14 +248,14 @@ desc_table(dep_vars = c("burden_sharing_income >= 1", "burden_sharing_emissions 
 
 # Approve propositions
 desc_table(dep_vars = c("global_assembly_support > 0", "global_tax_support > 0", "tax_1p_support > 0"), filename = "support_inter",
-           dep.var.labels = c("Global democratic assembly to fight CC", "Global tax on GHG emissions funding a global basic income (\\$ 30/month/adult)", "Global tax on top 1\\% to finance poorest countries"),
+           dep.var.labels = c("Global democratic assembly to fight CC", "Global tax on GHG emissions funding a global basic income (\\textdollar 30/month/adult)", "Global tax on top 1\\% to finance poorest countries"),
            dep.var.caption = c("Approve"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment)
 
 
 
 ## Block Housing/Preference for bans vs. incentives
 
-desc_table(dep_vars = c("will_insulate > 0"), filename = "pref_thermal",
+desc_table(dep_vars = c("will_insulate > 0"), filename = "will_insulate",
            dep.var.labels = c("Likely to insulate"),
            dep.var.caption = c(""), data = us, indep_vars = c(control_variables_w_treatment, "obstacles_insulation_cannot", "obstacles_insulation_cost", "obstacles_insulation_effort", "obstacles_insulation_useless", "obstacles_insulation_satisfactory"), indep_labels = c(cov_lab_w_treatment,"Insulation: not my choice", "Insulation: cost", "Insulation: effort", "Insulation: not efficient", "Insulation: already satisfactory"), mean_control = T
 )
@@ -291,15 +295,15 @@ desc_table(dep_vars = c("survey_biased == 'No'", "survey_biased == 'Yes, right'"
 
 ## Indexes
 desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indexes",
-           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO_2 emissions"),
+           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions"),
            dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "core_metropolitan == 1"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
 )
 
 # Support with indexes
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
 ), filename = "support_w_indexes",
-           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge"), indep_labels = c(cov_lab, "Index affected", "Index knowledge"), mean_control = T
+dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge"), indep_labels = c(cov_lab, "Index affected", "Index knowledge"), mean_control = T
 )
 
 # EFA
@@ -320,26 +324,41 @@ dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "in
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
 ), filename = "support_w_indexes_CO2",
 dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "CO2_emission"), indep_labels = c(cov_lab, "Index affected", "CO_2 emissions (t/year)"), mean_control = T
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "CO2_emission"), indep_labels = c(cov_lab, "Index affected", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # CO2 + index
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
 ), filename = "support_w_indexes_bothCO2",
 dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "CO_2 emissions (t/year)"), mean_control = T
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # CO2 + EFA
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
 ), filename = "support_w_indexes_CO2_efa",
 dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # All 3
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
 ), filename = "support_w_indexes_all_three",
 dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
+)
+
+# Test new desc_table
+desc_table(dep_vars = "standard_support > 0", 
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+nolabel = T,
+indep_vars_included = list(c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, T, T, T))
+)
+
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+           nolabel = T,
+           indep_vars_included = list(control_variables, c(control_variables, "index_affected", "index_knowledge"), c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"))
 )
