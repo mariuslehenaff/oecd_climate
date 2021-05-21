@@ -191,7 +191,7 @@ desc_table(dep_vars = c("tax_transfers_win_lose_poor < 1 ", "tax_transfers_win_l
                         "tax_transfers_win_lose_rural < 1", "tax_transfers_win_lose_self < 1"), filename = "tax_transfer_loser",
            dep.var.labels = c("Poorest", "Middle class", "Richest", "Rural", "Own household"),
            dep.var.caption = c("Losers of carbon tax with cash transfers"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T)
-           
+
 # perceptions
 desc_table(dep_vars = c("tax_transfers_fair >= 1", "tax_transfers_support >= 1"), filename = "tax_transfer_perception",
            dep.var.labels = c("Fair", "Support"),
@@ -302,8 +302,8 @@ desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_ef
 # Support with indexes
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
 ), filename = "support_w_indexes",
-           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge"), indep_labels = c(cov_lab, "Index affected", "Index knowledge"), mean_control = T
+dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge"), indep_labels = c(cov_lab, "Index affected", "Index knowledge"), mean_control = T
 )
 
 # EFA
@@ -346,4 +346,19 @@ desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_suppo
 ), filename = "support_w_indexes_all_three",
 dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
 dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
+)
+
+# Test new desc_table
+desc_table(dep_vars = "standard_support > 0", 
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+           nolabel = T,
+           indep_vars_included = list(c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, T, T, T))
+)
+
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+           nolabel = T,
+           indep_vars_included = list(control_variables, c(control_variables, "index_affected", "index_knowledge"), c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"))
 )
