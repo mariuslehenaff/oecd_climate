@@ -203,8 +203,8 @@ desc_table(dep_vars = c("tax_transfers_fair >= 1", "tax_transfers_support >= 1")
 # Support policies climate
 desc_table(dep_vars = c("policy_tax_flying > 0", "policy_tax_fuels > 0", "policy_ban_city_centers > 0", 
                         "policy_subsidies > 0", "policy_climate_fund > 0"), filename = "policy_climate",
-           dep.var.labels = c("Tax on flying", "Tax on fossil fuels", "Ban polluting vehicles in city centers", "Subsidies", "Global climate fund"),
-           dep.var.caption = c("Climate policies"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
+           dep.var.labels = c("Tax on flying", "Tax on fossil fuels", "Ban polluting vehicles in city centers", "Technology subsidies", "Global climate fund"),
+           dep.var.caption = c("Support"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
 )
 
 # Revenues of carbon tax
@@ -349,23 +349,18 @@ dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "in
 )
 
 # Test new desc_table
-desc_table(dep_vars = "standard_support > 0", 
+desc_table(dep_vars = "policies_support > 0", 
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+           filename = "support_all_index",
            indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
            nolabel = T,
-           indep_vars_included = list(c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, T, T, T))
+           indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F, F), c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, F, F, F), c(rep(T, length(control_variables)), F, T, F, F), c(rep(T, length(control_variables)), F, F, T, F), c(rep(T, length(control_variables)), F, F, F, T), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, F, T, F), c(rep(T, length(control_variables)), T, T, T, T))
 )
 
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
-           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
-           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
-           nolabel = T,
-           indep_vars_included = list(control_variables, c(control_variables, "index_affected", "index_knowledge"), c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"))
-)
-
-desc_table(dep_vars = c("wtp == 'Yes'"),
-           dep.var.labels = c("WTP"), 
-           nolabel=T, data = us, indep_vars = c(control_variables_w_treatment, "as.factor(wtp_variant)"), 
-           indep_labels = c(cov_lab_w_treatment, "WTP 30", "WTP 50", "WTP 100", "WTP 300", "WTP 500", "WTP 1000"), mean_control = T
-)
-
+# desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
+#            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+#            filename = "support_each_index",
+#            indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+#            nolabel = T,
+#            indep_vars_included = list(control_variables, c(control_variables, "index_affected", "index_knowledge"), c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"))
+# )
