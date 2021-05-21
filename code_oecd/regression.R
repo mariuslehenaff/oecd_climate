@@ -362,3 +362,10 @@ desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_suppo
            nolabel = T,
            indep_vars_included = list(control_variables, c(control_variables, "index_affected", "index_knowledge"), c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"))
 )
+
+desc_table(dep_vars = c("wtp == 'Yes'"),
+           dep.var.labels = c("WTP"), 
+           nolabel=T, data = us, indep_vars = c(control_variables_w_treatment, "as.factor(wtp_variant)"), 
+           indep_labels = c(cov_lab_w_treatment, "WTP 30", "WTP 50", "WTP 100", "WTP 300", "WTP 500", "WTP 1000"), mean_control = T
+)
+

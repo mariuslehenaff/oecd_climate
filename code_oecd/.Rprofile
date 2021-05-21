@@ -283,13 +283,15 @@ export_stats_desc <- function(data, file, miss = TRUE, sorted_by_n = FALSE, retu
 }
 desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = NULL, weights = data$weight,
                        save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE,
-                       mean_above = T, only_mean = F, keep = indep_vars, nolabel = F, indep_vars_included = T) {
-  # /!\ always run first with nolabel = T to check that the indep_labels
-  # dep_vars: either a variable name (automatically repeated if needed) or a list of variable names (of length the number of columns)
-  # indep_vars
-  # TODO! lignes vides, pb covariates, indep_vars_included
+                       mean_above = T, only_mean = F, keep = indep_vars, nolabel = F, indep_vars_included = T, no.space = F) {
   # Wrapper for stargazer
-  # dep_vars accepts expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
+  # /!\ always run first with nolabel = T to check that the order of indep_labels correspond to the one displayed
+  # dep_vars: either a variable name (automatically repeated if needed) or a list of variable names (of length the number of columns)
+  # (in)dep_vars accept expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
+  # indep_vars is the list of potential covariates, they are by default all included by 
+  # indep_vars_included can be set to a list (of length the number of columns) of booleans or variable names to specify which covariates to include in each column
+  # keep is a vector of regular expressions allowing to specify which covariates to display (by default, all except the Constant)
+  # mean_above=T displays the mean of the dependant var (for those which treatment=="control" if mean_control = T) at top rather than bottom of Table (only_mean=T only displays that)
   if (missing(dep.var.labels) & !(is.character(dep_vars))) dep.var.labels <- dep_vars
   dep.var.labels.include <- ifelse(is.null(dep.var.labels), F, T)
   names(indep_vars) <- indep_vars
@@ -309,18 +311,19 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   }
   if (missing(filename)) file_path <- NULL
   else file_path <- paste(save_folder, filename, ".tex", sep="")
+  keep <- gsub("(.*)", "\\\\\\Q\\1\\\\\\E", keep)
   if (only_mean) mean_above <- T
   if (mean_above) {
     if (nolabel) table <- do.call(stargazer, c(models,
                                                list(out=NULL, header=F, model.numbers = F, add.lines = list(c(mean_text, means)),
                                                     dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
-                                                    multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
+                                                    multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space #, omit.stat = c("n")
                                                )))
     else  table <- do.call(stargazer, c(models,
                                         list(out=NULL, header=F, model.numbers = F,
                                              covariate.labels = indep_labels, add.lines = list(c(mean_text, means)),
                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
-                                             multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep #, omit.stat = c("n")
+                                             multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space #, omit.stat = c("n")
                                         )))
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
     first_lab <- latexify(ifelse(missing(indep_labels), indep_vars[1], indep_labels[1]))
@@ -334,13 +337,13 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
     if (nolabel) table <- do.call(stargazer, c(models,
                                                list(out=file_path, header=F, add.lines =list(c(mean_text, means)),
                                                     dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
-                                                    multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
+                                                    multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space
                                                )))
     else table <- do.call(stargazer, c(models,
                                        list(out=file_path, header=F,
                                             covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
                                             dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
-                                            multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep
+                                            multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space
                                        ))) }
   return(table)
 }
