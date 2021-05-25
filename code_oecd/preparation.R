@@ -2136,7 +2136,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 convert <- function(e, country, wave = NULL, weighting = T) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                  "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
-                 "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas")
+                 "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas", "FR" = "Préfère ne pas le dire")
   text_yes <- c("US" = "Yes", 
                 "FR" = "Oui")
   text_no <- c("US" = "No", "US" = "No or I don't have a partner", 

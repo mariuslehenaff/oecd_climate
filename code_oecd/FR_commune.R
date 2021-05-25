@@ -40,8 +40,8 @@ data2 <- data2 %>%
 
 data2 <- data2 %>%
   mutate(Zone_GP = case_when(
-    Zone_INSEE == 111 ~ "Grand Pôle",
-    Zone_INSEE == 112 ~ "Couronne GP",
+    Zone_INSEE == 111 ~ "GP",
+    Zone_INSEE == 112 ~ "Couronne_GP",
     TRUE ~ "Other"
   ))
 
@@ -49,8 +49,16 @@ data2 <- data2 %>%
   mutate(Zone_Category4 = case_when(
     Zone_INSEE %in% c(111, 211, 221)  ~ "Pôle",
     Zone_INSEE %in% c(112, 212, 222) ~ "Couronne",
-    Zone_INSEE %in% c(120, 300) ~ "Multipôlarisé",
+    Zone_INSEE %in% c(120, 300) ~ "Multipolarisé",
     Zone_INSEE == 400 ~ "Isolé"
+  ))
+
+data2 <- data2 %>%
+  mutate(rural_urban = case_when(
+    Zone_INSEE %in% c(111)  ~ "Grande aire urbane",
+    Zone_INSEE %in% c(211, 221, 212, 222) ~ "Autre aire urbaine",
+    Zone_INSEE %in% c(112, 120) ~ "Péri-urbain",
+    Zone_INSEE %in% c(400, 300) ~ "Rural"
   ))
 
 data2 <- data2 %>%
@@ -66,15 +74,33 @@ data2 <- data2 %>%
     TRUE ~ FALSE
   ))
 
+(zones_GP <- data2 %>%
+    select(Code_Postal, Zone_GP) %>%
+    group_by(Code_Postal) %>%
+    summarise_at(dplyr::vars(Zone_GP), list(zone = unique)))
+for (i in 1:nrow(zones_GP)) {
+  if (grepl("/", zones_GP$Code_Postal[i])) {
+    code_postaux_i <- str_split(zones_GP$Code_Postal[i], "/")[[1]]
+    zones_GP$Code_Postal[i] <- code_postaux_i[1]
+    zones_GP <- rbind(zones_GP, as.data.frame(list("Code_Postal" = code_postaux_i[2:length(code_postaux_i)], "zone" = zones_GP$zone[i])))
+  }
+}
 
 (Pop_cat <- data2 %>%
-  group_by(Grand_pole) %>% # Grand_pole Zone_Category Zone_Category3 Zone_GP
+    group_by(Zone_GP) %>% # Grand_pole Zone_Category Zone_Category4 Zone_GP
+    summarise_at(dplyr::vars(Population_commune),
+                 list(Pop_cat = sum)))
+
+(pop_Zone_GP <- (Pop_cat <- data2 %>%
+  group_by(Zone_GP) %>% # Grand_pole Zone_Category Zone_Category4 Zone_GP
   summarise_at(dplyr::vars(Population_commune),
-               list(Pop_cat = sum)))
+               list(Pop_cat = sum)))$Pop_cat / 63566.16)
 
-write.csv(data2, "FR_aires_urbaines_2020.csv", row.names = TRUE)
+write.csv(zones_GP, "../data/zipcodes/FR_aires_urbaines_2020__5948_1836_2216.csv", row.names = FALSE, quote = FALSE)
+write.csv(data2, "../data/zipcodes/FR_aires_urbaines_2020.csv", row.names = TRUE)
+data2 <- read.csv("../data/zipcodes/FR_aires_urbaines_2020.csv")
 
-
+c(0.5947513 , 0.1836103, 0.2216384) # pop_zone_GP GP, Couronne_GP, Other (Pôle, Couronne_Pôle, Multipolarisé, Isolé)
 ## Details for CATAEU2010
 # 111 : Commune appartenant à un grand pôle (10 000 emplois ou plus)
 # 112 : Commune appartenant à la couronne d'un grand pôle
