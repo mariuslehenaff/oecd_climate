@@ -22,11 +22,12 @@ setwd(Paths[Sys.info()[7]])
 ##### 2. Regressions #####
 
 control_variables <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum")
-cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 64+", "vote: Biden", "vote: Trump")
+cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "vote: Biden", "vote: Trump")
 
 ## Block: Policy views and media consumption
 desc_table(dep_vars = c("interested_politics > 0", "member_environmental_orga == 'Yes'", "relative_environmentalist == 'Yes'", "liberal_conservative >=1"), filename = "pol_views",
            dep.var.labels = c("Interest in politics", "Environmental org. member", "Relative is environmentalist", "Econ. conservative"),
+           nolabel =F,
            dep.var.caption = c("Political views"), data = us, indep_vars = control_variables, indep_labels = cov_lab, mean_control = T
 )
 
@@ -59,7 +60,7 @@ desc_table(dep_vars = c("transport_work == 'Car or Motorbike'", "transport_work 
 
 ## Post-Treatment
 control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "treatment")
-cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 64+", "vote: Biden", "vote: Trump", "Climate treatment only", "Policy treatment only", "Both treatments")
+cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "vote: Biden", "vote: Trump", "Climate treatment only", "Policy treatment only", "Both treatments")
 
 
 ## Block: CC (knowledge)
@@ -67,6 +68,7 @@ cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "
 ## Talks about CC
 desc_table(dep_vars = c("CC_talks=='Never'", "CC_talks=='Yearly'", "CC_talks=='Monthly'"), filename = "CC_talks",
            dep.var.labels = c("Never","Yearly",  "Monthly"),
+           nolabel =F,
            dep.var.caption = c(""), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, only_mean = T)
 
 
@@ -218,6 +220,7 @@ desc_table(dep_vars = c("tax_transfer_constrained_hh > 0", "tax_transfer_poor > 
 ## WTP
 desc_table(dep_vars = c("wtp == 'Yes'"), filename = "wtp",
            dep.var.labels = c("WTP"),
+           nolabel=F,
            dep.var.caption = c("WTP to limit global warming to safe levels"), data = us, indep_vars = c(control_variables_w_treatment, "as.factor(wtp_variant)"), indep_labels = c(cov_lab_w_treatment, "WTP 30", "WTP 50", "WTP 100", "WTP 300", "WTP 500", "WTP 1000"), mean_control = T
 )
 
@@ -257,12 +260,12 @@ desc_table(dep_vars = c("global_assembly_support > 0", "global_tax_support > 0",
 
 desc_table(dep_vars = c("will_insulate > 0"), filename = "will_insulate",
            dep.var.labels = c("Likely to insulate"),
-           dep.var.caption = c(""), data = us, indep_vars = c(control_variables_w_treatment, "obstacles_insulation_cannot", "obstacles_insulation_cost", "obstacles_insulation_effort", "obstacles_insulation_useless", "obstacles_insulation_satisfactory"), indep_labels = c(cov_lab_w_treatment,"Insulation: not my choice", "Insulation: cost", "Insulation: effort", "Insulation: not efficient", "Insulation: already satisfactory"), mean_control = T
+           dep.var.caption = c(""), data = us[us$home_owner==T,], indep_vars = c(control_variables_w_treatment, "obstacles_insulation_cannot", "obstacles_insulation_cost", "obstacles_insulation_effort", "obstacles_insulation_useless", "obstacles_insulation_satisfactory"), indep_labels = c(cov_lab_w_treatment,"Insulation: not my choice", "Insulation: cost", "Insulation: effort", "Insulation: not efficient", "Insulation: already satisfactory"), mean_control = T
 )
 
-desc_table(dep_vars = c("insulation_mandatory_support_no_priming > 0", "insulation_mandatory_support_priming > 0"), filename = "pref_thermal",
-           dep.var.labels = c("Costs not mentioned", "Costs mentioned"),
-           dep.var.caption = c("Support thermal renovation if subsidized"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
+desc_table(dep_vars = c("insulation_support > 0"), filename = "pref_thermal",
+           dep.var.labels = c("Support thermal renovation if subsidized"),
+           dep.var.caption = c(""), data = us, indep_vars = c(control_variables_w_treatment, "insulation_disruption_variant"), indep_labels = c(cov_lab_w_treatment, "Formulation: Costs underlined"), mean_control = T
 )
 
 desc_table(dep_vars = c("beef_tax_support > 0", "beef_subsidies_vegetables_support > 0", "beef_subsidies_removal_support > 0", "beef_ban_intensive_support > 0"), filename = "pref_beef",
@@ -295,65 +298,67 @@ desc_table(dep_vars = c("survey_biased == 'No'", "survey_biased == 'Yes, right'"
 
 ## Indexes
 desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indexes",
-           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions"),
+           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions (t/year)"),
+           nolabel = F,
            dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "core_metropolitan == 1"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
 )
 
 # Support with indexes
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
-), filename = "support_w_indexes",
-dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge"), indep_labels = c(cov_lab, "Index affected", "Index knowledge"), mean_control = T
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"), 
+           filename = "support_w_indexes",
+           nolabel= F,
+           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge"), indep_labels = c(cov_lab, "Index affected", "Index knowledge"), mean_control = T
 )
 
 # EFA
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
-), filename = "support_w_indexes_efa",
-dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa"), indep_labels = c(cov_lab, "Index affected", "Index knowledge EFA"), mean_control = T
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"), 
+           filename = "support_w_indexes_efa",
+           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa"), indep_labels = c(cov_lab, "Index affected", "Index knowledge EFA"), mean_control = T
 )
 
 # Both
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
-), filename = "support_w_indexes_both",
-dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA"), mean_control = T
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
+           filename = "support_w_indexes_both",
+           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA"), mean_control = T
 )
 
 # CO2 emissions
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
-), filename = "support_w_indexes_CO2",
-dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "CO2_emission"), indep_labels = c(cov_lab, "Index affected", "CO$_{2}$ emissions (t/year)"), mean_control = T
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
+           filename = "support_w_indexes_CO2",
+           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "CO2_emission"), indep_labels = c(cov_lab, "Index affected", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # CO2 + index
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
-), filename = "support_w_indexes_bothCO2",
-dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "CO$_{2}$ emissions (t/year)"), mean_control = T
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
+           filename = "support_w_indexes_bothCO2",
+           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # CO2 + EFA
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
-), filename = "support_w_indexes_CO2_efa",
-dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
+           filename = "support_w_indexes_CO2_efa",
+           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # All 3
-desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"
-), filename = "support_w_indexes_all_three",
-dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
-dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
+desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
+           filename = "support_w_indexes_all_three",
+           dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
+           dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # Test new desc_table
 desc_table(dep_vars = "policies_support > 0", 
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
            filename = "support_all_index",
-           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
-           nolabel = T,
+           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T,
+           nolabel =F,
            indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F, F), c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, F, F, F), c(rep(T, length(control_variables)), F, T, F, F), c(rep(T, length(control_variables)), F, F, T, F), c(rep(T, length(control_variables)), F, F, F, T), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, F, T, F), c(rep(T, length(control_variables)), T, T, T, T))
 )
 
