@@ -9,7 +9,7 @@ remove_id <- function(file, folder = "../data/") {
   data <- data[,which(!(names(data) %in% c("PSID", "ResponseId", "PID")))]
   write_csv(data, filename, na = "")
 }
-for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US", "DK")) remove_id(file)
+for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US", "DK", 'FR')) remove_id(file)
 
 # TODO!!: burden_sharing, CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_knowlege_CC, score_trust, standard of living,// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
 # temp <- prepare(country = "US", wave = "pilot2", duration_min = 0, exclude_screened = F, only_finished = F)
@@ -38,7 +38,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  # e <- read_csv("../data/DK.csv")
+  # e <- read_csv("../data/FR.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -1575,6 +1575,306 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "clicked_petition" 
     )
   }
+  if (country == "FR") {
+    names(e) <- c(
+      "date",
+      "date_end",
+      "statut_reponse",
+      "progress",
+      "time",
+      "terminated",
+      "date_recored",
+      "distr",
+      "lang",
+      "consent",
+      "gender",
+      "age_quota",
+      "origin_france",
+      "origin_europe",
+      "origin_africa",
+      "origin_asia",
+      "origin_america",
+      "zipcode",# TODO
+      "urbanity",
+      "couple",
+      "marital_status",
+      "HH_size",
+      "Nb_children__14", # TODO
+      "education", 
+      "employment_status",
+      "polluting_sector_active", 
+      "polluting_sector_inactive",
+      "sector_active", 
+      "sector_inactive",
+      "income", # TODO
+      "hit_by_covid",
+      "home_tenant",
+      "home_owner",
+      "home_landlord",
+      "home_hosted",
+      "wealth", # TODO
+      "interested_politics", 
+      "member_environmental_orga",
+      "relative_environmentalist",
+      "vote_participation", 
+      "vote_voters",
+      "vote_non_voters",
+      "left_right", # TODO
+      "heating",
+      "heating_expenses",
+      "insulation",
+      "gas_expenses",
+      "flights_3y", 
+      "frequency_beef",
+      "transport_work",
+      "transport_shopping",
+      "transport_leisure",
+      "availability_transport",
+      "Q3.7_First",
+      "Q3.7_Last",
+      "duration_energy",
+      "Q3.7_Click",
+      "Q5.1_First",
+      "Q5.1_Last",
+      "duration_CC_field",
+      "Q5.1_Click",
+      "CC_field",
+      "Q140_First",
+      "Q140_Last",
+      "duration_treatment_climate",
+      "Q140_Click",
+      "watched_climate", 
+      "know_temperature_2100",
+      "know_frequence_heatwaves",
+      "Q141_First",
+      "Q141_Last",
+      "duration_treatment_policy",
+      "Q141_Click",
+      "watched_policy",
+      "know_ban",
+      "know_investments_funding",
+      "CC_talks",
+      "CC_real",
+      "CC_anthropogenic",
+      "CC_problem",
+      "CC_knowledgeable",
+      "GHG_CO2",
+      "GHG_H2",
+      "GHG_methane",
+      "GHG_particulates",
+      "CC_dynamic",
+      "footprint_tr_car",
+      "footprint_tr_coach",
+      "footprint_tr_plane",
+      "footprint_tr_order_car",
+      "footprint_tr_order_coach",
+      "footprint_tr_order_plane",
+      "footprint_fd_beef",
+      "footprint_fd_pasta",
+      "footprint_fd_chicken",
+      "footprint_fd_order_beef",
+      "footprint_fd_order_pasta",
+      "footprint_fd_order_chicken",
+      "footprint_el_gas",
+      "footprint_el_nuclear", 
+      "footprint_el_coal",
+      "footprint_el_order_gas",
+      "footprint_el_order_nuclear",
+      "footprint_el_order_coal",
+      "footprint_reg_US",
+      "footprint_reg_EU",
+      "footprint_reg_china",
+      "footprint_reg_india",
+      "footprint_reg_order_US",
+      "footprint_reg_order_EU",
+      "footprint_reg_order_china",
+      "footprint_reg_order_india",
+      "footprint_pc_US",
+      "footprint_pc_EU",
+      "footprint_pc_china",
+      "footprint_pc_india",
+      "footprint_pc_order_US", 
+      "footprint_pc_order_EU",
+      "footprint_pc_order_china",
+      "footprint_pc_order_india",
+      "CC_impacts_droughts",
+      "CC_impacts_volcanos",
+      "CC_impacts_sea_rise",
+      "CC_impacts_low_yield",
+      "CC_impacts_drop_conso",
+      "CC_impacts_more_migration",
+      "CC_impacts_more_wars",
+      "CC_impacts_extinction",
+      "responsible_CC_each", 
+      "responsible_CC_rich",
+      "responsible_CC_govt",
+      "responsible_CC_companies",
+      "responsible_CC_past", 
+      "responsible_CC_order_each",
+      "responsible_CC_order_rich",
+      "responsible_CC_order_govt",
+      "responsible_CC_order_companies",
+      "responsible_CC_order_past",
+      "net_zero_feasible", 
+      "CC_affects_self",
+      "CC_will_end",
+      "effect_halt_CC_economy",
+      "effect_halt_CC_lifestyle",
+      "willing_limit_flying",
+      "willing_limit_driving",
+      "willing_electric_car",
+      "willing_limit_beef",
+      "willing_limit_heating",
+      "condition_ambitious_policies",
+      "condition_financial_aid",
+      "condition_people_change",
+      "condition_rich_change",
+      "standard_effect_less_emission",
+      "standard_effect_less_pollution",
+      "standard_negative_effect",
+      "standard_large_effect",
+      "standard_cost_effective",
+      "standard_win_lose_poor",
+      "standard_win_lose_middle",
+      "standard_win_lose_rich",
+      "standard_win_lose_rural",
+      "standard_win_lose_self",
+      "standard_fair",
+      "standard_support",
+      "standard_public_transport_support",
+      "investments_effect_elec_greener",
+      "investments_effect_public_transport",
+      "investments_effect_less_pollution",
+      "investments_negative_effect",
+      "investments_large_effect",
+      "investments_cost_effective",
+      "investments_win_lose_poor",
+      "investments_win_lose_middle",
+      "investments_win_lose_rich",
+      "investments_win_lose_rural",
+      "investments_win_lose_self",
+      "investments_fair",
+      "investments_support",
+      "investments_funding_debt",
+      "investments_funding_sales_tax",
+      "investments_funding_wealth_tax",
+      "investments_funding_less_social",
+      "investments_funding_less_military",
+      "Q142_First",
+      "Q142_Last",
+      "duration_tax_transfers",
+      "Q142_Click",
+      "tax_transfers_effect_driving",
+      "tax_transfers_effect_insulation",
+      "tax_transfers_effect_less_emission",
+      "tax_transfers_effect_less_pollution",
+      "tax_transfers_negative_effect",
+      "tax_transfers_large_effect",
+      "tax_transfers_cost_effective",
+      "tax_transfers_win_lose_poor",
+      "tax_transfers_win_lose_middle",
+      "tax_transfers_win_lose_rich",
+      "tax_transfers_win_lose_rural",
+      "tax_transfers_win_lose_self",
+      "tax_transfers_fair",
+      "tax_transfers_support",
+      "Q142_First",
+      "Q142_Last",
+      "duration_policies",
+      "Q142_Click",
+      "attention_test",
+      "policy_tax_flying",
+      "policy_tax_fuels",
+      "policy_ban_city_centers",
+      "policy_subsidies",
+      "policy_climate_fund",
+      "policy_order_tax_flying",
+      "policy_order_tax_fuels",
+      "policy_order_ban_city_centers", 
+      "policy_order_subsidies",
+      "policy_order_climate_fund",
+      "tax_transfer_constrained_hh", 
+      "tax_transfer_poor",
+      "tax_transfer_all",
+      "tax_reduction_personal_tax",
+      "tax_reduction_corporate_tax",
+      "tax_rebates_affected_firms",
+      "tax_investments",
+      "tax_subsidies",
+      "tax_reduction_deficit",
+      "tax_order_transfers_constrained_hh",
+      "tax_order_transfers_poor",
+      "tax_order_transfers_all",
+      "tax_order_reduction_personal_tax",
+      "tax_order_reduction_corporate_tax",
+      "tax_order_rebates_affected_firms",
+      "tax_order_investments",
+      "tax_order_subsidies",
+      "tax_order_reduction_deficit",
+      "wtp_10",
+      "wtp_30",
+      "wtp_50",
+      "wtp_100",
+      "wtp_300",
+      "wtp_500",
+      "wtp_1000",
+      "donation",
+      "Q147_First",
+      "Q147_Last",
+      "duration_burden_sharing",
+      "Q147_Click",
+      "scale_global",
+      "scale_federal",
+      "scale_state",
+      "scale_local",
+      "should_fight_CC",
+      "if_other_do_more",
+      "if_other_do_less",
+      "burden_sharing_income",
+      "burden_sharing_emissions",
+      "burden_sharing_cumulative",
+      "burden_sharing_rich_pay",
+      "burden_sharing_poor_receive",
+      "global_assembly_support",
+      "global_tax_support", 
+      "tax_1p_support",
+      "will_insulate",
+      "obstacles_insulation_cannot",
+      "obstacles_insulation_cost",
+      "obstacles_insulation_effort",
+      "obstacles_insulation_useless",
+      "obstacles_insulation_satisfactory",
+      "insulation_mandatory_support_no_priming", 
+      "insulation_mandatory_support_priming",
+      "beef_tax_support",
+      "beef_subsidies_vegetables_support",
+      "beef_subsidies_removal_support",
+      "beef_ban_intensive_support",
+      "beef_order_tax_support",
+      "beef_order_subsidies_vegetables_support",
+      "beef_order_subsidies_removal_support",
+      "beef_order_ban_intensive_support",
+      "can_trust_people",
+      "can_trust_govt",
+      "view_govt",
+      "problem_inequality",
+      "future_richness",
+      "survey_biased", 
+      "comment_field",
+      "petition",
+      "language",
+      "finished",
+      "excluded",
+      "duration",
+      "urban_category",
+      "treatment_climate",
+      "treatment_policy",
+      "region",
+      "winner_latent",
+      "winner",
+      "clicked_petition" 
+     )
+  }
   
   for (i in 1:length(e)) {
     label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") # 
@@ -2576,7 +2876,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     temp <-  2 * (e[[v]] %in% text_very_likely) + (e[[v]] %in% text_somewhat_likely) - (e[[v]] %in% text_somewhat_unlikely) - 2 * (e[[v]] %in% text_very_unlikely) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO! accommodate NA everywhere?
     e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1),
                                                names = c("Very unlikely","Somewhat unlikely","Somewhat likely","Very likely","PNR")),
-                      missing.values=-0.1, annotation=Label(e[[v]]))
+                      missing.values=-0.1, annotation=Label(e[[v]])) # TODO: NA pour non proprios, NA pour insulation là où c'est pas posé
   }
   
   for (v in intersect(names(e), c(variables_responsible_CC, variables_willing, variables_condition, "CC_knowledgeable", "net_zero_feasible", "CC_affects_self", "pro_ambitious_policies", "effect_halt_CC_lifestyle", "interested_politics"))) { 
@@ -3303,7 +3603,13 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is standardized with survey weights and impute mean of treatment group to missing values." }
  
   if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
-    temp <- e[,c("weight", "treatment", variables_knowledge)]
+    if ("weight" %in% names(e)) {
+      weights <- e$weight
+      temp <- e[,c("weight", "treatment", variables_knowledge)] 
+    } else {
+      weights <- NULL
+      temp <- e[,c("treatment", variables_knowledge)] }
+    # temp <- e[,c("weight", "treatment", variables_knowledge)]
     temp$knows_anthropogenic <- temp$CC_anthropogenic == 2
     variables_knowledge2 <- c(variables_knowledge, "knows_anthropogenic")
     negatives_knowledge2 <- c(negatives_knowledge, F)
@@ -3319,7 +3625,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # e$knowledge_unitary <- e$CC_real + e$CC_anthropogenic - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - (e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region)
     e$index_knowledge_efa <- 0
     for (v in variables_knowledge2) e$index_knowledge_efa <- e$index_knowledge_efa + loadings[v]*temp[[v]]
-    e$index_knowledge_efa <- (e$index_knowledge_efa - wtd.mean(e$index_knowledge_efa, weights = e$weight, na.rm = T))/sqrt(wtd.var(e$index_knowledge_efa, weights = e$weight, na.rm = T))
+    e$index_knowledge_efa <- (e$index_knowledge_efa - wtd.mean(e$index_knowledge_efa, weights = weights, na.rm = T))/sqrt(wtd.var(e$index_knowledge_efa, weights = weights, na.rm = T))
     label(e$index_knowledge_simple) <- "index_knowledge_simple: Weighted average of (non-standardized) variables in variables_knowledge2. Weights are chosen to fit intuition."
     label(e$index_knowledge_efa) <- "index_knowledge_efa: Weighted average of z-scores of variables in variables_knowledge2. Weights are loadings from explanatory factor analysis (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
     cor(e$index_knowledge_efa, e$index_knowledge_simple, use = "complete.obs") # 0.872
@@ -3467,6 +3773,7 @@ e <- us
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T, by="date")
 e <- dk <- prepare(country = "DK", wave = "full", duration_min = 686, weighting = F)
+e <- fr <- prepare(country = "FR", wave = "full", duration_min = 686, weighting = F)
 
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "UK", "ES", "IT", "PL")
