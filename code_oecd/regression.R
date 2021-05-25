@@ -298,7 +298,7 @@ desc_table(dep_vars = c("survey_biased == 'No'", "survey_biased == 'Yes, right'"
 
 ## Indexes
 desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indexes",
-           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions"),
+           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions (t/year)"),
            nolabel = F,
            dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "core_metropolitan == 1"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
 )
@@ -357,7 +357,7 @@ desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_suppo
 desc_table(dep_vars = "policies_support > 0", 
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
            filename = "support_all_index",
-           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T,
            nolabel =F,
            indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F, F), c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, F, F, F), c(rep(T, length(control_variables)), F, T, F, F), c(rep(T, length(control_variables)), F, F, T, F), c(rep(T, length(control_variables)), F, F, F, T), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, F, T, F), c(rep(T, length(control_variables)), T, T, T, T))
 )
