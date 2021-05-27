@@ -38,11 +38,11 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  # e <- read_csv("../data/FR.csv")
-  # for (i in 1:length(e)) {
-  #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
-  #   print(paste(i, label(e[[i]])))
-  # }
+  e <- read_csv("../data/FR.csv")
+  for (i in 1:length(e)) {
+    label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
+    print(paste(i, label(e[[i]])))
+  }
   
   if (country == "US" & wave == "pilot1") {
     # names\(e\)\[[0-9]*\] <- (".*")
@@ -2439,7 +2439,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 convert <- function(e, country, wave = NULL, weighting = T) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                  "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
-                 "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas", "FR" = "Préfère ne pas le dire")
+                 "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas", "FR" = "Préfère ne pas le dire")
   text_yes <- c("US" = "Yes", 
                 "FR" = "Oui")
   text_no <- c("US" = "No", "US" = "No or I don't have a partner", 
@@ -3420,7 +3420,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$weight <- weighting(e) # TODO!
     if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
   
-  if ("know_temperature_2100" %in% names(e)) {
+  if ("know_temperature_2100" %in% names(e)) { # TODO! France: rename flooding -> ozone hole / more rain -> more heatwaves / ozone hole -> flooding / marine eco -> more forestfires
     e$know_treatment_climate <- (e$know_temperature_2100 %in% text_know_temperature_2100) + (e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves)
     if ("know_standard" %in% names(e)) e$know_treatment_policy <- (e$know_standard  %in% text_know_standard) + (e$know_investments_jobs  %in% text_know_investments_jobs)
     else e$know_treatment_policy <- (e$know_ban  %in% text_know_ban) + (e$know_investments_funding  %in% text_know_investments_funding)
