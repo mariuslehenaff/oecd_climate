@@ -363,6 +363,18 @@ desc_table(dep_vars = "policies_support > 0",
            nolabel =F,
            indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F, F), c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, F, F, F), c(rep(T, length(control_variables)), F, T, F, F), c(rep(T, length(control_variables)), F, F, T, F), c(rep(T, length(control_variables)), F, F, F, T), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, F, T, F), c(rep(T, length(control_variables)), T, T, T, T))
 )
+
+# desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
+#            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
+#            filename = "support_each_index",
+#            indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
+#            nolabel = T,
+#            indep_vars_included = list(control_variables, c(control_variables, "index_affected", "index_knowledge"), c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"))
+# )
+
+## Plots coefficient as figures
+
+# Policies support with indexes
 end_formula <- paste(c(control_variables), collapse = ' + ') #  treatment_climate * treatment_policy
 # end_formula3 <- paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + ') #  treatment_climate * treatment_policy
 
@@ -388,6 +400,8 @@ coef_support_indexes_US <- modelplot(models, coef_map = cov_lab_mod, conf_level 
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Support for all policies')
 save_plotly(coef_support_indexes_US, width= 736, height=719)
 
+# Indexes
+
 models <- list()
 models[["Affected Index"]] <- lm(as.formula(paste("index_affected ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Knowledge Index"]] <- lm(as.formula(paste("index_knowledge ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
@@ -397,16 +411,12 @@ coef_indexes_US <- modelplot(models, coef_map = cov_lab_mod,
                                   background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
 save_plotly(coef_indexes_US, width= 736, height=719)
 
+# Republican affiliation
+
 models <- list()
 models[["Republican"]] <- lm(as.formula(paste("political_affiliation=='Republican' ~ ", paste(c(c(control_variables[1:7]), "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
 coef_Rep_US <- modelplot(models, coef_map = cov_lab_mod, 
                              background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Republican Affiliation')
 save_plotly(coef_Rep_US, width= 736, height=719)
 
-# desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
-#            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
-#            filename = "support_each_index",
-#            indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO_2 emissions (t/year)"), mean_control = T,
-#            nolabel = T,
-#            indep_vars_included = list(control_variables, c(control_variables, "index_affected", "index_knowledge"), c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"))
-# )
+## Plot heterogeneity
