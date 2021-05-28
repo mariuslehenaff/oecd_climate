@@ -33,7 +33,8 @@ countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample
                  "FR_education" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
                  "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
                  "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
-                 "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris")
+                 "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
+                 "IN_region" = c(),
   )
   
   pop_freq <- list("US" = list(
@@ -63,7 +64,78 @@ countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample
     "FR_CSP" = c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008),
     "FR_region9" = c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831),
     "FR_taille_agglo" = c(0.2166,0.1710,0.1408,0.3083,0.1633)
-  ))
+  ),
+  "IN" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
+    "IN_region" = c(),
+  ),
+  "IT" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "IT_region" = c(),
+  ),
+  "UK" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "UK_region" = c(),
+  ),
+  "SA" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "SA_region" = c(),
+  ),
+  "ES" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "ES_region" = c(),
+  ),
+  "PL" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "PL_region" = c(),
+  ),
+  "JP" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "JP_region" = c(),
+  ),
+  "DE" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "DE_region" = c(),
+  ),
+  "ID" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "ID_region" = c(),
+  ),
+  "CN" = list(
+    "gender" = c(),
+    "income" = rep(.25, 4),
+    "age_quota" = c(),
+    "urban" = c(FALSE, TRUE), 
+    "CN_region" = c(),
+  )
+  )
   
   quotas <- list("US" = c("gender", "income", "age_quota", "core_metropolitan", "region", "race"), # TODO: , "urban"
                  "US_vote" = c("gender", "income", "age_quota", "region", "core_metropolitan", "race", "vote_2020"),
