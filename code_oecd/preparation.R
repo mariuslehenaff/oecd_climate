@@ -3461,7 +3461,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   ### WEIGHTING
   if (weighting) {
     e$weight <- weighting(e, country) # TODO!
-    if ("vote_2020" %in% names(e)) e$weight_vote <- weighting(e, country, variant = "vote")  } #  & (sum(e$vote_2020=="PNR/no right")!=0)
+    if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, country, variant = "vote")  }
   
   if ("know_temperature_2100" %in% names(e)) { # TODO! France: rename flooding -> ozone hole / more rain -> more heatwaves / ozone hole -> flooding / marine eco -> more forestfires
     e$know_treatment_climate <- (e$know_temperature_2100 %in% text_know_temperature_2100) + (e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves)
@@ -3818,6 +3818,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   if (filename != "SA") remove_id(filename)
   e <- read_csv(paste0("../data/", filename, ".csv"))
 
+  if (missing(wave)) wave <- "full"
   e <- relabel_and_rename(e, country = country, wave = wave)
   
   print(paste(length(which(e$excluded=="QuotaMet")), "QuotaMet"))
@@ -3849,10 +3850,10 @@ usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
 usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
-us_all <- prepare(country = "US", wave = "full", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
-us <- prepare(country = "US", wave = "full", duration_min = 686)
+us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
+us <- prepare(country = "US", duration_min = 686)
 e <- us
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T, by="date")
-e <- dk <- prepare(country = "DK", wave = "full", duration_min = 686, weighting = F)
-e <- fr <- prepare(country = "FR", wave = "full", duration_min = 686, weighting = F)
+e <- dk <- prepare(country = "DK", duration_min = 686, weighting = F)
+e <- fr <- prepare(country = "FR", duration_min = 686, weighting = F)
