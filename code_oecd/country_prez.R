@@ -22,16 +22,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     ##### Pre-treatment ## #####
     
     # ##### 1. Demographics ##### TODO: comp, i.e. weights
-    # labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
-    # label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal")
-    # labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor disagree", "Somewhat agree", "Strongly agree")
-    # data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: remove 0 if there is not "Other" in data
-    # data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
-    # data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
-    # data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), c(0.7324))
-    # data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), c(.134, .185, .080, .601))
-    # data_income <- cbind(dataKN("income", data=e, miss=F, weights = F), dataKN("income", data=e, miss=F, weights = T), c(0.2034,0.239,0.2439,0.3137))
-    # data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), c(0.342171, 0.345006, 0.312823, 0))
+    labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
+    label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal")
+    labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor disagree", "Somewhat agree", "Strongly agree")
     # # data_urbanity <- cbind(dataKN("urbanity", data=e, miss=F, weights = F), dataKN("urbanity", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: find official freq for these ones and plot figures, also on polluting sector
     # # data_education <- cbind(dataKN("education", data=e, miss=F, weights = F), dataKN("education", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
     # # data_wealth <- cbind(dataKN("wealth", data=e, miss=F, weights = F), dataKN("wealth", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
@@ -42,27 +35,39 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # # data_HH_size <- cbind(dataKN("HH_size", data=e, miss=F, weights = F), dataKN("HH_size", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
     # # data_home <- cbind(dataKN("home", data=e, miss=F, weights = F), dataKN("home", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975))
     # # dataKN("vote_2020", data=e, miss=F, weights = F, return="legend")
-    # 
-    # try({(gender_US_comp <- barres(data = data_gender, export_xls = export_xls, df = e, miss = F, sort = F, labels=labels_comp, legend = dataKN("gender_factor", data=e, miss=F, return="legend")))
-    #   save_plotly_new_filename(gender_US_comp, width= 470, height=240)})
-    # 
-    # try({(age_US_comp <- barres(data = data_age, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("age_quota", data=e, miss=F, return="legend")[1:5]))
-    #   save_plotly_new_filename(age_US_comp, width= 560, height=240) })
-    # 
-    # try({(region_US_comp <- barres(data = data_region, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_comp, legend = dataKN("region", data=e, miss=F, return="legend")))
-    #   save_plotly_new_filename(region_US_comp, width= 560, height=240)})
-    # 
-    # try({(core_metropolitan_US_comp <- barres(data = data_core_metropolitan, export_xls = export_xls, df = e, sort = F, miss=F, rev_color = T, rev = F, labels=labels_comp, showLegend = F, legend="Core metropolitan"))
-    #   save_plotly_new_filename(core_metropolitan_US_comp, width= 660, height=240)})
-    # 
-    # try({(race_US_comp <- barres(data = data_race, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("race", data=e, miss=F, return="legend")))
-    #   save_plotly_new_filename(race_US_comp, width= 540, height=240)})
-    # 
-    # try({(income_US_comp <- barres(data = data_income, export_xls = export_xls, df = e, miss=F, rev_color = T, sort = F, rev = F, labels=labels_comp, legend = dataKN("income", data=e, miss=F, return="legend")))
-    #   save_plotly_new_filename(income_US_comp, width= 510, height=240) # 35/70/120})
-    # 
-    # try({(vote_US_comp <- barres(data = data_vote, export_xls = export_xls, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_2020", data=e, miss=T, return="legend")))
-    #   save_plotly_new_filename(vote_US_comp, width= 550, height=240)})
+
+    try({ data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), pop_freq[[country]]$gender) # TODO: remove 0 if there is not "Other" in data
+    legend_gender <- dataKN("gender_factor", data=e, miss=F, return="legend") 
+      if (all(data_gender[2,])<=0.000001) {
+        data_gender <- data_gender[c(1,3),]
+        legend_gender <- legend_gender[c(1,3)]      }
+      (gender_US_comp <- barres(data = data_gender, export_xls = export_xls, df = e, miss = F, sort = F, labels=labels_comp, legend = legend_gender))
+      save_plotly_new_filename(gender_US_comp, width= 470, height=240)})
+
+    try({
+      data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), pop_freq[[country]]$age_quota)
+      (age_US_comp <- barres(data = data_age, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("age_quota", data=e, miss=F, return="legend")[1:5]))
+      save_plotly_new_filename(age_US_comp, width= 560, height=240) })
+
+    try({ data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), pop_freq[[country]]$region)
+      (region_US_comp <- barres(data = data_region, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_comp, legend = dataKN("region", data=e, miss=F, return="legend")))
+      save_plotly_new_filename(region_US_comp, width= 560, height=240)})
+
+    try({data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), pop_freq[[country]]$core_metropolitan[2])
+      (core_metropolitan_US_comp <- barres(data = data_core_metropolitan, export_xls = export_xls, df = e, sort = F, miss=F, rev_color = T, rev = F, labels=labels_comp, showLegend = F, legend="Core metropolitan"))
+      save_plotly_new_filename(core_metropolitan_US_comp, width= 660, height=240)})
+
+    try({data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), pop_freq[[country]]$race)
+      (race_US_comp <- barres(data = data_race, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("race", data=e, miss=F, return="legend")))
+      save_plotly_new_filename(race_US_comp, width= 540, height=240)})
+
+    try({data_income <- cbind(dataKN("income", data=e, miss=F, weights = F), dataKN("income", data=e, miss=F, weights = T), pop_freq[[country]]$income)
+      (income_US_comp <- barres(data = data_income, export_xls = export_xls, df = e, miss=F, rev_color = T, sort = F, rev = F, labels=labels_comp, legend = dataKN("income", data=e, miss=F, return="legend")))
+      save_plotly_new_filename(income_US_comp, width= 510, height=240)}) # 35/70/120
+
+    try({data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), pop_freq[[country]]$vote_2020)
+      (vote_US_comp <- barres(data = data_vote, export_xls = export_xls, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_2020", data=e, miss=T, return="legend")))
+      save_plotly_new_filename(vote_US_comp, width= 550, height=240)})
     # 
     try({(gender_US <- barres(vars = "gender_factor", export_xls = export_xls, df = e, miss = F, labels="Gender"))
       save_plotly_new_filename(gender_US, width= 470, height=140)})

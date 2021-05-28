@@ -19,7 +19,7 @@ for (c in euro_countries) {
 countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample(1:12, 1)]
 
 { 
-  levels_quotas <- list("gender" = c("Female", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
+  levels_quotas <- list("gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
                  "income" = c("Q1", "Q2", "Q3", "Q4"),
                  "age_quota" = c("18-24", "25-34", "35-49", "50-64", "65+"),
                  "urban" = c(FALSE, TRUE),
@@ -38,7 +38,7 @@ countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample
   )
   
   pop_freq <- list("US" = list(
-    "gender" = c(0.5074,0.4974),
+    "gender" = c(0.5074,0.000001,0.4974),
     "income" = c(0.2034,0.239,0.2439,0.3137),
     "age_quota" = c(0.118,0.180,0.243,0.2467,0.2118),
     "urban" = c(0.2676,0.7324),
@@ -48,14 +48,14 @@ countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample
     "US_vote_2020" = c(0.342171, 0.312823, 0.345006)
   ),
   "DK" = list(
-    "gender" = c(0.503, 0.497),
+    "gender" = c(0.503, 0.000001, 0.497),
     "income" = c(0.2634, 0.2334, 0.2782, 0.2249),
     "age_quota" = c(0.110, 0.165, 0.230, 0.245, 0.251),
     "urban" = c(0.4703, 0.5297),
     "DK_region" = c(0.3176, 0.2281, 0.1011, 0.1436, 0.2095)
   ),
   "FR" = list(
-    "gender" = c(0.516,0.484),
+    "gender" = c(0.516, 0.000001, 0.484),
     "income" = rep(.25, 4),
     "age_quota" = c(0.120,0.150,0.240,0.240,0.250),
     "FR_region" = c(0.18920, 0.20041, 0.21968, 0.13980, 0.25097),
@@ -70,70 +70,70 @@ countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
-    "IN_region" = c(),
+    "IN_region" = c()
   ),
   "IT" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "IT_region" = c(),
+    "IT_region" = c()
   ),
   "UK" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "UK_region" = c(),
+    "UK_region" = c()
   ),
   "SA" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "SA_region" = c(),
+    "SA_region" = c()
   ),
   "ES" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "ES_region" = c(),
+    "ES_region" = c()
   ),
   "PL" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "PL_region" = c(),
+    "PL_region" = c()
   ),
   "JP" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "JP_region" = c(),
+    "JP_region" = c()
   ),
   "DE" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "DE_region" = c(),
+    "DE_region" = c()
   ),
   "ID" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "ID_region" = c(),
+    "ID_region" = c()
   ),
   "CN" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
     "age_quota" = c(),
     "urban" = c(FALSE, TRUE), 
-    "CN_region" = c(),
+    "CN_region" = c()
   )
   )
   
