@@ -83,12 +83,12 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  e <- read_csv("../data/FR.csv")
-  for (i in 1:length(e)) {
-    label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
-    print(paste(i, label(e[[i]])))
-  }
-  
+  # e <- read_csv("../data/FR.csv")
+  # for (i in 1:length(e)) {
+  #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
+  #   print(paste(i, label(e[[i]])))
+  # }
+  # 
   if (country == "US" & wave == "pilot1") {
     # names\(e\)\[[0-9]*\] <- (".*")
     names(e) <- c(
