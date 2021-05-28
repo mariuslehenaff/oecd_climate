@@ -3,36 +3,81 @@
 
 source(".Rprofile")
 
+# TODO!!: burden_sharing, CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_knowlege_CC, score_trust, standard of living,// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
+# TODO!! rename core_metropolitan into urban, define it as >20k for DK and GP for FR
+qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
+euro_countries <- c("DK", "FR", "DE", "UK", "ES", "IT", "PL")
+year_countries <- c(2020, 2019, 2019, 2018, 2019, 2019, 2019)
+names(year_countries) <- euro_countries
+inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised disposable income deciles in LCU
+for (i in 1:9) for (c in euro_countries) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", year_countries[c])]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)]))
+inc_quartiles <- matrix(NA, nrow = 7, ncol = 3, dimnames = list(euro_countries, c("Q1", "Q2", "Q3")))
+for (c in euro_countries) {
+  inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
+  inc_quartiles[c,2] <- inc_deciles[c,5]
+  inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
+countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample(1:12, 1)]
+
+{ 
+  levels_quotas <- list("gender" = c("Female", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
+                 "income" = c("Q1", "Q2", "Q3", "Q4"),
+                 "age_quota" = c("18-24", "25-34", "35-49", "50-64", "65+"),
+                 "urban" = c(FALSE, TRUE),
+                 "US_region" = c("Midwest","Northeast", "South", "West"),
+                 "US_core_metropolitan" = c(FALSE, TRUE),
+                 "US_race" = c("White only", "Hispanic", "Black", "Other"),
+                 "US_vote_2020" = c("Biden", "Trump", "Other/Non-voter"), #, "PNR/no right"),
+                 "DK_region" = c("Hovedstaden", "Midtjylland", "Nordjylland", "Sjælland", "Syddanmark"),
+                 "FR_region" = c("IDF", "Nord-Ouest", "Nord-Est", "Sud-Ouest", "Sud-Est"),
+                 "FR_urban_category" = c("GP", "Couronne_GP", "Other"),
+                 "FR_education" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
+                 "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
+                 "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
+                 "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris")
+  )
+  
+  pop_freq <- list("US" = list(
+    "gender" = c(0.5074,0.4974),
+    "income" = c(0.2034,0.239,0.2439,0.3137),
+    "age_quota" = c(0.118,0.180,0.243,0.2467,0.2118),
+    "urban" = c(0.2676,0.7324),
+    "US_region" = c(0.171,0.208,0.383,0.239),
+    "US_core_metropolitan" = c(0.2676,0.7324),
+    "US_race" = c(.601, .185, .134, .080),
+    "US_vote_2020" = c(0.342171, 0.312823, 0.345006)
+  ),
+  "DK" = list(
+    "gender" = c(0.503, 0.497),
+    "income" = c(0.2634, 0.2334, 0.2782, 0.2249),
+    "age_quota" = c(0.110, 0.165, 0.230, 0.245, 0.251),
+    "urban" = c(0.4703, 0.5297),
+    "DK_region" = c(0.3176, 0.2281, 0.1011, 0.1436, 0.2095)
+  ),
+  "FR" = list(
+    "gender" = c(0.516,0.484),
+    "income" = rep(.25, 4),
+    "age_quota" = c(0.120,0.150,0.240,0.240,0.250),
+    "FR_region" = c(0.18920, 0.20041, 0.21968, 0.13980, 0.25097),
+    "FR_urban_category" = c(0.595, 0.184, 0.222),
+    "FR_education" = c(0.290, 0.248, 0.169, 0.293),
+    "FR_CSP" = c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008),
+    "FR_region9" = c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831),
+    "FR_taille_agglo" = c(0.2166,0.1710,0.1408,0.3083,0.1633)
+  ))
+  
+  quotas <- list("US" = c("gender", "income", "age_quota", "core_metropolitan", "region", "race"), # TODO: , "urban"
+                 "US_vote" = c("gender", "income", "age_quota", "region", "core_metropolitan", "race", "vote_2020"),
+                 "DK" = c("gender", "income", "age_quota", "region"), # TODO: , "urban"
+                 "FR" = c("gender", "income", "age_quota", "region", "education") # TODO: , "urban"
+                 )
+}
+
 remove_id <- function(file, folder = "../data/") {
   filename <- paste(folder, file, ".csv", sep = "")
   data <- read_csv(filename) 
   data <- data[,which(!(names(data) %in% c("PSID", "ResponseId", "PID")))]
   write_csv(data, filename, na = "")
-}
-for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US", "DK", 'FR')) remove_id(file)
-
-# TODO!!: burden_sharing, CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_knowlege_CC, score_trust, standard of living,// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, 
-# temp <- prepare(country = "US", wave = "pilot2", duration_min = 0, exclude_screened = F, only_finished = F)
-# comp <- read_csv2("../data/complete_PSID.csv" )
-# psid <- as.matrix(comp$IdParameter, ncol=1)
-# comp <- read_csv2("../data/complete_PSID2.csv" )
-# tem <- as.matrix(comp$IdParameter, ncol=1)
-# psid <- as.character(rbind(psid, tem))
-# 
-# sum(e$PSID %in% psid)
-# sum(temp2$PSID %in% psid)
-
-# PSID <- read_csv("../data/PSID.csv" )
-# names(PSID)[9] <- "PSID"
-# temp$excluded[is.na(temp$excluded)] <- "Complete"
-# write.csv(temp[,c("PSID", "excluded")], "../data/ID.csv")
-# temp2 <- merge(PSID[,c("PSID")],temp[,c("PSID", "excluded")], all = T)
-# temp3 <- merge(PSID[,c("PSID")],temp[,c("PSID", "excluded")], all.x = T)
-# write.csv(temp2, "../data/all_PSIDs.csv")
-# write.csv(temp3, "../data/Dynata_PSIDs.csv")
-
-# ruca <- read.xls("../data/ruca2010.xlsx")
-# zips <- read.xls("../data/zipcodes2010.xlsx")
+} # for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US", "DK", 'FR')) remove_id(file)
 
 relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
@@ -2432,10 +2477,6 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   return(e)
 }
 
-# e <- prepare(country = "US")
-# e <- read_csv("../data/US_pilot.csv") #[-c(1:2),]
-# e <- relabel_and_rename(e, country="US", wave = "pilot3")
-
 convert <- function(e, country, wave = NULL, weighting = T) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                  "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
@@ -2560,6 +2601,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "core_metropolitan")
   variables_main_controls_pilot12 <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "core_metropolitan")
   variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "liberal_conservative", "vote_dum", "as.factor(urbanity)", "core_metropolitan", "rush")
+  variables_main_controls <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "children", "liberal_conservative", "vote_dum", "as.factor(urbanity)", "core_metropolitan", "rush")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
   variables_know_treatment_climate <<- c("know_frequence_heatwaves", "know_temperature_2100")
   if ("know_standard" %in% names(e)) variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
@@ -3271,8 +3313,9 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, text_incidence, "rural", sep="_")]]/3
   if ("standard_incidence_urban" %in% names(e)) for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, text_incidence, "urban", sep="_")]]/3
 
-  e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
-  label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"
+  if (country=="US") {
+    e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
+    label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE" }
 
   if ("CC_affected_2050" %in% names(e)) {
     e$CC_affected_min <- 2100
@@ -3417,8 +3460,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   ### WEIGHTING
   if (weighting) {
-    e$weight <- weighting(e) # TODO!
-    if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
+    e$weight <- weighting(e, country) # TODO!
+    if ("vote_2020" %in% names(e)) e$weight_vote <- weighting(e, country, variant = "vote")  } #  & (sum(e$vote_2020=="PNR/no right")!=0)
   
   if ("know_temperature_2100" %in% names(e)) { # TODO! France: rename flooding -> ozone hole / more rain -> more heatwaves / ozone hole -> flooding / marine eco -> more forestfires
     e$know_treatment_climate <- (e$know_temperature_2100 %in% text_know_temperature_2100) + (e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves)
@@ -3682,62 +3725,98 @@ if (all(variables_affected_index %in% names(e))) {
   return(e)
 }
 
-weighting <- function(data, printWeights = T, vote = F) { 
-  d <- data 
-  d$core_metropolitan[is.na(d$core_metropolitan)] <- "NA"
-  d$age_quota[is.na(d$age_quota)] <- "NA"
-  d$region[is.na(d$region)] <- "NA"
+weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_for_missing_level = F) {
+  vars <- quotas[[paste0(c(country, variant), collapse = "_")]]
+  freqs <- list()
+  for (v in vars) {
+    if (!(v %in% names(e))) warning(paste(v, "not in data"))
+    e[[v]] <- as.character(e[[v]])
+    e[[v]][is.na(e[[v]])] <- "NA"
+    var <- ifelse(v %in% names(levels_quotas), v, paste(country, v, sep="_"))
+    levels_v <- as.character(levels_quotas[[var]])
+    if (!(var %in% names(levels_quotas))) warning(paste(var, "not in levels_quotas"))
+    missing_levels <- setdiff(levels(as.factor(e[[v]])), levels_v)
+    # cat(v, missing_levels, '\n')
+    prop_v <- pop_freq[[country]][[var]]
+    if (min_weight_for_missing_level) freq_missing <- rep(0.000001, length(missing_levels))
+    else freq_missing <- vapply(missing_levels, function(x) sum(e[[v]]==x), FUN.VALUE = c(0))
+    freq_v <- c(prop_v*(nrow(e)-sum(freq_missing)), freq_missing)
+    df <- data.frame(c(levels_v, missing_levels), freq_v)
+    missing_levels <- setdiff(levels(as.factor(e[[v]])), levels_v)
+    # df <- data.frame(c(levels_v, missing_levels), nrow(e)*c(pop_freq[[country]][[var]], rep(0.0001, length(missing_levels))))
+    names(df) <- c(v, "Freq") # TODO: allow for missing quotas
+    freqs <- c(freqs, list(df))
+  }
   
-  unweigthed <- svydesign(ids=~1, data=d)
-  if ("NA" %in% levels(as.factor(d$core_metropolitan))) core_metropolitan <- data.frame(core_metropolitan = c(FALSE, TRUE, "NA"), 
-                                  Freq=nrow(d)*c(0.2676,0.7324, 0.0001))
-  else core_metropolitan <- data.frame(core_metropolitan = c(FALSE, TRUE), Freq=nrow(d)*c(0.2676,0.7324))
-  # taille_agglo <- data.frame(taille_agglo = c(1:5), Freq=nrow(d)*c(0.2166,0.1710,0.1408,0.3083,0.1633))
-  if ("Other" %in% levels(as.factor(d$gender))) gender <- data.frame(gender = c("Female", "Male", "Other"), 
-                                                                     Freq=nrow(d)*c(0.5074,0.4974, 0.0002)) # France: c(0.516,0.484)
-  else gender <- data.frame(gender = c("Female", "Male"), Freq=nrow(d)*c(0.5074,0.4974))
-  # csp <- data.frame(csp = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
-  #                   Freq=nrow(d)*c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008))
-  income <- data.frame(income = c("Q1", "Q2", "Q3", "Q4"),
-                    Freq=nrow(d)*c(0.2034,0.239,0.2439,0.3137))
-  # region <- data.frame(region = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"), 
-  #                      Freq=nrow(d)*c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831))
-  if ("NA" %in% levels(as.factor(d$region))) region <- data.frame(region = c("Midwest","Northeast", "South", "West", "NA"), 
-                       Freq=nrow(d)*c(0.171,0.208,0.383,0.239, 0.0001))
-  else region <- data.frame(region = c("Midwest","Northeast", "South", "West"), 
-                       Freq=nrow(d)*c(0.171,0.208,0.383,0.239))
-  if ("NA" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "NA"), 
-                                                       Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
-  else if ("Below 18" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "Below 18"), 
-                                                                             Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
-  else age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+"), 
-                    Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118)) # France: c(0.120,0.150,0.240,0.240,0.250)
-  # revenu <- data.frame(revenu = c(), Freq=nrow(d)*c())
-  # diplome4 <- data.frame(diplome4 = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"), 
-  #                        Freq=nrow(d)*c(0.290, 0.248, 0.169, 0.293))
-  race <- data.frame(race = c("White only", "Hispanic", "Black", "Other"), Freq=nrow(d)*c(.601, .185, .134, .080))
-  if ("vote_2020" %in% names(d)) vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, 0.345006)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
-  
-  if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race,~vote_2020),
-                                                              population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))     
-  else raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race),
-                     population.margins = list(gender,income,region,core_metropolitan,age_quota,race))     
+  unweigthed <- svydesign(ids=~1, data=e)
+  raked <- rake(design= unweigthed, sample.margins = lapply(vars, function(x) return(as.formula(paste("~", x)))), population.margins = freqs)
 
   if (printWeights) {    print(summary(weights(raked))  )
-    print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique   
+    print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique
     print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
   }
   return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
+  
+  # weighting <- function(d, printWeights = T, vote = F) { 
+  #   # d <- data
+  #   d$core_metropolitan[is.na(d$core_metropolitan)] <- "NA"
+  #   d$age_quota[is.na(d$age_quota)] <- "NA"
+  #   d$region[is.na(d$region)] <- "NA"
+  #   
+  #   unweigthed <- svydesign(ids=~1, data=d)
+  #   if ("NA" %in% levels(as.factor(d$core_metropolitan))) core_metropolitan <- data.frame(core_metropolitan = c(FALSE, TRUE, "NA"), 
+  #                                                                                         Freq=nrow(d)*c(0.2676,0.7324, 0.0001))
+  #   else core_metropolitan <- data.frame(core_metropolitan = c(FALSE, TRUE), Freq=nrow(d)*c(0.2676,0.7324))
+  #   # taille_agglo <- data.frame(taille_agglo = c(1:5), Freq=nrow(d)*c(0.2166,0.1710,0.1408,0.3083,0.1633))
+  #   if ("Other" %in% levels(as.factor(d$gender))) gender <- data.frame(gender = c("Female", "Male", "Other"), 
+  #                                                                      Freq=nrow(d)*c(0.5074,0.4974, 0.0002)) # France: c(0.516,0.484)
+  #   else gender <- data.frame(gender = c("Female", "Male"), Freq=nrow(d)*c(0.5074,0.4974))
+  #   # csp <- data.frame(csp = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
+  #   #                   Freq=nrow(d)*c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008))
+  #   income <- data.frame(income = c("Q1", "Q2", "Q3", "Q4"),
+  #                        Freq=nrow(d)*c(0.2034,0.239,0.2439,0.3137))
+  #   # region <- data.frame(region = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"), 
+  #   #                      Freq=nrow(d)*c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831))
+  #   if ("NA" %in% levels(as.factor(d$region))) region <- data.frame(region = c("Midwest","Northeast", "South", "West", "NA"), 
+  #                                                                   Freq=nrow(d)*c(0.171,0.208,0.383,0.239, 0.0001))
+  #   else region <- data.frame(region = c("Midwest","Northeast", "South", "West"), 
+  #                             Freq=nrow(d)*c(0.171,0.208,0.383,0.239))
+  #   if ("NA" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "NA"), 
+  #                                                                         Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
+  #   else if ("Below 18" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "Below 18"), 
+  #                                                                                    Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
+  #   else age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+"), 
+  #                                Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118)) # France: c(0.120,0.150,0.240,0.240,0.250)
+  #   # revenu <- data.frame(revenu = c(), Freq=nrow(d)*c())
+  #   # diplome4 <- data.frame(diplome4 = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"), 
+  #   #                        Freq=nrow(d)*c(0.290, 0.248, 0.169, 0.293))
+  #   race <- data.frame(race = c("White only", "Hispanic", "Black", "Other"), Freq=nrow(d)*c(.601, .185, .134, .080))
+  #   if ("vote_2020" %in% names(d)) vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, 0.345006)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
+  #   
+  #   if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race,~vote_2020),
+  #                           population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))
+  #   else raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race),
+  #                      population.margins = list(gender,income,region,core_metropolitan,age_quota,race))
+  #   
+  #   if (printWeights) {    print(summary(weights(raked))  )
+  #     print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique
+  #     print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
+  #   }
+  #   return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
+  # }
+  # 
 }
 
-
 prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE) { # , exclude_quotas_full=TRUE
-  if (country == "US") {
-    if (wave == "pilot1") e <- read_csv("../data/US_pilot.csv") 
-    else if (wave == "pilot2") e <- read_csv("../data/US_pilot2.csv") 
-    else if (wave == "pilot3") e <- read_csv("../data/US_pilot3.csv") 
-    else if (wave == "full") e <- read_csv("../data/US.csv") 
-  } else if (country == "DK") e <- read_csv("../data/DK.csv") 
+  # if (country == "US") {
+  #   if (wave == "pilot1") e <- read_csv("../data/US_pilot.csv") 
+  #   else if (wave == "pilot2") e <- read_csv("../data/US_pilot2.csv") 
+  #   else if (wave == "pilot3") e <- read_csv("../data/US_pilot3.csv") 
+  #   else if (wave == "full") e <- read_csv("../data/US.csv") 
+  # } else if (country == "DK") e <- read_csv("../data/DK.csv") 
+  filename <- paste0(c(country, wave), collapse="_")
+  if (filename != "SA") remove_id(filename)
+  e <- read_csv(paste0("../data/", filename, ".csv"))
 
   e <- relabel_and_rename(e, country = country, wave = wave)
   
@@ -3777,28 +3856,3 @@ usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T, by="date")
 e <- dk <- prepare(country = "DK", wave = "full", duration_min = 686, weighting = F)
 e <- fr <- prepare(country = "FR", wave = "full", duration_min = 686, weighting = F)
-
-qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
-euro_countries <- c("DK", "FR", "DE", "UK", "ES", "IT", "PL")
-year_countries <- c(2020, 2019, 2019, 2018, 2019, 2019, 2019)
-names(year_countries) <- euro_countries
-inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised disposable income deciles in LCU
-for (i in 1:9) for (c in euro_countries) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", year_countries[c])]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)]))
-inc_quartiles <- matrix(NA, nrow = 7, ncol = 3, dimnames = list(euro_countries, c("Q1", "Q2", "Q3")))
-for (c in euro_countries) {
-  inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
-  inc_quartiles[c,2] <- inc_deciles[c,5]
-  inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
-countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")
-# countries[sample(1:12, 1)]
-
-# e <- read_csv("../data/US_pilot3.csv") 
-# e <- e[-c(1:2),]
-# sum((is.na(e$Q18.2_6) | is.na(e$Q18.2_1)) & !is.na(e$Q18.3_1), na.rm=T)/sum(!is.na(e$Q18.3_1)) # error rate attention test
-# e$Finished_1[e$Q_TerminateFlag=="QuotaMet"] <- "False"
-# e <- e[is.na(e$Q_TerminateFlag),]
-# e <- e[as.numeric(as.vector(e$Q_TotalDuration)) > 686,]
-# e <- e[e$Finished_1==1,]
-# decrit(as.numeric(e$Q_TotalDuration)/60)
-# decrit(e$Q12.1)
-# decrit(e$Q9.1) # no bug in videos

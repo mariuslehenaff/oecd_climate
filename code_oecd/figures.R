@@ -182,7 +182,7 @@ save_plotly(know_treatment_US, width= 830, height=280)
 ##### 5. Climate knowledge #####
 
 (CC_talks_US <- barres(vars = "CC_talks", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="How often do you talk about climate change?"))
-save_plotly(CC_talks_US, width= 760, height=140)
+save_plotly(CC_talks_US, filename="test", width= 760, height=140)
 
 (CC_real_US <- barres(vars = "CC_real", export_xls = export_xls, df = e, miss=F, labels="Climate change real?"))
 save_plotly(CC_real_US, width= 540, height=140)
@@ -858,15 +858,6 @@ save_plotly(wtp_US_anthropogenic, width= 830, height=220)
 # (wtp_agg_US_anthropogenic <- barres12(vars = "wtp_agg", export_xls = export_xls, df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
 # save_plotly(wtp_agg_US_anthropogenic, width= 830, height=220)
 
-
-# PNR
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) > 0.4) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.05, .4)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.03, .05)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.01, .03)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) < .01) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
-
-
 ##### Correlograms #####
 correlogram("_fair")
 correlogram("_cost_effective")
@@ -902,7 +893,15 @@ desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor
            data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
+# PNR
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) > 0.4) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.05, .4)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.03, .05)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) %between% c(.01, .03)) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+for (v in names(e)) if (mean(is.na(e[[v]]) | grepl("PNR", e[[v]])) < .01) print(paste(round(mean(is.pnr(e[[v]]) | grepl("PNR", e[[v]])), 3), v))
+
 e <- us
+
 # TODO
 #  correlation CC_problem / anthropogenic / other knowledge
 #  !Denmark: list municipality; lib-cons => left-right; no race; New York - Toronto => 700 km from Copenhagen to Stockholm (plane>car>train) / 800 km Bordeaux - Nice / 500 km Paris - London / 800 km Munich - Hambourg / 1000 km Munich - Copenhagen (mais seulement avec 1 ou 2 passagers pour ces deux derniers !)
@@ -926,4 +925,5 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # p.matc <- cor.mtest(knowledge_all)
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
-# R: automate country PDF, weights all countries, TODOs, China
+# R: weights all countries, TODOs, China
+# Ana: Spanish translation, Japanese, Indonesian revision, South African voice, Zulu translation.

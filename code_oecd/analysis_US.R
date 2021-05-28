@@ -396,6 +396,29 @@ for (v in variables_tax_transfers_incidence) print(decrit(v, data = e))
 decrit("tax_transfers_support", data = e)
 
 
+# temp <- prepare(country = "US", wave = "pilot2", duration_min = 0, exclude_screened = F, only_finished = F)
+# comp <- read_csv2("../data/complete_PSID.csv" )
+# psid <- as.matrix(comp$IdParameter, ncol=1)
+# comp <- read_csv2("../data/complete_PSID2.csv" )
+# tem <- as.matrix(comp$IdParameter, ncol=1)
+# psid <- as.character(rbind(psid, tem))
+# 
+# sum(e$PSID %in% psid)
+# sum(temp2$PSID %in% psid)
+
+# PSID <- read_csv("../data/PSID.csv" )
+# names(PSID)[9] <- "PSID"
+# temp$excluded[is.na(temp$excluded)] <- "Complete"
+# write.csv(temp[,c("PSID", "excluded")], "../data/ID.csv")
+# temp2 <- merge(PSID[,c("PSID")],temp[,c("PSID", "excluded")], all = T)
+# temp3 <- merge(PSID[,c("PSID")],temp[,c("PSID", "excluded")], all.x = T)
+# write.csv(temp2, "../data/all_PSIDs.csv")
+# write.csv(temp3, "../data/Dynata_PSIDs.csv")
+
+# ruca <- read.xls("../data/ruca2010.xlsx")
+# zips <- read.xls("../data/zipcodes2010.xlsx")
+
+
 ##### Specific policies #####
 CrossTable(e$age_quota, e$policies_support>0, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
 

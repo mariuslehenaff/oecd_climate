@@ -896,7 +896,7 @@ save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '..
     write.xlsx(plot, file, row.names = T)  
   } else {
     file <- paste(folder, filename, ".png", sep='')
-    print(file)
+    # print(file)
     if (grepl('webshot', method)) { # four times faster: 2.5s (vs. 10s) but saves useless widgets and doesn't exactly respect the display
       saveWidget(politiques_1, 'temp.html')
       webshot('temp.html', file, delay = 0.1, vwidth = width, vheight = height)  
