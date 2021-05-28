@@ -2,6 +2,8 @@ library(haven)
 library(xtable)
 library(stargazer)
 library(clipr)
+library(wesanderson)
+library(ggplot2)
 
 
 Paths = c("/Users/Bluebii/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Google Drive/Economie/Travail/oecd_climate/code_oecd")
@@ -361,6 +363,45 @@ desc_table(dep_vars = "policies_support > 0",
            nolabel =F,
            indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F, F), c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, F, F, F), c(rep(T, length(control_variables)), F, T, F, F), c(rep(T, length(control_variables)), F, F, T, F), c(rep(T, length(control_variables)), F, F, F, T), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, F, T, F), c(rep(T, length(control_variables)), T, T, T, T))
 )
+end_formula <- paste(c(control_variables), collapse = ' + ') #  treatment_climate * treatment_policy
+# end_formula3 <- paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + ') #  treatment_climate * treatment_policy
+
+models <- list()
+models[["Policies support (simple no vote)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(control_variables[1:7]), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support (simple)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", end_formula)), data = e, weights = e$weight)
+models[["Policies support (affected)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support (knowledge)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support (knowledge efa)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_knowledge_efa"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support (CO2)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "CO2_emission"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support (affected+knowledge)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support (affected+knowledge efa)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge_efa"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support (all)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + '))), data = e, weights = e$weight)
+
+cov_lab_mod <- c("race_white_only1" = "race: White only", "gender_dumMale" = "Male", "children1" = "Children", "collegeNo college" = "No college",
+                 "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
+                 "as.factor(employment_agg)Working" = "status: Working", "income_factorQ2" = "Income Q2", "income_factorQ3" = "Income Q3", 
+                 "income_factorQ4" = "Income Q4", "age_quota25-34" = "age: 25-34", "age_quota35-49" = "age: 35-49", "age_quota50-64" = "age: 50-64", 
+                 "age_quota65+" = "age: 65+", "vote_dumBiden" = "vote: Biden", "vote_dumTrump" = "vote: Trump", "index_affected" = "Index affected",
+                 "index_knowledge" = "Index knowledge", "index_knowledge_efa" = "Index knowledge EFA", "CO2_emission" = "CO2 emissions (t/year)",
+                 "core_metropolitanTRUE" = "Core metropolitan")
+coef_support_indexes_US <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 
+          background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Support for all policies')
+save_plotly(coef_support_indexes_US, width= 736, height=719)
+
+models <- list()
+models[["Affected Index"]] <- lm(as.formula(paste("index_affected ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Knowledge Index"]] <- lm(as.formula(paste("index_knowledge ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Knowledge Index (EFA)"]] <- lm(as.formula(paste("index_knowledge_efa ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
+# models[["CO2 emissions (t/year)"]] <- lm(as.formula(paste("CO2_emission ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
+coef_indexes_US <- modelplot(models, coef_map = cov_lab_mod, 
+                                  background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
+save_plotly(coef_indexes_US, width= 736, height=719)
+
+models <- list()
+models[["Republican"]] <- lm(as.formula(paste("political_affiliation=='Republican' ~ ", paste(c(c(control_variables[1:7]), "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
+coef_Rep_US <- modelplot(models, coef_map = cov_lab_mod, 
+                             background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Republican Affiliation')
+save_plotly(coef_Rep_US, width= 736, height=719)
 
 # desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0"), 
 #            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
