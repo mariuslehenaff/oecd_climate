@@ -21,9 +21,9 @@ mean_sd <- subset(mean_sd, political_affiliation %in% c("Democrat", "Republican"
 policies_label <- c("Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
-support_by_political_US <- ggplot(mean_sd) +
+support_by_political_US3 <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = political_affiliation, xmin = V2, xmax = V3)) +
   labs(x = 'Support', y = '', color ="", title = 'Policy support by political affiliations') + 
   theme_minimal() + theme(legend.title = element_blank()) +
   scale_color_hue(direction = -1)
-save_plotly(support_by_political_US, width= 800, height=400)
+save_plotly(support_by_political_US3, width= 800, height=400)
