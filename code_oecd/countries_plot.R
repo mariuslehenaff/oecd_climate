@@ -634,3 +634,23 @@ render_country_comparison <- function(data = all, along = "country_name", parent
 }
 
 render_country_comparison(along = "country_name", parentheses = F, nolabel = T, folder_country = F, name_country = T, on_control = T, export_xls = F, figures = T, tables = T)
+
+heatmap_table <- function(vars, data = all, along = "country_name", conditions = c("> 0"), on_control = T) {
+  # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
+  e <- data
+  if (on_control) e <- e[e$treatment=="None",]
+  nb_levels <- length(Levels(e[[along]]))
+  nb_vars <- length(vars)
+  
+  if (length(conditions)==1) conditions <- rep(conditions[1], nb_vars)
+  table <- array(NA, dim = c(nb_vars, nb_levels))
+  for (c in 1:nb_levels) {
+    df_c <- e[e$country==country,]
+    for (v in 1:nb_vars) {
+      var_c <- df_c[[vars[v]]]
+      table[v,c] <- eval(str2expression(paste("mean(var_c", conditions[v], ", na.rm = T)"))) # TODO weights
+    }
+  }
+  return(table)
+}
+
