@@ -666,20 +666,27 @@ labels12 <- function(labels, en=F, comp = "V2", orig = NULL) {
     lab2 <- paste("", lab2) }
   return(new_labels)
 }
-labelsN <- function(labels, levels) {
+labelsN <- function(labels, levels, parentheses = T) {
   new_labels <- c()
-  labs_other <- paste0("(", levels[1:(length(levels)-1)], ")")
-  labs_main <- paste0(labels, " (", levels[length(levels)], ")")
+  if (parentheses) {
+    labs_other <- paste0("(", levels[1:(length(levels)-1)], ")")
+    labs_main <- paste0(labels, " (", levels[length(levels)], ")")
+  } else {
+    double_dot <- ifelse(max(length(labels))>1, ": ", "")
+    labs_other <- levels[1:(length(levels)-1)]
+    labs_main <- paste0(labels, double_dot, levels[length(levels)])  }
   for (l in seq_along(labels)) new_labels <- c(new_labels, labs_other, labs_main[l])
   return(new_labels) # version var (lev1) / (lev2) / ...
   # return(sapply(labels, function(l) {return(paste(l, levels, sep=": "))})) # version var: lev1 / var: lev2 / ...
 }
-barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F) {
+barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), 
+                    rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F) {
+  if (nolabel & length(labels)==1) labels <- "" 
   if (is.data.frame(df)) df <- list(df)
   if (!missing(along)) levels <- Levels(df[[1]][[along]])
   if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
   if (!missing(along) & missing(labels)) labels <- paste(along, levels, sep=": ")
-  if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels) 
+  if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels, parentheses = parentheses) 
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
   data1 <- dataKN(vars, data=df[[1]], miss=miss, weights = weights, return = "", fr=fr, rev=rev)

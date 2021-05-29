@@ -7,6 +7,7 @@ source(".Rprofile")
 # TODO!! rename core_metropolitan into urban, define it as >20k for DK and GP for FR
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "UK", "ES", "IT", "PL")
+euro_countries_names <- c("Denmark", "France", "Germany", "United Kingdom", "Spain", "Italy", "Poland")
 year_countries <- c(2020, 2019, 2019, 2018, 2019, 2019, 2019)
 names(year_countries) <- euro_countries
 inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised disposable income deciles in LCU
@@ -17,6 +18,8 @@ for (c in euro_countries) {
   inc_quartiles[c,2] <- inc_deciles[c,5]
   inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
 countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample(1:12, 1)]
+countries_names <- c(euro_countries_names, "Japan", "India", "Indonesia", "South Africa", "United States")
+names(countries_names) <- countries
 
 { 
   levels_quotas <- list("gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
@@ -1734,6 +1737,11 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "member_environmental_orga",
       "relative_environmentalist",
       "vote_participation", 
+      "gilets_jaunes_dedans", # TODO!
+      "gilets_jaunes_soutien",
+      "gilets_jaunes_compris",
+      "gilets_jaunes_oppose",
+      "gilets_jaunes_NSP",
       "vote_voters",
       "vote_non_voters",
       "left_right", # TODO
@@ -3345,6 +3353,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }
   
   e$country <- country
+  e$country_name <- countries_names[country]
   label(e$country) <- "country: Country of the survey. US/FRA/IND/DEN"
   e$wave <- wave
   label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"
@@ -3798,6 +3807,7 @@ if (all(variables_affected_index %in% names(e))) {
 }
 
 weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_for_missing_level = F) {
+  if (!missing(variant)) print(variant)
   vars <- quotas[[paste0(c(country, variant), collapse = "_")]]
   freqs <- list()
   for (v in vars) {
@@ -3808,14 +3818,13 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
     levels_v <- as.character(levels_quotas[[var]])
     if (!(var %in% names(levels_quotas))) warning(paste(var, "not in levels_quotas"))
     missing_levels <- setdiff(levels(as.factor(e[[v]])), levels_v)
-    print(missing_levels)
+    present_levels <- which(levels_v %in% levels(as.factor(e[[v]])))
     # cat(v, missing_levels, '\n')
-    prop_v <- pop_freq[[country]][[var]]
+    prop_v <- pop_freq[[country]][[var]][present_levels]
     if (min_weight_for_missing_level) freq_missing <- rep(0.000001, length(missing_levels))
     else freq_missing <- vapply(missing_levels, function(x) sum(e[[v]]==x), FUN.VALUE = c(0))
     freq_v <- c(prop_v*(nrow(e)-sum(freq_missing)), freq_missing)
-    df <- data.frame(c(levels_v, missing_levels), freq_v)
-    missing_levels <- setdiff(levels(as.factor(e[[v]])), levels_v)
+    df <- data.frame(c(levels_v[present_levels], missing_levels), freq_v)
     # df <- data.frame(c(levels_v, missing_levels), nrow(e)*c(pop_freq[[country]][[var]], rep(0.0001, length(missing_levels))))
     names(df) <- c(v, "Freq") # TODO: allow for missing quotas
     freqs <- c(freqs, list(df))
@@ -3901,7 +3910,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   if (only_finished) { # TODO: le faire marcher même pour les autres
     e <- e[e$finished==1,] 
     e <- convert(e, country = country, wave = wave, weighting = weighting)
-    
+    e <- e[,!duplicated(names(e))]
     # if (weighting) {
     #   e$weight <- weighting(e) # TODO!
     #   if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
@@ -3923,10 +3932,12 @@ usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
 usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
+usp12 <- merge(usp1, usp2, all = T)
+usp <- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
 us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
 us <- prepare(country = "US", duration_min = 686)
 e <- us
-usp12 <- merge(usp1, usp2, all = T)
-usp <- merge(usp3, usp12, all = T, by="date")
-e <- dk <- prepare(country = "DK", duration_min = 686, weighting = F)
-e <- fr <- prepare(country = "FR", duration_min = 686, weighting = F)
+e <- dk <- prepare(country = "DK", duration_min = 686)
+e <- fr <- prepare(country = "FR", duration_min = 686)
+current_countries <- c("US", "DK", "FR")
+all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))

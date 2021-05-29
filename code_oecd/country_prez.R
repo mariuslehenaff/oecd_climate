@@ -779,7 +779,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     missing_figures <- setdiff(sub("_US", "", list.files("../figures/US")), sub(replacement_text, "", list.files(folder)))
     cat(paste0(length(missing_figures), " Missing figures for ", country, ": "))
     missing_types <- c("_comp.png", "_pol.png", "_urb.png", "_vote.png")
-    for (t in missing_types) if (grepl("_comp.png", missing_figures)) cat("All figures of type: ", t)
+    for (t in missing_types) if (grepl("_comp.png", missing_figures)) print("All figures of type: ", t)
     missing_figures <- missing_figures[!grepl(paste(missing_types, collapse="|"), missing_figures)]
     # cat(paste0(length(missing_figures), " Missing figures for ", country, ": "), missing_figures, sep = '\n')
     cat(missing_figures, sep = '\n')

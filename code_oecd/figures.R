@@ -1,3 +1,5 @@
+(test <- barres(vars = "education", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Highest level of education \U00B6 \U0001f1f7\U0001f1fa 🇷🇺"))
+save_plotly(test, width= 1080, height=140) 
 # Examples
 # Be careful with the arguments (df, miss...)
 
