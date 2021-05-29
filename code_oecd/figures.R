@@ -182,7 +182,7 @@ save_plotly(know_treatment_US, width= 830, height=280)
 ##### 5. Climate knowledge #####
 
 (CC_talks_US <- barres(vars = "CC_talks", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="How often do you talk about climate change?"))
-save_plotly(CC_talks_US, filename="test", width= 760, height=140)
+save_plotly(CC_talks_US, width= 760, height=140)
 
 (CC_real_US <- barres(vars = "CC_real", export_xls = export_xls, df = e, miss=F, labels="Climate change real?"))
 save_plotly(CC_real_US, width= 540, height=140)
@@ -741,6 +741,8 @@ plot_heterogeneityN <- function(df = us, along = "vote", text_file = "_US_vote",
 
 
 ##### Heterogeneity #####
+e <- us
+
 # By income
 plot_heterogeneity12(dfs = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), orig="<br>(Bottom 50%)", comp = "(Top 50%)", text_file = "_US_inc", export_xls = export_xls)
 # By vote
@@ -878,19 +880,21 @@ correlogram("knowledge")
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
+control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "core_metropolitan == 1", "treatment")
+
 desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC > 0", "willing_limit_driving > 0"), filename = "US_1",
            dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "US should fight CC", "Willing to limit driving"),
-           data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
+           nolabel=F,data = us, keep = c("treatment"), indep_vars = control_variables_w_treatment, indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
 desc_table(dep_vars = c("tax_transfers_support > 0", "investments_support > 0", "standard_support > 0", "policies_support > 0"), filename = "US_2",
            dep.var.labels = c("Carbon tax with transfers", "Green Infrastructure Program", "Ban on combustion-engine cars", "Average over 3 policies"),
-           dep.var.caption = c("Support"), data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
+           dep.var.caption = c("Support"), data = us, keep = c("treatment"), indep_vars = control_variables_w_treatment, indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
 desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_negative_effect > 0"), filename = "US_3",
            dep.var.labels =  c("Fair", "HH would win", "Poor would win", "Large economic effect", "Negative economic effect"),
-           data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_pilot3, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
+           data = us, keep = c("treatment"), control_variables_w_treatment, indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
 # PNR

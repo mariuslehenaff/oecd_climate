@@ -420,3 +420,20 @@ coef_Rep_US <- modelplot(models, coef_map = cov_lab_mod,
 save_plotly(coef_Rep_US, width= 736, height=719)
 
 ## Plot heterogeneity
+models <- list(models_1, models_2, models_3)
+
+models_1 <- dlply(e, "political_affiliation", function(x) 
+  lm(as.formula(paste("standard_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
+models_1 <- models_1[c(1,5)]
+models_2 <- dlply(e, "political_affiliation", function(x) 
+  lm(as.formula(paste("investments_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
+models_2 <- models_2[c(1,5)]
+names(models_2$Democrat$coefficients) <- "Mean 2"
+names(models_2$Republican$coefficients) <- "Mean 2"
+models <- list()
+# models_3 <- dlply(e, "political_affiliation", function(x) 
+#   lm(as.formula(paste("tax_transfers_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
+# models_3 <- models_3[c(1,5)]
+
+
+modelplot(models_1) + labs(x = 'Support', y = 'Policies', title = 'Support by political affiliation')
