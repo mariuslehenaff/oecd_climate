@@ -34,7 +34,7 @@ countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample
                  "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
                  "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
-                 "IN_region" = c(),
+                 "IN_region" = c()
   )
   
   pop_freq <- list("US" = list(
@@ -3808,6 +3808,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
     levels_v <- as.character(levels_quotas[[var]])
     if (!(var %in% names(levels_quotas))) warning(paste(var, "not in levels_quotas"))
     missing_levels <- setdiff(levels(as.factor(e[[v]])), levels_v)
+    print(missing_levels)
     # cat(v, missing_levels, '\n')
     prop_v <- pop_freq[[country]][[var]]
     if (min_weight_for_missing_level) freq_missing <- rep(0.000001, length(missing_levels))

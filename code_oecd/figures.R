@@ -465,8 +465,8 @@ save_plotly(wtp_US, width= 680, height=340)
 # (wtp_US <- barres(vars = "wtp", export_xls = export_xls, df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="WTP to limit global warming ($/year)"))
 # save_plotly(wtp_US, width= 1050, height=200)
 
-(wtp_agg_US <- barres(vars = "wtp_agg", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
-save_plotly(wtp_agg_US, width= 950, height=140)
+# (wtp_agg_US <- barres(vars = "wtp_agg", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
+# save_plotly(wtp_agg_US, width= 950, height=140)
 
 # mar_old <- par()$mar
 # cex_old <- par()$cex
