@@ -923,6 +923,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # TODO: heterogenous treatment Red/Dem; maps; 
 # TODO: Pessimistic w.r.t. future more or less climate friendly?
 # TODO: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
+# TODO: prepare heatmap principales variables (tableau d'ensemble)
 # TODO: acquiescence negative/positive effect
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
 
