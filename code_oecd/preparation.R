@@ -18,7 +18,7 @@ for (c in euro_countries) {
   inc_quartiles[c,2] <- inc_deciles[c,5]
   inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
 countries <- c(euro_countries, "JP", "IN", "ID", "SA", "US")  # countries[sample(1:12, 1)]
-countries_names <- c(euro_countries_names, "Japan", "India", "Indonesia", "South Africa", "United States")
+countries_names <- c(euro_countries_names, "Japan", "India", "Indonesia", "South Africa", "United States") # TODO? USA? UK?
 names(countries_names) <- countries
 
 { 
@@ -2775,10 +2775,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   text_education_master <- c("US" = "Master's degree or above", 
                              "FR" = "Bac +5 ou plus (master, école d'ingénieur ou de commerce, doctorat, médecine, maîtrise, DEA, DESS...)")
   
-  text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 1350€/mois")
-  text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 1351 et 2200€/mois")
-  text_income_q3 <- c("US" = "between $70,000 and $120,000", "FR" = "Entre 2201 et 3800€/mois")
-  text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 3800 €/mois")
+  text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 35,000€/mois")
+  text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 35,000 et 70,000€/mois")
+  text_income_q3 <- c("US" = "between $70,000 and $120,000", "FR" = "Entre 70,000 et 120,000€/mois")
+  text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 120,000€/mois")
   
   text_wealth_q1 <- c("US" = "Less than $0 (I have a net debt)", "FR" = "Moins de 10 000€")
   text_wealth_q2 <- c("US" = "Close to $0", "FR" = "Entre 10 001€ et 60 000€")

@@ -895,7 +895,24 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
 # dev.off()
 # orca(example, file = "image.png") # BEST METHOD, cf. below
 fig_height <- function(nb_bars, large = F) return(ifelse(nb_bars == 1, 140, 220 + 30*(nb_bars - 2)) + 10*nb_bars*large) # 2 ~ 220, 3 ~ 250, 4 ~ 280, 5 ~ 325, 6 ~ 360, 7 ~ 380, TRUE ~ 400 # 2 ~ 200-240, 3 ~ 240-275, 4 ~ 270-340, 5 ~ 320-340, 6 ~ 400, 7 ~ 340-430, 
-
+save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='dev', trim = T) {
+  if (class(plot) %in% c("data.frame", "array")) {
+    # file <- paste(folder, "xls/", filename, ".xlsx", sep='')
+    file <- paste(sub("figures", "xlsx", folder), filename, ".xlsx", sep='')
+    write.xlsx(plot, file, row.names = T)  
+  } else {
+    file <- paste(folder, filename, ".png", sep='')
+    # print(file)
+    if (grepl('dev', method)) { 
+      dev.copy(png, filename=file, width = width, height = height) # save plot from R (not plotly)
+      dev.off() }
+    else {
+      server <- orca_serve() # doesn't work within a function because requires admin rights
+      server$export(plot, file = file, width = width, height = height)
+      server$close()
+    }
+    if (trim) image_write(image_trim(image_read(file)), file) }
+}
 save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
   if (class(plot)=="data.frame") {
     # file <- paste(folder, "xls/", filename, ".xlsx", sep='')
@@ -905,7 +922,7 @@ save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '..
     file <- paste(folder, filename, ".png", sep='')
     # print(file)
     if (grepl('webshot', method)) { # four times faster: 2.5s (vs. 10s) but saves useless widgets and doesn't exactly respect the display
-      saveWidget(politiques_1, 'temp.html')
+      saveWidget(plot, 'temp.html')
       webshot('temp.html', file, delay = 0.1, vwidth = width, vheight = height)  
       file.remove('temp.html')}
     else orca(plot, file = file, width = width, height = height) # bug with encoding in Windows
@@ -924,8 +941,32 @@ correlogram <- function(grep = NULL, vars = NULL, df = e) {
   p.mat <- cor.mtest(data) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
   corrplot(corr, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 }
-
-
+heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # type in full, upper, lower
+  diag <- if(type=="full") T else F
+  color_lims <- if(proportion) c(0,1) else c(-2,2)
+  col2 <- c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")
+  col <- if (proportion) colorRampPalette(c(rep("#67001F", 10), col2))(200) else colorRampPalette(col2)(200)
+  par(xpd=TRUE)
+  return(corrplot(data, method='color', col = col,  mar = c(0,0, 1.3,0), cl.pos = 'n', cl.lim = color_lims, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale
+}
+heatmap_table <- function(vars, data = all, along = "country_name", conditions = c("> 0"), on_control = T) {
+  # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
+  e <- data
+  if (on_control) e <- e[e$treatment=="None",]
+  levels <- Levels(e[[along]])
+  nb_vars <- length(vars)
+  
+  if (length(conditions)==1) conditions <- rep(conditions[1], nb_vars)
+  table <- array(NA, dim = c(nb_vars, length(levels)), dimnames = list(vars, levels))
+  for (c in levels) {
+    df_c <- e[e[[along]]==c,]
+    for (v in 1:nb_vars) {
+      var_c <- df_c[[vars[v]]]
+      table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight)"))) 
+    }
+  }
+  return(table)
+}
 ##### Other #####
 CImedian <- function(vec) { # 95% confidence interval
   res <- tryCatch(unlist(ci.median(vec[!is.na(vec) & vec!=-1])), error=function(e) {print('NA')})
