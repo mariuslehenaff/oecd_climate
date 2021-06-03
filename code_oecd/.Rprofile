@@ -683,7 +683,7 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
                     rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F) {
   if (nolabel & length(labels)==1) labels <- "" 
   if (is.data.frame(df)) df <- list(df)
-  if (!missing(along)) levels <- Levels(df[[1]][[along]])
+  if (!missing(along)) levels <- rev(Levels(df[[1]][[along]]))
   if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
   if (!missing(along) & missing(labels)) labels <- paste(along, levels, sep=": ")
   if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels, parentheses = parentheses) 
@@ -691,7 +691,7 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
   if (!missing(miss)) nsp <- miss
   data1 <- dataKN(vars, data=df[[1]], miss=miss, weights = weights, return = "", fr=fr, rev=rev)
   if (missing(legend) & missing(hover)) { 
-    if (is.logical(df[[1]][[vars[1]]])) hover <- legend <- labels # data1(var = vars[1], data=df, weights = weights) # before: uncommented and "else" next line
+    if (is.logical(df[[1]][[vars[1]]])) { showLegend = F; legend <- "True"; hover <- labels; } # data1(var = vars[1], data=df, weights = weights) # before: uncommented and "else" next line
     else hover <- legend <- dataN(var = vars[1], data=df[[1]], miss=miss, weights = weights, return = "legend", fr=fr, rev_legend = rev) } 
   agree <- order_agree(data = data1, miss = miss)
   if (is.logical(df[[1]][[vars[1]]])) agree <- rev(agree)
@@ -943,11 +943,12 @@ correlogram <- function(grep = NULL, vars = NULL, df = e) {
 }
 heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # type in full, upper, lower
   diag <- if(type=="full") T else F
-  color_lims <- if(proportion) c(0,1) else c(-2,2)
+  color_lims <- if(proportion) c(0,1) else { if (min(data)>=2 & max(data)<2) c(-2,2) else c(min(0, data), max(data)) }
+  nb_digits <- if(proportion) 0 else 1
   col2 <- c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")
   col <- if (proportion) colorRampPalette(c(rep("#67001F", 10), col2))(200) else colorRampPalette(col2)(200)
   par(xpd=TRUE)
-  return(corrplot(data, method='color', col = col,  mar = c(0,0, 1.3,0), cl.pos = 'n', cl.lim = color_lims, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale
+  return(corrplot(data, method='color', col = col,  mar = c(0,0, 1.3,0), cl.pos = 'n', cl.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale
 }
 heatmap_table <- function(vars, data = all, along = "country_name", conditions = c("> 0"), on_control = T) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work

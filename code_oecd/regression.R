@@ -302,7 +302,7 @@ desc_table(dep_vars = c("survey_biased == 'No'", "survey_biased == 'Yes, right'"
 desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indexes",
            dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions (t/year)"),
            nolabel = F,
-           dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "core_metropolitan == 1"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
+           dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "urban"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
 )
 
 # Support with indexes
@@ -395,7 +395,7 @@ cov_lab_mod <- c("race_white_only1" = "race: White only", "gender_dumMale" = "Ma
                  "income_factorQ4" = "Income Q4", "age_quota25-34" = "age: 25-34", "age_quota35-49" = "age: 35-49", "age_quota50-64" = "age: 50-64", 
                  "age_quota65+" = "age: 65+", "vote_dumBiden" = "vote: Biden", "vote_dumTrump" = "vote: Trump", "index_affected" = "Index affected",
                  "index_knowledge" = "Index knowledge", "index_knowledge_efa" = "Index knowledge EFA", "CO2_emission" = "CO2 emissions (t/year)",
-                 "core_metropolitanTRUE" = "Core metropolitan")
+                 "urbanTRUE" = "Urban")
 coef_support_indexes_US <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Support for all policies')
 save_plotly(coef_support_indexes_US, width= 736, height=719)
@@ -403,10 +403,10 @@ save_plotly(coef_support_indexes_US, width= 736, height=719)
 # Indexes
 
 models <- list()
-models[["Affected Index"]] <- lm(as.formula(paste("index_affected ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
-models[["Knowledge Index"]] <- lm(as.formula(paste("index_knowledge ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
-models[["Knowledge Index (EFA)"]] <- lm(as.formula(paste("index_knowledge_efa ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
-# models[["CO2 emissions (t/year)"]] <- lm(as.formula(paste("CO2_emission ~ ", paste(c(end_formula, "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Affected Index"]] <- lm(as.formula(paste("index_affected ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Knowledge Index"]] <- lm(as.formula(paste("index_knowledge ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Knowledge Index (EFA)"]] <- lm(as.formula(paste("index_knowledge_efa ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
+# models[["CO2 emissions (t/year)"]] <- lm(as.formula(paste("CO2_emission ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 coef_indexes_US <- modelplot(models, coef_map = cov_lab_mod, 
                                   background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
 save_plotly(coef_indexes_US, width= 736, height=719)
@@ -414,7 +414,7 @@ save_plotly(coef_indexes_US, width= 736, height=719)
 # Republican affiliation
 
 models <- list()
-models[["Republican"]] <- lm(as.formula(paste("political_affiliation=='Republican' ~ ", paste(c(c(control_variables[1:7]), "core_metropolitan"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Republican"]] <- lm(as.formula(paste("political_affiliation=='Republican' ~ ", paste(c(c(control_variables[1:7]), "urban"), collapse = ' + '))), data = e, weights = e$weight)
 coef_Rep_US <- modelplot(models, coef_map = cov_lab_mod, 
                              background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Republican Affiliation')
 save_plotly(coef_Rep_US, width= 736, height=719)

@@ -1,8 +1,8 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO: vote, region, flight, size of town, footprint region, etc., standard/investment/tax _effect_, donation
+# TODO!: vote, region, flight, size of town, footprint region, etc., standard/investment/tax _effect_, donation
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
-  print(country)
+  print(country)  
   start <- Sys.time()
   if (!(missing(data))) e <- data
   else e <- db[[country]] # db[db$country==country,]
@@ -53,9 +53,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       (region_US_comp <- barres(data = data_region, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_comp, legend = dataKN("region", data=e, miss=F, return="legend")))
       save_plotly_new_filename(region_US_comp, width= 560, height=240)})
 
-    try({data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), pop_freq[[country]]$core_metropolitan[2])
-      (core_metropolitan_US_comp <- barres(data = data_core_metropolitan, export_xls = export_xls, df = e, sort = F, miss=F, rev_color = T, rev = F, labels=labels_comp, showLegend = F, legend="Core metropolitan"))
-      save_plotly_new_filename(core_metropolitan_US_comp, width= 660, height=240)})
+    try({data_urban <- cbind(dataKN("urban", data=e, miss=F, weights = F), dataKN("urban", data=e, miss=F, weights = T), pop_freq[[country]]$urban[2])
+      (urban_US_comp <- barres(data = data_urban, export_xls = export_xls, df = e, sort = F, miss=F, rev_color = T, rev = F, labels=labels_comp, showLegend = F, legend="Core metropolitan"))
+      save_plotly_new_filename(urban_US_comp, width= 660, height=240)})
 
     try({data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), pop_freq[[country]]$race)
       (race_US_comp <- barres(data = data_race, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("race", data=e, miss=F, return="legend")))
@@ -453,7 +453,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # labels_policy[6] <- "Financing clean energy in low-income countries" 
     labels_policy[4] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
     labels_policy[5] <- "Financing clean energy in low-income countries" 
-    labels_policy[2] <- "National tax on fossil fuels (+$0.40/gallon)"  # TODO
+    labels_policy[2] <- "National tax on fossil fuels (+$0.40/gallon)"  # TODO!
     try({(policy_US <- barres(vars = variables_policy, export_xls = export_xls, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_policy, hover=labels_support))
       save_plotly_new_filename(policy_US, width= 920, height=340)})
     
@@ -514,7 +514,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(if_other_do_US <- barres(vars = variables_if_other_do, export_xls = export_xls, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_if_other_do, hover=c("Much less", "Less", "About the same", "More", "Much more")))
       save_plotly_new_filename(if_other_do_US, width= 830, height=200) })
     
-    labels_burden_sharing <- c() # TODO: do not sort
+    labels_burden_sharing <- c() # TODO!: do not sort
     for (v in variables_burden_sharing) labels_burden_sharing <- c(labels_burden_sharing, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
     labels_burden_sharing[4] <- "The richest countries should pay it all, <br> so that the poorest countries do not have to pay anything"
     labels_burden_sharing[3] <- "Countries should pay in proportion to <br> their past emissions (from 1990 onwards)"
@@ -526,10 +526,10 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       save_plotly_new_filename(global_assembly_support_US, width= 990, height=140)})
     
     try({(global_tax_support_US <- barres(vars = "global_tax_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on GHG<br> financing a global basic income"))
-      save_plotly_new_filename(global_tax_support_US, width= 800, height=140)}) 
+      save_plotly_new_filename(global_tax_support_US, width= 780, height=140)})
     
     try({(tax_1p_support_US <- barres(vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br> to finance low-income countries"))
-      save_plotly_new_filename(tax_1p_support_US, width= 800, height=140)}) 
+      save_plotly_new_filename(tax_1p_support_US, width= 780, height=140)})
     
     labels_global_policies <- c("Global democratic assembly<br>on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br> to finance low-income countries")
     try({(global_policies_US <- barres(vars = c("global_assembly_support", "global_tax_support", "tax_1p_support"), export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
@@ -753,14 +753,14 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # By vote
     # plot_heterogeneity12(dfs = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", text_file = paste0(replacement_text, "_pol"), export_xls = export_xls)
     # plot_heterogeneityN(along = "vote3", text_file = paste0(replacement_text, "_vote"), export_xls = export_xls)
-    # # By rural/urban # TODO
-    # plot_heterogeneity12(dfs = list(e[e$core_metropolitan==T,], e[e$core_metropolitan==F,]), orig="<br>(Core metro)", comp = "(Non-core metro)", text_file = paste0(replacement_text, "_urb"), export_xls = export_xls)
+    # # By rural/urban 
+    # plot_heterogeneity12(dfs = list(e[e$urban==T,], e[e$urban==F,]), orig="<br>(Core metro)", comp = "(Non-core metro)", text_file = paste0(replacement_text, "_urb"), export_xls = export_xls)
     
     ## Other
     try({(wtp_US_anthropogenic <- barres12(vars = "wtp", export_xls = export_xls, df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, labels="WTP to limit global warming ($/year)"))
       save_plotly_new_filename(wtp_US_anthropogenic, width= 830, height=220)})
     
-    ##### Correlograms ##### TODO: save, database
+    ##### Correlograms ##### TODO!: save, database
     # correlogram("_fair")
     # correlogram("_cost_effective")
     # correlogram(vars = c(paste(names_policies, "support", sep="_"), "policies_support"))
@@ -813,7 +813,8 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
 }
 
 # /!\ open the Plots pane at its maximum before running the function
-render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
+# TODO: xlsx
+render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", "> 0")) { # c("", "> 0", "< 0", ">= 0", "<= 0", "== 2", "== -2")
   start <- Sys.time()
   
   e <- data
@@ -844,6 +845,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     try({(urbanity_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "urbanity", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Size of town"))
       save_plotly_new_filename(urbanity_US, width= 660, height=fig_height(1*nb_levels))})
+    
+    try({(urban_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "urban", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Urban"))
+      save_plotly_new_filename(urban_US, width= 660, height=fig_height(1*nb_levels))})
     
     # try({(race_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = variables_race[c(1:4)], export_xls = export_xls, df = e, miss=F, showLegend=F, rev = F, labels=c("White", "Black", "Hispanic", "Asian")))
     #   save_plotly_new_filename(race_US, width= 340, height=fig_height(3*nb_levels))}) 
@@ -985,7 +989,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(GHG_US, width= 270, height=fig_height(4*nb_levels))})
     
     try({(score_GHG_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "score_GHG", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG"))
-      save_plotly_new_filename(score_GHG_US, width= 550, height=fig_height(1*nb_levels))})  # TODO? split score=3 into all but methane and others
+      save_plotly_new_filename(score_GHG_US, width= 550, height=fig_height(1*nb_levels))}) 
     
     try({(footprint_elec_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$el[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$el[c(2,1,3)]))
       save_plotly_new_filename(footprint_elec_US, width= 400, height=fig_height(3*nb_levels)) })
@@ -994,7 +998,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(footprint_transport_US, width= 400, height=fig_height(3*nb_levels)) })
     
     try({(footprint_food_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$fd[c(2,3,1)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$fd[c(2,3,1)]))
-      save_plotly_new_filename(footprint_food_US, width= 400, height=fig_height(3*nb_levels)) }) # TODO India no beef
+      save_plotly_new_filename(footprint_food_US, width= 400, height=fig_height(3*nb_levels)) }) 
     
     try({(footprint_region_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(Variables_footprint$reg, "original", sep="_")[c(4,2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=T, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$reg[c(4,2,1,3)]))
       save_plotly_new_filename(footprint_region_US, width= 400, height=fig_height(4*nb_levels)) })
@@ -1004,7 +1008,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     try({(footprint_pc_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(Variables_footprint$pc, "original", sep="_")[4:1], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=T, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$pc[4:1]))
       save_plotly_new_filename(footprint_pc_US, width= 400, height=fig_height(4*nb_levels)) })
-    # TODO? polluting_sector
+
     try({(footprint_pc_no_miss_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$pc[4:1], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$pc[4:1]))
       save_plotly_new_filename(footprint_pc_no_miss_US, width= 400, height=fig_height(4*nb_levels)) })
     
@@ -1091,35 +1095,37 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     ##### 7. Pref 1: emission standards #####
     labels_standard_effects_short <<- c("Reduce car emissions", "Reduce air pollution", "Negative economic effect", "Large economic effect", "Costly way to fight CC")
-    try({ temp <- heatmap_table(vars = variables_standard_effect, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_standard_effects_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "standard_effects_agree", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_standard_effect, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_standard_effects_short
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "standard_effects_mean", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_standard_effect, along = along, conditions = c("< 0"), on_control = T)
-    row.names(temp) <- labels_standard_effects_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "standard_effects_disagree", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_standard_win_lose, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_standard_win_lose
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "standard_win", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_standard_win_lose, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_standard_win_lose
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "standard_win_lose_mean", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_standard_win_lose, along = along, conditions = c("< 0"), on_control = T)
-    row.names(temp) <- labels_standard_win_lose
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "standard_lose", replacement_text), width = 800, height = 400)})
+    heatmap_wrapper(vars = variables_standard_effect, labels = labels_standard_effects_short, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_standard_win_lose, labels = labels_standard_win_lose, conditions = heatmap_conditions)
+    # try({ temp <- heatmap_table(vars = variables_standard_effect, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_standard_effects_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "standard_effects_agree", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_standard_effect, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_standard_effects_short
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "standard_effects_mean", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_standard_effect, along = along, conditions = c("< 0"), on_control = T)
+    # row.names(temp) <- labels_standard_effects_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "standard_effects_disagree", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_standard_win_lose, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_standard_win_lose
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "standard_win", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_standard_win_lose, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_standard_win_lose
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "standard_win_lose_mean", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_standard_win_lose, along = along, conditions = c("< 0"), on_control = T)
+    # row.names(temp) <- labels_standard_win_lose
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "standard_lose", replacement_text), width = 800, height = 400)})
     
     try({(standard_fair_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "standard_fair", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Ban on combustion-engine cars fair"))
       save_plotly_new_filename(standard_fair_US, width= 1100, height=fig_height(1*nb_levels))})
@@ -1132,35 +1138,38 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     ##### 8. Pref 2: Green investments #####
     labels_investments_effects_short <<- c("Make electricity greener", "Popularize public transport", "Reduce air pollution", "Negative economic effect", "Large economic effect", "Costly way to fight CC")
-    try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_investments_effects_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "investments_effects_agree", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_investments_effects_short
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "investments_effects_mean", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c("< 0"), on_control = T)
-    row.names(temp) <- labels_investments_effects_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "investments_effects_disagree", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_investments_win_lose
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "investments_win", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_investments_win_lose, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_investments_win_lose
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "investments_win_lose_mean", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_investments_win_lose, along = along, conditions = c("< 0"), on_control = T)
-    row.names(temp) <- labels_investments_win_lose
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "investments_lose", replacement_text), width = 800, height = 400)})
+    heatmap_wrapper(vars = variables_investments_effect, labels = labels_investments_effects_short, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_investments_win_lose, labels = labels_investments_win_lose, conditions = heatmap_conditions)
+
+    # try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_investments_effects_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "investments_effects_agree", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_investments_effects_short
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "investments_effects_mean", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c("< 0"), on_control = T)
+    # row.names(temp) <- labels_investments_effects_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "investments_effects_disagree", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_investments_win_lose
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "investments_win", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_investments_win_lose, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_investments_win_lose
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "investments_win_lose_mean", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_investments_win_lose, along = along, conditions = c("< 0"), on_control = T)
+    # row.names(temp) <- labels_investments_win_lose
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "investments_lose", replacement_text), width = 800, height = 400)})
     
     try({(investments_fair_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "investments_fair", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Green infrastructure program is fair"))
       save_plotly_new_filename(investments_fair_US, width= 1120, height=fig_height(1*nb_levels))})
@@ -1175,35 +1184,38 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     ##### 9. Pref 3: Tax and dividend #####
     labels_tax_transfers_effects_short <<- c("Discourage driving", "Encourage insulation", "Reduce use of fuels", "Reduce air pollution", "Negative economic effect", "Large economic effect", "Costly way to fight CC")
-    try({ temp <- heatmap_table(vars = variables_tax_transfers_effect, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_tax_transfers_effects_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "tax_transfers_effects_agree", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_tax_transfers_effect, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_tax_transfers_effects_short
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "tax_transfers_effects_mean", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_tax_transfers_effect, along = along, conditions = c("< 0"), on_control = T)
-    row.names(temp) <- labels_tax_transfers_effects_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "tax_transfers_effects_disagree", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_tax_transfers_win_lose, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_tax_transfers_win_lose
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "tax_transfers_win", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_tax_transfers_win_lose, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_tax_transfers_win_lose
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "tax_transfers_win_lose_mean", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_tax_transfers_win_lose, along = along, conditions = c("< 0"), on_control = T)
-    row.names(temp) <- labels_tax_transfers_win_lose
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "tax_transfers_lose", replacement_text), width = 800, height = 400)})
+    heatmap_wrapper(vars = variables_tax_transfers_effect, labels = labels_tax_transfers_effects_short, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_tax_transfers_win_lose, labels = labels_tax_transfers_win_lose, conditions = heatmap_conditions)
+
+    # try({ temp <- heatmap_table(vars = variables_tax_transfers_effect, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_tax_transfers_effects_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "tax_transfers_effects_agree", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_tax_transfers_effect, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_tax_transfers_effects_short
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "tax_transfers_effects_mean", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_tax_transfers_effect, along = along, conditions = c("< 0"), on_control = T)
+    # row.names(temp) <- labels_tax_transfers_effects_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "tax_transfers_effects_disagree", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_tax_transfers_win_lose, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_tax_transfers_win_lose
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "tax_transfers_win", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_tax_transfers_win_lose, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_tax_transfers_win_lose
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "tax_transfers_win_lose_mean", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_tax_transfers_win_lose, along = along, conditions = c("< 0"), on_control = T)
+    # row.names(temp) <- labels_tax_transfers_win_lose
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "tax_transfers_lose", replacement_text), width = 800, height = 400)})
     
     try({(tax_transfers_fair_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_transfers_fair", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Tax with cash transfers is fair"))
       save_plotly_new_filename(tax_transfers_fair_US, width= 1100, height=fig_height(1*nb_levels))})
@@ -1273,15 +1285,17 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     ##### 10. Pref on climate policies #####
     labels_policy_short <<- c("Tax on flying (+20%)", "Tax on fossil fuels ($45/tCO2)", "Ban polluting cars in city centers", "Subsidies to low-carbon technos", "Funding clean energy in LDC")
-    try({ temp <- heatmap_table(vars = variables_policy, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_policy_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "policy_agree", replacement_text), width = 800, height = 400)})
-    
-    try({ temp <- heatmap_table(vars = variables_policy, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_policy_short
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "policy_mean", replacement_text), width = 800, height = 400)})
+    heatmap_wrapper(vars = variables_policy, labels = labels_policy_short, conditions = heatmap_conditions)
+
+    # try({ temp <- heatmap_table(vars = variables_policy, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_policy_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "policy_agree", replacement_text), width = 800, height = 400)})
+    # 
+    # try({ temp <- heatmap_table(vars = variables_policy, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_policy_short
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "policy_mean", replacement_text), width = 800, height = 400)})
     
     # try({ temp <- heatmap_table(vars = variables_policy, along = along, conditions = c("== -2"), on_control = T)
     #   row.names(temp) <- labels_policy_short
@@ -1299,15 +1313,17 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     #   save_plot(filename = paste0(folder, "policy_strongly_disagree", replacement_text), width = 800, height = 400)})
     
     labels_tax_short <<- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructure", "Subsidies to low-carbon technos", "Reduction in the deficit")
-    try({ temp <- heatmap_table(vars = variables_tax, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_tax_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "tax_agree", replacement_text), width = 800, height = 400)}) # TODO: xlsx
-    
-    try({ temp <- heatmap_table(vars = variables_tax, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_tax_short
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "tax_mean", replacement_text), width = 800, height = 400)})
+    heatmap_wrapper(vars = variables_tax, labels = labels_tax_short, conditions = heatmap_conditions)
+
+    # try({ temp <- heatmap_table(vars = variables_tax, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_tax_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "tax_agree", replacement_text), width = 800, height = 400)}) 
+    # 
+    # try({ temp <- heatmap_table(vars = variables_tax, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_tax_short
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "tax_mean", replacement_text), width = 800, height = 400)})
     
     # try({ temp <- heatmap_table(vars = variables_tax, along = along, conditions = c("== -2"), on_control = T)
     #   row.names(temp) <- labels_tax_short
@@ -1325,14 +1341,14 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     #   save_plot(filename = paste0(folder, "tax_strongly_disagree", replacement_text), width = 800, height = 400)})
     
     ##### 11. WTP #####
-    try({(wtp_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = rev(variables_wtp), export_xls = export_xls, df = e, miss=F, labels=rev(c("WTP to limit global warming ($/year): 10", "30", "50", "100", "300", "500", "1000"))))
-      save_plotly_new_filename(wtp_US, width= 680, height=fig_height(5*nb_levels))})
-    
+    # try({(wtp_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = rev(variables_wtp), export_xls = export_xls, df = e, miss=F, labels=rev(c("WTP to limit global warming ($/year): 10", "30", "50", "100", "300", "500", "1000"))))
+    #   save_plotly_new_filename(wtp_US, width= 680, height=fig_height(5*nb_levels))})
+    # 
     # try({(wtp_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "wtp", export_xls = export_xls, df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="WTP to limit global warming ($/year)"))
     #   save_plotly_new_filename(wtp_US, width= 1050, height=fig_height(2*nb_levels))})
     
-    try({(wtp_agg_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "wtp", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
-      save_plotly_new_filename(wtp_agg_US, width= 950, height=fig_height(1*nb_levels))})
+    # try({(wtp_agg_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "wtp", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="WTP to limit global warming ($/year)"))
+    #   save_plotly_new_filename(wtp_agg_US, width= 950, height=fig_height(1*nb_levels))})
     
     # mar_old <- par()$mar
     # cex_old <- par()$cex
@@ -1340,7 +1356,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # cdf_wtp_US <- Ecdf(e$wtp, weights = e$weight)
     # plot(cdf_wtp_US$x, cdf_wtp_US$y, lwd=2, log='x', type='s', col="red", xlab="", ylab="")
     # title(ylab=expression("Proportion <= x"), xlab="WTP (in $/year)", line=2.3)
-    # grid() # TODO legend
+    # grid() 
     # par(mar = mar_old, cex = cex_old)
     
     # try({(donation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "donation", export_xls = export_xls, df = e, miss=F, rev = F, color = color(20, theme = "rainbow"), labels="Donation to climate charity ($/year)"))
@@ -1355,7 +1371,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # cdf_donation_US <- Ecdf(e$donation, weights = e$weight)
     # plot(cdf_donation_US$x, cdf_donation_US$y, lwd=2, log='x', type='s', col="red", xlab="", ylab="")
     # title(ylab=expression("Proportion <= x"), xlab="Donation (in $/year)", line=2.3)
-    # grid() # TODO save
+    # grid() 
     # par(mar = mar_old, cex = cex_old)
     
     ##### 12. International burden-sharing #####
@@ -1373,16 +1389,18 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(if_other_do_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = variables_if_other_do, export_xls = export_xls, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_if_other_do, hover=c("Much less", "Less", "About the same", "More", "Much more")))
       save_plotly_new_filename(if_other_do_US, width= 830, height=fig_height(2*nb_levels)) })
     
-    labels_burden_sharing_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
-    try({ temp <- heatmap_table(vars = variables_burden_sharing, along = along, conditions = c("> 0"), on_control = T)
-    row.names(temp) <- labels_burden_sharing_short
-    heatmap_plot(temp, proportion = T)
-    save_plot(filename = paste0(folder, "burden_sharing_agree", replacement_text), width = 800, height = 400)}) # TODO: xlsx
-    
-    try({ temp <- heatmap_table(vars = variables_burden_sharing, along = along, conditions = c(""), on_control = T)
-    row.names(temp) <- labels_burden_sharing_short
-    heatmap_plot(temp, proportion = F)
-    save_plot(filename = paste0(folder, "burden_sharing_mean", replacement_text), width = 800, height = 400)})
+    # labels_burden_sharing_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
+    # heatmap_wrapper(vars = variables_burden_sharing, labels = labels_burden_sharing_short, conditions = heatmap_conditions)
+
+    # try({ temp <- heatmap_table(vars = variables_burden_sharing, along = along, conditions = c("> 0"), on_control = T)
+    # row.names(temp) <- labels_burden_sharing_short
+    # heatmap_plot(temp, proportion = T)
+    # save_plot(filename = paste0(folder, "burden_sharing_agree", replacement_text), width = 800, height = 400)}) 
+    # 
+    # try({ temp <- heatmap_table(vars = variables_burden_sharing, along = along, conditions = c(""), on_control = T)
+    # row.names(temp) <- labels_burden_sharing_short
+    # heatmap_plot(temp, proportion = F)
+    # save_plot(filename = paste0(folder, "burden_sharing_mean", replacement_text), width = 800, height = 400)})
     
     # try({ temp <- heatmap_table(vars = variables_burden_sharing, along = along, conditions = c("== -2"), on_control = T)
     #   row.names(temp) <- labels_burden_sharing_short
@@ -1408,14 +1426,14 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(tax_1p_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br> to finance low-income countries"))
       save_plotly_new_filename(tax_1p_support_US, width= 780, height=fig_height(1*nb_levels))})
     
-    labels_global_policies <- c("Global democratic assembly<br>on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br> to finance low-income countries")
+    labels_global_policies <- c("Global democratic assembly<br> on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br> to finance low-income countries")
     try({(global_policies_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("global_assembly_support", "global_tax_support", "tax_1p_support"), export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
       save_plotly_new_filename(global_policies_US, width= 800, height=fig_height(3*nb_levels))})
     
     ##### 13. Pref for bans vs. incentives #####
     
     try({(will_insulate_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "will_insulate", export_xls = export_xls, df = e, miss=F, labels="Insulate or replace heating<br>over the next 5 years"))
-      save_plotly_new_filename(will_insulate_US, width= 720, height=fig_height(1*nb_levels))}) 
+      save_plotly_new_filename(will_insulate_US, width= 600, height=fig_height(1*nb_levels))})
     
     try({(insulation_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation_support", export_xls = export_xls, df = e, miss=F, labels="Mandatory insulation with subsidies"))
       save_plotly_new_filename(insulation_support_US, width= 1035, height=fig_height(1*nb_levels))})
@@ -1492,7 +1510,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     #   save_plotly_new_filename(vote_2016_US, width= 650, height=fig_height(1*nb_levels)) })
     
     try({(vote_all_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("vote_non_voters", "vote_voters", "vote"), export_xls = export_xls, df = e, rev_color = T, miss=F, labels=c("Non-voters", "Voters", "2020 vote: Voters and non-voters")))
-      save_plotly_new_filename(vote_all_US, width= 600, height=fig_height(3*nb_levels))}) # TODO make it work even if Jorgensen/Hawkins don't appear everywhere
+      save_plotly_new_filename(vote_all_US, width= 600, height=fig_height(3*nb_levels))})
     
     try({(vote_voters_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
       save_plotly_new_filename(vote_voters_US, width= 650, height=fig_height(1*nb_levels))})
@@ -1507,7 +1525,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     #   save_plotly_new_filename(vote_non_voters_2016_US, width= 650, height=fig_height(1*nb_levels))})
     
     try({(liberal_conservative_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "liberal_conservative", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="On economic policy matters, are you..."))
-      save_plotly_new_filename(liberal_conservative_US, width= 950, height=fig_height(1*nb_levels))}) # TODO
+      save_plotly_new_filename(liberal_conservative_US, width= 950, height=fig_height(1*nb_levels))})
     
     try({(political_affiliation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "political_affiliation", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Political affiliation"))
       save_plotly_new_filename(political_affiliation_US, width= 800, height=fig_height(1*nb_levels))})
@@ -1521,7 +1539,90 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", max.words = 70) # TODO update
     rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = c(stopwords, "survey"), colorPalette = "Blues", max.words = 70)
     save_plot(filename = paste0(folder, "comment_field", replacement_text), height = 400, width = 400)})
+
+    ##### Heatmaps #####
+
+    heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), width = 800, height = 400) {
+      for (cond in conditions) {
+        filename <- paste(sub("variables_", "", name), 
+                          case_when(cond == "" ~ "mean", 
+                                    cond == "> 0" ~ "positive", 
+                                    cond == "< 0" ~ "negative", 
+                                    cond == ">= 0" ~ "non-negative", 
+                                    cond == "<= 0" ~ "non-positive", 
+                                    cond == "== 2" ~ "max", 
+                                    cond == "== -2" ~ "min", 
+                                    TRUE ~ "unknown"), sep = "_")
+        try({temp <- heatmap_table(vars = vars, along = along, conditions = cond, on_control = T)
+        row.names(temp) <- labels
+        heatmap_plot(temp, proportion = (cond != ""))
+        save_plot(filename = paste0(folder, filename, replacement_text), width = width, height = height)})
+      }
+    }
     
+    # TODO! heatmap with variables_affected_index + index_affected
+    # Missing: TODO! vote_participation left_right heating, gas_expenses/emissions, urban "duration", know_treatment_policy "Voted in last election",  "Attention score to policy treatment",
+    main_variables_socio <<- c("interested_politics", "hit_by_covid", "polluting_sector", "can_trust_people", "can_trust_govt", "view_govt", "availability_transport")
+    # interested_politics: >= A lot; hit_by_covid: -1/1; polluting_sector: T/F; can_trust_people, govt: >= agree; view_govt: -1/0/1; know_treatment_policy: 0/1/2; availability_transport: >= fair
+    labels_main_socio <<- c("Interested in politics", "HH member lost income or job due to pandemic", "Works in a polluting sector", "Most people can be trusted", "Government could be trusted in last 10 years", "Government should do more", "Availability of public transport")
+    heatmap_wrapper(vars = main_variables_socio, labels = labels_main_socio, conditions = heatmap_conditions, name = "main_socio")
+    
+    main_variables_behavior <<- c("flights_agg", "flights_agg", "frequency_beef", "transport_work", "CC_talks", "member_environmental_orga")
+    # future_richness: >= richer, net_zero_feasible, CC_affects_self, effect_halt_CC_lifestyle: >= A lot; effect_halt_CC..: >= positive; CC_will_end: >= somewhat likely
+    labels_main_behavior <<- c("At least one flight between 2017 and 2019", "More than one flight per year on average", "Eat beef at least once a week", "Commutes by car/motorbike", "Talks or thinks of CC several times a month", "Is member of an environmental organisation")
+    try({temp <- heatmap_table(vars = main_variables_behavior, along = along, conditions = list("> 0", "> 1", ">= 2", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T)
+    row.names(temp) <- labels_main_behavior
+    heatmap_plot(temp, proportion = (cond != ""))
+    save_plot(filename = paste0(folder, "behavior_mean", replacement_text), width = 800, height = 400)})
+
+    variables_scores_footprint <<- c("score_footprint_elec", "score_footprint_food", "score_footprint_transport", "score_footprint_pc", "score_footprint_region")
+    labels_scores_footprint <<- c("Electricity", "Food", "Transport", "Countries per capita", "Countries in absolute") 
+    labels_scores_footprint_long <<- c("Electricity: coal > gas > nuclear", "Food: beef > chicken > pasta", "Transport: plane > car > coach/train", "Countries per capita: US > EU > China > India", "Countries in absolute: China > US > EU > India") 
+    main_variables_knowledge <<- c("CC_anthropogenic", "CC_knowledgeable", "CC_dynamic", "score_GHG", "score_CC_impacts", variables_scores_footprint, "index_knowledge_efa_global")
+    # CC_anthropogenic, CC_knowledgeable: >= A lot; CC_dynamic: T/F; scores: number
+    labels_main_knowledge <<- c("CC exists, is anthropogenic", "Considers one's self knowledgeable", "Cutting emissions by half enough to stop global warning (False)", "Score to knowledge of greenhouse gases in [0;+4]", "Knowledge score of impacts in [0;4] (droughts, sea-level, volcanos)", paste("Distance to true ranking of footprints: ", labels_scores_footprint), "Standardised knowledge index")
+    heatmap_wrapper(vars = variables_scores_footprint, labels = labels_scores_footprint_long, conditions = c(""))
+    heatmap_wrapper(vars = main_variables_knowledge, labels = labels_main_knowledge, conditions = "")
+    heatmap_wrapper(vars = main_variables_knowledge[c(1:5,11)], labels = labels_main_knowledge[c(1:5,11)], name = "knowledge_wo_footprint", conditions = "")
+    # TODO? Replace CC_dynamic by its opposite (so knowledge is counted positively), same kind of transformations for scores
+    
+    variables_future <<- c("future_richness", "net_zero_feasible",  "CC_will_end", "CC_affects_self","effect_halt_CC_economy", "effect_halt_CC_lifestyle")
+    # future_richness: >= richer, net_zero_feasible, CC_affects_self, effect_halt_CC_lifestyle: >= A lot; effect_halt_CC..: >= positive; CC_will_end: >= somewhat likely
+    labels_future <<- c("World will be richer in 100 years", "Technically possible to stop emissions by 2100", "Likely that humans halt CC by 2100", "CC will affect me negatively", "With ambitious climate policies, effects on economy", "Ambitious climate policies negative for my lifestyle")
+    heatmap_wrapper(vars = variables_future, labels = labels_future, conditions = heatmap_conditions)
+    
+    labels_responsible_CC <<- c("Each of us", "The high income earners", "The government", "Companies", "Previous generations")
+    # paste("Responsible:", labels_responsible_CC) # T/F
+    heatmap_wrapper(vars = variables_CC_impacts, labels = labels_responsible_CC, conditions = "> 0")
+    
+    heatmap_wrapper(vars = variables_CC_impacts, labels = labels_CC_impacts, conditions = heatmap_conditions) # >= somewhat likely
+    
+    variables_willingness_all <<- c(variables_willing, variables_condition, "will_insulate", "wtp", "donation", "petition") 
+    # willing, condition : >= A lot; will insulate: >= somewhat likely; WTP, petition: T/F; donation: number
+    labels_willingness <<- paste("Willing to", c("Limit flying", "Limit driving", "Have a fuel-efficient or electric vehicle", "Limit beef consumption", "Limit heating or cooling your home"))
+    labels_willingness_all <<- c(labels_willingness, paste("Condition willing:", labels_condition), "Will insulate home in next 5 years", "Willing To Pay to keep global warning below 2°C", "Donation to reforest instead if wins lottery", "Willing to sign petition")
+    heatmap_wrapper(vars = variables_wtp, labels = paste("WTP ($/year):", c(" 10", "30", "50", "100", "300", "500", "1000")), conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_condition, labels = labels_condition, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_willing, labels = labels_willingness, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_willingness_all[1:11], labels = labels_willingness_all[1:11], name = 'willingness_all', conditions = heatmap_conditions)
+    
+    variables_burden_sharing_all <<- c(variables_scale, "if_other_do_more", "if_other_do_less", variables_burden_sharing, variables_global_policies)
+    # Levels: T/F; If...: >= More; burden_sharing: >= agree; Global..: >= somewhat support
+    labels_heatmap_scale <<- paste("Level of climate policies needed:", c("global", "federal/continental", "state/national", "local"))
+    labels_heatmap_burden_sharing <<- c("All countries should pay in proportion to income", "All countries should pay in proportion to current emissions", "All countries should pay in proportion to post-1990 emissions", "Richest should countries pay it all so poor ones don't pay", "Richest countries should pay even more to help vulnerable ones")
+    labels_burden_sharing_all <<- c(labels_heatmap_scale, "If other do more, [country] should do more", "If other do less, [country] should do more", labels_heatmap_burden_sharing, sub("<br>", "", labels_global_policies))
+    heatmap_wrapper(vars = variables_scale, labels = labels_heatmap_scale, conditions = "> 0")
+    heatmap_wrapper(vars = variables_burden_sharing, labels = labels_heatmap_burden_sharing, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_global_policies, labels = sub("<br>", "", labels_global_policies), conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_sharing_all, labels = labels_burden_sharing_all, conditions = heatmap_conditions)
+    # labels_burden_sharing_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
+    # heatmap_wrapper(vars = variables_burden_sharing, labels = labels_burden_sharing_short, conditions = heatmap_conditions)
+    # 
+    main_variables_opinion <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", "willing_limit_driving", "standard_support", "investments_support", "tax_transfers_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "burden_sharing_emissions", "tax_1p_support")
+    # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
+    labels_opinion <<- c("CC exists, is anthropogenic", "CC is an important problem", "[Country] should fight CC", "Willing to limit driving", "Ban on combustion-engine cars", "Green infrastructure program", "Carbon tax with cash transfers", "Ban on intensive cattling", "Mandatory insulation of buildings", "Countries pay in proportion to emissions", "Global tax on millionaires funding LDC")
+    heatmap_wrapper(vars = main_variables_opinion, labels = labels_opinion, conditions = heatmap_conditions, name = "opinion")
+        
     missing_figures <- setdiff(sub("_US", "", list.files("../figures/US")), sub(replacement_text, "", list.files(folder)))
     cat(paste0(length(missing_figures), " Missing figures for: "))
     missing_types <- c("_comp.png", "_pol.png", "_urb.png", "_vote.png")

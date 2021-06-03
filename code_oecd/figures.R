@@ -28,7 +28,7 @@ labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor d
 data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: remove 0 if there is not "Other" in data
 data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
 data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
-data_core_metropolitan <- cbind(dataKN("core_metropolitan", data=e, miss=F, weights = F), dataKN("core_metropolitan", data=e, miss=F, weights = T), c(0.7324))
+data_urban <- cbind(dataKN("urban", data=e, miss=F, weights = F), dataKN("urban", data=e, miss=F, weights = T), c(0.7324))
 data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), c(.134, .185, .080, .601))
 data_income <- cbind(dataKN("income", data=e, miss=F, weights = F), dataKN("income", data=e, miss=F, weights = T), c(0.2034,0.239,0.2439,0.3137))
 data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), c(0.342171, 0.345006, 0.312823, 0))
@@ -52,8 +52,8 @@ save_plotly(age_US_comp, width= 560, height=240)
 (region_US_comp <- barres(data = data_region, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_comp, legend = dataKN("region", data=e, miss=F, return="legend")))
 save_plotly(region_US_comp, width= 560, height=240)
 
-(core_metropolitan_US_comp <- barres(data = data_core_metropolitan, export_xls = export_xls, df = e, sort = F, miss=F, rev_color = T, rev = F, labels=labels_comp, showLegend = F, legend="Core metropolitan"))
-save_plotly(core_metropolitan_US_comp, width= 660, height=240)
+(urban_US_comp <- barres(data = data_urban, export_xls = export_xls, df = e, sort = F, miss=F, rev_color = T, rev = F, labels=labels_comp, showLegend = F, legend="Core metropolitan"))
+save_plotly(urban_US_comp, width= 660, height=240)
 
 (race_US_comp <- barres(data = data_race, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("race", data=e, miss=F, return="legend")))
 save_plotly(race_US_comp, width= 540, height=240)
@@ -527,7 +527,7 @@ save_plotly(global_tax_support_US, width= 780, height=140)
 save_plotly(tax_1p_support_US, width= 780, height=140)
 
 labels_global_policies <- c("Global democratic assembly<br>on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br> to finance low-income countries")
-(global_policies_US <- barres(vars = c("global_assembly_support", "global_tax_support", "tax_1p_support"), export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
+(global_policies_US <- barres(vars = variables_global_policies, export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
 save_plotly(global_policies_US, width= 800, height=250)
 
 ##### 13. Pref for bans vs. incentives #####
@@ -751,7 +751,7 @@ plot_heterogeneity12(dfs = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in%
 plot_heterogeneity12(dfs = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", text_file = "_US_pol", export_xls = export_xls)
 plot_heterogeneityN(along = "vote3", text_file = "_US_vote", export_xls = export_xls)
 # By rural/urban
-plot_heterogeneity12(dfs = list(e[e$core_metropolitan==T,], e[e$core_metropolitan==F,]), orig="<br>(Core metro)", comp = "(Non-core metro)", text_file = "_US_urb", export_xls = export_xls)
+plot_heterogeneity12(dfs = list(e[e$urban==T,], e[e$urban==F,]), orig="<br>(Core metro)", comp = "(Non-core metro)", text_file = "_US_urb", export_xls = export_xls)
 
 ## Other
 (wtp_US_anthropogenic <- barres12(vars = "wtp", export_xls = export_xls, df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, labels="WTP to limit global warming ($/year)"))
@@ -882,7 +882,7 @@ correlogram("knowledge")
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
-control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "core_metropolitan == 1", "treatment")
+control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "urban == 1", "treatment")
 
 desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC > 0", "willing_limit_driving > 0"), filename = "US_1",
            dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "US should fight CC", "Willing to limit driving"),
@@ -910,11 +910,10 @@ e <- us
 
 # TODO
 #  correlation CC_problem / anthropogenic / other knowledge
-#  !Denmark: list municipality; lib-cons => left-right; no race; New York - Toronto => 700 km from Copenhagen to Stockholm (plane>car>train) / 800 km Bordeaux - Nice / 500 km Paris - London / 800 km Munich - Hambourg / 1000 km Munich - Copenhagen (mais seulement avec 1 ou 2 passagers pour ces deux derniers !)
-#  !Indonesia, Japan, South Africa
+#  !Denmark: lib-cons => left-right;
+#  New York - Toronto => 700 km from Copenhagen to Stockholm (plane>car>train) / 800 km Bordeaux - Nice / 500 km Paris - London / 800 km Munich - Hambourg / 1000 km Munich - Copenhagen (mais seulement avec 1 ou 2 passagers pour ces deux derniers !)
 # Questions: 
 #  merge heating > 200? gas > 175? => not
-# Ana: traduction
 datasummary(CC_problem + as.numeric(CC_anthropogenic) ~ vote3 * Mean, e)
 datasummary(vote3 ~ (CO2_emission + CO2_emission_heating + CO2_emission_gas + flights_agg) * Mean, e)
 datasummary((CO2_emission < 13.7) + (CO2_emission %between% c(13.7, 21.5)) + (CO2_emission >= 21.5) ~ (policies_support + tax_transfers_support + CC_problem + CC_anthropogenic) * Mean, e)
@@ -922,9 +921,8 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # TODO: heterogenous treatment Red/Dem; maps; 
 # TODO: Pessimistic w.r.t. future more or less climate friendly?
-# TODO: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
-# TODO: prepare heatmap principales variables (tableau d'ensemble)
-# TODO: acquiescence negative/positive effect
+# TODO!: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
+# TODO!: acquiescence negative/positive effect
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
@@ -934,4 +932,5 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
 # R: weights all countries, TODOs, China
-# Ana: Spanish translation, Japanese, Indonesian revision, South African voice, Zulu translation.
+# Ana: Spanish translation, Japanese, Indonesian revision, South African voice, Zulu translation, caste
+# Bluebery: elec prices, quotas, Chine
