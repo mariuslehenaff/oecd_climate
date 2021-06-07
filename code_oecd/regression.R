@@ -27,8 +27,8 @@ control_variables <- c("race_white_only", "gender_dum", "children", "college", "
 cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "vote: Biden", "vote: Trump")
 
 ## Block: Policy views and media consumption
-desc_table(dep_vars = c("interested_politics > 0", "member_environmental_orga == 'Yes'", "relative_environmentalist == 'Yes'", "liberal_conservative >=1"), filename = "pol_views",
-           dep.var.labels = c("Interest in politics", "Environmental org. member", "Relative is environmentalist", "Econ. conservative"),
+desc_table(dep_vars = c("interested_politics > 0", "member_environmental_orga == 'Yes'", "relative_environmentalist == 'Yes'", "left_right >=1"), filename = "pol_views",
+           dep.var.labels = c("Interest in politics", "Environmental org. member", "Relative is environmentalist", "Econ. right-wing"),
            nolabel =F,
            dep.var.caption = c("Political views"), data = us, indep_vars = control_variables, indep_labels = cov_lab, mean_control = T
 )

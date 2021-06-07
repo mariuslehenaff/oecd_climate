@@ -624,8 +624,8 @@ save_plotly(vote_voters_2016_US, width= 650, height=140)
 (vote_non_voters_2016_US <- barres(vars = "vote_non_voters_2016", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2016, voted for (non-voters)"))
 save_plotly(vote_non_voters_2016_US, width= 650, height=140)
 
-(liberal_conservative_US <- barres(vars = "liberal_conservative", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="On economic policy matters, are you..."))
-save_plotly(liberal_conservative_US, width= 950, height=140)
+(left_right_US <- barres(vars = "left_right", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="On economic policy matters, are you..."))
+save_plotly(left_right_US, width= 950, height=140)
 
 (political_affiliation_US <- barres(vars = "political_affiliation", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Political affiliation"))
 save_plotly(political_affiliation_US, width= 800, height=140)
@@ -922,7 +922,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # TODO: heterogenous treatment Red/Dem; maps; 
 # TODO: Pessimistic w.r.t. future more or less climate friendly?
 # TODO!: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
-# TODO!: acquiescence negative/positive effect
+# TODO!: acquiescence negative/positive effect; costly/cost-effective
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)

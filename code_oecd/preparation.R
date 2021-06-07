@@ -3,7 +3,7 @@
 
 source(".Rprofile")
 
-# TODO!!: burden_sharing, CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_trust, (standard of living),// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, length fields, ranking vs. order of display
+# TODO!!: CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_trust, (standard of living),// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, length fields, ranking vs. order of display
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "IT", "PL", "ES", "UK")
 euro_countries_names <- c("Denmark", "France", "Germany", "Italy", "Poland", "Spain", "United Kingdom")
@@ -1384,7 +1384,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "winner",
       "clicked_petition" 
     )
-    e <- e[,-c(302:313)]
+    # e <- e[,-c(302:313)]
   }
   if (country == "DK") {
     names(e) <- c(
@@ -1439,7 +1439,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "vote_participation", 
       "vote_voters",
       "vote_non_voters",
-      "left_right", # TODO!
+      "left_right",
       "heating",
       "heating_expenses",
       "insulation",
@@ -1694,6 +1694,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "winner",
       "clicked_petition" 
     )
+    # e <- e[,-c(which(names(e)=="clicked_petition"):length(names(e)))]
   }
   if (country == "FR") {
     names(e) <- c(
@@ -1737,14 +1738,14 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "member_environmental_orga",
       "relative_environmentalist",
       "vote_participation", 
-      "gilets_jaunes_dedans", # TODO!
+      "gilets_jaunes_dedans", 
       "gilets_jaunes_soutien",
       "gilets_jaunes_compris",
       "gilets_jaunes_oppose",
       "gilets_jaunes_NSP",
       "vote_voters",
       "vote_non_voters",
-      "left_right", # TODO
+      "left_right", 
       "heating",
       "heating_expenses",
       "insulation",
@@ -2003,9 +2004,10 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "clicked_petition" 
      )
   }
+  if (missing(wave) | wave == "full") e <- e[,-c((which(names(e)=="clicked_petition")+1):length(names(e)))]
   
   for (i in 1:length(e)) {
-    label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") # 
+    label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") # TODO! change [Country] (e.g. France) and [country] (e.g. Denmark), except for DK.
     # print(paste(i, label(e[[i]])))
   }
   e <- e[-c(1:2),]
@@ -2629,8 +2631,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   } # TODO all $likert scales?
 
   for (j in names(e)) {
-    if ((grepl('race_|home_|CC_factor_|CC_responsible_|CC_affected_|change_condition_|effect_policies_|kaya_|scale_|Beef_|far_left|left|center$', j)
-        | grepl('right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice|GHG_|investments_funding_|obstacles_insulation_', j))
+    if ((grepl('race_|home_|CC_factor_|CC_responsible_|CC_affected_|change_condition_|effect_policies_|kaya_|scale_|Beef_|far_left|left$|center$|gilets_jaunes', j)
+        | grepl('^right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice|GHG_|investments_funding_|obstacles_insulation_', j))
         & !(grepl('_other$|order_|liberal_conservative', j))) {
       temp <- label(e[[j]])
       e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
@@ -2682,8 +2684,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "urban", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "urban")
   variables_main_controls_pilot12 <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "urban")
-  variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "liberal_conservative", "vote_dum", "as.factor(urbanity)", "urban", "rush")
-  variables_main_controls <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "children", "liberal_conservative", "vote_dum", "as.factor(urbanity)", "urban", "rush")
+  variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "left_right", "vote_dum", "as.factor(urbanity)", "urban", "rush")
+  variables_main_controls <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "children", "left_right", "vote_dum", "as.factor(urbanity)", "urban", "rush")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
   variables_know_treatment_climate <<- c("know_frequence_heatwaves", "know_temperature_2100")
   if ("know_standard" %in% names(e)) variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
@@ -2710,6 +2712,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_affected_index <<- c("polluting_sector", "affected_transport", "gas_expenses", "heating_expenses", "availability_transport", "urbanity", "urban")
   negatives_affected_index <<- c(T, T, T, T, F, F, F)
   variables_global_policies <<- c("global_assembly_support", "global_tax_support", "tax_1p_support")
+  variables_gilets_jaunes <<- c("gilets_jaunes_dedans", "gilets_jaunes_soutien", "gilets_jaunes_compris", "gilets_jaunes_oppose", "gilets_jaunes_NSP") # , "gilets_jaunes"
   
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
@@ -2964,8 +2967,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   text_media_web <- c("US" = "News websites (e.g. online newspapers)")
   text_media_other <- c("US" = "Other")
   
-  text_vote_participation_no_right <- c("US" = "I don't have the right to vote in the US",
-                                        "US" = "I didn't have the right to vote in the US",
+  text_vote_participation_no_right <- c("US" = "I don't have the right to vote in the US", "I don't have the right to vote in [Country]",
+                                        "US" = "I didn't have the right to vote in the US", "I didn't have the right to vote in [Country]", 
                                         "US" = "I don't have the right to vote in the U.S.",
                                         "US" = "I didn't have the right to vote in the U.S.")
   
@@ -3027,11 +3030,12 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                           missing.values=-0.1, annotation=Label(e[[v]])) 
   } }
   
-  temp <-  (e$urbanity %in% text_small_town) + 2 * (e$urbanity %in% text_large_town) + 3 * (e$urbanity %in% text_small_city) + 4 * (e$urbanity %in% text_medium_city) + 5 * (e$urbanity %in% text_large_city)
+  if (country == "DK") temp <- (e$urbanity %in% text_large_town) + 2 * (e$urbanity %in% text_small_city) + 3 * (e$urbanity %in% text_medium_city) + 4 * (e$urbanity %in% text_large_city) + 5 * (e$urbanity == "Copenhagen")
+  else temp <-  (e$urbanity %in% text_small_town) + 2 * (e$urbanity %in% text_large_town) + 3 * (e$urbanity %in% text_small_city) + 4 * (e$urbanity %in% text_medium_city) + 5 * (e$urbanity %in% text_large_city)
   e$urbanity <- as.item(temp, labels = structure(c(0:5),
                         # names = c("Rural","Small town","Large town","Small city","Medium-size city","Large city")),
-                        names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")),
-                      annotation=Label(e$urbanity))
+                        names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")), 
+                      annotation=paste(Label(e$urbanity), "(Beware, the bins are not defined the same way in each country.)"))
   
   if ("speaks_well" %in% names(e)) temp <-  (e$speaks_well %in% text_speaks_well) + 2 * (e$speaks_well %in% text_speaks_native) - 1 * (e$speaks_well %in% text_speaks_no) 
   if ("speaks_well" %in% names(e)) e$speaks_well <- as.item(temp, labels = structure(c(-1:2),
@@ -3097,10 +3101,15 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                                                                                                    names = c("Much poorer", "Poorer", "As rich as now", "Richer", "Much richer", "PNR")),
                                                                     missing.values=-0.1, annotation=Label(e$future_richness))
   
-  if ("liberal_conservative" %in% names(e)) temp <- -2 * (e$liberal_conservative %in% text_very_liberal) - (e$liberal_conservative %in% text_liberal) + (e$liberal_conservative %in% text_conservative) + 2 * (e$liberal_conservative %in% text_very_conservative) - 0.1 * (e$liberal_conservative %in% text_pnr | is.na(e$liberal_conservative))
-  if ("liberal_conservative" %in% names(e)) e$liberal_conservative <- as.item(temp, labels = structure(c(-2:2,-0.1),
+  if ("liberal_conservative" %in% names(e) & !("left_right" %in% names(e))) e$left_right <- e$liberal_conservative
+  if ("left_right" %in% names(e)) {
+    temp <- -2 * (e$left_right %in% text_very_liberal) - (e$left_right %in% text_liberal) + (e$left_right %in% text_conservative) + 2 * (e$left_right %in% text_very_conservative) - 0.1 * (e$left_right %in% text_pnr | is.na(e$left_right))
+    if ("liberal_conservative" %in% names(e)) e$liberal_conservative <- as.item(temp, labels = structure(c(-2:2,-0.1),
                               names = c("Very liberal", "Liberal", "Moderate", "Conservative", "Very conservative", "PNR")),
-                              missing.values=-0.1, annotation=Label(e$liberal_conservative))
+                              missing.values=-0.1, annotation=Label(e$left_right))
+    e$left_right <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Very left", "Left", "Center", "Right", "Very right", "PNR")),
+                                      missing.values=-0.1, annotation=Label(e$left_right))
+  }
   
   if ("transport_available" %in% names(e)) temp <-  (e$transport_available %in% text_transport_available_yes_limited) + 2 * (e$transport_available %in% text_transport_available_yes_easily) - (e$transport_available %in% text_transport_available_not_at_all) - 0.1*(e$transport_available %in% text_pnr)
   if ("transport_available" %in% names(e)) e$transport_available <- as.item(temp, labels = structure(c(-1:2,-0.1),
@@ -3159,6 +3168,25 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if ("equal_quota" %in% names(e)) e$equal_quota <- as.item(temp, labels = structure(c(-2:2,-0.1),
                         names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
                       missing.values=-0.1, annotation=Label(e$equal_quota))
+  
+  e$pro_polluter_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0)
+  label(e$pro_polluter_pay) <- "pro_polluter_pay: In favor of a burden_sharing option where polluter pay: agree to _income, _emissions or _cumulative."
+  e$pro_rich_pay <- (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
+  label(e$pro_rich_pay) <- "pro_rich_pay: In favor of burden_sharing where rich countries pay it all (including where vulnerable countries receive): agree to _rich_pay or _poor_receive."
+  e$pro_grand_fathering <- pmax(e$burden_sharing_cumulative, e$burden_sharing_rich_pay, e$burden_sharing_poor_receive) < 0
+  label(e$pro_grand_fathering) <- "pro_grand_fathering: In favor of burden_sharing akin to grand-fathering. Inferred as disagreement to _cumulative, _rich_pay and _poor_receive, i.e.: countries pay in proportion to cumulative emissions, and to options where poor and vulnerable countries don't pay. Results are in line with US pilot on 502 people, where the more explicit usp$equal_quota == grand-fathering gathered 6%."
+  e$pro_polluter_and_rich_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0) & (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
+  e$pro_global_tax_dividend <- (e$burden_sharing_emissions > 0) & (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
+  label(e$pro_polluter_and_rich_pay) <- "pro_polluter_and_rich_pay: In favor of burden_sharing where polluters and only rich countries pay. Inferred as agreeing to at least one polluter-pay option and one option where rich countries pay it all: (_income, _emissions or _cumulative) and (_rich_pay or _poor_receive)."
+  label(e$pro_global_tax_dividend) <- "pro_global_tax_dividend: In favor of burden_sharing akin to global tax & dividend. Inferred as agreeing to paying in proportion to current emissions and one option where rich countries pay it all: _emissions and (_rich_pay or _poor_receive)."
+  # e$pro_limited_global_tax_dividend <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0) & (e$burden_sharing_rich_pay > 0) & (e$burden_sharing_poor_receive < 0) & (e$burden_sharing_cumulative < 0)
+  # label(e$pro_limited_global_tax_dividend) <- "pro_limited_global_tax_dividend: In favor of burden_sharing akin to a limited global tax & dividend."
+  e$pro_differentiated_responsibilities_strict <- e$burden_sharing_cumulative > 0 & e$burden_sharing_poor_receive > 0
+  label(e$pro_differentiated_responsibilities_strict) <- "pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
+  e$pro_differentiated_responsibilities_large <- e$pro_polluter_pay == T & e$burden_sharing_poor_receive > 0
+  label(e$pro_differentiated_responsibilities_large) <- "pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
+  # e$pro_other_burden_sharing <- e$pro_grand_fathering == F & e$pro_rich_pay == F & e$pro_polluter_pay == F # e$pro_global_tax_dividend_large == F & e$pro_differentiated_responsibilities_large == F
+  variables_burden_sharing_inferred <<- c("pro_polluter_pay", "pro_rich_pay",  "pro_grand_fathering", "pro_polluter_and_rich_pay", "pro_global_tax_dividend", "pro_differentiated_responsibilities_large", "pro_differentiated_responsibilities_strict")
   
   if (country=="US" & wave=="pilot2") e$equal_quota2 <- as.item(e$equal_quota, labels = structure(c(-2,-1,1,2,-0.1),
                                                                                          names = c("No, against restriction","No, grand-fathering","Yes","No, more to vulnerable","PNR")),
@@ -3354,6 +3382,23 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     label(e$left_right) <- "left_right: How would you define yourself? Far Left/Left or center-left/Center/Right or center-right/Far right"
   }
   
+  if ("gilets_jaunes_dedans" %in% names(e)) {
+    e$gilets_jaunes[e$gilets_jaunes_NSP==T] <- -0.1
+    e$gilets_jaunes[e$gilets_jaunes_compris==T] <- 0 # total à ?%
+    e$gilets_jaunes[e$gilets_jaunes_oppose==T] <- -1 # ?Nb oppose et soutien en même temps
+    e$gilets_jaunes[e$gilets_jaunes_soutien==T] <- 1
+    e$gilets_jaunes[e$gilets_jaunes_dedans==T] <- 2
+    e$gilets_jaunes <- as.item(e$gilets_jaunes, missing.values=-0.1, labels = structure(c(-0.1,-1:2), names=c('NSP', 'oppose', 'comprend', 'soutient', 'est_dedans')),
+                                annotation="gilets_jaunes: -1: s'oppose / 0: comprend sans soutenir ni s'opposer / 1: soutient / 2: fait partie des gilets jaunes (gilets_jaunes_compris/oppose/soutien/dedans/NSP)" )
+    e$Gilets_jaunes <- as.character(e$gilets_jaunes)
+    e$Gilets_jaunes[e$gilets_jaunes=="NSP"] <- "NSP"
+    e$Gilets_jaunes <- as.factor(e$Gilets_jaunes)
+    e$Gilets_jaunes <- relevel(e$Gilets_jaunes, 'soutient')
+    e$Gilets_jaunes <- relevel(e$Gilets_jaunes, 'comprend')
+    e$Gilets_jaunes <- relevel(e$Gilets_jaunes, 'NSP')
+    e$Gilets_jaunes <- relevel(e$Gilets_jaunes, 'oppose')
+  }
+  
   e$country <- country
   e$country_name <- countries_names[country]
   label(e$country) <- "country: Country of the survey."
@@ -3361,7 +3406,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"
 
   if ("standard_trust" %in% names(e)) e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
-  if ("standard_trust" %in% names(e)) label(e$policies_trust) <- "policies_trust: Could the U.S. federal government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
+  if ("standard_trust" %in% names(e)) label(e$policies_trust) <- "policies_trust: Could [Country] government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
   if ("standard_effective" %in% names(e)) e$policies_effective <- ((e$standard_effective=="Yes") + (e$investments_effective=="Yes") + (e$tax_transfers_effective=="Yes") - (e$standard_effective=="No") - (e$investments_effective=="No") - (e$tax_transfers_effective=="No"))/3
   if ("standard_effective" %in% names(e)) label(e$policies_effective) <- "policies_effective: Woudl an emission limit for cars, a green infrastrcuture program and a carbon tax be effective to fight climate change? Yes/No/PNR"
   if ("standard_employment" %in% names(e)) e$policies_employment <- ((e$standard_employment=="Positive") + (e$investments_employment=="Positive") + (e$tax_transfers_employment=="Positive") - (e$standard_employment=="Negative") - (e$investments_employment=="Negative") - (e$tax_transfers_employment=="Negative"))/3
@@ -3401,10 +3446,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"   
   } else e$urban <- NA
   e$urban <- case_when(e$country == "US" ~ e$urban,
-                       e$country == "DK" ~ e$urbanity <= 1,
+                       e$country == "DK" ~ e$urbanity > 2,
                        e$country == "FR" ~ e$urban_category == "GP", # TODO: other countries
                        TRUE ~ NA)
-  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity < 20k; FR: Grand Pôle; "
+  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; "
 
   if ("CC_affected_2050" %in% names(e)) {
     e$CC_affected_min <- 2100
@@ -3485,10 +3530,11 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$gender_factor <- as.factor(e$gender)
   if ("Other" %in% levels(e$gender_factor)) e$gender_factor <- relevel(relevel(as.factor(e$gender), "Other"), "Female")
   
-  e$children <- 0
-  if ("nb_children" %in% names(e)) e[e$nb_children >= 1, "children"] <- 1
-  else if ("Nb_children" %in% names(e)) e$children[!(e$Nb_children %in% c(0, "0"))] <- 1
-  e$children <- as.factor(e$children)
+  e$children <- F
+  if ("nb_children" %in% names(e)) { e$children[e$nb_children >= 1] <- T
+  } else if ("Nb_children" %in% names(e)) { e$children[!(e$Nb_children %in% c(0, "0"))] <- T
+  } else if ("Nb_children__14" %in% names(e)) e$children[!(e$Nb_children__14 %in% c(0, "0"))] <- T
+  label(e$children) <- "children: Live with at least one child below 14 (or has at least one child, for the US)"
   if ("nb_children" %in% names(e)) e$nb_children_ceiling_4 <- pmin(e$nb_children, 4)
   else if ("Nb_children" %in% names(e)) {
     e$nb_children_ceiling_4 <- e$Nb_children
@@ -3948,11 +3994,10 @@ usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
 us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
-us <- prepare(country = "US", duration_min = 686)
-e <- us
+e <- us <- prepare(country = "US", duration_min = 686)
 e <- dk <- prepare(country = "DK", duration_min = 686)
 e <- fr <- prepare(country = "FR", duration_min = 686)
-current_countries <- c("US", "DK", "FR")
+current_countries <- c("DK", "US", "FR")
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
 
 all$knows_anthropogenic <- all$CC_anthropogenic == 2
