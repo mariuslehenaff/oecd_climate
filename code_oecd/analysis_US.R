@@ -28,7 +28,6 @@ decrit("petition", data = e)
 decrit("petition", data = e, which = e$variant_petition_real == T)
 decrit("polluting_sector", data = e)
 any(duplicated(e$PSID))
-# TODO ranking vs. order of display
 
 
 ##### Durations ######
@@ -73,8 +72,8 @@ decrit("region", data = e)
 decrit("zipcode", data = e)
 decrit("urbanity", data = e) # 35% rural
 decrit("urban_category", data = e)
-CrossTable(e$urbanity, e$core_metropolitan, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
-CrossTable(e$core_metropolitan, e$urbanity, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
+CrossTable(e$urbanity, e$urban, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
+CrossTable(e$urban, e$urbanity, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
 for (v in variables_race) print(decrit(v, data = e)) # 4% black, 6% hispanic, 3% PNR or other
 decrit("race_white", data = e, which = e$race_hispanic)
 decrit("race_black", data = e, which = e$race_hispanic)
@@ -118,7 +117,7 @@ mean(grepl("Climate|climate|green|Green|fuel|fracking", e$politics_field))
 # + in every field: meaningless/irrelevant, wrong grammar/spelling, detailed, "good"
 
 ##### Essay: climate change ######
-decrit(e$CC_field!="") # TODO length
+decrit(e$CC_field!="") 
 Label(e$CC_field)
 usp1$CC_field
 usp2$CC_field
@@ -437,6 +436,9 @@ decrit("flights", data = e)
 decrit("flights", data = e, which = e$flights == 0) # 54
 decrit("flights", data = e, which = e$flights %in% c(1:9)) # 91 
 decrit("flights", data = e, which = e$flights >= 10) # 50
+decrit("flight_quota", which = fr$variant_flight_quota == "1 trip", data = fr)
+decrit("flight_quota", which = fr$variant_flight_quota == "1000km", data = fr)
+decrit("flight_quota", which = fr$variant_flight_quota == "1000km global", data = fr)
 all(as.integer(e$flights)==e$flights) # TODO: table, plot flight_pref(revenu/nb_flight)
 for (v in variables_flight_quota) print(decrit(v, data = e, miss = F))
 # More want it tradable when it is global (normal). Those who fly more / richer prefer more market when quota is global
