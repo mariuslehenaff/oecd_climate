@@ -932,5 +932,5 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
 # R: weights all countries, TODOs, China
-# Ana: Spanish translation, Japanese, Indonesian revision, South African voice, Zulu translation, caste
+# Ana: Spanish translation, Indonesian revision, South African voice, Zulu translation, caste
 # Bluebery: elec prices, quotas, Chine
