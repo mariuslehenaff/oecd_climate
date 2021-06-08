@@ -1665,6 +1665,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
 
 render_figures_tables_country(dk, "DK", folder_country = T) # 7.5 min
 render_figures_tables_country(fr, "FR", folder_country = T)
+render_figures_tables_country(us, "US", folder_country = T)
 
 render_country_comparison(along = "country_name", parentheses = F, nolabel = T, folder_country = T, name_country = T, on_control = T, export_xls = F, figures = T, tables = T)
 
