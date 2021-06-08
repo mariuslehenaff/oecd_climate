@@ -885,8 +885,8 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   if (online) { api_create(bars, filename=file, sharing="public") }
   if (!missing(file) & save) save_plotly(bars, filename = file) # new
   if (export_xls) {
-    table <- as.data.frame(data_income, row.names = dataKN("income", data=e, miss=F, return="legend"))
-    names(table) <- labels_comp
+    table <- as.data.frame(data, row.names = legend)
+    names(table) <- labels
     return(table) }
   else return(bars)
 }
@@ -916,7 +916,7 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
 save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
   if (class(plot)=="data.frame") {
     # file <- paste(folder, "xls/", filename, ".xlsx", sep='')
-    file <- paste("../xlsx/", filename, ".xlsx", sep='')
+    file <- paste(sub("figures", "xlsx", folder), filename, ".xlsx", sep='')
     write.xlsx(plot, file, row.names = T)  
   } else {
     file <- paste(folder, filename, ".png", sep='')
