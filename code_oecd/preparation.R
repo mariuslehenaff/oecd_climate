@@ -3,7 +3,8 @@
 
 source(".Rprofile")
 
-# TODO!!: CC_field, feedback, Carbon footprint (corr vote, etc.), consistency_answers, score_trust, (standard of living),// zipcode, Yes/No => T/F?, heating, CC_affected, label should_act_condition & vote, length fields, ranking vs. order of display
+# TODO!!: CC_field, feedback, consistency_answers, score_trust, vote, ranking vs. order of display
+# TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "IT", "PL", "ES", "UK")
 euro_countries_names <- c("Denmark", "France", "Germany", "Italy", "Poland", "Spain", "United Kingdom")
@@ -18,7 +19,9 @@ for (c in euro_countries) {
   inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
 countries <- c("US", euro_countries, "JP", "IN", "ID", "SA")  # countries[sample(1:12, 1)]
 countries_names <- c("United States", euro_countries_names, "Japan", "India", "Indonesia", "South Africa") # TODO? USA? UK?
-names(countries_names) <- countries
+Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland", "Spain", "the U.K.", "Japan", "India", "Indonesia", "South Africa")
+country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Indian", "Indonesian", "South African")
+names(countries_names) <- names(country_names) <- names(Country_names) <- countries
 
 { 
   levels_quotas <- list("gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
@@ -837,7 +840,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q140_Click",
       "watched_climate", 
       "know_temperature_2100",
-      "know_frequence_heatwaves",
+      "know_local_damage",
       "Q141_First",
       "Q141_Last",
       "duration_treatment_policy",
@@ -890,7 +893,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "footprint_pc_order_EU",
       "footprint_pc_order_china",
       "footprint_pc_order_india",
-      "responsible_CC_each", # TODO!!: rename in CC_responsible_ and change in previous waves?
+      "responsible_CC_each", 
       "responsible_CC_rich",
       "responsible_CC_govt",
       "responsible_CC_companies",
@@ -900,7 +903,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "responsible_CC_order_govt",
       "responsible_CC_order_companies",
       "responsible_CC_order_past",
-      "net_zero_feasible", # TODO!! rename in CC_stoppable and change name in previous waves?
+      "net_zero_feasible", 
       "CC_affects_self",
       "pro_ambitious_policies",
       "CC_will_end",
@@ -1155,7 +1158,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q140_Click",
       "watched_climate", 
       "know_temperature_2100",
-      "know_frequence_heatwaves",
+      "know_local_damage",
       "Q141_First",
       "Q141_Last",
       "duration_treatment_policy",
@@ -1400,8 +1403,8 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "consent",
       "gender",
       "age_quota",
-      "region", # TODO
-      "zipcode",# TODO
+      "region", 
+      "zipcode",
       "urbanity",
       "origin_danish",
       "origin_nordic",
@@ -1418,10 +1421,10 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "origin_other",
       "couple",
       "marital_status",
-      "Nb_children__14", # TODO
+      "Nb_children__14", 
       "HH_size",
-      "income", # TODO
-      "wealth", # TODO
+      "income", 
+      "wealth", 
       "education", 
       "employment_status",
       "polluting_sector_active", 
@@ -1465,7 +1468,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q140_Click",
       "watched_climate", 
       "know_temperature_2100",
-      "know_frequence_heatwaves",
+      "know_local_damage",
       "Q141_First",
       "Q141_Last",
       "duration_treatment_policy",
@@ -1715,25 +1718,25 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "origin_africa",
       "origin_asia",
       "origin_america",
-      "zipcode",# TODO
+      "zipcode",
       "urbanity",
       "couple",
       "marital_status",
       "HH_size",
-      "Nb_children__14", # TODO
+      "Nb_children__14", 
       "education", 
       "employment_status",
       "polluting_sector_active", 
       "polluting_sector_inactive",
       "sector_active", 
       "sector_inactive",
-      "income", # TODO
+      "income", 
       "hit_by_covid",
       "home_tenant",
       "home_owner",
       "home_landlord",
       "home_hosted",
-      "wealth", # TODO
+      "wealth", 
       "interested_politics", 
       "member_environmental_orga",
       "relative_environmentalist",
@@ -1771,7 +1774,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "Q140_Click",
       "watched_climate", 
       "know_temperature_2100",
-      "know_frequence_heatwaves",
+      "know_local_damage",
       "Q141_First",
       "Q141_Last",
       "duration_treatment_policy",
@@ -2007,7 +2010,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   if (missing(wave) | wave == "full") e <- e[,-c((which(names(e)=="clicked_petition")+1):length(names(e)))]
   
   for (i in 1:length(e)) {
-    label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") # TODO! change [Country] (e.g. France) and [country] (e.g. Denmark), except for DK.
+    label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="")
     # print(paste(i, label(e[[i]])))
   }
   e <- e[-c(1:2),]
@@ -2607,7 +2610,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if (country=="US") yes_no_names <- c("","No","PNR","Yes")
   if (country=="FR") yes_no_names <- c("","Non","PNR","Oui")
   for (j in intersect(c("couple", "CC_real", "CC_dynamic", "change_lifestyle", "pro_global_assembly", "pro_global_tax", "pro_tax_1p", "tax_transfers_trust", "investments_trust",
-                        "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_supports", "investments_supports", # TODO! in pilot1, 2 add an "s" to [policies]_supports & add cap to Beef, incl. in other .R files
+                        "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_supports", "investments_supports", # TODO in pilot1, 2 add an "s" to [policies]_supports & add cap to Beef, incl. in other .R files
                         "standard_supports", "hit_by_covid", "member_environmental_orga", "relative_environmentalist", "standard_exists", "petition", paste0("wtp_", c(10, 30, 50, 100, 300, 500, 1000))
               ), names(e))) {
     temp <- 1*(e[j][[1]] %in% text_yes) - 0.1*(e[j][[1]] %in% text_pnr) # - (e[j][[1]] %in% text_no)
@@ -2687,7 +2690,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "left_right", "vote_dum", "as.factor(urbanity)", "urban", "rush")
   variables_main_controls <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "children", "left_right", "vote_dum", "as.factor(urbanity)", "urban", "rush")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
-  variables_know_treatment_climate <<- c("know_frequence_heatwaves", "know_temperature_2100")
+  variables_know_treatment_climate <<- c("know_local_damage", "know_temperature_2100")
   if ("know_standard" %in% names(e)) variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
   else variables_know_treatment_policy <<- c("know_ban", "know_investments_funding")
   variables_know_treatment <<- c(variables_know_treatment_climate, variables_know_treatment_policy)
@@ -2984,8 +2987,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   text_manual <- c("US" = "Manual operations (e.g. cleaning, agriculture, delivery, transport, military...)")
   text_none_above <- c("US" = "None of the above")
   
-  text_know_temperature_2100 <- c("US" = "8 °F")
-  text_know_frequence_heatwaves <- c("US" = "70 days per year")
+  text_know_temperature_2100 <- c("US" = "8 °F", "UK" = "4 °C")
+  text_know_local_damage <- c("US" = "70 days per year", "FR" = "Ozone hole", "DK" = "Ozone hole")
   text_know_standard <- c("US" = "A limit on CO2 emissions from cars")
   text_know_investments_jobs <- c("US" = "1.5 million people")
   text_know_ban <- c("US" = "A ban on combustion-engine cars")
@@ -3001,14 +3004,15 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                           names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]]))
   }
-  
+
   for (v in intersect(names(e), c(variables_CC_impacts, "will_insulate", "CC_will_end"))) { 
     temp <-  2 * (e[[v]] %in% text_very_likely) + (e[[v]] %in% text_somewhat_likely) - (e[[v]] %in% text_somewhat_unlikely) - 2 * (e[[v]] %in% text_very_unlikely) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
     e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1),
                                                names = c("Very unlikely","Somewhat unlikely","Somewhat likely","Very likely","PNR")),
-                      missing.values=-0.1, annotation=Label(e[[v]])) # TODO: NA pour non proprios, NA pour insulation là où c'est pas posé
+                      missing.values=c(-0.1,NA), annotation=Label(e[[v]])) 
   }
-  
+  for (v in intersect(names(e), c(variables_obstacles_insulation, "will_insulate"))) e[[v]][e$home_landlord==F & e$home_owner==F] <- NA # Questions not asked for non-owners
+
   for (v in intersect(names(e), c(variables_responsible_CC, variables_willing, variables_condition, "CC_knowledgeable", "net_zero_feasible", "CC_affects_self", "pro_ambitious_policies", "effect_halt_CC_lifestyle", "interested_politics"))) { 
     temp <-  2 * (e[[v]] %in% text_intensity_great_deal) + (e[[v]] %in% text_intensity_lot) - (e[[v]] %in% text_intensity_little) - 2 * (e[[v]] %in% text_intensity_not) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) 
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
@@ -3205,7 +3209,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                                                                      names = c("Free-riding","Reciprocity", "Compensation")),
                                              annotation=Label(e$country_should_act))
   
-  for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { # TODO! bug when variables_side_effects is not yet defined
+  for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { # TODO bug when variables_side_effects is not yet defined (pilots)
     temp <-  (e[[v]] %in% text_effects_positive) - (e[[v]] %in% text_effects_negative) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
                           names = c("Negative","None notable","Positive","PNR")),
@@ -3234,7 +3238,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if ("occupation" %in% names(e)) temp <-  (e$occupation %in% text_clerc) - 2*(e$occupation %in% text_none_above) - 1 * (e$occupation %in% text_manual) + 2 * (e$occupation %in% text_independent) - 0.1*(is.na(e$occupation))
   if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Other","Manual","Skilled", "Clerc","Independent","PNR")),
                                                           missing.values=-0.1, annotation=Label(e$occupation))
-  
+
   e$employment_status <- case_when(e$employment_status %in% text_full_time ~ "Full-time employed",
                                    e$employment_status %in% text_part_time ~ "Part-time employed",
                                    e$employment_status %in% text_self_employed ~ "Self-employed",
@@ -3248,9 +3252,9 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e[e$employment_status == "Retired", "employment_agg"] <- "Retired"
   e[e$employment_status == "Self-employed" | e$employment_status == "Full-time employed" | e$employment_status == "Part-time employed", "employment_agg"] <- "Working"
   e$employment_agg <- as.factor(e$employment_agg)
-  
+
   e$inactive <- e$employment_agg %in% c("Retired", "Not working")
-  
+
   if ("sector_active" %in% names(e)) {
     e$sector[e$employment_agg == "Student"] <- "Student"
     e$sector[e$inactive == T] <- e$sector_inactive[e$inactive == T]
@@ -3258,7 +3262,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$which_polluting_sector[e$employment_agg == "Working"] <- e$polluting_sector_active[e$employment_agg == "Working"]
     e$which_polluting_sector[e$inactive == T] <- e$polluting_sector_inactive[e$inactive == T]
     e$polluting_sector <- !(e$which_polluting_sector %in% c(text_sector_no, "Other energy industries")) & !is.pnr(e$which_polluting_sector)
-    
+    label(e$sector) <- "sector: What is the main activity of the company or organization where you work or have last worked? (For students, the question is not asked and sector = Student)"
+    label(e$polluting_sector) <- "polluting_sector: T/F whether sector is polluting (i.e. part of Oil, gas or cal/Cement/Construction/Automobile/Iron and steel/Chemical/Plastics/Pulp and paper/Farming/Air transport)"
   }
   
   if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses == "Less than $20") + 50*(e$heating_expenses == "$20 – $75") + 100*(e$heating_expenses == "$76 – $125") + 167*(e$heating_expenses == "$126 – $200") + 225*(e$heating_expenses == "$201 – $250") + 275*(e$heating_expenses == "$251 – $300") + 
@@ -3316,7 +3321,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$media[e$media %in% text_media_web] <- "News websites"
   }
   
-  e$vote_participation[e$vote_participation %in% text_vote_participation_no_right] <- "No right to vote"
+  e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
   if ("vote_voters_2016" %in% names(e)) {
     e$vote_participation_2016[e$vote_participation_2016 %in% text_vote_participation_no_right] <- "No right to vote"
     e$vote_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"] <- e$vote_voters_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"]
@@ -3447,7 +3452,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   } else e$urban <- NA
   e$urban <- case_when(e$country == "US" ~ e$urban,
                        e$country == "DK" ~ e$urbanity > 2,
-                       e$country == "FR" ~ e$urban_category == "GP", # TODO: other countries
+                       e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
                        TRUE ~ NA)
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; "
 
@@ -3508,7 +3513,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
   label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
 
-  e$rush_treatment <- e$duration_treatment_climate/60 < 3 | e$duration_treatment_policy/60 < 4.75 # TODO! adapt time for countries
+  duration_climate_video <<- 120 + c(61, 24, 18, NA, 20)
+  duration_policy_video <<- 240 + c(44, 38, 33, NA, 74)
+  names(duration_climate_video) <<- names(duration_policy_video) <<- countries[1:length(duration_policy_video)]
+  e$rush_treatment <- e$duration_treatment_climate < duration_climate_video[country] | e$duration_treatment_policy < duration_policy_video[country]
   e$rush_treatment[is.na(e$rush_treatment)] <- F
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
   
@@ -3516,7 +3524,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
   
   # [deprecated] problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
-  e$race_white_only <- 0
+  e$race_white_only <- 0 # TODO! remove for else than US
   e$race_white_only[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE] <- 1
   #e[e$race_black == TRUE, "race"] <- "Black"
   #e[e$race_hispanic == TRUE, "race"] <- "Hispanic"
@@ -3524,9 +3532,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$race_white_only <- as.factor(e$race_white_only)
   
   #gender: Other set as Male for the moment, see if lot of similar answers in final data
-  e$gender_dum <- as.character(e$gender) # TODO! country
-  e[e$gender == "Other", "gender_dum"] <- "Male"
-  e$gender_dum <- as.factor(e$gender_dum)
+  e$female <- e$gender == "Female"
+  # e$gender_dum <- as.character(e$gender)
+  # e[e$gender == "Other", "gender_dum"] <- "Male"
+  # e$gender_dum <- as.factor(e$gender_dum)
   e$gender_factor <- as.factor(e$gender)
   if ("Other" %in% levels(e$gender_factor)) e$gender_factor <- relevel(relevel(as.factor(e$gender), "Other"), "Female")
   
@@ -3559,7 +3568,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$age_quota[e$age %in% 25:34] <- "25-34"
     e$age_quota[e$age %in% 35:49] <- "35-49"
     e$age_quota[e$age %in% 50:64] <- "50-64"
-    e$age_quota[e$age > 64] <- "65+" # TODO! "> 65" instead, countr
+    e$age_quota[e$age > 64] <- "65+" 
   } else { 
     e$age_quota[e$age_quota %in% text_18_24] <- "18-24"
     e$age_quota[e$age_quota %in% text_25_34] <- "25-34"
@@ -3578,11 +3587,25 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # # e$vote_dum <- as.factor(e$vote_dum)
   # # e$vote_dum <- relevel(e$vote_dum, ref ="Other")
   
-  e$race <- "Other"
-  e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
-  e$race[e$race_hispanic==T] <- "Hispanic"
-  e$race[e$race_black==T] <- "Black"
-  label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
+  e$nb_origin <- 0
+  if ("race_white" %in% names(e)) {
+    variables_origin <<- names(e)[grepl('race_', names(e)) & !grepl('other$', names(e))]
+    e$race <- "Other"
+    e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
+    e$race[e$race_hispanic==T] <- "Hispanic"
+    e$race[e$race_black==T] <- "Black"
+    label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
+    e$origin <- e$race    
+    for (v in variables_origin) e$nb_origin[e[[v]]==T] <- e$nb_origin[e[[v]]==T] + 1
+  } else {
+    variables_origin <<- names(e)[grepl('origin_', names(e)) & !grepl('other$', names(e))]
+    e$origin <- NA
+    for (v in variables_origin) {
+      e$origin[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])]
+      e$nb_origin[!is.na(e[[v]])] <- e$nb_origin[!is.na(e[[v]])] + 1 }
+    label(e$origin) <- "origin: Origin of the respondent. In case of multiple origins (nb_origins > 1), only one is retained (and not the main one in the country)."
+  }
+  label(e$nb_origin) <- "nb_origin: Number of origins (or race) of the respondent."
   
   e$income_factor <- as.factor(e$income)
   
@@ -3603,17 +3626,25 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$weight <- weighting(e, country) 
     if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, country, variant = "vote")  }
   
-  if ("know_temperature_2100" %in% names(e)) { # TODO!! France: rename flooding -> ozone hole / more rain -> more heatwaves / ozone hole -> flooding / marine eco -> more forestfires
-    e$know_treatment_climate <- (e$know_temperature_2100 %in% text_know_temperature_2100) + (e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves)
-    if ("know_standard" %in% names(e)) e$know_treatment_policy <- (e$know_standard  %in% text_know_standard) + (e$know_investments_jobs  %in% text_know_investments_jobs)
-    else e$know_treatment_policy <- (e$know_ban  %in% text_know_ban) + (e$know_investments_funding  %in% text_know_investments_funding)
+  if (country == "FR") {
+    e$know_local_damage <- case_when(e$know_local_damage == "Flooding" ~ "Ozone hole",
+                                    e$know_local_damage == "More rain" ~ "More heatwaves",
+                                    e$know_local_damage == "Damaging of marine ecosystems" ~ "More forest fires",
+                                    e$know_local_damage == "Ozone hole" ~ "Flooding",
+                                    e$know_local_damage == "PNR" ~ "PNR")
+  }
+  
+  if ("know_temperature_2100" %in% names(e)) { 
+    e$know_treatment_climate <- (e$know_temperature_2100 %in% text_know_temperature_2100) + (e$know_local_damage  %in% text_know_local_damage)
+    if ("know_standard" %in% names(e)) { e$know_treatment_policy <- (e$know_standard  %in% text_know_standard) + (e$know_investments_jobs  %in% text_know_investments_jobs)
+    } else e$know_treatment_policy <- (e$know_ban  %in% text_know_ban) + (e$know_investments_funding  %in% text_know_investments_funding)
     e$know_treatment_climate[e$treatment_climate == 0] <- NA
     e$know_treatment_policy[e$treatment_policy == 0] <- NA
-    label(e$know_treatment_climate) <- "know_treatment_climate: Number of good responses among the 2 knowledge questions related to treatment content: temperature_2100 = 8°F & frequence_heatwaves = 70 days per year"
-    label(e$know_treatment_policy) <- "know_treatment_policy: Number of good responses among the 2 knowledge questions related to treatment content: ban = A ban on combustion-engine cars & investments_funding = 1.5 million"
+    label(e$know_treatment_climate) <- "know_treatment_climate: Number of good responses among the 2 knowledge questions related to treatment content: temperature_2100 = 8°F (4 °C) & know_local_damage = 70 days per year / Ozone hole (depending on country)"
+    label(e$know_treatment_policy) <- "know_treatment_policy: Number of good responses among the 2 knowledge questions related to treatment content: ban = A ban on combustion-engine cars & investments_funding = Additional government debt (for the US, second one is 1.5 million jobs instead)"
     e$know_temperature_2100_correct <- e$know_temperature_2100 %in% text_know_temperature_2100
-    e$know_frequence_heatwaves_correct <- e$know_frequence_heatwaves  %in% text_know_frequence_heatwaves
-    e$know_temperature_2100_correct[e$treatment_climate == 0] <- e$know_frequence_heatwaves_correct[e$treatment_climate == 0] <- NA
+    e$know_local_damage_correct <- e$know_local_damage  %in% text_know_local_damage
+    e$know_temperature_2100_correct[e$treatment_climate == 0] <- e$know_local_damage_correct[e$treatment_climate == 0] <- NA
     if ("know_standard" %in% names(e)) {
       e$know_standard_correct <- e$know_standard  %in% text_know_standard
       e$know_investments_jobs_correct <- e$know_investments_jobs  %in% text_know_investments_jobs
@@ -3643,7 +3674,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }
   
   
-  if ("footprint_reg_US" %in% names(e)) {
+  if ("footprint_reg_US" %in% names(e)) { # manages ties in ranking
     rerank_fully <- function(original_ranking) {
       # Re-ranks an ranking within 1-4 so that it becomes a full ranking, i.e. no number appears twice. Does so by splitting ties in a way that get closer to the true ranking: 1:4. Works only for vectors of size 4.
       ranking <- original_ranking
@@ -3656,7 +3687,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
         ranking[max(tie)] <- 3
       } 
       if (max(sum(ranking==1), sum(ranking==4))==4) ranking <- 1:4 # too generous with respondents as those who have no idea of the ranking are considered as knowing the full ranking.
-      if (sum(ranking==1)==3) { # TODO!!: as robustness check, define distance original_ranking, true_ranking as sum_i |original_ranking[i]-i|
+      if (sum(ranking==1)==3) { # TODO: as robustness check, define distance original_ranking, true_ranking as sum_i |original_ranking[i]-i|
         tie <- which(ranking == 1)
         ranking[tie[1]] <- 1
         ranking[tie[2]] <- 2
@@ -3711,18 +3742,18 @@ convert <- function(e, country, wave = NULL, weighting = T) {
 
   if ("footprint_el_coal" %in% names(e)) {
     e$footprint_pc_nb_na <- apply(e[,Variables_footprint$pc], MARGIN = 1, FUN = function(vec) { sum(is.na(vec)) })
-    e$footprint_reg_nb_na <- apply(e[,Variables_footprint$reg], MARGIN = 1, FUN = function(vec) { sum(is.na(vec)) })
-    label(e$footprint_pc_nb_na) <- "footprint_pc_nb_na: Number of NA ranks in the ranking of footprint per capita"
-    label(e$footprint_reg_nb_na) <- "footprint_reg_nb_na: Number of NA ranks in the ranking of total regional footprint"
+    e$footprint_reg_nb_na <- apply(e[,Variables_footprint$reg], MARGIN = 1, FUN = function(vec) { sum(is.na(vec)) }) # TODO: allow for India 3rd / EU 4th because not clear whether territorial or consumption based. Which region contributes most to global greenhouse gas emissions? 
+    label(e$footprint_pc_nb_na) <- "footprint_pc_nb_na: Number of NA ranks in the ranking of footprint per capita" # https://en.wikipedia.org/wiki/List_of_countries_by_carbon_dioxide_emissions_per_capita
+    label(e$footprint_reg_nb_na) <- "footprint_reg_nb_na: Number of NA ranks in the ranking of total regional footprint" # https://en.wikipedia.org/wiki/List_of_countries_by_greenhouse_gas_emissions http://www.globalcarbonatlas.org/en/CO2-emissions
     if ("footprint_el_wind" %in% names(e)) e$score_footprint_elec <- AllSeqDists(cbind(e$footprint_el_coal, e$footprint_el_gas, e$footprint_el_wind)) 
     else e$score_footprint_elec <- ifelse(is.na(e$footprint_el_coal), NA, AllSeqDists(cbind(e$footprint_el_coal, e$footprint_el_gas, e$footprint_el_nuclear)))
     e$score_footprint_food <- ifelse(is.na(e$footprint_fd_beef), NA, AllSeqDists(cbind(e$footprint_fd_beef, e$footprint_fd_chicken, e$footprint_fd_pasta)))
     e$score_footprint_transport <- ifelse(is.na(e$footprint_tr_car), NA, AllSeqDists(cbind(e$footprint_tr_plane, e$footprint_tr_car, e$footprint_tr_coach)))
     e$score_footprint_pc <- AllSeqDists(cbind(e$footprint_pc_US, e$footprint_pc_EU, e$footprint_pc_china, e$footprint_pc_india)) + 2*e$footprint_pc_nb_na
     if ("footprint_reg_US" %in% names(e)) e$score_footprint_region <- AllSeqDists(cbind(e$footprint_reg_china, e$footprint_reg_US, e$footprint_reg_EU, e$footprint_reg_india)) + 2*e$footprint_reg_nb_na
-    label(e$score_footprint_elec) <- "e$score_footprint_elec: Kendall distance with true ranking of electricity footprints: coal>gas>nuclear" # TODO! sources
-    label(e$score_footprint_food) <- "e$score_footprint_food: Kendall distance with true ranking of food footprints: beef>chicken>pasta"
-    label(e$score_footprint_transport) <- "e$score_footprint_transport: Kendall distance with true ranking of transport footprints: plane>car>coach"
+    label(e$score_footprint_elec) <- "e$score_footprint_elec: Kendall distance with true ranking of electricity footprints: coal>gas>nuclear" # Pehl et al. (2017)
+    label(e$score_footprint_food) <- "e$score_footprint_food: Kendall distance with true ranking of food footprints: beef>chicken>pasta" # Poore & Nemecek (2018)
+    label(e$score_footprint_transport) <- "e$score_footprint_transport: Kendall distance with true ranking of transport footprints: plane>car>coach" # US: https://jamesrivertrans.com/wp-content/uploads/2012/05/ComparativeEnergy.pdf https://www.nationalgeographic.com/travel/article/carbon-footprint-transportation-efficiency-graphic EU: http://ecopassenger.hafas.de/bin/query.exe/en?L=vs_uic&
     label(e$score_footprint_pc) <- "e$score_footprint_pc: Kendall distance with true ranking of per capita footprints: US>EU>China>India (when there is a tie in the respondent's ranking, we solve it to their advantage)"
     if ("footprint_reg_US" %in% names(e)) label(e$score_footprint_region) <- "e$score_footprint_region: Kendall distance with true ranking of region footprints: China>US>EU>India (when there is a tie in the respondent's ranking, we solve it to their advantage)"
     e$know_footprint_elec <- e$score_footprint_elec == 0
@@ -3842,7 +3873,7 @@ if (all(variables_affected_index %in% names(e))) {
     names(zipcode_state) <- temp[,1]
     # write.csv(Levels(zipcode_state), "../data/zipcodes/US_states.csv", quote = F, row.names = F, col.names = "State")
     e$state <- zipcode_state[as.character(e$zipcode)]
-    temp <- read.csv("../data/zipcodes/US_elec.csv") # sources: $/MWh: https://www.eia.gov/electricity/state/ CO2/MWh: https://www.epa.gov/egrid/data-explorer, alternative source: https://www.carbonfootprint.com/docs/2020_09_emissions_factors_sources_for_2020_electricity_v14.pdf TODO: use latter to have harmonized source
+    temp <- read.csv("../data/zipcodes/US_elec.csv") # sources: $/MWh: https://www.eia.gov/electricity/state/ CO2/MWh: https://www.epa.gov/egrid/data-explorer, alternative source: https://www.carbonfootprint.com/docs/2020_09_emissions_factors_sources_for_2020_electricity_v14.pdf TODO? use latter to have harmonized source? No need
     CO2_factor <- temp[,8]
     names(CO2_factor) <- temp[,1]
     
@@ -3860,6 +3891,11 @@ if (all(variables_affected_index %in% names(e))) {
     label(e$CO2_emission_gas) <- "CO2_emission_gas: CO2 emissions (in t/year) from gasoline of the respondent estimated from their gas expenses and emission factor of gasoline."
     label(e$CO2_emission) <- "CO2_emission: CO2 emissions (in t/year) of the respondent estimated from their heating & gas expenses, flights and income." # Official average: 17.59 per capita vs. 15.63 per respondent here (we pbly underestimate then because we assume children have 0 emission).
   }
+  
+  e$length_CC_field <- nchar(e$CC_field)
+  e$length_comment_field <- nchar(e$comment_field)
+  label(e$length_CC_field) <- "length_CC_field: Number of characters in CC_field"
+  label(e$length_comment_field) <- "length_comment_field: Number of characters in comment_field"
   
   # e <- e[, -c(9:17)] 
   return(e)
@@ -3948,7 +3984,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   # 
 }
 
-prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE) { # , exclude_quotas_full=TRUE
+prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = F) { #(country!="DK") # , exclude_quotas_full=TRUE
   # if (country == "US") {
   #   if (wave == "pilot1") e <- read_csv("../data/US_pilot.csv") 
   #   else if (wave == "pilot2") e <- read_csv("../data/US_pilot2.csv") 
@@ -3957,7 +3993,13 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   # } else if (country == "DK") e <- read_csv("../data/DK.csv") 
   filename <- paste0(c(country, wave), collapse="_")
   if (filename != "SA") remove_id(filename)
-  e <- read_csv(paste0("../data/", filename, ".csv"))
+  file <- paste0("../data/", filename, ".csv")
+  if (replace_brackets) {
+    data <- readLines(file)
+    data <- gsub("[Country]", Country_names[country], data, fixed = T)
+    data <- gsub("[country]", country_names[country], data, fixed = T)
+    writeLines(data, con=file)  }
+  e <- read_csv(file)
 
   if (missing(wave)) wave <- "full"
   e <- relabel_and_rename(e, country = country, wave = wave)

@@ -1,7 +1,7 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO!: vote, region, flight, size of town, footprint region, etc., standard/investment/tax _effect_, donation
-# /!\ open the Plots pane at its maximum before running the function
+# TODO!: vote, region, flight, size of town, footprint region, etc., standard/investment/tax _effect_, donation, origin
+# /!\ open the Plots pane at its maximum before running the function TODO: save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
   print(country)  
   start <- Sys.time()
@@ -196,7 +196,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(watched_climate_US <- barres(vars = "watched_climate", export_xls = export_xls, df = e, miss=F, labels="Able to watch the video until the end (local)"))
       save_plotly_new_filename(watched_climate_US, width= 900, height=140)})
     
-    # try({(know_treatment_climate_US <- barres(vars = c("know_temperature_2100", "know_frequence_heatwaves"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Knowledge climate video"))
+    # try({(know_treatment_climate_US <- barres(vars = c("know_temperature_2100", "know_local_damage"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Knowledge climate video"))
     #   save_plotly_new_filename(know_treatment_climate_US, width= 580, height=140)})
     
     try({(know_treatment_climate_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Score knowledge climate video"))
@@ -817,7 +817,6 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
 }
 
 # /!\ open the Plots pane at its maximum before running the function
-# TODO: xlsx
 render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", "> 0")) { # c("", "> 0", "< 0", ">= 0", "<= 0", "== 2", "== -2")
   start <- Sys.time()
   
@@ -934,7 +933,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(watched_climate_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "watched_climate", export_xls = export_xls, df = e, miss=F, labels="Able to watch the video until the end (local)"))
       save_plotly_new_filename(watched_climate_US, width= 900, height=fig_height(1*nb_levels))})
     
-    # try({(know_treatment_climate_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("know_temperature_2100", "know_frequence_heatwaves"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Knowledge climate video"))
+    # try({(know_treatment_climate_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("know_temperature_2100", "know_local_damage"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Knowledge climate video"))
     #   save_plotly_new_filename(know_treatment_climate_US, width= 580, height=fig_height(1*nb_levels))})
     
     try({(know_treatment_climate_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "know_treatment_climate", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Score knowledge climate video"))

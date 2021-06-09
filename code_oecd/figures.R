@@ -160,7 +160,7 @@ rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWord
 (watched_climate_US <- barres(vars = "watched_climate", export_xls = export_xls, df = e, miss=F, labels="Able to watch the video until the end (local)"))
 save_plotly(watched_climate_US, width= 900, height=140)
 
-# (know_treatment_climate_US <- barres(vars = c("know_temperature_2100", "know_frequence_heatwaves"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Knowledge climate video"))
+# (know_treatment_climate_US <- barres(vars = c("know_temperature_2100", "know_local_damage"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Knowledge climate video"))
 # save_plotly(know_treatment_climate_US, width= 580, height=140)
 
 (know_treatment_climate_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Score knowledge climate video"))
@@ -882,7 +882,7 @@ correlogram("knowledge")
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
-control_variables_w_treatment <- c("race_white_only", "gender_dum", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "urban == 1", "treatment")
+control_variables_w_treatment <- c("race_white_only", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "urban == 1", "treatment")
 
 desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC > 0", "willing_limit_driving > 0"), filename = "US_1",
            dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "US should fight CC", "Willing to limit driving"),
@@ -921,6 +921,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # TODO: heterogenous treatment Red/Dem; maps; 
 # TODO: Pessimistic w.r.t. future more or less climate friendly?
+# TODO: corr support / CO2_emission
 # TODO!: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
 # TODO!: acquiescence negative/positive effect; costly/cost-effective
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
