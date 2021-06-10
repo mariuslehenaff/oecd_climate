@@ -87,83 +87,83 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
     "gender" = c(0.524, 0.000001, 0.476),
     "income" = rep(.25, 4),
     "urban" = c(0.4699139, 0.5300861), 
-    "IT_region" = c(0.2666, 0.1931, 0.1991, 0.2312, 0.1100)
-    "age_quota" = c(0.080, 0.122, 0.242, 0.271, 0.285),
+    "IT_region" = c(0.2666, 0.1931, 0.1991, 0.2312, 0.1100),
+    "age" = c(0.080, 0.122, 0.242, 0.271, 0.285)
   ),
   "UK" = list(
     "gender" = c(0.504, 0.000001, 0.496),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.102, 0.168, 0.244, 0.246, 0.241),
+    "age" = c(0.102, 0.168, 0.244, 0.246, 0.241),
     "urban" = c(FALSE, TRUE), 
     "UK_region" = c(0.1340, 0.7090, 0.0820, 0.0470, 0.0280)
   ),
   "SA" = list(
     "gender" = c(0.506, 0.000001, 0.494),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.213, 0.285, 0.283, 0.161, 0.058),
+    "age" = c(0.213, 0.285, 0.283, 0.161, 0.058),
     "urban" = c(FALSE, TRUE), 
     "SA_region" = c()
   ),
   "ES" = list(
     "gender" = c(0.506, 0.494),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.079, 0.124, 0.285, 0.266, 0.246),
+    "age" = c(0.079, 0.124, 0.285, 0.266, 0.246),
     "urban" = c(FALSE, TRUE), 
     "ES_region" = c()
   ),
   "PL" = list(
     "gender" = c(0.519, 0.000001, 0.481),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.087, 0.170, 0.282, 0.236, 0.225),
+    "age" = c(0.087, 0.170, 0.282, 0.236, 0.225),
     "urban" = c(FALSE, TRUE), 
     "PL_region" = c(0.10514414,  0.067872784, 0.171493158, 0.101190091, 0.261978099, 0.292321728)
   ),
   "JP" = list(
     "gender" = c(0.519, 0.000001, 0.481),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.078, 0.121, 0.244, 0.224, 0.334),
+    "age" = c(0.078, 0.121, 0.244, 0.224, 0.334),
     "urban" = c(FALSE, TRUE), 
     "JP_region" = c()
   ),
   "DE" = list(
     "gender" = c(0.512, 0.000001, 0.488),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.085, 0.150, 0.222, 0.280, 0.263),
+    "age" = c(0.085, 0.150, 0.222, 0.280, 0.263),
     "urban" = c(FALSE, TRUE), 
     "DE_region" = c(0.1808, 0.2769, 0.1013, 0.1498, 0.2913)
   ),
   "ID" = list(
     "gender" = c(0.500, 0.000001, 0.500),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.170, 0.228, 0.310, 0.208, 0.084),
+    "age" = c(0.170, 0.228, 0.310, 0.208, 0.084),
     "urban" = c(FALSE, TRUE), 
     "ID_region" = c()
   ),
   "CN" = list(
     "gender" = c(0.492, 0.000001, 0.508),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.099, 0.204, 0.279, 0.265, 0.154),
+    "age" = c(0.099, 0.204, 0.279, 0.265, 0.154),
     "urban" = c(FALSE, TRUE), 
     "CN_region" = c()
-  )
+  ),
     "BR" = list(
     "gender" = c(0.512, 0.000001, 0.488),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.149, 0.215, 0.296, 0.212, 0.128),
+    "age" = c(0.149, 0.215, 0.296, 0.212, 0.128),
     "urban" = c(FALSE, TRUE), 
     "BR_region" = c()
-  )
+  ),
     "MX" = list(
     "gender" = c(0.518, 0.000001, 0.482),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.176, 0.233, 0.300, 0.183, 0.109),
+    "age" = c(0.176, 0.233, 0.300, 0.183, 0.109),
     "urban" = c(FALSE, TRUE), 
     "MX_region" = c()
-  )
+  ),
     "SK" = list(
     "gender" = c(0.498, 0.000001, 0.502),
     "income" = rep(.25, 4),
-    "age_quota" = c(0.098, 0.159, 0.274, 0.282, 0.187),
+    "age" = c(0.098, 0.159, 0.274, 0.282, 0.187),
     "urban" = c(FALSE, TRUE), 
     "SK_region" = c()
   )      
@@ -2603,7 +2603,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e[[i]][e[[i]] %in% text_pnr] <- "PNR"
   }
 
-  for (v in c("urban_category")) e[[v]] <- sub("\r$", "", e[[v]])
+  for (v in c("urban_category")) e[[v]] <- sub("\r$", "", sub("\n$", "", e[[v]]))
   
   variables_duration <<- names(e)[grepl('duration', names(e))]
   if (length(grep('footprint', names(e)))>0) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
@@ -3521,7 +3521,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }
   
   if ("donation" %in% names(e)) {
-    max_donation_country <<- c(100, 600, 100, 100, 100, 400, 100, 100, 10000, 1000, 10^6, 1000)
+    max_donation_country <<- c(100, 600, 100, 100, 100, 400, 100, 100, 10000, 600, 1000, 10^6, 1000)
     names(max_donation_country) <<- countries
     max_e <- max_donation_country[country]
     e$donation_agg <- 0*(e$donation == 0) + 10*(e$donation %between% c(1, max_e/5)) + 30*(e$donation %between% c(max_e/5+1, max_e*2/5)) + 70*(e$donation %between% c(max_e*2/5+1, max_e-1)) + 100*(e$donation == max_e)
@@ -3583,7 +3583,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e[e$education >= 5, "college"] <- "College Degree"
   e$college <- as.factor(e$college)
   
-  if ("age" %in% names(e)) {
+  if ("age_exact" %in% names(e)) {
     e$age_agg <- NULL
     e$age_agg[e$age_exact %in% 18:29] <- "18-29"
     e$age_agg[e$age_exact %in% 30:49] <- "30-49"
@@ -3640,10 +3640,11 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # # e$vote_agg <- as.factor(e$vote_agg)
   # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
   } else if (country == "DK") {
-    e$vote_agg[grepl("Macron", e$vote)] <- ""
-    e$vote_agg[grepl("Macron", e$vote)] <- ""
-    e$vote_agg[grepl("Macron", e$vote)] <- ""
-    e$vote_agg[grepl("Macron", e$vote)] <- ""
+    e$vote_agg[grepl("Alternativet|Enhedslisten|Socialistisk Folkeparti", e$vote)] <- "Left"
+    e$vote_agg[grepl("Socialdemokratiet|Radikale Venstre", e$vote)] <- "Social democrats & center"
+    e$vote_agg[grepl("Det Konservative Folkeparti|Liberal Alliance|Venstre", e$vote)] <- "Right"
+    e$vote_agg[grepl("Dansk Folkeparti|Nye Borgerlige", e$vote)] <- "Far right"
+    e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
   } else if (country == "FR") {
     e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
     e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
