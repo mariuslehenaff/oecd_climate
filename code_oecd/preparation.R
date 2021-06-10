@@ -40,7 +40,11 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
                  "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
                  "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
-                 "IN_region" = c()
+                 "IN_region" = c("Northern", "Southern", "Central", "Eastern", "Western", "Rest"),
+                 "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
+                 "UK_region" = c("London", "Rest of England", "Scotland", "Wales", "Northern Ireland"),
+                 "PL_region" = c("North-West", "North-East", "Central", "South-West", "Central-East", "South-East"),
+                 "DE_region" = c("Northern Germany", "Western Germany", "Central Germany", "Eastern Germany", "Southern Germany")
   )
   
   pop_freq <- list("US" = list(
@@ -73,75 +77,96 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
     "FR_taille_agglo" = c(0.2166,0.1710,0.1408,0.3083,0.1633)
   ),
   "IN" = list(
-    "gender" = c(),
+    "gender" = c(0.486, 0.000001, 0.514),
     "income" = rep(.25, 4),
     "age" = c(),
     "urban" = c(FALSE, TRUE), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
-    "IN_region" = c()
+    "IN_region" = c(0.1317, 0.2015, 0.2654, 0.2256, 0.1380, 0.037907422)
   ),
   "IT" = list(
-    "gender" = c(),
+    "gender" = c(0.524, 0.000001, 0.476),
     "income" = rep(.25, 4),
-    "age" = c(),
-    "urban" = c(FALSE, TRUE), 
-    "IT_region" = c()
+    "urban" = c(0.4699139, 0.5300861), 
+    "IT_region" = c(0.2666, 0.1931, 0.1991, 0.2312, 0.1100)
+    "age_quota" = c(0.080, 0.122, 0.242, 0.271, 0.285),
   ),
   "UK" = list(
-    "gender" = c(),
+    "gender" = c(0.504, 0.000001, 0.496),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.102, 0.168, 0.244, 0.246, 0.241),
     "urban" = c(FALSE, TRUE), 
-    "UK_region" = c()
+    "UK_region" = c(0.1340, 0.7090, 0.0820, 0.0470, 0.0280)
   ),
   "SA" = list(
-    "gender" = c(),
+    "gender" = c(0.506, 0.000001, 0.494),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.213, 0.285, 0.283, 0.161, 0.058),
     "urban" = c(FALSE, TRUE), 
     "SA_region" = c()
   ),
   "ES" = list(
-    "gender" = c(),
+    "gender" = c(0.506, 0.494),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.079, 0.124, 0.285, 0.266, 0.246),
     "urban" = c(FALSE, TRUE), 
     "ES_region" = c()
   ),
   "PL" = list(
-    "gender" = c(),
+    "gender" = c(0.519, 0.000001, 0.481),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.087, 0.170, 0.282, 0.236, 0.225),
     "urban" = c(FALSE, TRUE), 
-    "PL_region" = c()
+    "PL_region" = c(0.10514414,  0.067872784, 0.171493158, 0.101190091, 0.261978099, 0.292321728)
   ),
   "JP" = list(
-    "gender" = c(),
+    "gender" = c(0.519, 0.000001, 0.481),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.078, 0.121, 0.244, 0.224, 0.334),
     "urban" = c(FALSE, TRUE), 
     "JP_region" = c()
   ),
   "DE" = list(
-    "gender" = c(),
+    "gender" = c(0.512, 0.000001, 0.488),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.085, 0.150, 0.222, 0.280, 0.263),
     "urban" = c(FALSE, TRUE), 
-    "DE_region" = c()
+    "DE_region" = c(0.1808, 0.2769, 0.1013, 0.1498, 0.2913)
   ),
   "ID" = list(
-    "gender" = c(),
+    "gender" = c(0.500, 0.000001, 0.500),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.170, 0.228, 0.310, 0.208, 0.084),
     "urban" = c(FALSE, TRUE), 
     "ID_region" = c()
   ),
   "CN" = list(
-    "gender" = c(),
+    "gender" = c(0.492, 0.000001, 0.508),
     "income" = rep(.25, 4),
-    "age" = c(),
+    "age_quota" = c(0.099, 0.204, 0.279, 0.265, 0.154),
     "urban" = c(FALSE, TRUE), 
     "CN_region" = c()
   )
+    "BR" = list(
+    "gender" = c(0.512, 0.000001, 0.488),
+    "income" = rep(.25, 4),
+    "age_quota" = c(0.149, 0.215, 0.296, 0.212, 0.128),
+    "urban" = c(FALSE, TRUE), 
+    "BR_region" = c()
+  )
+    "MX" = list(
+    "gender" = c(0.518, 0.000001, 0.482),
+    "income" = rep(.25, 4),
+    "age_quota" = c(0.176, 0.233, 0.300, 0.183, 0.109),
+    "urban" = c(FALSE, TRUE), 
+    "MX_region" = c()
+  )
+    "SK" = list(
+    "gender" = c(0.498, 0.000001, 0.502),
+    "income" = rep(.25, 4),
+    "age_quota" = c(0.098, 0.159, 0.274, 0.282, 0.187),
+    "urban" = c(FALSE, TRUE), 
+    "SK_region" = c()
+  )      
   )
   
   quotas <- list("US" = c("gender", "income", "age", "urban", "region", "race"), 
@@ -3451,11 +3476,11 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$urban <- e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
     label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"   
   } else e$urban <- NA
-  e$urban <- case_when(e$country == "US" ~ e$urban,
+  e$urban <- case_when(e$country %in% c("US", "UK", "IT") ~ e$urban,
                        e$country == "DK" ~ e$urbanity > 2,
                        e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
                        TRUE ~ NA)
-  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; "
+  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: urbanity > 20k; "
 
   if ("CC_affected_2050" %in% names(e)) {
     e$CC_affected_min <- 2100
