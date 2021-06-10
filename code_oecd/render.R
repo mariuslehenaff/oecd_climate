@@ -1,6 +1,7 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
 # TODO!: vote, region, flight, size of town, footprint region, etc., standard/investment/tax _effect_, donation, origin
+# TODO: all kinds carbon tax
 # /!\ open the Plots pane at its maximum before running the function TODO: save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
   print(country)  
@@ -79,8 +80,8 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       save_plotly_new_filename(gender_US_comp, width= 470, height=240)})
 
     try({
-      data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), pop_freq[[country]]$age_quota)
-      (age_US_comp <- barres(data = data_age, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("age_quota", data=e, miss=F, return="legend")[1:5]))
+      data_age <- cbind(dataKN("age", data=e[e$age!="Below 18",], miss=F, weights = F), dataKN("age", data=e[e$age!="Below 18",], miss=F, weights = T), pop_freq[[country]]$age)
+      (age_US_comp <- barres(data = data_age, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("age", data=e, miss=F, return="legend")[1:5]))
       save_plotly_new_filename(age_US_comp, width= 560, height=240) })
 
     try({ data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), pop_freq[[country]]$region)
@@ -106,8 +107,8 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(gender_US <- barres(vars = "gender_factor", export_xls = export_xls, df = e, miss = F, labels="Gender"))
       save_plotly_new_filename(gender_US, width= 470, height=140)})
     
-    try({(age_quota_US <- barres(vars = "age_quota", export_xls = export_xls, df = e[e$age_quota!="Below 18",], miss=F, rev = F, labels="Age"))
-      save_plotly_new_filename(age_quota_US, width= 500, height=140) })
+    try({(age_US <- barres(vars = "age", export_xls = export_xls, df = e[e$age!="Below 18",], miss=F, rev = F, labels="Age"))
+      save_plotly_new_filename(age_US, width= 500, height=140) })
     
     try({(region_US <- barres(vars = "region", export_xls = export_xls, df = e, miss=F, labels="Region"))
       save_plotly_new_filename(region_US, width= 560, height=140)})
@@ -484,7 +485,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # labels_policy[6] <- "Financing clean energy in low-income countries" 
     labels_policy[4] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
     labels_policy[5] <- "Financing clean energy in low-income countries" 
-    labels_policy[2] <- "National tax on fossil fuels (+$0.40/gallon)"  # TODO!
+    labels_policy[2] <- paste0("National tax on fossil fuels (+", tax_price_increase[country], ")")  # TODO!
     try({(policy_US <- barres(vars = variables_policy, export_xls = export_xls, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_policy, hover=labels_support))
       save_plotly_new_filename(policy_US, width= 920, height=340)})
     
@@ -840,8 +841,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(gender_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "gender_factor", export_xls = export_xls, df = e, miss = F, labels="Gender"))
       save_plotly_new_filename(gender_US, width= 470, height=fig_height(1*nb_levels))})
     
-    try({(age_quota_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "age_quota", export_xls = export_xls, df = e[e$age_quota!="Below 18",], miss=F, rev = F, labels="Age"))
-      save_plotly_new_filename(age_quota_US, width= 500, height=fig_height(1*nb_levels)) })
+    try({(age_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "age", export_xls = export_xls, df = e[e$age!="Below 18",], miss=F, rev = F, labels="Age"))
+      save_plotly_new_filename(age_US, width= 500, height=fig_height(1*nb_levels)) })
     
     try({(region_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "region", export_xls = export_xls, df = e, miss=F, labels="Region"))
       save_plotly_new_filename(region_US, width= 560, height=fig_height(1*nb_levels))})
@@ -1619,7 +1620,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     labels_tax_transfers_effects_short <<- c("Discourage driving", "Encourage insulation", "Reduce use of fuels", "Reduce air pollution", "Negative economic effect", "Large economic effect", "Costly way to fight CC")
     heatmap_wrapper(vars = variables_tax_transfers_effect, labels = labels_tax_transfers_effects_short, conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_tax_transfers_win_lose, labels = labels_tax_transfers_win_lose, conditions = heatmap_conditions)
-    
+    # , e.g. 0.1€/L)
     labels_policy_short <<- c("Tax on flying (+20%)", "Tax on fossil fuels ($45/tCO2)", "Ban polluting cars in city centers", "Subsidies to low-carbon technos", "Funding clean energy in LDC")
     heatmap_wrapper(vars = variables_policy, labels = labels_policy_short, conditions = heatmap_conditions)
     

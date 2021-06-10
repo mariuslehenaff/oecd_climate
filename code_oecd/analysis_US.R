@@ -67,7 +67,7 @@ usp3all$sector_other[grepl("specify", usp3all$sector_choice)]
 sum(grepl("nformation|IT|^it$|software", usp3all$sector_other)) # TODO! /!\ 10% work in IT
 decrit("gender", data = e)
 decrit("age", data = e)
-decrit("age_quota", data = e)
+decrit("age", data = e)
 decrit("region", data = e)
 decrit("zipcode", data = e)
 decrit("urbanity", data = e) # 35% rural
@@ -299,7 +299,7 @@ summary(lm(policies_self ~ treatment_climate * treatment_policy * (vote == 'Bide
 # Those who haven't watched the video are much more wrong than the others on knowledge questions
 summary(lm(know_treatment_climate ~ watched_climate=='Yes', data = e))
 summary(lm(know_treatment_policy ~ watched_policy=='Yes', data = e))
-summary(lm((age_quota %in% c("50-64", "65+")) ~  watched_policy=='Yes', data = e)) # old people have *less* technical problems
+summary(lm((age %in% c("50-64", "65+")) ~  watched_policy=='Yes', data = e)) # old people have *less* technical problems
 
 end_formula3 <- paste(paste(variables_main_controls_pilot3, collapse = ' + '), " +  treatment") #  treatment_climate * treatment_policy
 
@@ -419,7 +419,7 @@ decrit("tax_transfers_support", data = e)
 
 
 ##### Specific policies #####
-CrossTable(e$age_quota, e$policies_support>0, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
+CrossTable(e$age, e$policies_support>0, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE) 
 
 
 ##### Preferences on climate policies ######

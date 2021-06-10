@@ -26,7 +26,7 @@ labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
 label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal")
 labels_agree <- c("Strongly disagree", "Somewhat disagree", "Neither agree nor disagree", "Somewhat agree", "Strongly agree")
 data_gender <- cbind(dataKN("gender_factor", data=e, miss=F, weights = F), dataKN("gender_factor", data=e, miss=F, weights = T), c(0.5075, 0, 0.4975)) # TODO: remove 0 if there is not "Other" in data
-data_age <- cbind(dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = F), dataKN("age_quota", data=e[e$age_quota!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
+data_age <- cbind(dataKN("age", data=e[e$age!="Below 18",], miss=F, weights = F), dataKN("age", data=e[e$age!="Below 18",], miss=F, weights = T), c(0.118,0.180,0.243,0.2467,0.2118))
 data_region <- cbind(dataKN("region", data=e, miss=F, weights = F), dataKN("region", data=e, miss=F, weights = T), c(0.171,0.208,0.383,0.239))
 data_urban <- cbind(dataKN("urban", data=e, miss=F, weights = F), dataKN("urban", data=e, miss=F, weights = T), c(0.7324))
 data_race <- cbind(dataKN("race", data=e, miss=F, weights = F), dataKN("race", data=e, miss=F, weights = T), c(.134, .185, .080, .601))
@@ -46,7 +46,7 @@ data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vot
 (gender_US_comp <- barres(data = data_gender, export_xls = export_xls, df = e, miss = F, sort = F, labels=labels_comp, legend = dataKN("gender_factor", data=e, miss=F, return="legend")))
 save_plotly(gender_US_comp, width= 470, height=240)
 
-(age_US_comp <- barres(data = data_age, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("age_quota", data=e, miss=F, return="legend")[1:5]))
+(age_US_comp <- barres(data = data_age, export_xls = export_xls, df = e, miss=F, rev = F, sort = F, labels=labels_comp, legend = dataKN("age", data=e, miss=F, return="legend")[1:5]))
 save_plotly(age_US_comp, width= 560, height=240) 
 
 (region_US_comp <- barres(data = data_region, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_comp, legend = dataKN("region", data=e, miss=F, return="legend")))
@@ -67,8 +67,8 @@ save_plotly(vote_US_comp, width= 550, height=240)
 (gender_US <- barres(vars = "gender_factor", export_xls = export_xls, df = e, miss = F, labels="Gender"))
 save_plotly(gender_US, width= 470, height=140)
 
-(age_quota_US <- barres(vars = "age_quota", export_xls = export_xls, df = e[e$age_quota!="Below 18",], miss=F, rev = F, labels="Age"))
-save_plotly(age_quota_US, width= 500, height=140) 
+(age_US <- barres(vars = "age", export_xls = export_xls, df = e[e$age!="Below 18",], miss=F, rev = F, labels="Age"))
+save_plotly(age_US, width= 500, height=140) 
 
 (region_US <- barres(vars = "region", export_xls = export_xls, df = e, miss=F, labels="Region"))
 save_plotly(region_US, width= 560, height=140)
@@ -882,7 +882,7 @@ correlogram("knowledge")
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
-control_variables_w_treatment <- c("race_white_only", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "urban == 1", "treatment")
+control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "vote_agg", "urban == 1", "treatment")
 
 desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC > 0", "willing_limit_driving > 0"), filename = "US_1",
            dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "US should fight CC", "Willing to limit driving"),
@@ -919,6 +919,7 @@ datasummary(vote3 ~ (CO2_emission + CO2_emission_heating + CO2_emission_gas + fl
 datasummary((CO2_emission < 13.7) + (CO2_emission %between% c(13.7, 21.5)) + (CO2_emission >= 21.5) ~ (policies_support + tax_transfers_support + CC_problem + CC_anthropogenic) * Mean, e)
 modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
+# TODO: Questions: what to use for index knowledge (EFA or not)? What to use for vote_agg (non-voters as hypothetical voters or separate category)?
 # TODO: heterogenous treatment Red/Dem; maps; 
 # TODO: Pessimistic w.r.t. future more or less climate friendly?
 # TODO: corr support / CO2_emission

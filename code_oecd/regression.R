@@ -23,7 +23,7 @@ setwd(Paths[Sys.info()[7]])
 
 ##### 2. Regressions #####
 
-control_variables <- c("race_white_only", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum")
+control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "vote_agg")
 cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "vote: Biden", "vote: Trump")
 
 ## Block: Policy views and media consumption
@@ -61,7 +61,7 @@ desc_table(dep_vars = c("transport_work == 'Car or Motorbike'", "transport_work 
 
 
 ## Post-Treatment
-control_variables_w_treatment <- c("race_white_only", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age_quota", "vote_dum", "treatment")
+control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "vote_agg", "treatment")
 cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "vote: Biden", "vote: Trump", "Climate treatment only", "Policy treatment only", "Both treatments")
 
 
@@ -103,7 +103,7 @@ desc_table(dep_vars = c("net_zero_feasible >= 1", "CC_affects_self >= 1", "CC_wi
            dep.var.caption = c(""), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment)
 
 ## Generations most affected
-#control_variables_w_treatment_usp <- c("race_white_only", "female", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_dum")
+#control_variables_w_treatment_usp <- c("dominant_origin", "female", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_agg")
 #cov_lab_w_treatment_usp <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump")
 #
 #desc_table(dep_vars = c("CC_affected_1960", "CC_affected_1990", "CC_affected_2020", "CC_affected_2050", "CC_affected_none"), filename = "CC_affected",
@@ -389,11 +389,11 @@ models[["Policies support (affected+knowledge)"]] <- lm(as.formula(paste("polici
 models[["Policies support (affected+knowledge efa)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge_efa"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Policies support (all)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + '))), data = e, weights = e$weight)
 
-cov_lab_mod <- c("race_white_only1" = "race: White only", "femaleTRUE" = "Female", "children1" = "Children", "collegeNo college" = "No college",
+cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "children1" = "Children", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "income_factorQ2" = "Income Q2", "income_factorQ3" = "Income Q3", 
-                 "income_factorQ4" = "Income Q4", "age_quota25-34" = "age: 25-34", "age_quota35-49" = "age: 35-49", "age_quota50-64" = "age: 50-64", 
-                 "age_quota65+" = "age: 65+", "vote_dumBiden" = "vote: Biden", "vote_dumTrump" = "vote: Trump", "index_affected" = "Index affected",
+                 "income_factorQ4" = "Income Q4", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
+                 "age65+" = "age: 65+", "vote_aggBiden" = "vote: Biden", "vote_aggTrump" = "vote: Trump", "index_affected" = "Index affected",
                  "index_knowledge" = "Index knowledge", "index_knowledge_efa" = "Index knowledge EFA", "CO2_emission" = "CO2 emissions (t/year)",
                  "urbanTRUE" = "Urban")
 coef_support_indexes_US <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 

@@ -17,16 +17,17 @@ for (c in euro_countries) {
   inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
   inc_quartiles[c,2] <- inc_deciles[c,5]
   inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
-countries <- c("US", euro_countries, "JP", "IN", "ID", "SA")  # countries[sample(1:12, 1)]
-countries_names <- c("United States", euro_countries_names, "Japan", "India", "Indonesia", "South Africa") # TODO? USA? UK?
-Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland", "Spain", "the U.K.", "Japan", "India", "Indonesia", "South Africa")
-country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Indian", "Indonesian", "South African")
-names(countries_names) <- names(country_names) <- names(Country_names) <- countries
+countries <- c("US", euro_countries, "JP", "CN", "IN", "ID", "SA")  # countries[sample(1:12, 1)]
+countries_names <- c("United States", euro_countries_names, "Japan", "China", "India", "Indonesia", "South Africa") # TODO? USA? UK?
+Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland", "Spain", "the U.K.", "Japan", "China", "India", "Indonesia", "South Africa")
+country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Chinese", "Indian", "Indonesian", "South African")
+tax_price_increase <- c("$0.40/gallon", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "0.40 zł/L", "0.10 €/L", "0.08 £/L",	"¥12/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.6/L")
+names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- countries
 
 { 
   levels_quotas <- list("gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
                  "income" = c("Q1", "Q2", "Q3", "Q4"),
-                 "age_quota" = c("18-24", "25-34", "35-49", "50-64", "65+"),
+                 "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
                  "urban" = c(FALSE, TRUE),
                  "US_region" = c("Midwest","Northeast", "South", "West"),
                  "US_core_metropolitan" = c(FALSE, TRUE),
@@ -45,7 +46,7 @@ names(countries_names) <- names(country_names) <- names(Country_names) <- countr
   pop_freq <- list("US" = list(
     "gender" = c(0.5074,0.000001,0.4974),
     "income" = c(0.2034,0.239,0.2439,0.3137),
-    "age_quota" = c(0.118,0.180,0.243,0.2467,0.2118),
+    "age" = c(0.118,0.180,0.243,0.2467,0.2118),
     "urban" = c(0.2676,0.7324),
     "US_region" = c(0.171,0.208,0.383,0.239),
     "US_core_metropolitan" = c(0.2676,0.7324),
@@ -55,7 +56,7 @@ names(countries_names) <- names(country_names) <- names(Country_names) <- countr
   "DK" = list(
     "gender" = c(0.503, 0.000001, 0.497),
     "income" = c(0.2634, 0.2334, 0.2782, 0.2249),
-    "age_quota" = c(0.110, 0.165, 0.230, 0.245, 0.251),
+    "age" = c(0.110, 0.165, 0.230, 0.245, 0.251),
     "urban" = c(0.4703, 0.5297),
     "DK_region" = c(0.3176, 0.2281, 0.1011, 0.1436, 0.2095)
   ),
@@ -63,7 +64,7 @@ names(countries_names) <- names(country_names) <- names(Country_names) <- countr
     "gender" = c(0.516, 0.000001, 0.484),
     "income" = rep(.25, 4),
     "urban" = c(0.405, 0.595),
-    "age_quota" = c(0.120,0.150,0.240,0.240,0.250),
+    "age" = c(0.120,0.150,0.240,0.240,0.250),
     "FR_region" = c(0.18920, 0.20041, 0.21968, 0.13980, 0.25097),
     "FR_urban_category" = c(0.595, 0.184, 0.222),
     "FR_education" = c(0.290, 0.248, 0.169, 0.293),
@@ -74,79 +75,79 @@ names(countries_names) <- names(country_names) <- names(Country_names) <- countr
   "IN" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
     "IN_region" = c()
   ),
   "IT" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "IT_region" = c()
   ),
   "UK" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "UK_region" = c()
   ),
   "SA" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "SA_region" = c()
   ),
   "ES" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "ES_region" = c()
   ),
   "PL" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "PL_region" = c()
   ),
   "JP" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "JP_region" = c()
   ),
   "DE" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "DE_region" = c()
   ),
   "ID" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "ID_region" = c()
   ),
   "CN" = list(
     "gender" = c(),
     "income" = rep(.25, 4),
-    "age_quota" = c(),
+    "age" = c(),
     "urban" = c(FALSE, TRUE), 
     "CN_region" = c()
   )
   )
   
-  quotas <- list("US" = c("gender", "income", "age_quota", "urban", "region", "race"), 
-                 "US_vote" = c("gender", "income", "age_quota", "region", "urban", "race", "vote_2020"),
-                 "DK" = c("gender", "income", "age_quota", "region", "urban"),
-                 "FR" = c("gender", "income", "age_quota", "region", "education", "urban_category")
+  quotas <- list("US" = c("gender", "income", "age", "urban", "region", "race"), 
+                 "US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
+                 "DK" = c("gender", "income", "age", "region", "urban"),
+                 "FR" = c("gender", "income", "age", "region", "education", "urban_category")
                  )
 }
 
@@ -188,7 +189,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
     "distr",
     "lang",
     "gender",
-    "age",
+    "age_exact",
     "region",
     "zipcode",
     "urbanity",
@@ -487,7 +488,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "distr",
       "lang",
       "gender",
-      "age",
+      "age_exact",
       "region",
       "zipcode",
       "urbanity",
@@ -786,7 +787,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "lang",
       "consent",
       "gender",
-      "age_quota",
+      "age",
       "zipcode",
       "urbanity",
       "race_white",
@@ -1096,7 +1097,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "lang",
       "consent",
       "gender",
-      "age_quota",
+      "age",
       "zipcode",
       "urbanity",
       "race_white",
@@ -1402,7 +1403,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "lang",
       "consent",
       "gender",
-      "age_quota",
+      "age",
       "region", 
       "zipcode",
       "urbanity",
@@ -1712,7 +1713,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "lang",
       "consent",
       "gender",
-      "age_quota",
+      "age",
       "origin_france",
       "origin_europe",
       "origin_africa",
@@ -2686,9 +2687,9 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "urban", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "urban")
-  variables_main_controls_pilot12 <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_dum", "as.factor(urbanity)", "urban")
-  variables_main_controls_pilot3 <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "left_right", "vote_dum", "as.factor(urbanity)", "urban", "rush")
-  variables_main_controls <<- c("gender", "age_quota", "income", "education", "hit_by_covid", "employment_agg", "children", "left_right", "vote_dum", "as.factor(urbanity)", "urban", "rush")
+  variables_main_controls_pilot12 <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "vote_agg", "as.factor(urbanity)", "urban")
+  variables_main_controls_pilot3 <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_agg", "left_right", "vote_agg", "as.factor(urbanity)", "urban", "rush")
+  variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_agg", "children", "left_right", "vote_agg", "as.factor(urbanity)", "urban", "rush")
   variables_pro <<- names(e)[grepl('^pro_', names(e))]
   variables_know_treatment_climate <<- c("know_local_damage", "know_temperature_2100")
   if ("know_standard" %in% names(e)) variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
@@ -3523,13 +3524,13 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$rush <- e$rush_treatment | (e$duration < 15)
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
   
-  # [deprecated] problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
-  e$race_white_only <- 0 # TODO! remove for else than US
-  e$race_white_only[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE] <- 1
-  #e[e$race_black == TRUE, "race"] <- "Black"
-  #e[e$race_hispanic == TRUE, "race"] <- "Hispanic"
-  #e[e$race_asian == TRUE | e$race_native == TRUE | e$race_hawaii == TRUE | e$race_other_choice == TRUE | e$race_pnr == TRUE , "race"] <- "Other"
-  e$race_white_only <- as.factor(e$race_white_only)
+  # # [deprecated] problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
+  # e$race_white_only <- 0 # 
+  # e$race_white_only[e$race_white == TRUE & e$race_black == FALSE & e$race_hispanic == FALSE & e$race_asian == FALSE & e$race_native == FALSE] <- 1
+  # #e[e$race_black == TRUE, "race"] <- "Black"
+  # #e[e$race_hispanic == TRUE, "race"] <- "Hispanic"
+  # #e[e$race_asian == TRUE | e$race_native == TRUE | e$race_hawaii == TRUE | e$race_other_choice == TRUE | e$race_pnr == TRUE , "race"] <- "Other"
+  # e$race_white_only <- as.factor(e$race_white_only)
   
   #gender: Other set as Male for the moment, see if lot of similar answers in final data
   e$female <- e$gender == "Female"
@@ -3559,33 +3560,23 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   if ("age" %in% names(e)) {
     e$age_agg <- NULL
-    e[e$age %in% 18:29, "age_agg"] <- "18-29"
-    e[e$age %in% 30:49, "age_agg"] <- "30-49"
-    e[e$age %in% 50:87, "age_agg"] <- "50-87"
+    e$age_agg[e$age_exact %in% 18:29] <- "18-29"
+    e$age_agg[e$age_exact %in% 30:49] <- "30-49"
+    e$age_agg[e$age_exact %in% 50:87] <- "50-87"
     e$age_agg <- as.factor(e$age_agg)
-    e$age_quota <- NULL
-    e$age_quota[e$age %in% 18:24] <- "18-24"
-    e$age_quota[e$age %in% 25:34] <- "25-34"
-    e$age_quota[e$age %in% 35:49] <- "35-49"
-    e$age_quota[e$age %in% 50:64] <- "50-64"
-    e$age_quota[e$age > 64] <- "65+" 
+    e$age <- NULL
+    e$age[e$age_exact %in% 18:24] <- "18-24"
+    e$age[e$age_exact %in% 25:34] <- "25-34"
+    e$age[e$age_exact %in% 35:49] <- "35-49"
+    e$age[e$age_exact %in% 50:64] <- "50-64"
+    e$age[e$age_exact > 64] <- "65+" 
   } else { 
-    e$age_quota[e$age_quota %in% text_18_24] <- "18-24"
-    e$age_quota[e$age_quota %in% text_25_34] <- "25-34"
-    e$age_quota[e$age_quota %in% text_35_49] <- "35-49"
-    e$age_quota[e$age_quota %in% text_50_64] <- "50-64"
-    e$age_quota[e$age_quota %in% text_65_] <- "65+" 
+    e$age[e$age %in% text_18_24] <- "18-24"
+    e$age[e$age %in% text_25_34] <- "25-34"
+    e$age[e$age %in% text_35_49] <- "35-49"
+    e$age[e$age %in% text_50_64] <- "50-64"
+    e$age[e$age %in% text_65_] <- "65+" 
   }
-  
-  # political position
-  # AF TODO I'd rather use the dummy vote=='Biden' than a variable vote_dum with 4 modalities
-  e$vote_dum <- as.character(e$vote)
-  if (country == "US") {
-    e$vote_dum[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
-    if ("Other" %in% levels(as.factor(e$vote_dum))) e$vote_dum <- relevel(as.factor(e$vote_dum), "Other") }
-  # # e[e$vote_participation == 2, "vote_dum"] <- "Other" # add non-voters as others
-  # # e$vote_dum <- as.factor(e$vote_dum)
-  # # e$vote_dum <- relevel(e$vote_dum, ref ="Other")
   
   e$nb_origin <- 0
   if ("race_white" %in% names(e)) {
@@ -3597,17 +3588,44 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
     e$origin <- e$race    
     for (v in variables_origin) e$nb_origin[e[[v]]==T] <- e$nb_origin[e[[v]]==T] + 1
+    e$dominant_origin <- e$race == "White only"
   } else {
     variables_origin <<- names(e)[grepl('origin_', names(e)) & !grepl('other$', names(e))]
     e$origin <- NA
+    prop_dominant <- 0
     for (v in variables_origin) {
+      if (sum(!is.na(e[[v]])) > prop_dominant) {
+        prop_dominant <- sum(!is.na(e[[v]]))
+        e$dominant_origin <- !is.na(e[[v]])  }
       e$origin[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])]
       e$nb_origin[!is.na(e[[v]])] <- e$nb_origin[!is.na(e[[v]])] + 1 }
     label(e$origin) <- "origin: Origin of the respondent. In case of multiple origins (nb_origins > 1), only one is retained (and not the main one in the country)."
   }
   label(e$nb_origin) <- "nb_origin: Number of origins (or race) of the respondent."
+  label(e$dominant_origin) <- "dominant_origin: T/F Respondent's origin is the dominant one in their country (US: white only; Other: national)."
   
   e$income_factor <- as.factor(e$income)
+  
+  # political position
+  e$vote_agg <- as.character(e$vote)
+  if (country == "US") {
+    e$vote_agg[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
+    if ("Other" %in% levels(as.factor(e$vote_agg))) e$vote_agg <- relevel(as.factor(e$vote_agg), "Other")
+  # # e$vote_agg[e$vote_participation != "Yes] <- "Other" # add non-voters as others
+  # # e$vote_agg <- as.factor(e$vote_agg)
+  # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
+  } else if (country == "DK") {
+    e$vote_agg[grepl("Macron", e$vote)] <- ""
+    e$vote_agg[grepl("Macron", e$vote)] <- ""
+    e$vote_agg[grepl("Macron", e$vote)] <- ""
+    e$vote_agg[grepl("Macron", e$vote)] <- ""
+  } else if (country == "FR") {
+    e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
+    e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
+    e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
+    e$vote_agg[grepl("Le Pen|Dupont-Aignan", e$vote)] <- "Extrême-droite"
+    e$vote_agg[grepl("Cheminade|Lassalle|PNR", e$vote)] <- "PNR ou autre"
+  }
   
   if (country == "US") {
     e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
@@ -3937,7 +3955,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   # weighting <- function(d, printWeights = T, vote = F) { 
   #   # d <- data
   #   d$core_metropolitan[is.na(d$core_metropolitan)] <- "NA"
-  #   d$age_quota[is.na(d$age_quota)] <- "NA"
+  #   d$age[is.na(d$age)] <- "NA"
   #   d$region[is.na(d$region)] <- "NA"
   #   
   #   unweigthed <- svydesign(ids=~1, data=d)
@@ -3958,11 +3976,11 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   #                                                                   Freq=nrow(d)*c(0.171,0.208,0.383,0.239, 0.0001))
   #   else region <- data.frame(region = c("Midwest","Northeast", "South", "West"), 
   #                             Freq=nrow(d)*c(0.171,0.208,0.383,0.239))
-  #   if ("NA" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "NA"), 
+  #   if ("NA" %in% levels(as.factor(d$age))) age <- data.frame(age = c("18-24", "25-34", "35-49", "50-64", "65+", "NA"), 
   #                                                                         Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
-  #   else if ("Below 18" %in% levels(as.factor(d$age_quota))) age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+", "Below 18"), 
+  #   else if ("Below 18" %in% levels(as.factor(d$age))) age <- data.frame(age = c("18-24", "25-34", "35-49", "50-64", "65+", "Below 18"), 
   #                                                                                    Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118, 0.0001))
-  #   else age_quota <- data.frame(age_quota = c("18-24", "25-34", "35-49", "50-64", "65+"), 
+  #   else age <- data.frame(age = c("18-24", "25-34", "35-49", "50-64", "65+"), 
   #                                Freq=nrow(d)*c(0.118,0.180,0.243,0.2467,0.2118)) # France: c(0.120,0.150,0.240,0.240,0.250)
   #   # revenu <- data.frame(revenu = c(), Freq=nrow(d)*c())
   #   # diplome4 <- data.frame(diplome4 = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"), 
@@ -3970,10 +3988,10 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   #   race <- data.frame(race = c("White only", "Hispanic", "Black", "Other"), Freq=nrow(d)*c(.601, .185, .134, .080))
   #   if ("vote_2020" %in% names(d)) vote_2020 <- data.frame(vote_2020 = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"), Freq=nrow(d)*c(c(0.342171, 0.312823, 0.345006)*(nrow(d)-sum(d$vote_2020=="PNR/no right")), sum(d$vote_2020=="PNR/no right"))/nrow(d))
   #   
-  #   if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race,~vote_2020),
-  #                           population.margins = list(gender,income,region,core_metropolitan,age_quota,race,vote_2020))
-  #   else raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age_quota,~race),
-  #                      population.margins = list(gender,income,region,core_metropolitan,age_quota,race))
+  #   if (vote) raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age,~race,~vote_2020),
+  #                           population.margins = list(gender,income,region,core_metropolitan,age,race,vote_2020))
+  #   else raked <- rake(design= unweigthed, sample.margins = list(~gender,~income,~region,~core_metropolitan,~age,~race),
+  #                      population.margins = list(gender,income,region,core_metropolitan,age,race))
   #   
   #   if (printWeights) {    print(summary(weights(raked))  )
   #     print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique
