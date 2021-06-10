@@ -43,6 +43,7 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
                  "IN_region" = c("Northern", "Southern", "Central", "Eastern", "Western", "Rest"),
                  "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
                  "UK_region" = c("London", "Rest of England", "Scotland", "Wales", "Northern Ireland"),
+                 "UK_urban_category" = c("Rural", "Large_urban", "City_Town")
                  "PL_region" = c("North-West", "North-East", "Central", "South-West", "Central-East", "South-East"),
                  "DE_region" = c("Northern Germany", "Western Germany", "Central Germany", "Eastern Germany", "Southern Germany")
   )
@@ -94,7 +95,8 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
     "gender" = c(0.504, 0.000001, 0.496),
     "income" = rep(.25, 4),
     "age_quota" = c(0.102, 0.168, 0.244, 0.246, 0.241),
-    "urban" = c(FALSE, TRUE), 
+    "urban" = c(FALSE, TRUE),
+    "UK_urban_category" = c(0.2175999, 0.3859355, 0.3964646),
     "UK_region" = c(0.1340, 0.7090, 0.0820, 0.0470, 0.0280)
   ),
   "SA" = list(
@@ -146,21 +148,21 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
     "urban" = c(FALSE, TRUE), 
     "CN_region" = c()
   )
-    "BR" = list(
+  "BR" = list(
     "gender" = c(0.512, 0.000001, 0.488),
     "income" = rep(.25, 4),
     "age_quota" = c(0.149, 0.215, 0.296, 0.212, 0.128),
     "urban" = c(FALSE, TRUE), 
     "BR_region" = c()
   )
-    "MX" = list(
+  "MX" = list(
     "gender" = c(0.518, 0.000001, 0.482),
     "income" = rep(.25, 4),
     "age_quota" = c(0.176, 0.233, 0.300, 0.183, 0.109),
     "urban" = c(FALSE, TRUE), 
     "MX_region" = c()
   )
-    "SK" = list(
+  "SK" = list(
     "gender" = c(0.498, 0.000001, 0.502),
     "income" = rep(.25, 4),
     "age_quota" = c(0.098, 0.159, 0.274, 0.282, 0.187),
@@ -3476,11 +3478,12 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$urban <- e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
     label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"   
   } else e$urban <- NA
-  e$urban <- case_when(e$country %in% c("US", "UK", "IT") ~ e$urban,
+  e$urban <- case_when(e$country %in% c("US", "IT") ~ e$urban,
                        e$country == "DK" ~ e$urbanity > 2,
                        e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
+                       e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                        TRUE ~ NA)
-  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: urbanity > 20k; "
+  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: urbanity > 20k; UK: Urban city or town, or conurbation and large urban area; "
 
   if ("CC_affected_2050" %in% names(e)) {
     e$CC_affected_min <- 2100
