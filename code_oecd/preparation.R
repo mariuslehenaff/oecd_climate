@@ -86,7 +86,7 @@ names(countries_names) <- names(country_names) <- names(Country_names) <- countr
     "gender" = c(0.524, 0.000001, 0.476),
     "income" = rep(.25, 4),
     "age_quota" = c(0.080, 0.122, 0.242, 0.271, 0.285),
-    "urban" = c(FALSE, TRUE), 
+    "urban" = c(0.4699139, 0.5300861), 
     "IT_region" = c(0.2666, 0.1931, 0.1991, 0.2312, 0.1100)
   ),
   "UK" = list(
@@ -3479,7 +3479,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                        e$country == "DK" ~ e$urbanity > 2,
                        e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
                        TRUE ~ NA)
-  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; "
+  label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: urbanity > 20k; "
 
   if ("CC_affected_2050" %in% names(e)) {
     e$CC_affected_min <- 2100
