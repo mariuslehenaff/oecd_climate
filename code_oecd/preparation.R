@@ -3,7 +3,7 @@
 
 source(".Rprofile")
 
-# TODO!!: CC_field, feedback, consistency_answers, score_trust, vote, ranking vs. order of display
+# TODO!!: CC_field, feedback, consistency_answers/quality (max_footprint_reg = 1), score_trust, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
@@ -39,7 +39,7 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
                  "US_race" = c("White only", "Hispanic", "Black", "Other"),
                  "US_vote_2020" = c("Biden", "Trump", "Other/Non-voter"), #, "PNR/no right"),
                  "DK_region" = c("Hovedstaden", "Midtjylland", "Nordjylland", "Sjælland", "Syddanmark"),
-                 "FR_region" = c("IDF", "Nord-Ouest", "Nord-Est", "Sud-Ouest", "Sud-Est"),
+                 "FR_region" = c("autre", "IDF", "Nord-Est", "Nord-Ouest", "Sud-Est", "Sud-Ouest"),
                  "FR_urban_category" = c("GP", "Couronne_GP", "Other"),
                  "FR_education" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
                  "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
@@ -76,7 +76,7 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
     "income" = rep(.25, 4),
     "urban" = c(0.405, 0.595),
     "age" = c(0.120,0.150,0.240,0.240,0.250),
-    "FR_region" = c(0.18920, 0.20041, 0.21968, 0.13980, 0.25097),
+    "FR_region" = c(0.000001, 0.18920, 0.21968, 0.20041, 0.25097, 0.13980),
     "FR_urban_category" = c(0.595, 0.184, 0.222),
     "FR_education" = c(0.290, 0.248, 0.169, 0.293),
     "FR_CSP" = c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008),
@@ -3074,7 +3074,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$urbanity <- as.item(temp, labels = structure(c(0:5),
                         # names = c("Rural","Small town","Large town","Small city","Medium-size city","Large city")),
                         names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")), 
-                      annotation=paste(Label(e$urbanity), "(Beware, the bins are not defined the same way in each country.)"))
+                      annotation=paste(Label(e$urbanity), "(Beware, the bins are not defined the same way in each country: for DK, 5/20/50/250/3M are replaced by 1/10/20/100/1.2M)"))
   
   if ("speaks_well" %in% names(e)) temp <-  (e$speaks_well %in% text_speaks_well) + 2 * (e$speaks_well %in% text_speaks_native) - 1 * (e$speaks_well %in% text_speaks_no) 
   if ("speaks_well" %in% names(e)) e$speaks_well <- as.item(temp, labels = structure(c(-1:2),
@@ -3520,6 +3520,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     if ("flights_3y" %in% names(e)) {
       e$flights_agg <- 1*(e$flights_3y == "1") + 2*(e$flights_3y == "2") + 3.5*(e$flights_3y == "3 or 4") + 6*(e$flights_3y == "5 to 7") + 11*(e$flights_3y == "8 to 14") + 20*(e$flights_3y == "15 or more")
       e$flights_agg <- as.item(e$flights_agg, labels = structure(c(0,1,2,3.5,6,11,20), names = c("0", "1", "2", "3 or 4", "5 to 7", "8 to 14", "15 or more")), annotation="flights_agg: Round-trip flights taken per year (on average).")      
+      e$flights_3y <- as.item(e$flights_agg, labels = structure(c(0,1,2,3.5,6,11,20), names = c("0", "1", "2", "3 or 4", "5 to 7", "8 to 14", "15 or more")), annotation="flights_3y: Round-trip flights taken between 2017 and 2019.")      
       e$flights_agg <- round(e$flights_agg/3, 3)
     } else {
       e$flights_agg <- 1*(e$flights_agg == "1") + 2*(e$flights_agg == "2") + 3.5*(e$flights_agg == "3 or 4") + 7*(e$flights_agg == "5 to 10") + 12*(e$flights_agg == "10 or more")
@@ -3656,7 +3657,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
   } else if (country == "FR") {
     temp <- -2*grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","NSP ou autre")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
+    e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Hamon|Mélenchon|Arthaud|Poutou; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
     # e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
     # e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
@@ -3834,17 +3835,23 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     label(e$know_footprint_transport) <- "know_footprint_transport: Correct answer to the ranking of transport footprints"
     label(e$know_footprint_pc) <- "know_footprint_pc: Correct answer to the ranking of per capita footprints (when there is a tie in the respondent's ranking, we solve it to their advantage)"
     if ("footprint_reg_US" %in% names(e)) label(e$know_footprint_region) <- "know_footprint_region: Correct answer to the ranking of region footprints (when there is a tie in the respondent's ranking, we solve it to their advantage)"
-    e$most_footprint_el <- e$most_footprint_fd <- e$most_footprint_tr <- e$most_footprint_reg <- e$most_footprint_pc <- e$least_footprint_pc <- e$least_footprint_el <- e$least_footprint_fd <- e$least_footprint_tr <- e$least_footprint_reg <- "PNR"
+    e$most_footprint_el <- e$most_footprint_fd <- e$most_footprint_tr <- e$most_footprint_reg <- e$most_footprint_pc <- e$least_footprint_pc <- e$least_footprint_el <- e$least_footprint_fd <- e$least_footprint_tr <- e$least_footprint_reg <- e$least_footprint_no_pnr_reg <- e$least_footprint_no_pnr_pc <- "PNR"
     for (v in c("el", "fd", "tr", "reg", "pc")) {
       for (i in Variables_footprint[[v]]) {
         if (i %in% names(e)) {
           if (v %in% c("el", "fd", "tr")) e[[paste("most_footprint", v, sep="_")]][e[[i]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
           if (v %in% c("el", "fd", "tr")) e[[paste("least_footprint", v, sep="_")]][e[[i]]==3] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i)) # +1*(v %in% c("reg", "pc"))
           if (v %in% c("reg", "pc")) e[[paste("most_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
-          if (v %in% c("reg", "pc")) e[[paste("least_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==4] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+          if (v %in% c("reg", "pc")) {
+            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==2] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==3] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==4] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+            e[[paste("least_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==4] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i)) }
       } }
       e[[paste("most_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("most_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("most_footprint_", v, ": Largest footprint of type ", v, " according to the respondent", sep=""))
       e[[paste("least_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_", v, ": Smallest footprint of type ", v, " according to the respondent", sep=""))
+      if (v %in% c("reg", "pc")) e[[paste("least_footprint_no_pnr", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint_no_pnr", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_no_pnr_", v, ": Smallest footprint of type ", v, " according to the respondent. In case of ties, a region is picked in this order of priority: IN,CN,EU,US", sep=""))
     }
   }
   

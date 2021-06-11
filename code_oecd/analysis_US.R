@@ -64,7 +64,7 @@ usp3all$sector_other[grepl("specify", usp3all$sector_choice)]
 # HEA Health 86
 # OSE Other Services 36 - 39, 45 - 47, 53 - 63, 68 - 97
 # OIN Other Industries
-sum(grepl("nformation|IT|^it$|software", usp3all$sector_other)) # TODO! /!\ 10% work in IT
+sum(grepl("nformation|IT|^it$|software", usp3all$sector_other)) 
 decrit("gender", data = e)
 decrit("age", data = e)
 decrit("age", data = e)

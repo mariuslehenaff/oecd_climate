@@ -685,7 +685,7 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
                     rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F) {
   if (nolabel & length(labels)==1) labels <- "" 
   if (is.data.frame(df)) df <- list(df)
-  if (!missing(along)) levels <- rev(Levels(df[[1]][[along]]))
+  if (!missing(along)) levels <- sub("^\\*", "", rev(Levels(df[[1]][[along]])))
   if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
   if (!missing(along) & missing(labels)) labels <- paste(along, levels, sep=": ")
   if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels, parentheses = parentheses) 
