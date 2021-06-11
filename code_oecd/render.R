@@ -1,7 +1,7 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO: size of town (DK has not same bins), all kinds carbon tax
-# /!\ open the Plots pane at its maximum before running the function TODO: save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
+# TODO: size of town (DK has not same bins), all kinds carbon tax, translation, save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
+# /!\ open the Plots pane at its maximum before running the function
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
   print(country)  
   start <- Sys.time()
@@ -43,7 +43,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
   if (on_control) e <- e[e$treatment=="None",]
   
   if (figures) {
-    ##### Pre-treatment ## #####
+    ##### Clouds #####
     
     try({ stopwords <- unlist(sapply(c("danish", "french", "english", "german", "italian", "spanish"), function(v) stopwords(v)))
     # stopwords <<- unlist(sapply(c("danish", "french", "english", "german", "italian", "spanish"), function(v) stopwords(v)))
@@ -54,7 +54,37 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", max.words = 70) # TODO save
     rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = stopwords, colorPalette = "Blues", max.words = 70) # Spectral
     save_plot(filename = paste0(folder, "comment_field", replacement_text), height = 400, width = 400)  })
-        
+    
+    ##### Correlograms ##### TODO: labels
+    try({for (grep in c("_fair", "_cost_effective", "_win_lose_self", "_win_lose_poor", "_win_lose_rich", "_win_lose_middle",
+                        "_win_lose_rural", "_large_effect", "_negative_effect", "standard_", "investments_", "tax_transfers_", "knowledge")) {
+      correlogram(grep, df = e)
+      save_plot(filename = sub("__", "_", paste0(folder, "corr_", grep, replacement_text)), height = 700, width = 700)   }
+      
+      correlogram(vars = c(paste(names_policies, "support", sep="_"), "policies_support"))
+      save_plot(filename = paste0(folder, "corr_support", replacement_text), height = 400, width = 400)
+      
+      correlogram(vars = c(variables_knowledge, "index_knowledge", "index_knowledge_efa")) # TODO!: why so much weight anthropogenic EFA?
+      save_plot(filename = paste0(folder, "corr_knowledge", replacement_text), height = 700, width = 700)
+      
+      correlogram(vars = c(variables_affected_index, "index_affected")) # TODO!: why negative corr?
+      save_plot(filename = paste0(folder, "corr_affected", replacement_text), height = 700, width = 700)})
+
+
+    # correlogram("_fair")
+    # correlogram("_cost_effective")
+    # correlogram("_win_lose_self")
+    # correlogram("_win_lose_poor")
+    # correlogram("_win_lose_rich")
+    # correlogram("_win_lose_middle")
+    # correlogram("_win_lose_rural")
+    # correlogram("_large_effect")
+    # correlogram("_negative_effect")
+    # correlogram("standard_")
+    # correlogram("investments_")
+    # correlogram("tax_transfers_")
+    # correlogram("knowledge")
+    
     # ##### 1. Demographics ##### TODO: comp, i.e. weights
     labels_comp <- c("Sample: non-weighted", "Sample: weighted", "Population")
     label_great_deal <- c("Not at all"," A little","Moderately","A lot","A great deal")
@@ -797,22 +827,6 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     ## Other
     try({(wtp_US_anthropogenic <- barres12(vars = "wtp", export_xls = export_xls, df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, labels="WTP to limit global warming ($/year)"))
       save_plotly_new_filename(wtp_US_anthropogenic, width= 830, height=220)})
-    
-    ##### Correlograms ##### TODO!: save, database
-    # correlogram("_fair")
-    # correlogram("_cost_effective")
-    # correlogram(vars = c(paste(names_policies, "support", sep="_"), "policies_support"))
-    # correlogram("_win_lose_self")
-    # correlogram("_win_lose_poor")
-    # correlogram("_win_lose_rich")
-    # correlogram("_win_lose_middle")
-    # correlogram("_win_lose_rural")
-    # correlogram("_large_effect")
-    # correlogram("_negative_effect")
-    # correlogram("standard_")
-    # correlogram("investments_")
-    # correlogram("tax_transfers_")
-    # correlogram("knowledge")  
     
     missing_figures <- setdiff(sub("_US", "", list.files("../figures/US")), sub(replacement_text, "", list.files(folder)))
     cat(paste0(length(missing_figures), " Missing figures for ", country, ": "))
@@ -1570,12 +1584,15 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       }
     }
     
-    # TODO! heatmap with variables_affected_index + index_affected
-    # Missing: TODO! vote_participation left_right heating, gas_expenses/emissions, urban "duration", know_treatment_policy "Voted in last election",  "Attention score to policy treatment",
+    # Missing in socio: TODO! vote_participation left_right heating, gas_expenses/emissions, urban "duration", know_treatment_policy "Voted in last election",  "Attention score to policy treatment",
     main_variables_socio <<- c("interested_politics", "hit_by_covid", "polluting_sector", "can_trust_people", "can_trust_govt", "view_govt", "availability_transport")
     # interested_politics: >= A lot; hit_by_covid: -1/1; polluting_sector: T/F; can_trust_people, govt: >= agree; view_govt: -1/0/1; know_treatment_policy: 0/1/2; availability_transport: >= fair
     labels_main_socio <<- c("Interested in politics", "HH member lost income or job due to pandemic", "Works in a polluting sector", "Most people can be trusted", "Government could be trusted in last 10 years", "Government should do more", "Availability of public transport")
     heatmap_wrapper(vars = main_variables_socio, labels = labels_main_socio, conditions = heatmap_conditions, name = "main_socio")
+    
+    main_variables_affected <<- c(variables_affected_index[c(1,2,5:7)], "index_affected")
+    labels_affected <<- c("Current/past job in a polluting sector", "Nb activities by car/motorbike", "Availability of transport", "Size of agglomeration", "Urban", "Index Affected by CC")
+    heatmap_wrapper(vars = main_variables_affected, labels = labels_affected, conditions = heatmap_conditions, name = "affected")
     
     main_variables_behavior <<- c("flights_agg", "flights_agg", "frequency_beef", "transport_work", "CC_talks", "member_environmental_orga")
     # future_richness: >= richer, net_zero_feasible, CC_affects_self, effect_halt_CC_lifestyle: >= A lot; effect_halt_CC..: >= positive; CC_will_end: >= somewhat likely
@@ -1655,6 +1672,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     labels_tax_short <<- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructure", "Subsidies to low-carbon technos", "Reduction in the deficit")
     heatmap_wrapper(vars = variables_tax, labels = labels_tax_short, conditions = heatmap_conditions)
     
+    ##### Print missing figures #####
     missing_figures <- setdiff(sub("_US", "", list.files("../figures/US")), sub(replacement_text, "", list.files(folder)))
     cat(paste0(length(missing_figures), " Missing figures for: "))
     missing_types <- c("_comp.png", "_pol.png", "_urb.png", "_vote.png")
