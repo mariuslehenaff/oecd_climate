@@ -288,6 +288,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   # /!\ always run first with nolabel = T to check that the order of indep_labels correspond to the one displayed
   # dep_vars: either a variable name (automatically repeated if needed) or a list of variable names (of length the number of columns)
   # (in)dep_vars accept expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
+  # /!\ To appear in the table, they should be written without parentheses and with due space, e.g. "var > 0" and not "(var>0)"
   # indep_vars is the list of potential covariates, they are by default all included by 
   # indep_vars_included can be set to a list (of length the number of columns) of booleans or variable names to specify which covariates to include in each column
   # keep is a vector of regular expressions allowing to specify which covariates to display (by default, all except the Constant)
@@ -580,6 +581,7 @@ data1 <- function(vars, data=e, weights=T) {
   return( matrix(res, ncol=length(vars)) )
 }
 dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE) {
+  missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "PNR or other", "NSP ou autre", "PNR ou autre")
   if (is.null(data[['weight']])) weights <- F # TODO? warning
   mat <- c()
   if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !grepl("item", class(data[[var]]))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
@@ -587,18 +589,18 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
   if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
   else if (is.null(annotation(v))) levels <- levels(v)
   else levels <- labels(v)@.Data
-  levels <- levels[!(levels %in% c("NSP", "PNR", "Non concerné·e", "Included"))]
+  levels <- levels[!(levels %in% missing_labels)]
   if (rev_legend) levels <- rev(levels) # new (05/20)
-  if (weights) N <- sum(data[['weight']][!is.missing(v) & (!(v %in% c("NSP", "Non concerné·e")))])
-  else N <- length(which(!is.missing(v) & (!(v %in% c("NSP", "Non concerné·e")))))
+  if (weights) N <- sum(data[['weight']][!is.missing(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
+  else N <- length(which(!is.missing(v) & (!(v %in% missing_labels)))) # c("NSP", "Non concerné·e")
   for (val in levels) { # before: no %in% nowhere below
     if (weights) mat <- c(mat, sum(data[['weight']][which(v==val)])/N)
     else mat <- c(mat, length(which(v==val))/N) }
   if (rev) mat <- rev(mat)
   if (miss) {
     if (is.null(annotation(v))) {
-      if (weights) mat <- c(mat, sum(data[['weight']][which(is.na(v) | v %in% c("NSP", "Non concerné·e"))])/N)
-      else mat <- c(mat, length(which(is.na(v) | v %in% c("NSP", "Non concerné·e")))/N)
+      if (weights) mat <- c(mat, sum(data[['weight']][which(is.na(v) | v %in% missing_labels)])/N) # c("NSP", "Non concerné·e")
+      else mat <- c(mat, length(which(is.na(v) | v %in% missing_labels))/N) # c("NSP", "Non concerné·e")
     } else  {
       if (weights) mat <- c(mat, sum(data[['weight']][which(is.missing(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
       else mat <- c(mat, length(which(is.missing(v) & !is.na(v)))/N) } } # mais ça semble équivalent pck les NSP sont missing dans ces cas-là
@@ -804,8 +806,8 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
       }
     }
     else {
-      if (is.element(hover[length(hover)],c("PNR", "NSP", "Included"))) hover <- hover[1:(length(hover)-1)]
-      if (is.element(legend[length(legend)],c("PNR", "NSP", "Included"))) legend <- legend[1:(length(legend)-1)]
+      if (is.element(hover[length(hover)],c("PNR", "PNR or other", "NSP", "Included"))) hover <- hover[1:(length(hover)-1)]
+      if (is.element(legend[length(legend)],c("PNR", "PNR or other", "NSP", "Included"))) legend <- legend[1:(length(legend)-1)]
       for (i in 1:length(hover)) { 
         for (j in 1:length(labels)) {
           hovers <- c(hovers, paste(hover[i], '<br>', round(100*data[i, j]), '% des réponses exprimées<br>') )

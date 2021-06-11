@@ -1,6 +1,6 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO!: vote, region, flight, size of town, footprint region, etc., standard/investment/tax _effect_, donation, origin
+# TODO!: region, flight, size of town, footprint region, etc., standard/investment/tax _effect_, donation, origin
 # TODO: all kinds carbon tax
 # /!\ open the Plots pane at its maximum before running the function TODO: save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
@@ -100,9 +100,16 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       (income_US_comp <- barres(data = data_income, export_xls = export_xls, df = e, miss=F, rev_color = T, sort = F, rev = F, labels=labels_comp, legend = dataKN("income", data=e, miss=F, return="legend")))
       save_plotly_new_filename(income_US_comp, width= 510, height=240)}) # 35/70/120
 
-    try({data_vote <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), pop_freq[[country]]$vote_2020)
-      (vote_US_comp <- barres(data = data_vote, export_xls = export_xls, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_2020", data=e, miss=T, return="legend")))
-      save_plotly_new_filename(vote_US_comp, width= 550, height=240)})
+    try({(vote_agg_US_comp <- barres(vars = "vote_agg", export_xls = export_xls, df = e, miss=T, rev = F, rev_color = T, sort = F, fr = "PNR or other", labels="Vote or hypothetical vote in last election"))
+      save_plotly_new_filename(vote_agg_US_comp, width= 900, height=140)}) 
+
+        try({data_vote_2020 <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), pop_freq[[country]]$vote_2020)
+      (vote_2020_US_comp <- barres(data = data_vote_2020, export_xls = export_xls, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_2020", data=e, miss=T, return="legend")))
+      save_plotly_new_filename(vote_2020_US_comp, width= 550, height=240)})
+    
+    # try({data_vote_agg <- cbind(dataKN("vote_agg", data=e, miss=T, weights = F), dataKN("vote_agg", data=e, miss=T, weights = T), pop_freq[[country]]$vote_agg)
+    #   (vote_agg_US_comp <- barres(data = data_vote_agg, export_xls = export_xls, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_agg", data=e, miss=T, return="legend")))
+    #   save_plotly_new_filename(vote_agg_US_comp, width= 550, height=240)}) # doesn't make sense to print the comparison for now because official results exclude hypothetical vote
     # 
     try({(gender_US <- barres(vars = "gender_factor", export_xls = export_xls, df = e, miss = F, labels="Gender"))
       save_plotly_new_filename(gender_US, width= 470, height=140)})
@@ -631,14 +638,14 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(relative_environmentalist_US <- barres(vars = "relative_environmentalist", export_xls = export_xls, df = e, miss=F, labels="Has an environmentalist relative"))
       save_plotly_new_filename(relative_environmentalist_US, width= 540, height=140)})
     
-    try({(vote_participation_US <- barres(vars = "vote_participation", export_xls = export_xls, df = e, miss=T, labels="Voted in 2020 election"))
+    try({(vote_participation_US <- barres(vars = "vote_participation", export_xls = export_xls, df = e, miss=T, labels="Voted in last election"))
       save_plotly_new_filename(vote_participation_US, width= 540, height=140) })
     
     # try({(vote_participation_2016_US <- barres(vars = "vote_participation_2016", export_xls = export_xls, df = e, miss=T, labels="Voted in 2016 election"))
     #   save_plotly_new_filename(vote_participation_2016_US, width= 540, height=140) })
     
-    try({(vote_US <- barres(vars = "vote", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for"))
-      save_plotly_new_filename(vote_US, width= 650, height=140) })
+    try({(vote_US <- barres(vars = "vote", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="Vote or hypothetical vote at last election"))
+      save_plotly_new_filename(vote_US, width= 1000, height=250) })
     
     # try({(vote_2020 <- barres(vars = "vote_2020", export_xls = export_xls, df = e, rev_color = T, miss=T, fr = "PNR/no right", labels="In 2020, voted for"))
     #   save_plotly_new_filename(vote_2020, width= 610, height=140) })
@@ -646,14 +653,14 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # try({(vote_2016_US <- barres(vars = "vote_2016", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2016, voted for"))
     #   save_plotly_new_filename(vote_2016_US, width= 650, height=140) })
     
-    try({(vote_all_US <- barres(vars = c("vote_non_voters", "vote_voters", "vote"), export_xls = export_xls, df = e, rev_color = T, miss=F, sort = F, labels=c("Non-voters", "Voters", "2020 vote: Voters and non-voters")))
-      save_plotly_new_filename(vote_all_US, width= 600, height=250)}) # TODO make it work even if Jorgensen/Hawkins don't appear everywhere
+    try({(vote_all_US <- barres(vars = c("vote_non_voters", "vote_voters", "vote"), export_xls = export_xls, df = e, rev_color = T, miss=F, sort = F, labels=c("Non-voters", "Voters", "Last election: Voters and non-voters")))
+      save_plotly_new_filename(vote_all_US, width= 1200, height=350)}) # TODO make it work even if Jorgensen/Hawkins don't appear everywhere
     
-    try({(vote_voters_US <- barres(vars = "vote_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
-      save_plotly_new_filename(vote_voters_US, width= 650, height=140)})
+    try({(vote_voters_US <- barres(vars = "vote_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="Vote in last election (voters)"))
+      save_plotly_new_filename(vote_voters_US, width= 1000, height=250)})
     
-    try({(vote_non_voters_US <- barres(vars = "vote_non_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for (non-voters)"))
-      save_plotly_new_filename(vote_non_voters_US, width= 650, height=140)})
+    try({(vote_non_voters_US <- barres(vars = "vote_non_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="Vote in last election (non-voters)"))
+      save_plotly_new_filename(vote_non_voters_US, width= 1000, height=250)})
     
     # try({(vote_voters_2016_US <- barres(vars = "vote_voters_2016", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2016, voted for (voters)"))
     #   save_plotly_new_filename(vote_voters_2016_US, width= 650, height=140) })
@@ -777,12 +784,16 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     
     ##### Heterogeneity #####
     # By income
-    plot_heterogeneity12(dfs = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), orig="<br>(Bottom 50%)", comp = "(Top 50%)", text_file = paste0(replacement_text, "_inc"), export_xls = export_xls)
+    try({plot_heterogeneity12(dfs = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), orig="<br>(Bottom 50%)", comp = "(Top 50%)", text_file = paste0(replacement_text, "_inc"), export_xls = export_xls)})
     # By vote
-    # plot_heterogeneity12(dfs = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", text_file = paste0(replacement_text, "_pol"), export_xls = export_xls)
-    # plot_heterogeneityN(along = "vote3", text_file = paste0(replacement_text, "_vote"), export_xls = export_xls)
+    # try({plot_heterogeneity12(dfs = list(e[e$vote < 0.5,], e[e$vote >= 0,]), comp = "(Left)", orig="<br>(Center or right)", text_file = paste0(replacement_text, "_pol"), export_xls = export_xls)})
+    if (mean(e$left_right < -0.5) < mean(e$left_right > 0)) try({plot_heterogeneity12(dfs = list(e[e$left_right > 0,], e[e$left_right %in% c(-2,-1,0),]), comp = "(Right)", orig="<br>(Center or left)", text_file = paste0(replacement_text, "_pol"), export_xls = export_xls)})
+    else try({plot_heterogeneity12(dfs = list(e[e$left_right < -0.5,], e[e$left_right >= 0,]), comp = "(Left)", orig="<br>(Center or right)", text_file = paste0(replacement_text, "_pol"), export_xls = export_xls)})
+    if ("vote3" %in% names(e)) try({plot_heterogeneityN(along = "vote3", text_file = paste0(replacement_text, "_vote"), export_xls = export_xls)})
+    else try({plot_heterogeneityN(along = "vote_agg", text_file = paste0(replacement_text, "_vote"), export_xls = export_xls)})
+    
     # # By rural/urban 
-    # plot_heterogeneity12(dfs = list(e[e$urban==T,], e[e$urban==F,]), orig="<br>(Core metro)", comp = "(Non-core metro)", text_file = paste0(replacement_text, "_urb"), export_xls = export_xls)
+    try({plot_heterogeneity12(dfs = list(e[e$urban==T,], e[e$urban==F,]), orig="<br>(Urban)", comp = "(Rural)", text_file = paste0(replacement_text, "_urb"), export_xls = export_xls)})
     
     ## Other
     try({(wtp_US_anthropogenic <- barres12(vars = "wtp", export_xls = export_xls, df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, labels="WTP to limit global warming ($/year)"))
@@ -823,7 +834,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
   
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
-  nb_levels <- length(Levels(e[[along]]))
+  levels <- Levels(e[[along]])
+  nb_levels <- length(levels)
   
   if (folder_country) folder <- '../figures/country_comparison/'
   else folder <- '../figures/'
@@ -1476,14 +1488,16 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(relative_environmentalist_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "relative_environmentalist", export_xls = export_xls, df = e, miss=F, labels="Has an environmentalist relative"))
       save_plotly_new_filename(relative_environmentalist_US, width= 540, height=fig_height(1*nb_levels))})
     
-    try({(vote_participation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_participation", export_xls = export_xls, df = e, miss=T, labels="Voted in 2020 election"))
+    try({(vote_participation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_participation", export_xls = export_xls, df = e, miss=T, labels="Voted in last election"))
       save_plotly_new_filename(vote_participation_US, width= 540, height=fig_height(1*nb_levels)) })
     
     # try({(vote_participation_2016_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_participation_2016", export_xls = export_xls, df = e, miss=T, labels="Voted in 2016 election"))
     #   save_plotly_new_filename(vote_participation_2016_US, width= 540, height=fig_height(1*nb_levels)) })
     
-    try({(vote_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for"))
-      save_plotly_new_filename(vote_US, width= 650, height=fig_height(1*nb_levels)) })
+    try({data_vote_agg <- array(NA, dim = c(6, nb_levels), dimnames = list(c(1:6), levels))
+      for (l in levels) data_vote_agg[,l] <- c(sapply(-2:2, function(x) { wtd.mean(e$vote_agg_number[e[[along]]==l]==x, weights = e$weight[e[[along]]==l]) } ), wtd.mean(is.na(e$vote_agg_number[e[[along]]==l]), weights = e$weight[e[[along]]==l]))#/wtd.mean(!is.na(e$vote_agg_number[e[[along]]==l]), weights = e$weight[e[[along]]==l])
+      (vote_US <- barres(data = data_vote_agg, export_xls = export_xls, df = e, rev_color = T, miss=T, labels=labelsN("Last election: ", levels = levels, parentheses = parentheses), legend = c("Very left", "Left", "Center", "Right", "Very right", "PNR or other"))) # Last election vote or hypothetical vote
+      save_plotly_new_filename(vote_US, width= 800, height=fig_height(1*nb_levels)) })
     
     # try({(vote_2020 <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_2020", export_xls = export_xls, df = e, rev_color = T, miss=T, fr = "PNR/no right", labels="In 2020, voted for"))
     #   save_plotly_new_filename(vote_2020, width= 610, height=fig_height(1*nb_levels)) })
@@ -1491,14 +1505,14 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # try({(vote_2016_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_2016", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2016, voted for"))
     #   save_plotly_new_filename(vote_2016_US, width= 650, height=fig_height(1*nb_levels)) })
     
-    try({(vote_all_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("vote_non_voters", "vote_voters", "vote"), export_xls = export_xls, df = e, rev_color = T, miss=F, labels=c("Non-voters", "Voters", "2020 vote: Voters and non-voters")))
-      save_plotly_new_filename(vote_all_US, width= 600, height=fig_height(3*nb_levels))})
-    
-    try({(vote_voters_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
-      save_plotly_new_filename(vote_voters_US, width= 650, height=fig_height(1*nb_levels))})
-    
-    try({(vote_non_voters_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_non_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for (non-voters)"))
-      save_plotly_new_filename(vote_non_voters_US, width= 650, height=fig_height(1*nb_levels))})
+    # try({(vote_all_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("vote_non_voters", "vote_voters", "vote"), export_xls = export_xls, df = e, rev_color = T, miss=F, labels=c("Non-voters", "Voters", "2020 vote: Voters and non-voters")))
+    #   save_plotly_new_filename(vote_all_US, width= 600, height=fig_height(3*nb_levels))})
+    # 
+    # try({(vote_voters_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for (voters)"))
+    #   save_plotly_new_filename(vote_voters_US, width= 650, height=fig_height(1*nb_levels))})
+    # 
+    # try({(vote_non_voters_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_non_voters", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2020, voted for (non-voters)"))
+    #   save_plotly_new_filename(vote_non_voters_US, width= 650, height=fig_height(1*nb_levels))}) # TODO?
     
     # try({(vote_voters_2016_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_voters_2016", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2016, voted for (voters)"))
     #   save_plotly_new_filename(vote_voters_2016_US, width= 650, height=fig_height(1*nb_levels)) })
@@ -1506,11 +1520,11 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # try({(vote_non_voters_2016_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_non_voters_2016", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2016, voted for (non-voters)"))
     #   save_plotly_new_filename(vote_non_voters_2016_US, width= 650, height=fig_height(1*nb_levels))})
     
-    try({(left_right_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "left_right", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="On economic policy matters, are you..."))
+    try({(left_right_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "left_right", export_xls = export_xls, df = e, rev_color = T, rev = F, miss=T, labels="On economic policy matters, are you..."))
       save_plotly_new_filename(left_right_US, width= 950, height=fig_height(1*nb_levels))})
     
-    try({(political_affiliation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "political_affiliation", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Political affiliation"))
-      save_plotly_new_filename(political_affiliation_US, width= 800, height=fig_height(1*nb_levels))})
+    # try({(political_affiliation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "political_affiliation", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Political affiliation"))
+    #   save_plotly_new_filename(political_affiliation_US, width= 800, height=fig_height(1*nb_levels))})
     
     ##### 16. Feedback #####
     

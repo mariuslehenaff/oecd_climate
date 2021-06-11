@@ -23,13 +23,12 @@ setwd(Paths[Sys.info()[7]])
 
 ##### 2. Regressions #####
 
-control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "vote_agg")
-cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "vote: Biden", "vote: Trump")
+# control_variables, etc. are defined in preparation.R
 
 ## Block: Policy views and media consumption
-desc_table(dep_vars = c("interested_politics > 0", "member_environmental_orga == 'Yes'", "relative_environmentalist == 'Yes'", "left_right >=1"), filename = "pol_views",
-           dep.var.labels = c("Interest in politics", "Environmental org. member", "Relative is environmentalist", "Econ. right-wing"),
-           nolabel =F,
+desc_table(dep_vars = c("interested_politics > 0", "member_environmental_orga == 'Yes'", "relative_environmentalist == 'Yes'", "vote_agg > 0"), filename = "pol_views",
+           dep.var.labels = c("Interest in politics", "Environmental org. member", "Relative is environmentalist", "Last election: right"),
+           nolabel = F,
            dep.var.caption = c("Political views"), data = us, indep_vars = control_variables, indep_labels = cov_lab, mean_control = T
 )
 
@@ -58,11 +57,6 @@ desc_table(dep_vars = c("transport_work == 'Car or Motorbike'", "transport_work 
                         "transport_leisure == 'Car or Motorbike'", "transport_leisure == 'Public Transport'", "transport_leisure == 'Walking or Cycling'"), filename = "transports",
            dep.var.labels = c("Car/Bike (work)", "Public (work)", "Bicycle/Walk (work)", "Car/Bike (shop)", "Public (shop)", "Bicycle/Walk (shop)","Car/Bike (leisure)", "Public (leisure)", "Bicycle/Walk (leisure)"),
            dep.var.caption = c("Transports"), data = us, indep_vars = c(control_variables, 'availability_transport < 0'), indep_labels = c(cov_lab, 'PT not available'))
-
-
-## Post-Treatment
-control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "vote_agg", "treatment")
-cov_lab_w_treatment <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "vote: Biden", "vote: Trump", "Climate treatment only", "Policy treatment only", "Both treatments")
 
 
 ## Block: CC (knowledge)
@@ -103,8 +97,8 @@ desc_table(dep_vars = c("net_zero_feasible >= 1", "CC_affects_self >= 1", "CC_wi
            dep.var.caption = c(""), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment)
 
 ## Generations most affected
-#control_variables_w_treatment_usp <- c("dominant_origin", "female", "children", "college", "employment_agg", "income_factor", "age_agg", "vote_agg")
-#cov_lab_w_treatment_usp <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "vote: Biden", "vote: Trump")
+#control_variables_w_treatment_usp <- c("dominant_origin", "female", "children", "college", "employment_agg", "income_factor", "age_agg", "left_right < 0", "left_right > 0", "left_right == 0")
+#cov_lab_w_treatment_usp <- c("race: White only", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "Left or Very left", "Right or Very right", "Center")
 #
 #desc_table(dep_vars = c("CC_affected_1960", "CC_affected_1990", "CC_affected_2020", "CC_affected_2050", "CC_affected_none"), filename = "CC_affected",
 #           dep.var.labels = c("Born in 1960s", "Born in 1990s", "Born in 2020s", "Born in 2050s", "None of them"),

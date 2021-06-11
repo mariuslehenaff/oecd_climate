@@ -290,9 +290,9 @@ summary(lm(policies_support ~ treatment_climate * treatment_policy, data = e, su
 summary(lm(policies_self ~ treatment_climate * treatment_policy, data = e, subset = !rush))
 
 # Heterogenous effects: politics. Negative climate results driven by Trump supporters.
-summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e)) 
-summary(lm(policies_support ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e)) 
-summary(lm(policies_self ~ treatment_climate * treatment_policy * (vote == 'Biden'), data = e))
+summary(lm(tax_transfers_support=='Yes' ~ treatment_climate * treatment_policy * (vote < - 0.5), data = e)) 
+summary(lm(policies_support ~ treatment_climate * treatment_policy * (vote  < - 0.5), data = e)) 
+summary(lm(policies_self ~ treatment_climate * treatment_policy * (vote  < - 0.5), data = e))
 
 
 ##### Pilot 3: Treatment effects #####
@@ -468,7 +468,7 @@ decrit("media", data = e)
 decrit("vote_participation", data = e)
 decrit("vote", data = e)
 decrit("vote_participation_2016", data = e)
-decrit("vote_2016", data = e)
+decrit("vote_agg", data = e)
 decrit("liberal_conservative", data = e)
 decrit("political_affiliation", data = e)
 

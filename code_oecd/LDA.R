@@ -237,9 +237,7 @@ describe_profiles(lda, nb_terms = 6)
 write_clip(describe_profiles(lda, nb_terms = 6))
 
 
-control_variables <- c("dominant_origin", "female", "children", "college", "employment_agg", "income_factor", "age", "vote_agg")
-# TODO! define elsewhere
-cov_lab <- c("race: White only", "Male", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "age: below 18", "vote: Biden", "vote: Trump")
+# control_variables, etc. are defined in preparation.R
 
 desc_table(dep_vars = c("topic2_1", "topic2_2"), filename = "../LDA/topic2",
            dep.var.labels = c("Profile 1", "Profile 2"),

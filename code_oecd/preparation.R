@@ -5,6 +5,11 @@ source(".Rprofile")
 
 # TODO!!: CC_field, feedback, consistency_answers, score_trust, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
+control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
+cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
+control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0", "treatment")
+cov_lab_w_treatment <- c("race: White only", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center", "Climate treatment only", "Policy treatment only", "Both treatments")
+
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "IT", "PL", "ES", "UK")
 euro_countries_names <- c("Denmark", "France", "Germany", "Italy", "Poland", "Spain", "United Kingdom")
@@ -42,9 +47,9 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
                  "IN_region" = c("Northern", "Southern", "Central", "Eastern", "Western", "Rest"),
                  "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
-                 "IT_urban_category" = c("Cities", "Small Cities", "Rural")
+                 "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
                  "UK_region" = c("London", "Rest of England", "Scotland", "Wales", "Northern Ireland"),
-                 "UK_urban_category" = c("Rural", "Large_urban", "City_Town")
+                 "UK_urban_category" = c("Rural", "Large_urban", "City_Town"),
                  "PL_region" = c("North-West", "North-East", "Central", "South-West", "Central-East", "South-East"),
                  "DE_region" = c("Northern Germany", "Western Germany", "Central Germany", "Eastern Germany", "Southern Germany")
   )
@@ -64,7 +69,7 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
     "income" = c(0.2634, 0.2334, 0.2782, 0.2249),
     "age" = c(0.110, 0.165, 0.230, 0.245, 0.251),
     "urban" = c(0.4703, 0.5297),
-    "DK_region" = c(0.3176, 0.2281, 0.1011, 0.1436, 0.2095)
+    "DK_region" = c(0.3176, 0.2281, 0.1011, 0.1436, 0.2095) # TODO: add vote_agg / vote
   ),
   "FR" = list(
     "gender" = c(0.516, 0.000001, 0.484),
@@ -90,7 +95,7 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
     "income" = rep(.25, 4),
     "urban" = c(0.4699139, 0.5300861), 
     "IT_region" = c(0.2666, 0.1931, 0.1991, 0.2312, 0.1100),
-    "IT_urban_category" = c(0.3560815, 0.4741165, 0.169802)
+    "IT_urban_category" = c(0.3560815, 0.4741165, 0.169802),
     "age" = c(0.080, 0.122, 0.242, 0.271, 0.285)
   ),
   "UK" = list(
@@ -3640,24 +3645,37 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # political position
   e$vote_agg <- as.character(e$vote)
   if (country == "US") {
-    e$vote_agg[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
-    if ("Other" %in% levels(as.factor(e$vote_agg))) e$vote_agg <- relevel(as.factor(e$vote_agg), "Other")
+    temp <- -1*grepl("Biden", e$vote) + 2*grepl("Trump", e$vote) -0.1*(!(e$vote %in% c("Biden", "Trump")))
+    e$vote_agg <- as.item(temp, labels = structure(c(-1,2,-0.1), names = c("Biden","Trump","PNR or other")),
+                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Biden, Trump")
+    
+    # e$vote_agg[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
+    # if ("Other" %in% levels(as.factor(e$vote_agg))) e$vote_agg <- relevel(as.factor(e$vote_agg), "Other")
   # # e$vote_agg[e$vote_participation != "Yes] <- "Other" # add non-voters as others
   # # e$vote_agg <- as.factor(e$vote_agg)
   # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
-  } else if (country == "DK") {
-    e$vote_agg[grepl("Alternativet|Enhedslisten|Socialistisk Folkeparti", e$vote)] <- "Left"
-    e$vote_agg[grepl("Socialdemokratiet|Radikale Venstre", e$vote)] <- "Social democrats & center"
-    e$vote_agg[grepl("Det Konservative Folkeparti|Liberal Alliance|Venstre", e$vote)] <- "Right"
-    e$vote_agg[grepl("Dansk Folkeparti|Nye Borgerlige", e$vote)] <- "Far right"
-    e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
   } else if (country == "FR") {
-    e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
-    e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
-    e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
-    e$vote_agg[grepl("Le Pen|Dupont-Aignan", e$vote)] <- "Extrême-droite"
-    e$vote_agg[grepl("Cheminade|Lassalle|PNR", e$vote)] <- "PNR ou autre"
-  }
+    temp <- -2*grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
+    e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","NSP ou autre")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
+                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Hamon|Mélenchon|Arthaud|Poutou; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
+    # e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
+    # e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
+    # e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
+    # e$vote_agg[grepl("Le Pen|Dupont-Aignan", e$vote)] <- "Extrême-droite"
+    # e$vote_agg[grepl("Cheminade|Lassalle|PNR", e$vote)] <- "PNR ou autre"
+  } else if (country == "DK") {
+    temp <- -2*(e$vote %in% c("Alternativet", "Enhedslisten", "Socialistisk Folkeparti")) -1*(e$vote %in% c("Socialdemokratiet", "Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
+    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Social democrats & Center","Right","Far right","PNR or other")),
+                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Alternativet|Enhedslisten|Socialistisk Folkeparti; Social democrats & center: Socialdemokratiet|Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")
+    
+    # e$vote_agg[grepl("Alternativet|Enhedslisten|Socialistisk Folkeparti", e$vote)] <- "Left"
+    # e$vote_agg[grepl("Socialdemokratiet|Radikale Venstre", e$vote)] <- "Social democrats & center"
+    # e$vote_agg[grepl("Det Konservative Folkeparti|Liberal Alliance|Venstre", e$vote)] <- "Right"
+    # e$vote_agg[grepl("Dansk Folkeparti|Nye Borgerlige", e$vote)] <- "Far right"
+    # e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
+  } 
+  e$vote_agg_number <- as.numeric(e$vote_agg)
+  label(e$vote_agg_number) <- "vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other"
   
   if (country == "US") {
     e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
