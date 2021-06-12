@@ -3,7 +3,7 @@
 
 source(".Rprofile")
 
-# TODO!!: CC_field, feedback, consistency_answers/quality (max_footprint_reg = 1), score_trust, vote, ranking vs. order of display
+# TODO!!: CC_field, feedback, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds), score_trust, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
