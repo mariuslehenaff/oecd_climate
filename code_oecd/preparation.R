@@ -28,6 +28,7 @@ Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland"
 country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Chinese", "Indian", "Indonesian", "South African")
 tax_price_increase <- c("$0.40/gallon", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "0.40 zł/L", "0.10 €/L", "0.08 £/L",	"¥12/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.6/L")
 names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- countries
+loadings_efa <- list()
 
 { 
   levels_quotas <- list("gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
@@ -2748,7 +2749,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$affected_transport <- (e$transport_work=="Car or Motorbike") + (e$transport_shopping=="Car or Motorbike") + (e$transport_leisure=="Car or Motorbike")
   label(e$affected_transport) <- "affected_transport: Sum of activities for which a car or motorbike is used"
   variables_affected_index <<- c("polluting_sector", "affected_transport", "gas_expenses", "heating_expenses", "availability_transport", "urbanity", "urban")
-  negatives_affected_index <<- c(T, T, T, T, F, F, F)
+  negatives_affected_index <<- c(F, F, F, F, T, T, T)
   variables_global_policies <<- c("global_assembly_support", "global_tax_support", "tax_1p_support")
   variables_gilets_jaunes <<- c("gilets_jaunes_dedans", "gilets_jaunes_soutien", "gilets_jaunes_compris", "gilets_jaunes_oppose", "gilets_jaunes_NSP") # , "gilets_jaunes"
   
@@ -3370,7 +3371,9 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$vote[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"] <- e$vote_non_voters[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"]
   e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
   e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation=Label(e$vote))
-
+  e$voted <- e$vote_participation == 'Yes'
+  label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
+  
   e$survey_biased[e$survey_biased %in% text_survey_biased_pro_envi] <- "Yes, pro environment"
   e$survey_biased[e$survey_biased %in% text_survey_biased_anti_envi] <- "Yes, anti environment"
   e$survey_biased[e$survey_biased %in% text_survey_biased_left] <- "Yes, left"
@@ -3903,12 +3906,15 @@ convert <- function(e, country, wave = NULL, weighting = T) {
       temp <- e[,c("treatment", variables_knowledge)] }
     # temp <- e[,c("weight", "treatment", variables_knowledge)]
     temp$knows_anthropogenic <- temp$CC_anthropogenic == 2
-    variables_knowledge2 <<- c(variables_knowledge, "knows_anthropogenic")
-    negatives_knowledge2 <- c(negatives_knowledge, F)
-    for (i in seq_along(variables_knowledge2)) temp[[variables_knowledge2[i]]] <- z_score_computation(pair = c(variables_knowledge2[i], negatives_knowledge2[i]), df = temp, weight = T) # impute mean of same treatment group to missings
-    # for (i in seq_along(variables_knowledge2)) temp[[variables_knowledge2[i]]][is.pnr(temp[[variables_knowledge2[i]]])] <- wtd.mean(temp[[variables_knowledge2[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
-    loadings <- as.numeric(factanal(temp[,variables_knowledge2], 1)$loadings)
-    names(loadings) <- variables_knowledge2
+    # variables_knowledge_efa <<- c(variables_knowledge, "knows_anthropogenic")
+    # negatives_knowledge_efa <- c(negatives_knowledge, F)
+    variables_knowledge_efa <<- variables_knowledge
+    negatives_knowledge_efa <- negatives_knowledge
+    for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(pair = c(variables_knowledge_efa[i], negatives_knowledge_efa[i]), df = temp, weight = T) # impute mean of same treatment group to missings
+    # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
+    loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
+    names(loadings) <- variables_knowledge_efa
+    loadings_efa[[country]] <<- loadings
     # unlist(cronbach(temp))
     # # pca <- principal(temp, 1)
     # print(loadings_z)
@@ -3916,10 +3922,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$index_knowledge_simple <- as.numeric((e$CC_anthropogenic==2) + e$CC_anthropogenic + e$CC_real - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - 0.4*(e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region) )
     # e$knowledge_unitary <- e$CC_real + e$CC_anthropogenic - e$score_GHG + e$CC_knowledgeable + e$score_CC_impacts - (e$score_footprint_transport + e$score_footprint_elec + e$score_footprint_food + e$score_footprint_pc + e$score_footprint_region)
     e$index_knowledge_efa <- 0
-    for (v in variables_knowledge2) e$index_knowledge_efa <- e$index_knowledge_efa + loadings[v]*temp[[v]]
+    for (v in variables_knowledge_efa) e$index_knowledge_efa <- e$index_knowledge_efa + loadings[v]*temp[[v]]
     e$index_knowledge_efa <- (e$index_knowledge_efa - wtd.mean(e$index_knowledge_efa, weights = weights, na.rm = T))/sqrt(wtd.var(e$index_knowledge_efa, weights = weights, na.rm = T))
-    label(e$index_knowledge_simple) <- "index_knowledge_simple: Weighted average of (non-standardized) variables in variables_knowledge2. Weights are chosen to fit intuition."
-    label(e$index_knowledge_efa) <- "index_knowledge_efa: Weighted average of z-scores of variables in variables_knowledge2. Weights are loadings from explanatory factor analysis (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+    label(e$index_knowledge_simple) <- "index_knowledge_simple: Weighted average of (non-standardized) variables in variables_knowledge_efa. Weights are chosen to fit intuition."
+    label(e$index_knowledge_efa) <- "index_knowledge_efa: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
     cor(e$index_knowledge_efa, e$index_knowledge_simple, use = "complete.obs") # 0.872
     cor(e$index_knowledge_efa, e$index_knowledge, use = "complete.obs") # 0.68
     # correlogram("knowledge")
@@ -4118,15 +4124,18 @@ current_countries <- c("DK", "US", "FR")
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
 
 all$knows_anthropogenic <- all$CC_anthropogenic == 2
-variables_knowledge2 <- c(variables_knowledge, "knows_anthropogenic")
-negatives_knowledge2 <- c(negatives_knowledge, F)
-temp <- all[,c("weight", "treatment", variables_knowledge2)] 
-for (i in seq_along(variables_knowledge2)) temp[[variables_knowledge2[i]]] <- z_score_computation(pair = c(variables_knowledge2[i], negatives_knowledge2[i]), df = temp, weight = T) # impute mean of same treatment group to missings
-# for (i in seq_along(variables_knowledge2)) temp[[variables_knowledge2[i]]][is.pnr(temp[[variables_knowledge2[i]]])] <- wtd.mean(temp[[variables_knowledge2[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
-loadings <- as.numeric(factanal(temp[,variables_knowledge2], 1)$loadings)
-names(loadings) <- variables_knowledge2
+variables_knowledge_efa <- variables_knowledge
+negatives_knowledge_efa <- negatives_knowledge
+# variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
+# negatives_knowledge_efa <- c(negatives_knowledge, F)
+temp <- all[,c("weight", "treatment", variables_knowledge_efa)] 
+for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(pair = c(variables_knowledge_efa[i], negatives_knowledge_efa[i]), df = temp, weight = T) # impute mean of same treatment group to missings
+# for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
+loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
+names(loadings) <- variables_knowledge_efa
+loadings_efa[["all"]] <- loadings
 # print(loadings_z)
 all$index_knowledge_efa_global <- 0
-for (v in variables_knowledge2) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
+for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
 all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = weights, na.rm = T))
-label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge2. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."

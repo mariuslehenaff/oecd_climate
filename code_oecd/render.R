@@ -1,6 +1,6 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO: size of town (DK has not same bins), all kinds carbon tax, translation, save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
+# TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 # /!\ open the Plots pane at its maximum before running the function
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
   print(country)  
@@ -64,10 +64,10 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       correlogram(vars = c(paste(names_policies, "support", sep="_"), "policies_support"))
       save_plot(filename = paste0(folder, "corr_support", replacement_text), height = 400, width = 400)
       
-      correlogram(vars = c(variables_knowledge, "index_knowledge", "index_knowledge_efa")) # TODO!: why so much weight anthropogenic EFA?
+      correlogram(vars = c(variables_knowledge, "index_knowledge", "index_knowledge_efa"))
       save_plot(filename = paste0(folder, "corr_knowledge", replacement_text), height = 700, width = 700)
       
-      correlogram(vars = c(variables_affected_index, "index_affected")) # TODO!: why negative corr?
+      correlogram(vars = c(variables_affected_index, "index_affected")) 
       save_plot(filename = paste0(folder, "corr_affected", replacement_text), height = 700, width = 700)})
 
 
@@ -532,6 +532,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     labels_tax[8] <- "Subsidizing low-carbon technologies, including renewables"
     try({(tax_US <- barres(vars = variables_tax, export_xls = export_xls, df = e, rev = F, rev_color = T, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
       save_plotly_new_filename(tax_US, width= 930, height=400) })
+    
+    try({(tax_all_US <- barres(vars = c(variables_tax, "tax_transfers_support"), export_xls = export_xls, df = e, rev = F, rev_color = T, miss = F, showLegend=T, labels=c(labels_tax, "Carbon tax with cash transfers"), hover=labels_support))
+      save_plotly_new_filename(tax_all_US, width= 930, height=400) })
     
     ##### 11. WTP #####
     try({(wtp_US <- barres(vars = rev(variables_wtp), export_xls = export_xls, df = e, miss=F, sort = F, labels=rev(c("WTP to limit global warming ($/year): 10", "30", "50", "100", "300", "500", "1000"))))
@@ -1584,10 +1587,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       }
     }
     
-    # Missing in socio: TODO! vote_participation left_right heating, gas_expenses/emissions, urban "duration", know_treatment_policy "Voted in last election",  "Attention score to policy treatment",
-    main_variables_socio <<- c("interested_politics", "hit_by_covid", "polluting_sector", "can_trust_people", "can_trust_govt", "view_govt", "availability_transport")
+    # Missing in socio: TODO! heating, gas_expenses/emissions
+    main_variables_socio <<- c("can_trust_people", "interested_politics", "voted", "can_trust_govt", "view_govt", "left_right", "hit_by_covid", "polluting_sector", "availability_transport", "urban")
     # interested_politics: >= A lot; hit_by_covid: -1/1; polluting_sector: T/F; can_trust_people, govt: >= agree; view_govt: -1/0/1; know_treatment_policy: 0/1/2; availability_transport: >= fair
-    labels_main_socio <<- c("Interested in politics", "HH member lost income or job due to pandemic", "Works in a polluting sector", "Most people can be trusted", "Government could be trusted in last 10 years", "Government should do more", "Availability of public transport")
+    labels_main_socio <<- c("Most people can be trusted", "Interested in politics", "Voted in last election", "Government could be trusted in last 10 years", "Government should do more", "Left-right on economics", "HH member lost income or job due to pandemic", "Works in a polluting sector", "Availability of public transport", "Urban")
     heatmap_wrapper(vars = main_variables_socio, labels = labels_main_socio, conditions = heatmap_conditions, name = "main_socio")
     
     main_variables_affected <<- c(variables_affected_index[c(1,2,5:7)], "index_affected")
@@ -1671,6 +1674,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     labels_tax_short <<- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructure", "Subsidies to low-carbon technos", "Reduction in the deficit")
     heatmap_wrapper(vars = variables_tax, labels = labels_tax_short, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = c("tax_transfers_support", variables_tax), name = "tax_all", labels = c("Tax with cash transfers", labels_tax_short), conditions = heatmap_conditions)
     
     ##### Print missing figures #####
     missing_figures <- setdiff(sub("_US", "", list.files("../figures/US")), sub(replacement_text, "", list.files(folder)))
