@@ -182,8 +182,9 @@ loadings_efa <- list()
   quotas <- list("US" = c("gender", "income", "age", "urban", "region", "race"), 
                  "US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
                  "DK" = c("gender", "income", "age", "region", "urban"),
-                 "FR" = c("gender", "income", "age", "region", "education", "urban_category")
-                 )
+                 "FR" = c("gender", "income", "age", "region", "education") #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
+                 # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
+  )
 }
 
 remove_id <- function(file, folder = "../data/") {
@@ -3978,6 +3979,73 @@ if (all(variables_affected_index %in% names(e))) {
   label(e$length_CC_field) <- "length_CC_field: Number of characters in CC_field"
   label(e$length_comment_field) <- "length_comment_field: Number of characters in comment_field"
   
+  try({
+    # To recode CC_field (pre-treatment necessary so the following code works):
+    # 1. use line below export CSV (change country in filename). 
+    # 2. Create country.xlsm: if language has special characters, from 'template - no wrap'; if not, from 'template' and jump to step 5
+    # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row 6. Click on appropriate cells. 
+    for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
+                               paste0("../data/fields/csv/CC_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+    
+    CC_field_names <- c("worrying / should act" = "worry", "no need to worry/act" = "no_worry", "NA / empty content" = "na",
+                                            "don't know" = "do_not_know", "no spelling mistake" = "good_spelling", "damages" = "damage",
+                                            "adaptation" = "adaptation", "change lifestyle" = "lifestyle", "companies" = "companies",
+                                            "trash/recycling/plastic" = "trash", "cars/transport" = "transport", "power" = "power",
+                                            "housing/insulation" = "housing", "agriculture/forest" = "land_use", "tax/incentives" = "tax",
+                                            "bans" = "ban", "standard" = "standard", "subsidies/investment" = "spending")
+    CC_field_names_names <- names(CC_field_names)
+    names(CC_field_names_names) <- CC_field_names
+    var_CC_field_names <<- paste0("CC_field_", CC_field_names)
+    
+    recode_CC_field <- list()
+    for (i in 1:4) {
+      recode_CC_field[[i]] <- as.data.frame(t(read.xlsx(paste0("../data/fields/", country, ".xlsm"), sheet = i, rowNames = T)))
+      indices_i <- i+4*((1:nrow(recode_CC_field[[i]])-1))
+      row.names(recode_CC_field[[i]]) <- indices_i
+      names(recode_CC_field[[i]]) <- CC_field_names[names(recode_CC_field[[i]])]
+      if (i == 1) for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]] <- NA
+      for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]][indices_i] <- recode_CC_field[[i]][[v]]==1
+    }
+    e$nb_elements_CC_field <- rowSums(1*e[,paste0("CC_field_", names(recode_CC_field[[1]]))], na.rm=T)
+    e$nb_elements_CC_field[e$nb_elements_CC_field == 0] <- NA
+    e$nb_elements_CC_field[e$CC_field_na == TRUE] <- 0
+    label(e$nb_elements_CC_field) <- "nb_elements_CC_field: Number of elements mentioned in CC_field. NA means that the observation has not been yet treated. 0 means that its content is empty (including contents like 'lfelkfje' or 'none')"
+    for (v in names(recode_CC_field[[1]])) {
+      e[[paste0("CC_field_", v)]][!is.na(e$nb_elements_CC_field) & is.na(e[[paste0("CC_field_", v)]])] <- FALSE
+      label(e[[paste0("CC_field_", v)]]) <- paste0("CC_field_", v, ": ", CC_field_names_names[v], " - Element mentioned in CC_field.") }
+    
+    
+    # write.csv(gsub("\n", "\\\\\\n ", e$CC_field), "../data/CC_field_US.csv", row.names = T) # vertical instead of horizontal
+    # write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field)), collapse = '","'), '"'), collapse=""), 
+    #             "../data/CC_field_US.csv", row.names = F, quote = F, col.names = F) # for locales with , instead of ;
+    # write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field)), collapse = '";"'), '"'), collapse=""),
+    #            "../data/CC_field_US.csv", row.names = F, quote = F, col.names = F) # for all together
+    # e$CC_field[seq(1,nrow(e),4)]
+    # damages, worry / should act, don't worry / should not act, companies, trash/recycling/plastic, cars/transport, power, tax, other_policy,
+    # good english, none, don't know, lifestyle, subsidies/investment, standard, bans, agriculture/tree, housing, policy, sea-level, fires, heat,
+    # https://www.mrexcel.com/board/threads/changing-cell-value-by-clicking-on-the-cell.51933/
+    
+    # e$Connaissance_CCC <- NA 
+    # e$connaissance_CCC_bon_francais <- e$connaissance_CCC_sortition <- e$connaissance_CCC_mesures <- e$connaissance_CCC_temporalite <- e$connaissance_CCC_internet <- e$connaissance_CCC == "FALSE"
+    # e$connaissance_CCC_opinion <- e$connaissance_CCC_posterite <- e$connaissance_CCC_150 <- e$connaissance_CCC == "FALSE"
+    # if (vague==1) {
+    #   e$Connaissance_CCC[c(1,3,10,13,17,19,29,30,34,45,49,51,54,57,64,68,74,77,78,86,93,97,103,121,129,136,139,151,153,155,156,159,162,163,164,174,179,181,182,183,184,187,191,194,196,197,201)] <- "aucune" #
+    #   e$connaissance_CCC_temporalite[c(84,117,131,150,172,235,249,293,302,427,501)] <- "temporalité"
+    #   e$connaissance_CCC_150[which(c(grepl('150', e$connaissance_CCC)),470)] <- "150"
+    # } else {
+    # } 
+    # e$Connaissance_CCC[is.na(e$Connaissance_CCC) & e$connait_CCC!=-1] <- "aucune"
+    # # variables_connaissance_CCC <<- c("bon_francais", "sortition", "mesures", "temporalite", "internet", "150")
+    # # for (v in variables_connaissance_CCC) e[[paste("connaissance_CCC", v, sep="_")]] <- e[[paste("connaissance_CCC", v, sep="_")]]!="FALSE"
+    # variables_connaissances_CCC <<- c("mesures", "choix", "sortition", "150", "temporalite", "internet", "opinion", "posterite", "bon_francais")
+    # for (v in variables_connaissances_CCC) if (paste("connaissance_CCC", v, sep="_") %in% names(e)) e[[paste("connaissance_CCC", v, sep="_")]] <- e[[paste("connaissance_CCC", v, sep="_")]]!="FALSE"
+    # temp <- -2*(e$Connaissance_CCC=="hors sujet") -1*(e$Connaissance_CCC=="faux") + 1*(e$Connaissance_CCC=="trop vague") + 2*(e$Connaissance_CCC=="approximatif") + 3*(e$Connaissance_CCC=="bonne")
+    # temp[e$connaissance_CCC_internet==T] <- 2
+    # e$Connaissance_CCC <- as.item(temp, labels = structure(c(-2:3), names=c("hors sujet", "faux", "aucune", "trop vague", "approximatif", "bonne")),
+    #                               annotation="Connaissance_CCC: connaissance_CCC recodé en hors sujet/faux/aucune/approximatif/bonne (incl. internet) - Décrivez ce que vous savez de la Convention Citoyenne pour le Climat. (champ libre)")
+    # label(e$connaissance_CCC_bon_francais) <- "connaissance_CCC_bon_francais: Indicatrice que la réponse à connaissance_CCC est constituée d'une phrase grammaticalement correcte et sans faute d'orthographe (à l'exception des phrases très courtes type 'Je ne sais pas')"
+    
+  })
   # e <- e[, -c(9:17)] 
   return(e)
 }
