@@ -52,6 +52,7 @@ loadings_efa <- list()
                  "UK_region" = c("London", "Rest of England", "Scotland", "Wales", "Northern Ireland"),
                  "UK_urban_category" = c("Rural", "Large_urban", "City_Town"),
                  "PL_region" = c("North-West", "North-East", "Central", "South-West", "Central-East", "South-East"),
+                 "ES_region" = c("East", "Center",  "South North", "North-West"),
                  "DE_region" = c("Northern Germany", "Western Germany", "Central Germany", "Eastern Germany", "Southern Germany")
   )
   
@@ -118,8 +119,8 @@ loadings_efa <- list()
     "gender" = c(0.506, 0.494),
     "income" = rep(.25, 4),
     "age" = c(0.079, 0.124, 0.285, 0.266, 0.246),
-    "urban" = c(FALSE, TRUE), 
-    "ES_region" = c()
+    "urban" = c(0.3026822, 0.6973178), 
+    "ES_region" = c(0.296309605, 0.186658189, 0.279520643, 0.108163351, 0.129348212)
   ),
   "PL" = list(
     "gender" = c(0.519, 0.000001, 0.481),
@@ -3489,7 +3490,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$urban <- e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
     label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"   
   } else e$urban <- NA
-  e$urban <- case_when(e$country %in% c("US") ~ e$urban,
+  e$urban <- case_when(e$country %in% c("US", "ES") ~ e$urban,
                        e$country == "DK" ~ e$urbanity > 2,
                        e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
                        e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
