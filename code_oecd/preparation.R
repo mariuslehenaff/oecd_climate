@@ -3380,7 +3380,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$survey_biased[e$survey_biased %in% text_survey_biased_anti_envi] <- "Yes, anti environment"
   e$survey_biased[e$survey_biased %in% text_survey_biased_left] <- "Yes, left"
   e$survey_biased[e$survey_biased %in% text_survey_biased_right] <- "Yes, right"
-  e$survey_biased[e$survey_biased %in% text_survey_biased_no] <- "No"
+  e$survey_biased[e$survey_biased %in% text_survey_biased_no] <- "No" # TODO! correlation treatment
   if ("Yes, right" %in% levels(as.factor(e$survey_biased))) e$survey_biased <- relevel(relevel(as.factor(e$survey_biased), "Yes, right"), "No")
   
   if ("WTP" %in% names(e)) {
@@ -3976,7 +3976,9 @@ if (all(variables_affected_index %in% names(e))) {
   }
   
   e$length_CC_field <- nchar(e$CC_field)
+  e$length_CC_field[is.na(e$CC_field)] <- 0
   e$length_comment_field <- nchar(e$comment_field)
+  e$length_comment_field[is.na(e$comment_field)] <- 0
   label(e$length_CC_field) <- "length_CC_field: Number of characters in CC_field"
   label(e$length_comment_field) <- "length_comment_field: Number of characters in comment_field"
   
@@ -4029,7 +4031,7 @@ if (all(variables_affected_index %in% names(e))) {
     e$nb_elements_CC_field[e$CC_field_na == TRUE] <- -1 
     for (i in 1:4) {
       indices_i <- i+4*((1:nrow(recode_CC_field[[i]])-1))
-      if (max(e$nb_elements_CC_field[indices_i]==0)) e$nb_elements_CC_field[indices_i] <- NA    }
+      if (sum(e$nb_elements_CC_field[indices_i] > 0) < 5) e$nb_elements_CC_field[indices_i] <- NA    }
     label(e$nb_elements_CC_field) <- "nb_elements_CC_field: Number of elements mentioned in CC_field. NA means that the observation has not been yet treated. -1 means that its content is empty (including contents like 'lfelkfje' or 'none')"
     for (v in names(recode_CC_field[[1]])) {
       e[[paste0("CC_field_", v)]][!is.na(e$nb_elements_CC_field) & is.na(e[[paste0("CC_field_", v)]])] <- FALSE
@@ -4090,6 +4092,53 @@ if (all(variables_affected_index %in% names(e))) {
     #                               annotation="Connaissance_CCC: connaissance_CCC recodé en hors sujet/faux/aucune/approximatif/bonne (incl. internet) - Décrivez ce que vous savez de la Convention Citoyenne pour le Climat. (champ libre)")
     # label(e$connaissance_CCC_bon_francais) <- "connaissance_CCC_bon_francais: Indicatrice que la réponse à connaissance_CCC est constituée d'une phrase grammaticalement correcte et sans faute d'orthographe (à l'exception des phrases très courtes type 'Je ne sais pas')"
     
+  })
+  
+  try({
+    # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$comment_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
+    #                 paste0("../data/fields/csv/comment_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+    
+    comment_field_names <- c("good", "bad", "bias", "problem")
+    var_comment_field_names <<- paste0("comment_field_", comment_field_names)
+    
+    e$comment_field_english <- e$comment_field
+    recode_comment_field <- list()
+    for (i in 1:4) {
+      if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) recode_comment_field[[i]] <- as.data.frame(t(read.xlsx(paste0("../data/fields/", country, "en.xlsm"), sheet = 4+i, rowNames = T)))
+      else if (file.exists(paste0("../data/fields/", country, ".xlsm"))) recode_comment_field[[i]] <- as.data.frame(t(read.xlsx(paste0("../data/fields/", country, ".xlsm"), sheet = 4+i, rowNames = T)))
+      else print("No file found for recoding of comment_field.")
+      indices_i <- i+4*((1:nrow(recode_comment_field[[i]])-1))
+      if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) e$comment_field_english[indices_i] <- row.names(recode_comment_field[[i]])
+      row.names(recode_comment_field[[i]]) <- indices_i
+      names(recode_comment_field[[i]]) <- names(recode_comment_field[[i]])
+      if (i == 1) for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]] <- NA
+      for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]][indices_i] <- recode_comment_field[[i]][[v]]==1
+    }
+    label(e$comment_field_english) <- "comment_field_english: comment_field either original (if in English, French) or translated to English."
+    e$dislike_comment_field <- e$comment_field_bad | e$comment_field_bias
+    label(e$dislike_comment_field) <- "dislike_comment_field: T/F The respondent didn't sur survey: comment_field either says the survey is bad or biased."
+    e$critic_comment_field <- e$comment_field_bad | e$comment_field_problem | e$comment_field_bias
+    label(e$critic_comment_field) <- "critic_comment_field: T/F The answer to comment_field is critical: either mentions an issue, says that the survey is bad or biased."
+    e$treated_comment_field <- FALSE
+    for (i in 1:4) {
+      indices_i <- i+4*((1:nrow(recode_comment_field[[i]])-1))
+      if (sum(e$critic_comment_field[indices_i] | e$comment_field_good[indices_i], na.rm = T) >= 5) e$treated_comment_field[indices_i] <- TRUE    }
+    label(e$treated_comment_field) <- "treated_comment_field: T/F comment_field has been treated/recoded. N"
+    for (v in names(recode_comment_field[[1]])) {
+      e[[paste0("comment_field_", v)]][e$treated_comment_field & is.na(e[[paste0("comment_field_", v)]])] <- FALSE
+      label(e[[paste0("comment_field_", v)]]) <- paste0("comment_field_", v, ": ", v, " - Feeling or opinion the respondent expressed about the survey in comment_field.") }
+    variables_comment_field_contains <<- paste0("comment_field_contains_", c("long", "good", "learned", "bias"))
+    grep_variables_comment_field_contains <<- c(" long", "good|Good|excellent|enjoy|interesting", "learnt|learn", "bias")
+    names(grep_variables_comment_field_contains) <<- variables_comment_field_contains
+    for (v in variables_comment_field_contains) {
+      e[[v]] <- grepl(grep_variables_comment_field_contains[v], e$comment_field_english)
+      label(e[[v]]) <- paste0(v, ": T/F comment_field_english contains: ", grep_variables_comment_field_contains[v])  }
+    
+    
+    # things not as variables (but only few of them): learned a lot; too long
+    # Pépites:
+    # US: "Hello! I’m a stats grad student and found this survey fascinating. I live in an area hit by two major hurricanes last year. My whole city got destroyed. It’s been over 6 months and I still have holes in my roof and other damage. I know people still living in tents and RV’s. 
+    #      Living in a rural area affected by the consequences of climate change, some of these solutions are scary, and others are encouraging. I HAVE to drive to get anywhere. Easing gas prices won’t encourage me to use public transportation because that is not an option for me. I could ramble on, but thanks for this interesting survey!"
   })
   print("success")
   # e <- e[, -c(9:17)] 

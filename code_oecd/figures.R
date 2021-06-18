@@ -925,6 +925,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # TODO: corr support / CO2_emission
 # TODO!: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
 # TODO!: acquiescence negative/positive effect; costly/cost-effective
+# TODO!!: add option coal next to oil in heating, and add biomass in carbon neutral options. Pb: lacks cogeneration
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
