@@ -706,10 +706,43 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(political_affiliation_US <- barres(vars = "political_affiliation", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Political affiliation"))
       save_plotly_new_filename(political_affiliation_US, width= 800, height=140)})
     
-    ##### 16. Feedback #####
+    ##### 16. CC field, feedback #####
     
     try({(survey_biased_US <- barres(vars = "survey_biased", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Survey biased"))
       save_plotly_new_filename(survey_biased_US, width= 810, height=140)})
+    
+    try({(CC_field_mentions_raw_US <- barres(vars = var_CC_field_names[6:18], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=as.character(CC_field_names_names[6:18])))
+      save_plotly_new_filename(CC_field_mentions_raw_US, width= 400, height=450)})
+    
+    try({(CC_field_sectors_US <- barres(vars = var_CC_field_names[9:14], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=as.character(CC_field_names_names[9:14])))
+      save_plotly_new_filename(CC_field_sectors_US, width= 400, height=300)})
+    
+    try({(CC_field_instruments_US <- barres(vars = var_CC_field_names[c(8,15:18)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=as.character(CC_field_names_names[c(8,15:18)])))
+      save_plotly_new_filename(CC_field_instruments_US, width= 400, height=280)})
+    
+    try({(CC_field_contains_US <- barres(vars = variables_CC_field_contains, export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=sub("_", " ", sub("CC_field_contains_", "", variables_CC_field_contains))))
+      save_plotly_new_filename(CC_field_contains_US, width= 300, height=600)})
+    
+    try({(CC_field_mentions_US <- barres(vars = c("should_act_CC_field", "measure_proposed_CC_field", "CC_field_no_worry", "CC_field_do_not_know", "CC_field_na"), export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=c("Action needed", "Measure proposed", "No action needed", "Do not know", "Empty")))
+      save_plotly_new_filename(CC_field_mentions_US, width= 430, height=270)})
+    
+    try({(CC_field_nb_actions_US <- barres(vars = "nb_actions_CC_field", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="# supported actions mentioned"))
+      save_plotly_new_filename(CC_field_nb_actions_US, width= 570, height=140)})
+    
+    try({(CC_field_nb_elements_US <- barres(vars = "nb_elements_CC_field", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="# supported elements in CC field"))
+      save_plotly_new_filename(CC_field_nb_elements_US, width= 650, height=140)})
+    
+    try({(comment_field_contains_US <- barres(vars = variables_comment_field_contains, export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=sub("_", " ", sub("comment_field_contains_", "", variables_comment_field_contains))))
+      save_plotly_new_filename(comment_field_contains_US, width= 250, height=250)})
+    
+    try({(comment_field_mentions_raw_US <- barres(vars = var_comment_field_names, export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=comment_field_names))
+      save_plotly_new_filename(comment_field_mentions_raw_US, width= 400, height=450)})
+    
+    try({(comment_field_feeling_US <- barres(vars = c("comment_field_good", "critic_comment_field"), export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=c("Liked", "Disliked")))
+      save_plotly_new_filename(comment_field_feeling_US, width= 2000, height=150)})
+    
+    try({(comment_field_mentions_US <- barres(vars = c("non_empty_comment_field", "comment_field_good", "critic_comment_field"), export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=c("Non empty", "Liked", "Disliked")))
+      save_plotly_new_filename(comment_field_mentions_US, width= 2000, height=150)})
     
     ##### Heterogeneity: function #####
     plot_heterogeneity12 <- function(dfs = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", text_file = paste0(replacement_text, "_inc"), export_xls = F) {
@@ -826,6 +859,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     
     # # By rural/urban 
     try({plot_heterogeneity12(dfs = list(e[e$urban==T,], e[e$urban==F,]), orig="<br>(Urban)", comp = "(Rural)", text_file = paste0(replacement_text, "_urb"), export_xls = export_xls)})
+    
+    # # By treatment
+    try({plot_heterogeneityN(along = "treatment", text_file = paste0(replacement_text, "_treat"), export_xls = export_xls)})
     
     ## Other
     try({(wtp_US_anthropogenic <- barres12(vars = "wtp", export_xls = export_xls, df = list(e[e$CC_anthropogenic == "Most",], e[e$CC_anthropogenic <= 0,]), comp = "<br>(CC not mainly anthropogenic)", orig="<br>(CC anthropogenic)", miss=F, labels="WTP to limit global warming ($/year)"))
@@ -1567,9 +1603,30 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = c(stopwords, "survey"), colorPalette = "Blues", max.words = 70)
     save_plot(filename = paste0(folder, "comment_field", replacement_text), height = 400, width = 400)})
 
+    try({(CC_field_nb_actions_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "nb_actions_CC_field", export_xls = export_xls, df = e[e$country %in% countries_field_treated,], rev = F, rev_color = T, miss=F, labels="# supported actions mentioned"))
+      save_plotly_new_filename(CC_field_nb_actions_US, width= 570, height=fig_height(1*length(Levels(e[e$country %in% countries_field_treated,][[along]]))))})
+
+    try({(CC_field_nb_elements_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "nb_elements_CC_field", export_xls = export_xls, df = e[e$country %in% countries_field_treated,], rev = F, rev_color = T, miss=F, labels="# supported elements in CC field"))
+      save_plotly_new_filename(CC_field_nb_elements_US, width= 650, height=fig_height(1*length(Levels(e[e$country %in% countries_field_treated,][[along]]))))})
+
+    heatmap_wrapper(vars = c("should_act_CC_field", "measure_proposed_CC_field", "CC_field_no_worry", "CC_field_do_not_know", "CC_field_na"), labels = c("Action needed", "Measure proposed", "No action needed", "Do not know", "Empty"), name = "CC_field_mentions", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+
+    heatmap_wrapper(vars = var_CC_field_names[6:18], labels = as.character(CC_field_names_names[6:18]), name = "CC_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = var_CC_field_names[9:14], labels = as.character(CC_field_names_names[9:14]), name = "CC_field_sectors", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = var_CC_field_names[c(8,15:18)], labels = as.character(CC_field_names_names[c(8,15:18)]), name = "CC_field_instruments", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = variables_CC_field_contains, labels = sub("_", " ", sub("CC_field_contains_", "", variables_CC_field_contains)), name = "CC_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    
+    variables_feedback <<- c("survey_biased_yes", "survey_biased_left", "survey_biased_right", "non_empty_comment_field", "comment_field_good", "critic_comment_field")
+    labels_feedback <<- c("Survey biased", "Left-wing biased", "Right-wing biased", "Comment: non empty", "Comment: liked", "Comment: disliked")
+    heatmap_wrapper(vars = variables_feedback, labels = labels_feedback, name = "feedback", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = variables_comment_field_contains, labels = sub("_", " ", sub("comment_field_contains_", "", variables_comment_field_contains)), name = "comment_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = var_comment_field_names, labels = comment_field_names, name = "comment_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    # unused: nb_actions_CC_field, nb_elements_CC_field
+
+    
     ##### Heatmaps #####
 
-    heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), width = 800, height = 400) {
+    heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), df = all, width = 800, height = 400) {
       for (cond in conditions) {
         filename <- paste(sub("variables_", "", name), 
                           case_when(cond == "" ~ "mean", 
@@ -1580,7 +1637,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
                                     cond == "== 2" ~ "max", 
                                     cond == "== -2" ~ "min", 
                                     TRUE ~ "unknown"), sep = "_")
-        try({temp <- heatmap_table(vars = vars, along = along, conditions = cond, on_control = T)
+        try({temp <- heatmap_table(vars = vars, data = df, along = along, conditions = cond, on_control = T)
         row.names(temp) <- labels
         heatmap_plot(temp, proportion = (cond != ""))
         save_plot(filename = paste0(folder, filename, replacement_text), width = width, height = height)})

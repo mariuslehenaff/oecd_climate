@@ -3,7 +3,7 @@
 
 source(".Rprofile")
 
-# TODO!!: relationship footprint_pc & burden sharing, CC_field, feedback, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), score_trust, vote, ranking vs. order of display
+# TODO!!: consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
@@ -3380,8 +3380,14 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$survey_biased[e$survey_biased %in% text_survey_biased_anti_envi] <- "Yes, anti environment"
   e$survey_biased[e$survey_biased %in% text_survey_biased_left] <- "Yes, left"
   e$survey_biased[e$survey_biased %in% text_survey_biased_right] <- "Yes, right"
-  e$survey_biased[e$survey_biased %in% text_survey_biased_no] <- "No" # TODO! correlation treatment
+  e$survey_biased[e$survey_biased %in% text_survey_biased_no] <- "No" 
   if ("Yes, right" %in% levels(as.factor(e$survey_biased))) e$survey_biased <- relevel(relevel(as.factor(e$survey_biased), "Yes, right"), "No")
+  e$survey_biased_yes <- e$survey_biased != 'No'
+  e$survey_biased_left <- e$survey_biased == "Yes, left"
+  e$survey_biased_right <- e$survey_biased == "Yes, right"
+  label(e$survey_biased_yes) <- "survey_biased_yes: T/F Finds the survey biased (survey_biased != No)"
+  label(e$survey_biased_left) <- "survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)"
+  label(e$survey_biased_right) <- "survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)"
   
   if ("WTP" %in% names(e)) {
     e$WTP <- as.numeric(as.vector(gsub('[[:alpha:] $]', '', e$WTP))) # /!\ Careful with different currencies and use of cents vs. currency (for US $, not pb as cents are not used)
@@ -3982,165 +3988,172 @@ if (all(variables_affected_index %in% names(e))) {
   label(e$length_CC_field) <- "length_CC_field: Number of characters in CC_field"
   label(e$length_comment_field) <- "length_comment_field: Number of characters in comment_field"
   
-  try({
-    # To recode CC_field (pre-treatment necessary so the following code works):
-    # 1. use line below export CSV (change country in filename). 
-    # 2. Create country.xlsm: if language has special characters, from 'template - no wrap'; if not, from 'template' and jump to step 5
-    # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row 6. Click on appropriate cells. 
-    # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
-                               # paste0("../data/fields/csv/CC_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
-    
-    CC_field_names <- c("worrying / should act" = "worry", "no need to worry/act" = "no_worry", "NA / empty content" = "na",
-                                            "don't know" = "do_not_know", "spelling mistake" = "bad_spelling", "damages" = "damage",
-                                            "adaptation" = "adaptation", "change lifestyle" = "lifestyle", "companies" = "companies",
-                                            "trash/recycling/plastic" = "trash", "cars/transport" = "transport", "power/energy" = "energy",
-                                            "housing/insulation" = "housing", "agriculture/forest" = "land_agri", "tax/incentives" = "tax",
-                                            "bans/sanctions" = "ban", "standard" = "standard", "subsidies/investment" = "spending")
-    CC_field_names_names <- names(CC_field_names)
-    names(CC_field_names_names) <- CC_field_names
-    var_CC_field_names <<- paste0("CC_field_", CC_field_names)
-    
-    e$CC_field_english <- e$CC_field
-    recode_CC_field <- list()
-    for (i in 1:4) {
-      if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) recode_CC_field[[i]] <- as.data.frame(t(read.xlsx(paste0("../data/fields/", country, "en.xlsm"), sheet = i, rowNames = T)))
-      else if (file.exists(paste0("../data/fields/", country, ".xlsm"))) recode_CC_field[[i]] <- as.data.frame(t(read.xlsx(paste0("../data/fields/", country, ".xlsm"), sheet = i, rowNames = T)))
-      else print("No file found for recoding of CC_field.")
-      indices_i <- i+4*((1:nrow(recode_CC_field[[i]])-1))
-      if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) e$CC_field_english[indices_i] <- row.names(recode_CC_field[[i]])
-      row.names(recode_CC_field[[i]]) <- indices_i
-      names(recode_CC_field[[i]]) <- CC_field_names[names(recode_CC_field[[i]])]
-      if (i == 1) for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]] <- NA
-      for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]][indices_i] <- recode_CC_field[[i]][[v]]==1
-    }
-    label(e$CC_field_english) <- "CC_field_english: CC_field either original (if in English, French) or translated to English."
-    variables_sectors_field <<- c("companies", "trash", "transport", "energy", "housing", "land_agri")
-    variables_measures_field <<- c("lifestyle", "tax", "ban", "standard", "spending")
-    variables_actions_field <<- c(variables_sectors_field, variables_measures_field)
-    e$nb_sectors_CC_field <- rowSums(1*e[,paste0("CC_field_", intersect(variables_sectors_field, names(recode_CC_field[[1]])))], na.rm=T)
-    e$nb_measures_CC_field <- rowSums(1*e[,paste0("CC_field_", intersect(variables_measures_field, names(recode_CC_field[[1]])))], na.rm=T)
-    e$nb_actions_CC_field <- rowSums(1*e[,paste0("CC_field_", intersect(variables_actions_field, names(recode_CC_field[[1]])))], na.rm=T)
-    e$should_act_CC_field <- e$nb_actions_CC_field > 0 | e$CC_field_worry > 0
-    label(e$nb_sectors_CC_field) <- "nb_sectors_CC_field: Number of sectors for which an action is supported in CC_field, among: companies, trash, transport, energy, housing, land_agri"
-    label(e$nb_measures_CC_field) <- "nb_measures_CC_field: Number of types of government measures explicitly supported in CC_field, among: lifestyle, tax, ban, standard, spending"
-    label(e$nb_actions_CC_field) <- "nb_actions_CC_field: Number of types (sectors or measures) for which an action is supported in CC_field, among: companies, trash, transport, energy, housing, land_agri, lifestyle, tax, ban, standard, spending"
-    label(e$should_act_CC_field) <- "should_act_CC_field: T/F Supports at least one action in CC_field (either expresses general concern/support for action (CC_field_worry) or mentions specific action(s): nb_types_CC_field > 0, or both)"
-    e$weird_good_CC_field <- nchar(e$CC_field) < 15 & grepl("good|Good", e$CC_field)
-    label(e$weird_good_CC_field) <- "weird_good_CC_field: T/F The answer to CC_field is weirdly 'good' or 'very good'. Flagged as low quality." # TODO! check correlation w duration and so on
-    e$nb_elements_CC_field <- rowSums(1*e[,paste0("CC_field_", names(recode_CC_field[[1]]))], na.rm=T) 
-    e$nb_elements_CC_field[e$CC_field_na == TRUE] <- -1 
-    for (i in 1:4) {
-      indices_i <- i+4*((1:nrow(recode_CC_field[[i]])-1))
-      if (sum(e$nb_elements_CC_field[indices_i] > 0) < 5) e$nb_elements_CC_field[indices_i] <- NA    }
-    label(e$nb_elements_CC_field) <- "nb_elements_CC_field: Number of elements mentioned in CC_field. NA means that the observation has not been yet treated. -1 means that its content is empty (including contents like 'lfelkfje' or 'none')"
-    for (v in names(recode_CC_field[[1]])) {
-      e[[paste0("CC_field_", v)]][!is.na(e$nb_elements_CC_field) & is.na(e[[paste0("CC_field_", v)]])] <- FALSE
-      label(e[[paste0("CC_field_", v)]]) <- paste0("CC_field_", v, ": ", CC_field_names_names[v], " - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)") }
-    variables_CC_field_contains <<- paste0("CC_field_contains_", c("meat", "natural", "world", "population", "research", "tax", "education",  "solar", "coal", "electric", "electric_car", "nuclear", "fossil", "plastic", "companies", "aviation", "justice", "training", "recycling", "heating", "subsidies", "investment", "ban", "standard", "reduce"))
-    grep_variables_CC_field_contains <<- c("meat|beef", "natural", "international|world|countries", "population", "research|innovation|technology", "tax|incentiv", "educat|teach|campaign|school",
-                                           "solar", "coal", "electric", "electric car", "nuclear", "fossil|coal|oil|gas", "plastic", "compan|corporation|factories|factory", "plane|flight|fly|aviation", "justice|poor|equalit", "training", "recycl", "heating|insulat|renovat", "subsid", "invest", "ban |banned|interdiction|forbid|mandat", "standard", "reduc| less")
-    names(grep_variables_CC_field_contains) <<- variables_CC_field_contains
-    for (v in variables_CC_field_contains) {
-      e[[v]] <- grepl(grep_variables_CC_field_contains[v], e$CC_field_english)
-      label(e[[v]]) <- paste0(v, ": T/F CC_field_english contains: ", grep_variables_CC_field_contains[v])  }
-    
-    # Impressions:
-    # In US, debate is about whether climate change is natural or man-made, if we can do something against it (or too late) and if it is worth it to do so (as later generations will adapt by natural selection anyway).
-    # In Denmark, debate is about speed and extent of the transition, notably on legislation regarding meat. Need for transition seem acknowledged, the critical comments are often like: be reasonable, don't go faster than other countries otherwise pollution will just be relocated through more imports.
-    # 
-    
-    # Recurrent topics that don't have a variable:
-    # US: no mention of meat whatsoever, very few of plane. CC denial: CC is natural; too late to act / impossible to curb climate change; less harm adapting than mitigating; solar; need that other countries act / international cooperation; questions; climate education; retraining; research
-    # DK: talk a lot about meat, not at all of plane; sometimes: international; overpopulation; education; social justice; nuclear
-    # Pépites:
-    # US: "I have no concerns. The US is responsible for less than 85% of the worlds climate change."; "I live by some of the largest plants in the country. I worry about the jobs of people in my area getting cut before there is a safe sustainable alternative."; 
-    #     "Cutting my carbon footprint has become increasingly important to me.  I'm WFH now during Covid & hope to stay that way post-Covid.  I found my 3 hour a day commute on public transportation to be inconvenient but I stuck with it because I felt it was the responsible thing to do"
-    # DK: "shoot all vegans, they fart at least as much as cows"; "The primary reason for the climate problems is overpopulation as well as overconsumption of unnecessary things. Unfortunately, we live in a globalized and economy-driven world, where it is more important that min. keep, and preferably increase GDP / consumption, 
-    #       so that politicians do not dare to do something that really beats. \ n \ n As I see it, we must accept a negative population growth, whether it happens in war, pandemics, natural disasters or reduced opportunities for medical treatments. etc. There are just no politicians who dare to go out and say that, since they will not be re-elected. 
-    #       Moreover, the power of money (read: the United States and the \ 'American Dream \') has too much power, so if they force politicians to do as they please. If, for example, Denmark stops consuming unnecessary electronics (new models of PC / TV), we will lag behind other countries, and will risk ending up as a developing country. \ n \ n
-    #       The problem also lies in the fact that man is striving and so stupid as to think that material wealth is the future and worth striving for. The worst thing, however, is that people who say they have a given religion such as Christianity do not live up to it, but are still selfish, striving for more money and power for themselves."
-    #     "Introduction of a uniform tax of DKK 1,500 per tonnes of CO2 equivalents"; "That we should have more wind farms. And biogas plants. But do not cut back on beef and agriculture"
-    # automatic translation: https://www.onlinedoctranslator.com/de/translationform
-    
-    # write.csv(gsub("\n", "\\\\\\n ", e$CC_field), "../data/CC_field_US.csv", row.names = T) # vertical instead of horizontal
-    # write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field)), collapse = '","'), '"'), collapse=""), 
-    #             "../data/CC_field_US.csv", row.names = F, quote = F, col.names = F) # for locales with , instead of ;
-    # write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field)), collapse = '";"'), '"'), collapse=""),
-    #            "../data/CC_field_US.csv", row.names = F, quote = F, col.names = F) # for all together
-    # e$CC_field[seq(1,nrow(e),4)]
-    # damages, worry / should act, don't worry / should not act, companies, trash/recycling/plastic, cars/transport, power, tax, other_policy,
-    # good english, none, don't know, lifestyle, subsidies/investment, standard, bans, agriculture/tree, housing, policy, sea-level, fires, heat,
-    # https://www.mrexcel.com/board/threads/changing-cell-value-by-clicking-on-the-cell.51933/
-    
-    # e$Connaissance_CCC <- NA 
-    # e$connaissance_CCC_bon_francais <- e$connaissance_CCC_sortition <- e$connaissance_CCC_mesures <- e$connaissance_CCC_temporalite <- e$connaissance_CCC_internet <- e$connaissance_CCC == "FALSE"
-    # e$connaissance_CCC_opinion <- e$connaissance_CCC_posterite <- e$connaissance_CCC_150 <- e$connaissance_CCC == "FALSE"
-    # if (vague==1) {
-    #   e$Connaissance_CCC[c(1,3,10,13,17,19,29,30,34,45,49,51,54,57,64,68,74,77,78,86,93,97,103,121,129,136,139,151,153,155,156,159,162,163,164,174,179,181,182,183,184,187,191,194,196,197,201)] <- "aucune" #
-    #   e$connaissance_CCC_temporalite[c(84,117,131,150,172,235,249,293,302,427,501)] <- "temporalité"
-    #   e$connaissance_CCC_150[which(c(grepl('150', e$connaissance_CCC)),470)] <- "150"
-    # } else {
-    # } 
-    # e$Connaissance_CCC[is.na(e$Connaissance_CCC) & e$connait_CCC!=-1] <- "aucune"
-    # # variables_connaissance_CCC <<- c("bon_francais", "sortition", "mesures", "temporalite", "internet", "150")
-    # # for (v in variables_connaissance_CCC) e[[paste("connaissance_CCC", v, sep="_")]] <- e[[paste("connaissance_CCC", v, sep="_")]]!="FALSE"
-    # variables_connaissances_CCC <<- c("mesures", "choix", "sortition", "150", "temporalite", "internet", "opinion", "posterite", "bon_francais")
-    # for (v in variables_connaissances_CCC) if (paste("connaissance_CCC", v, sep="_") %in% names(e)) e[[paste("connaissance_CCC", v, sep="_")]] <- e[[paste("connaissance_CCC", v, sep="_")]]!="FALSE"
-    # temp <- -2*(e$Connaissance_CCC=="hors sujet") -1*(e$Connaissance_CCC=="faux") + 1*(e$Connaissance_CCC=="trop vague") + 2*(e$Connaissance_CCC=="approximatif") + 3*(e$Connaissance_CCC=="bonne")
-    # temp[e$connaissance_CCC_internet==T] <- 2
-    # e$Connaissance_CCC <- as.item(temp, labels = structure(c(-2:3), names=c("hors sujet", "faux", "aucune", "trop vague", "approximatif", "bonne")),
-    #                               annotation="Connaissance_CCC: connaissance_CCC recodé en hors sujet/faux/aucune/approximatif/bonne (incl. internet) - Décrivez ce que vous savez de la Convention Citoyenne pour le Climat. (champ libre)")
-    # label(e$connaissance_CCC_bon_francais) <- "connaissance_CCC_bon_francais: Indicatrice que la réponse à connaissance_CCC est constituée d'une phrase grammaticalement correcte et sans faute d'orthographe (à l'exception des phrases très courtes type 'Je ne sais pas')"
-    
-  })
+  if (country %in% countries_field_treated & !grepl("pilot", wave)) {
+    try({
+      # To recode CC_field (pre-treatment necessary so the following code works):
+      # 1. use line below export CSV (change country in filename). 
+      # 2. Create country.xlsm: if language has special characters, from 'template - no wrap'; if not, from 'template' and jump to step 5
+      # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row 6. Click on appropriate cells. 
+      # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
+                                 # paste0("../data/fields/csv/CC_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
   
-  try({
-    # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$comment_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
-    #                 paste0("../data/fields/csv/comment_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+      CC_field_names <- c("worrying / should act" = "worry", "no need to worry/act" = "no_worry", "NA / empty content" = "na",
+                                              "don't know" = "do_not_know", "spelling mistake" = "bad_spelling", "damages" = "damage",
+                                              "adaptation" = "adaptation", "change lifestyle" = "lifestyle", "companies" = "companies",
+                                              "trash/recycling/plastic" = "trash", "cars/transport" = "transport", "power/energy" = "energy",
+                                              "housing/insulation" = "housing", "agriculture/forest" = "land_agri", "tax/incentives" = "tax",
+                                              "bans/sanctions" = "ban", "standard" = "standard", "subsidies/investment" = "spending")
+      CC_field_names_names <- names(CC_field_names)
+      names(CC_field_names_names) <- CC_field_names
+      var_CC_field_names <<- paste0("CC_field_", CC_field_names)
+      
+      e$CC_field_english <- e$CC_field
+      recode_CC_field <- list()
+      for (i in 1:4) {
+        if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) recode_CC_field[[i]] <- read.xlsx(paste0("../data/fields/", country, "en.xlsm"), sheet = i, rowNames = T, sep.names = " ", na.strings = c())
+        else if (file.exists(paste0("../data/fields/", country, ".xlsm"))) recode_CC_field[[i]] <- read.xlsx(paste0("../data/fields/", country, ".xlsm"), sheet = i, rowNames = T, sep.names = " ", na.strings = c())
+        else print("No file found for recoding of CC_field.")
+        indices_i <- i+4*((1:ncol(recode_CC_field[[i]])-1)) # seq(i, nrow(e), 4)
+        if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) e$CC_field_english[indices_i] <- names(recode_CC_field[[i]])
+        row.names(recode_CC_field[[i]]) <- CC_field_names[row.names(recode_CC_field[[i]])]
+        recode_CC_field[[i]] <- as.data.frame(t(recode_CC_field[[i]]), row.names = indices_i)
+        if (i == 1) for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]] <- NA # /!\ There may be a bug if there are NA in CC_field_names[names(recode_CC_field[[i]])], which happens when the variable/column names are unkown in CC_field_names
+        for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]][indices_i] <- recode_CC_field[[i]][[v]]==1
+      }
+      label(e$CC_field_english) <- "CC_field_english: CC_field either original (if in English, French) or translated to English."
+      variables_sectors_field <<- c("companies", "trash", "transport", "energy", "housing", "land_agri")
+      variables_measures_field <<- c("lifestyle", "tax", "ban", "standard", "spending")
+      variables_actions_field <<- c(variables_sectors_field, variables_measures_field)
+      e$nb_sectors_CC_field <- rowSums(1*e[,paste0("CC_field_", intersect(variables_sectors_field, names(recode_CC_field[[1]])))], na.rm=T)
+      e$nb_measures_CC_field <- rowSums(1*e[,paste0("CC_field_", intersect(variables_measures_field, names(recode_CC_field[[1]])))], na.rm=T)
+      e$measure_proposed_CC_field <- (e$nb_measures_CC_field > 0) %in% T
+      e$nb_actions_CC_field <- rowSums(1*e[,paste0("CC_field_", intersect(variables_actions_field, names(recode_CC_field[[1]])))], na.rm=T)
+      e$should_act_CC_field <- (e$nb_actions_CC_field > 0 | e$CC_field_worry > 0) %in% T
+      label(e$nb_sectors_CC_field) <- "nb_sectors_CC_field: Number of sectors for which an action is supported in CC_field, among: companies, trash, transport, energy, housing, land_agri"
+      label(e$nb_measures_CC_field) <- "nb_measures_CC_field: Number of types of government measures explicitly supported in CC_field, among: lifestyle, tax, ban, standard, spending"
+      label(e$measure_proposed_CC_field) <- "measure_proposed_CC_field: At least one measure mentioned and supported in CC_field."
+      label(e$nb_actions_CC_field) <- "nb_actions_CC_field: Number of types (sectors or measures) for which an action is supported in CC_field, among: companies, trash, transport, energy, housing, land_agri, lifestyle, tax, ban, standard, spending"
+      label(e$should_act_CC_field) <- "should_act_CC_field: T/F Supports at least one action in CC_field (either expresses general concern/support for action (CC_field_worry) or mentions specific action(s): nb_types_CC_field > 0, or both)"
+      e$weird_good_CC_field <- nchar(e$CC_field) < 15 & grepl("good|Good", e$CC_field)
+      label(e$weird_good_CC_field) <- "weird_good_CC_field: T/F The answer to CC_field is weirdly 'good' or 'very good'. Flagged as low quality."
+      e$nb_elements_CC_field <- rowSums(1*e[,paste0("CC_field_", names(recode_CC_field[[1]]))], na.rm=T) 
+      e$nb_elements_CC_field[e$CC_field_na == TRUE] <- -1 
+      for (i in 1:4) {
+        indices_i <- i+4*((1:nrow(recode_CC_field[[i]])-1)) # seq(i, nrow(e), 4)
+        if (sum(e$nb_elements_CC_field[indices_i] > 0, na.rm = T) < 5) {
+          e$should_act_CC_field[indices_i] <- e$nb_actions_CC_field[indices_i] <- e$measure_proposed_CC_field[indices_i] <- e$nb_measures_CC_field[indices_i] <- e$nb_sectors_CC_field[indices_i] <- e$nb_elements_CC_field[indices_i] <- NA    } }
+      label(e$nb_elements_CC_field) <- "nb_elements_CC_field: Number of elements mentioned in CC_field. NA means that the observation has not been yet treated. -1 means that its content is empty (including contents like 'lfelkfje' or 'none')"
+      e$nb_actions_CC_field <- as.item(pmin(as.numeric(e$nb_actions_CC_field), 2), labels = structure(c(0:2), names=c("0", "1", "2+")), annotation=Label(e$nb_actions_CC_field))
+      e$nb_elements_CC_field <- as.item(pmin(as.numeric(e$nb_elements_CC_field), 2), labels = structure(c(-1:2), names=c("Empty", "0", "1", "2+")), annotation=Label(e$nb_elements_CC_field))
+      # e$nb_measures_CC_field <- as.item(pmin(e$nb_measures_CC_field, 2), labels = structure(c(0:2), names=c("0", "1", "2+")), annotation=Label(e$nb_measures_CC_field))
+      # e$nb_sectors_CC_field <- as.item(pmin(e$nb_sectors_CC_field, 2), labels = structure(c(0:2), names=c("0", "1", "2+")), annotation=Label(e$nb_sectors_CC_field))
+      for (v in names(recode_CC_field[[1]])) {
+        e[[paste0("CC_field_", v)]][!is.na(e$nb_elements_CC_field) & is.na(e[[paste0("CC_field_", v)]])] <- FALSE
+        label(e[[paste0("CC_field_", v)]]) <- paste0("CC_field_", v, ": ", CC_field_names_names[v], " - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)") }
+      variables_CC_field_contains <<- paste0("CC_field_contains_", c("meat", "natural", "world", "population", "research", "tax", "education",  "solar", "coal", "electric", "electric_car", "nuclear", "fossil", "plastic", "companies", "aviation", "justice", "training", "recycling", "heating", "subsidies", "investment", "ban", "standard", "reduce"))
+      grep_variables_CC_field_contains <<- c("meat|beef|cow|vegan|animal food", "natural", "international|world|countries", "population", "research|innovation|technology", "tax|incentiv", "educat|teach|campaign|school",
+                                             "solar", "coal", "electric", "electric car", "nuclear", "fossil|coal|oil|gas", "plastic", "compan|corporation|factories|factory", "plane|flight|fly|aviation", "justice|poor|equalit", "training", "recycl", "heating|insulat|renovat", "subsid", "invest", "ban |banned|interdiction|forbid|mandat", "standard", "reduc| less")
+      names(grep_variables_CC_field_contains) <<- variables_CC_field_contains
+      for (v in variables_CC_field_contains) {
+        e[[v]] <- grepl(grep_variables_CC_field_contains[v], e$CC_field_english)
+        label(e[[v]]) <- paste0(v, ": T/F CC_field_english contains: ", grep_variables_CC_field_contains[v])  }
+      
+      # Impressions:
+      # In US, debate is about whether climate change is natural or man-made, if we can do something against it (or too late) and if it is worth it to do so (as later generations will adapt by natural selection anyway).
+      # In Denmark, debate is about speed and extent of the transition, notably on legislation regarding meat. Need for transition seem acknowledged, the critical comments are often like: be reasonable, don't go faster than other countries otherwise pollution will just be relocated through more imports.
+      # 
+      
+      # Recurrent topics that don't have a variable:
+      # US: no mention of meat whatsoever, very few of plane. CC denial: CC is natural; too late to act / impossible to curb climate change; less harm adapting than mitigating; solar; need that other countries act / international cooperation; questions; climate education; retraining; research
+      # DK: talk a lot about meat, not at all of plane; sometimes: international; overpopulation; education; social justice; nuclear
+      # Pépites:
+      # US: "I have no concerns. The US is responsible for less than 85% of the worlds climate change."; "I live by some of the largest plants in the country. I worry about the jobs of people in my area getting cut before there is a safe sustainable alternative."; 
+      #     "Cutting my carbon footprint has become increasingly important to me.  I'm WFH now during Covid & hope to stay that way post-Covid.  I found my 3 hour a day commute on public transportation to be inconvenient but I stuck with it because I felt it was the responsible thing to do"
+      # DK: "shoot all vegans, they fart at least as much as cows"; "The primary reason for the climate problems is overpopulation as well as overconsumption of unnecessary things. Unfortunately, we live in a globalized and economy-driven world, where it is more important that min. keep, and preferably increase GDP / consumption, 
+      #       so that politicians do not dare to do something that really beats. \ n \ n As I see it, we must accept a negative population growth, whether it happens in war, pandemics, natural disasters or reduced opportunities for medical treatments. etc. There are just no politicians who dare to go out and say that, since they will not be re-elected. 
+      #       Moreover, the power of money (read: the United States and the \ 'American Dream \') has too much power, so if they force politicians to do as they please. If, for example, Denmark stops consuming unnecessary electronics (new models of PC / TV), we will lag behind other countries, and will risk ending up as a developing country. \ n \ n
+      #       The problem also lies in the fact that man is striving and so stupid as to think that material wealth is the future and worth striving for. The worst thing, however, is that people who say they have a given religion such as Christianity do not live up to it, but are still selfish, striving for more money and power for themselves."
+      #     "Introduction of a uniform tax of DKK 1,500 per tonnes of CO2 equivalents"; "That we should have more wind farms. And biogas plants. But do not cut back on beef and agriculture"
+      # automatic translation: https://www.onlinedoctranslator.com/de/translationform
+      
+      # write.csv(gsub("\n", "\\\\\\n ", e$CC_field), "../data/CC_field_US.csv", row.names = T) # vertical instead of horizontal
+      # write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field)), collapse = '","'), '"'), collapse=""), 
+      #             "../data/CC_field_US.csv", row.names = F, quote = F, col.names = F) # for locales with , instead of ;
+      # write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field)), collapse = '";"'), '"'), collapse=""),
+      #            "../data/CC_field_US.csv", row.names = F, quote = F, col.names = F) # for all together
+      # e$CC_field[seq(1,nrow(e),4)]
+      # damages, worry / should act, don't worry / should not act, companies, trash/recycling/plastic, cars/transport, power, tax, other_policy,
+      # good english, none, don't know, lifestyle, subsidies/investment, standard, bans, agriculture/tree, housing, policy, sea-level, fires, heat,
+      # https://www.mrexcel.com/board/threads/changing-cell-value-by-clicking-on-the-cell.51933/
+      
+      # e$Connaissance_CCC <- NA 
+      # e$connaissance_CCC_bon_francais <- e$connaissance_CCC_sortition <- e$connaissance_CCC_mesures <- e$connaissance_CCC_temporalite <- e$connaissance_CCC_internet <- e$connaissance_CCC == "FALSE"
+      # e$connaissance_CCC_opinion <- e$connaissance_CCC_posterite <- e$connaissance_CCC_150 <- e$connaissance_CCC == "FALSE"
+      # if (vague==1) {
+      #   e$Connaissance_CCC[c(1,3,10,13,17,19,29,30,34,45,49,51,54,57,64,68,74,77,78,86,93,97,103,121,129,136,139,151,153,155,156,159,162,163,164,174,179,181,182,183,184,187,191,194,196,197,201)] <- "aucune" #
+      #   e$connaissance_CCC_temporalite[c(84,117,131,150,172,235,249,293,302,427,501)] <- "temporalité"
+      #   e$connaissance_CCC_150[which(c(grepl('150', e$connaissance_CCC)),470)] <- "150"
+      # } else {
+      # } 
+      # e$Connaissance_CCC[is.na(e$Connaissance_CCC) & e$connait_CCC!=-1] <- "aucune"
+      # # variables_connaissance_CCC <<- c("bon_francais", "sortition", "mesures", "temporalite", "internet", "150")
+      # # for (v in variables_connaissance_CCC) e[[paste("connaissance_CCC", v, sep="_")]] <- e[[paste("connaissance_CCC", v, sep="_")]]!="FALSE"
+      # variables_connaissances_CCC <<- c("mesures", "choix", "sortition", "150", "temporalite", "internet", "opinion", "posterite", "bon_francais")
+      # for (v in variables_connaissances_CCC) if (paste("connaissance_CCC", v, sep="_") %in% names(e)) e[[paste("connaissance_CCC", v, sep="_")]] <- e[[paste("connaissance_CCC", v, sep="_")]]!="FALSE"
+      # temp <- -2*(e$Connaissance_CCC=="hors sujet") -1*(e$Connaissance_CCC=="faux") + 1*(e$Connaissance_CCC=="trop vague") + 2*(e$Connaissance_CCC=="approximatif") + 3*(e$Connaissance_CCC=="bonne")
+      # temp[e$connaissance_CCC_internet==T] <- 2
+      # e$Connaissance_CCC <- as.item(temp, labels = structure(c(-2:3), names=c("hors sujet", "faux", "aucune", "trop vague", "approximatif", "bonne")),
+      #                               annotation="Connaissance_CCC: connaissance_CCC recodé en hors sujet/faux/aucune/approximatif/bonne (incl. internet) - Décrivez ce que vous savez de la Convention Citoyenne pour le Climat. (champ libre)")
+      # label(e$connaissance_CCC_bon_francais) <- "connaissance_CCC_bon_francais: Indicatrice que la réponse à connaissance_CCC est constituée d'une phrase grammaticalement correcte et sans faute d'orthographe (à l'exception des phrases très courtes type 'Je ne sais pas')"
+      
+    })
     
-    comment_field_names <- c("good", "bad", "bias", "problem")
-    var_comment_field_names <<- paste0("comment_field_", comment_field_names)
-    
-    e$comment_field_english <- e$comment_field
-    recode_comment_field <- list()
-    for (i in 1:4) {
-      if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) recode_comment_field[[i]] <- as.data.frame(t(read.xlsx(paste0("../data/fields/", country, "en.xlsm"), sheet = 4+i, rowNames = T)))
-      else if (file.exists(paste0("../data/fields/", country, ".xlsm"))) recode_comment_field[[i]] <- as.data.frame(t(read.xlsx(paste0("../data/fields/", country, ".xlsm"), sheet = 4+i, rowNames = T)))
-      else print("No file found for recoding of comment_field.")
-      indices_i <- i+4*((1:nrow(recode_comment_field[[i]])-1))
-      if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) e$comment_field_english[indices_i] <- row.names(recode_comment_field[[i]])
-      row.names(recode_comment_field[[i]]) <- indices_i
-      names(recode_comment_field[[i]]) <- names(recode_comment_field[[i]])
-      if (i == 1) for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]] <- NA
-      for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]][indices_i] <- recode_comment_field[[i]][[v]]==1
-    }
-    label(e$comment_field_english) <- "comment_field_english: comment_field either original (if in English, French) or translated to English."
-    e$dislike_comment_field <- e$comment_field_bad | e$comment_field_bias
-    label(e$dislike_comment_field) <- "dislike_comment_field: T/F The respondent didn't sur survey: comment_field either says the survey is bad or biased."
-    e$critic_comment_field <- e$comment_field_bad | e$comment_field_problem | e$comment_field_bias
-    label(e$critic_comment_field) <- "critic_comment_field: T/F The answer to comment_field is critical: either mentions an issue, says that the survey is bad or biased."
-    e$treated_comment_field <- FALSE
-    for (i in 1:4) {
-      indices_i <- i+4*((1:nrow(recode_comment_field[[i]])-1))
-      if (sum(e$critic_comment_field[indices_i] | e$comment_field_good[indices_i], na.rm = T) >= 5) e$treated_comment_field[indices_i] <- TRUE    }
-    label(e$treated_comment_field) <- "treated_comment_field: T/F comment_field has been treated/recoded. N"
-    for (v in names(recode_comment_field[[1]])) {
-      e[[paste0("comment_field_", v)]][e$treated_comment_field & is.na(e[[paste0("comment_field_", v)]])] <- FALSE
-      label(e[[paste0("comment_field_", v)]]) <- paste0("comment_field_", v, ": ", v, " - Feeling or opinion the respondent expressed about the survey in comment_field.") }
-    variables_comment_field_contains <<- paste0("comment_field_contains_", c("long", "good", "learned", "bias"))
-    grep_variables_comment_field_contains <<- c(" long", "good|Good|excellent|enjoy|interesting", "learnt|learn", "bias")
-    names(grep_variables_comment_field_contains) <<- variables_comment_field_contains
-    for (v in variables_comment_field_contains) {
-      e[[v]] <- grepl(grep_variables_comment_field_contains[v], e$comment_field_english)
-      label(e[[v]]) <- paste0(v, ": T/F comment_field_english contains: ", grep_variables_comment_field_contains[v])  }
-    
-    
-    # things not as variables (but only few of them): learned a lot; too long
-    # Pépites:
-    # US: "Hello! I’m a stats grad student and found this survey fascinating. I live in an area hit by two major hurricanes last year. My whole city got destroyed. It’s been over 6 months and I still have holes in my roof and other damage. I know people still living in tents and RV’s. 
-    #      Living in a rural area affected by the consequences of climate change, some of these solutions are scary, and others are encouraging. I HAVE to drive to get anywhere. Easing gas prices won’t encourage me to use public transportation because that is not an option for me. I could ramble on, but thanks for this interesting survey!"
-  })
-  print("success")
+    try({
+      # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$comment_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
+      #                 paste0("../data/fields/csv/comment_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+      
+      comment_field_names <- c("good", "bad", "bias", "problem")
+      var_comment_field_names <<- paste0("comment_field_", comment_field_names)
+      e$comment_field_english <- e$comment_field
+      recode_comment_field <- list()
+      for (i in 1:4) {
+        if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) recode_comment_field[[i]] <- read.xlsx(paste0("../data/fields/", country, "en.xlsm"), sheet = 4+i, rowNames = T, sep.names = " ", na.strings = c())
+        else if (file.exists(paste0("../data/fields/", country, ".xlsm"))) recode_comment_field[[i]] <- read.xlsx(paste0("../data/fields/", country, ".xlsm"), sheet = 4+i, rowNames = T, sep.names = " ", na.strings = c())
+        else print("No file found for recoding of comment_field.")
+        indices_i <- i+4*((1:ncol(recode_comment_field[[i]])-1)) # seq(i, nrow(e), 4)
+        if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) e$comment_field_english[indices_i] <- names(recode_comment_field[[i]])
+        recode_comment_field[[i]] <- as.data.frame(t(recode_comment_field[[i]]), row.names = indices_i)
+        if (i == 1) for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]] <- NA
+        for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]][indices_i] <- recode_comment_field[[i]][[v]]==1
+      }
+      label(e$comment_field_english) <- "comment_field_english: comment_field either original (if in English, French) or translated to English."
+      e$dislike_comment_field <- (e$comment_field_bad | e$comment_field_bias) %in% T
+      label(e$dislike_comment_field) <- "dislike_comment_field: T/F The respondent didn't sur survey: comment_field either says the survey is bad or biased."
+      e$critic_comment_field <- (e$comment_field_bad | e$comment_field_problem | e$comment_field_bias) %in% T
+      label(e$critic_comment_field) <- "critic_comment_field: T/F The answer to comment_field is critical: either mentions an issue, says that the survey is bad or biased."
+      e$treated_comment_field <- FALSE
+      for (i in 1:4) {
+        indices_i <- i+4*((1:nrow(recode_comment_field[[i]])-1)) # seq(i, nrow(e), 4)
+        if (sum(e$critic_comment_field[indices_i] | e$comment_field_good[indices_i], na.rm = T) >= 5) e$treated_comment_field[indices_i] <- TRUE    }
+      label(e$treated_comment_field) <- "treated_comment_field: T/F comment_field has been treated/recoded. N"
+      for (v in names(recode_comment_field[[1]])) {
+        e[[paste0("comment_field_", v)]][e$treated_comment_field & is.na(e[[paste0("comment_field_", v)]])] <- FALSE
+        label(e[[paste0("comment_field_", v)]]) <- paste0("comment_field_", v, ": ", v, " - Feeling or opinion the respondent expressed about the survey in comment_field.") }
+      variables_comment_field_contains <<- paste0("comment_field_contains_", c("long", "good", "thanks", "learned", "bias"))
+      grep_variables_comment_field_contains <<- c(" long", "good|Good|excellent|enjoy|interesting", "thank|Thank", "learnt|learn", "bias")
+      names(grep_variables_comment_field_contains) <<- variables_comment_field_contains
+      for (v in variables_comment_field_contains) {
+        e[[v]] <- grepl(grep_variables_comment_field_contains[v], e$comment_field_english)
+        label(e[[v]]) <- paste0(v, ": T/F comment_field_english contains: ", grep_variables_comment_field_contains[v])  }
+      e$non_empty_comment_field <- !is.na(e$comment_field)
+      label(e$non_empty_comment_field) <- "non_empty_comment_field: The respondent left a feedback comment, i.e. comment_field is not NA."
+      # things not as variables: general comment on their climate opinion; learned a lot; too long
+      # Pépites:
+      # US: "Hello! I’m a stats grad student and found this survey fascinating. I live in an area hit by two major hurricanes last year. My whole city got destroyed. It’s been over 6 months and I still have holes in my roof and other damage. I know people still living in tents and RV’s. 
+      #      Living in a rural area affected by the consequences of climate change, some of these solutions are scary, and others are encouraging. I HAVE to drive to get anywhere. Easing gas prices won’t encourage me to use public transportation because that is not an option for me. I could ramble on, but thanks for this interesting survey!"
+    })
+    print("success")
+  }
   # e <- e[, -c(9:17)] 
   return(e)
 }
@@ -4273,6 +4286,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   return(e)
 }
 
+countries_field_treated <- c("DK", "US")
 usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
