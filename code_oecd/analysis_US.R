@@ -163,6 +163,12 @@ decrit("country_should_act_condition", data = e)
 decrit("pro_global_assembly", data = e)
 decrit("pro_global_tax", data = e)
 decrit("pro_tax_1p", data = e)
+# US who know they pollute more than Chinese are 5 p.p. less prone to fair burden-sharing, contrary to French who know who are also more generous TODO: check if it holds adding controls
+summary(lm(pro_polluter_pay ~ correct_footprint_pc_compare * country_name, data = e, weights = e$weight)) # -0.04* aux US/DK mais +0.05 en FR
+summary(lm(pro_rich_pay ~ correct_footprint_pc_compare * country_name, data = e, weights = e$weight)) # - 0.06. aux US, 0 FR/DK
+summary(lm(pro_grand_fathering ~ correct_footprint_pc_compare * country_name, data = e, weights = e$weight)) # +0.03* US
+summary(lm(pro_polluter_and_rich_pay ~ correct_footprint_pc_compare * country_name, data = e, weights = e$weight)) # -0.05 US
+summary(lm(pro_differentiated_responsibilities_large ~ correct_footprint_pc_compare * country_name, data = e, weights = e$weight)) 
 
 
 ##### Treatment effects #####
@@ -496,3 +502,34 @@ prp(tree_support, box.palette = "Blues", tweak = 1.2)
 # - for the petition it is funny because 30% say they are willing to sign but only 3% click on the link.
 # - apart from that, answers to new questions make sense (e.g. China more frequently put "most" for total rather than per capita, only 11% choosing "Other" for the sector question), although for the WTP the answers do not seem to really depend on the amount proposed (but here low sample size may be at play).
 
+
+##### Acquiescence ####
+decrit(usp3$investments_cost_effective)
+decrit(us$investments_cost_effective)
+decrit(usp3$standard_cost_effective)
+decrit(us$standard_cost_effective)
+decrit(usp3$tax_transfers_cost_effective)
+decrit(us$tax_transfers_cost_effective)
+decrit(usp3$policies_cost_effective)
+decrit(us$policies_cost_effective)
+
+
+##### Survey biased #####
+summary(lm(survey_biased != 'No' ~ treatment * country_name, data = all, weights = all$weight)) # + 5 p.p. policy
+decrit("survey_biased", data = all, which = all$treatment == 'None') # 73/21/7 No/left/right
+
+
+##### Future #####
+# Pessimistic w.r.t. future more or less climate friendly? Same same
+decrit(e$future_richness)
+summary(lm(should_fight_CC ~ future_richness, data = e))
+summary(lm(wtp==1 ~ future_richness, data = e)) # +5***p.p. only regression that reproduces that positive correlation of Fairbrother et al. 2021
+summary(lm(as.numeric(willing_limit_driving) ~ future_richness, data = e))
+summary(lm(willing_limit_driving > 0 ~ future_richness, data = e))
+summary(lm(should_fight_CC ~ as.factor(future_richness), data = e))
+summary(lm(should_fight_CC ~ future_richness + CC_anthropogenic, data = e))
+
+
+##### Quality of answers #####
+decrit(e$duration[e$weird_good_CC_field==T]) # short
+decrit(e$zipcode[e$weird_good_CC_field==T]) # seem normal

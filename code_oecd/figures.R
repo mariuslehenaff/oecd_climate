@@ -919,17 +919,12 @@ datasummary(vote3 ~ (CO2_emission + CO2_emission_heating + CO2_emission_gas + fl
 datasummary((CO2_emission < 13.7) + (CO2_emission %between% c(13.7, 21.5)) + (CO2_emission >= 21.5) ~ (policies_support + tax_transfers_support + CC_problem + CC_anthropogenic) * Mean, e)
 modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
-# TODO: Questions: what to use for index knowledge (EFA or not)? What to use for vote_agg (non-voters as hypothetical voters or separate category)? Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
-# TODO: heterogenous treatment Red/Dem; maps; 
-# TODO: Pessimistic w.r.t. future more or less climate friendly?
-# TODO: corr support / CO2_emission
-# TODO!: support, index_knowledge ~ rural/urban + income + vote + gender + age + index_affected + index_knowledge
-# TODO!: acquiescence negative/positive effect; costly/cost-effective
-# TODO! correlation treatment / survey biased
-# TODO! check correlation weirdly_good w duration and so on
-# TODO! relationship footprint_pc & burden sharing
-# TODO!!: add option coal next to oil in heating, and add biomass in carbon neutral options. Pb: lacks cogeneration
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
+# TODO: heterogenous treatment Red/Dem; maps
+# TODO!: add option coal next to oil in heating, and add biomass in carbon neutral options. Pb: lacks cogeneration / reconsider heating spending
+# Suggestion: split sample into two for some of next countries to study acquiescence bias in positive vs. negative effects and costly vs. costless
+# Suggestion: in footprints pc: replace EU by Japan / India by Indonesia / China by South Africa
+# TODO: Questions: what to use for index knowledge (EFA or not)? What to use for vote_agg (non-voters as hypothetical voters or separate category)? Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
 # names(knowledge_all) <- c("Knowledge", "GhG", "Activities",  "Anthropogenic", "Exists", "Target", "Region")
@@ -937,6 +932,5 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # p.matc <- cor.mtest(knowledge_all)
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
-# R: weights all countries, TODOs, China
 # Ana: Spanish translation, Indonesian revision, South African voice, Zulu translation, caste
-# Bluebery: elec prices, quotas, Chine
+# Bluebery: elec prices, quotas

@@ -3,7 +3,7 @@
 
 source(".Rprofile")
 
-# TODO!!: consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display
+# TODO!!: consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, index_pro_climate, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
@@ -3413,7 +3413,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$wtp[!is.na(e$wtp_500)] <- e$wtp_500[!is.na(e$wtp_500)]
     e$wtp[!is.na(e$wtp_1000)] <- e$wtp_1000   [!is.na(e$wtp_1000)]
     label(e$wtp) <- "wtp: Whether the respondent is willing to pay wtp_variant (in 10/30/50/100/300/500/1000) $/year to limit global warming to safe levels (2°C) through investments in clean technologies (e.g. wtp_100)."
-    e$wtp <- 1*(e$wtp %in% text_yes) - 0.1*(is.na(e$wtp) | e$wtp=="")
+    e$wtp <- 1*(e$wtp %in% c(1, text_yes)) - 0.1*(is.na(e$wtp) | e$wtp=="")
     e$wtp <- as.item(e$wtp, labels = structure(c(-0.1,0,1), names = c("PNR","No","Yes")), missing.values = c("",NA,"PNR"), annotation=attr(e$wtp, "label"))
   }
  
@@ -3818,6 +3818,11 @@ convert <- function(e, country, wave = NULL, weighting = T) {
         e$footprint_reg_india[n] <- corrected_ranking[4]
       }
     }
+    
+    e$correct_footprint_pc_compare <- case_when(country %in% c("US") ~ e$footprint_pc_china < e$footprint_pc_US,
+                                                country %in% c(euro_countries, "JP") ~ e$footprint_pc_china < e$footprint_pc_EU,
+                                                country %in% c("CN", "SA", "IN", "ID") ~ e$footprint_pc_india < e$footprint_pc_china) 
+    label(e$correct_footprint_pc_compare) <- "correct_footprint_pc_compare: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or, for CN, SA, IN, ID, between Chinese and Indian ones)"
   }
 
   if ("footprint_el_coal" %in% names(e)) {

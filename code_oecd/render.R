@@ -20,6 +20,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
   if (tables) {
     ##### Tables treatment effects #####
     ## Generate tables
+    # TODO! align variables_controls and control_variables
     variables_controls <- variables_main_controls[which(variables_main_controls %in% names(e))] 
     print(paste0("Missing controls for ", country, ": ", variables_main_controls[which(!(variables_main_controls %in% names(e)))]))
     
@@ -1665,9 +1666,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     variables_scores_footprint <<- c("score_footprint_elec", "score_footprint_food", "score_footprint_transport", "score_footprint_pc", "score_footprint_region")
     labels_scores_footprint <<- c("Electricity", "Food", "Transport", "Countries per capita", "Countries in absolute") 
     labels_scores_footprint_long <<- c("Electricity: coal > gas > nuclear", "Food: beef > chicken > pasta", "Transport: plane > car > coach/train", "Countries per capita: US > EU > China > India", "Countries in absolute: China > US > EU > India") 
-    main_variables_knowledge <<- c("CC_anthropogenic", "CC_knowledgeable", "CC_dynamic", "score_GHG", "score_CC_impacts", variables_scores_footprint, "index_knowledge_efa_global")
-    # CC_anthropogenic, CC_knowledgeable: >= A lot; CC_dynamic: T/F; scores: number
-    labels_main_knowledge <<- c("CC exists, is anthropogenic", "Considers one's self knowledgeable", "Cutting emissions by half enough to stop global warning (False)", "Score to knowledge of greenhouse gases in [0;+4]", "Knowledge score of impacts in [0;4] (droughts, sea-level, volcanos)", paste("Distance to true ranking of footprints: ", labels_scores_footprint), "Standardised knowledge index")
+    main_variables_knowledge <<- c("CC_anthropogenic", "CC_knowledgeable", "CC_dynamic", "score_GHG", "score_CC_impacts", variables_scores_footprint, "correct_footprint_pc_compare", "index_knowledge_efa_global")
+    # CC_anthropogenic, CC_knowledgeable: >= A lot; CC_dynamic: T/F; scores: number,
+    labels_main_knowledge <<- c("CC exists, is anthropogenic", "Considers one's self knowledgeable", "Cutting emissions by half enough to stop global warning (False)", "Score to knowledge of greenhouse gases in [0;+4]", "Knowledge score of impacts in [0;4] (droughts, sea-level, volcanos)", paste("Distance to true ranking of footprints: ", labels_scores_footprint), "Correctly compares p.c. emissions of e.g. own region vs. China", "Standardised knowledge index")
     heatmap_wrapper(vars = variables_scores_footprint, labels = labels_scores_footprint_long, conditions = c(""))
     heatmap_wrapper(vars = main_variables_knowledge, labels = labels_main_knowledge, conditions = "")
     heatmap_wrapper(vars = main_variables_knowledge[c(1:5,11)], labels = labels_main_knowledge[c(1:5,11)], name = "knowledge_wo_footprint", conditions = "")
