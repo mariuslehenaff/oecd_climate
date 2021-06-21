@@ -1787,6 +1787,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "vote_voters",
       "vote_non_voters",
       "left_right", 
+      # "bug",
       "heating",
       "heating_expenses",
       "insulation",
@@ -3203,7 +3204,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   temp <-  (e$CC_talks %in% text_CC_talks_monthly) - (e$CC_talks %in% text_CC_talks_never) - 0.1 * (e$CC_talks %in% text_pnr)
   e$CC_talks <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                        names = c("Never","Yearly","Monthly","PNR")), 
+                        names = c("Never","Yearly","Monthly","PNR")),
                         missing.values=-0.1, annotation=Label(e$CC_talks))
   
   if ("equal_quota" %in% names(e)) temp <-  2 * (e$equal_quota %in% text_equal_quota_no_redistribution) + (e$equal_quota %in% text_equal_quota_yes) - (e$equal_quota %in% text_equal_quota_no_grand_fathering) - 2 * (e$equal_quota %in% text_equal_quota_no_restriction) - 0.1 * (e$equal_quota %in% text_pnr)
