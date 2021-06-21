@@ -1,6 +1,105 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
 # TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
+# TODO! vote
+# beef.png
+# burden_sharing.png
+# CC_affects_self_inc.png
+# CC_anthropogenic_inc.png
+# CC_attitude.png
+# CC_impacts.png
+# CC_responsible.png
+# CC_will_end_inc.png
+# cloud.png
+# cloud_comment.png
+# condition.png
+# donation_agg_inc.png
+# donation.png
+# effect_halt_CC_lifestyle_inc.png
+# footprint_elec.png
+# footprint_elec_extr.png
+# footprint_food.png
+# footprint_food_extr.png
+# footprint_pc_no_miss.png
+# footprint_pc.png
+# footprint_pc_extr.png
+# footprint_region_no_miss.png
+# footprint_region.png
+# footprint_region_extr.png
+# footprint_transport.png
+# footprint_transport_extr.png
+# future_richness_inc.png
+# GHG.png
+# global_assembly_support_inc.png
+# global_policies.png
+# home.png
+# if_other_do.png
+# insulation_support_variant.png
+# investments_all.png
+# investments_effect.png
+# investments_effects.png
+# investments_funding.png
+# investments_win_lose.png
+# know_treatment_climate.png
+# know_treatment_policy.png
+# know_treatment.png
+# liberal_conservative.png
+# nb_children.png
+# net_zero_feasible_inc.png
+# obstacles_insulation.png
+# occupation.png
+# OLD 210529
+# policies_all_support.png
+# policies_cost_effective.png
+# policies_fair.png
+# policies_large_effect.png
+# policies_negative_effect.png
+# policies_negative_effect_inc.png
+# policies_support.png
+# policies_support_inc.png
+# policies_win_lose_middle.png
+# policies_win_lose_poor.png
+# policies_win_lose_rich.png
+# policies_win_lose_rural.png
+# policies_win_lose_self.png
+# policies_win_lose_self_inc.png
+# policy.png
+# political_affiliation.png
+# pro_ambitious_policies.png
+# race_agg.png
+# race.png
+# region.png
+# scale.png
+# score_footprint_regions.png
+# score_GHG.png
+# scores_footprint.png
+# standard_all.png
+# standard_effect.png
+# standard_effects.png
+# standard_win_lose.png
+# tax_transfers_all.png
+# tax_transfers_effect.png
+# tax_transfers_effects.png
+# tax_transfers_win_lose.png
+# tax.png
+# test.png
+# transport.png
+# vote_2016.png
+# vote_2020.png
+# vote_all.png
+# vote_non_voters_2016.png
+# vote_non_voters.png
+# vote_participation_2016.png
+# vote.png
+# vote_voters_2016.png
+# vote_voters.png
+# watched_climate.png
+# watched_policy.png
+# willing_limit_beef_inc.png
+# willing_limit_flying_inc.png
+# willing.png
+# wtp.png
+# wtp_anthropogenic.png
 # /!\ open the Plots pane at its maximum before running the function
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
   print(country)  
@@ -1495,7 +1594,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     ##### 13. Pref for bans vs. incentives #####
     
     try({(will_insulate_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "will_insulate", export_xls = export_xls, df = e, miss=F, labels="Insulate or replace heating<br>over the next 5 years"))
-      save_plotly_new_filename(will_insulate_US, width= 600, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(will_insulate_US, width= 730, height=fig_height(1*nb_levels))})
     
     try({(insulation_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation_support", export_xls = export_xls, df = e, miss=F, labels="Mandatory insulation with subsidies"))
       save_plotly_new_filename(insulation_support_US, width= 1035, height=fig_height(1*nb_levels))})
@@ -1737,7 +1836,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     ##### Print missing figures #####
     missing_figures <- setdiff(sub("_US", "", list.files("../figures/US")), sub(replacement_text, "", list.files(folder)))
     cat(paste0(length(missing_figures), " Missing figures for: "))
-    missing_types <- c("_comp.png", "_pol.png", "_urb.png", "_vote.png")
+    missing_types <- c("_comp.png", "_pol.png", "_urb.png", "_vote.png", "_inc.png")
     for (t in missing_types) if (grepl(t, missing_figures)) print(paste("All figures of type: ", t))
     missing_figures <- missing_figures[!grepl(paste(missing_types, collapse="|"), missing_figures)]
     # cat(paste0(length(missing_figures), " Missing figures for ", country, ": "), missing_figures, sep = '\n')
