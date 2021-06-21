@@ -229,10 +229,10 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       (income_US_comp <- barres(data = data_income, export_xls = export_xls, df = e, miss=F, rev_color = T, sort = F, rev = F, labels=labels_comp, legend = dataKN("income", data=e, miss=F, return="legend")))
       save_plotly_new_filename(income_US_comp, width= 510, height=240)}) # 35/70/120
 
-    try({(vote_agg_US_comp <- barres(vars = "vote_agg", export_xls = export_xls, df = e, miss=T, rev = F, rev_color = T, sort = F, fr = "PNR or other", labels="Vote or hypothetical vote in last election"))
-      save_plotly_new_filename(vote_agg_US_comp, width= 900, height=140)}) 
+    try({(vote_agg_US <- barres(vars = "vote_agg", export_xls = export_xls, df = e, miss=T, rev = F, rev_color = T, sort = F, fr = "PNR or other", labels="Vote or hypothetical vote in last election"))
+      save_plotly_new_filename(vote_agg_US, width= 900, height=140)}) 
 
-        try({data_vote_2020 <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), pop_freq[[country]]$vote_2020)
+    try({data_vote_2020 <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), pop_freq[[country]]$vote_2020)
       (vote_2020_US_comp <- barres(data = data_vote_2020, export_xls = export_xls, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_2020", data=e, miss=T, return="legend")))
       save_plotly_new_filename(vote_2020_US_comp, width= 550, height=240)})
     
