@@ -1483,10 +1483,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(global_assembly_support_US, width= 990, height=fig_height(1*nb_levels))})
     
     try({(global_tax_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "global_tax_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on GHG<br> financing a global basic income"))
-      save_plotly_new_filename(global_tax_support_US, width= 780, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(global_tax_support_US, width= 930, height=fig_height(1*nb_levels))})
     
     try({(tax_1p_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br> to finance low-income countries"))
-      save_plotly_new_filename(tax_1p_support_US, width= 780, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(tax_1p_support_US, width= 930, height=fig_height(1*nb_levels))})
     
     labels_global_policies <- c("Global democratic assembly<br> on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br> to finance low-income countries")
     try({(global_policies_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("global_assembly_support", "global_tax_support", "tax_1p_support"), export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
