@@ -1709,20 +1709,6 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(CC_field_nb_elements_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "nb_elements_CC_field", export_xls = export_xls, df = e[e$country %in% countries_field_treated,], rev = F, rev_color = T, miss=F, labels="# supported elements in CC field"))
       save_plotly_new_filename(CC_field_nb_elements_US, width= 650, height=fig_height(1*length(Levels(e[e$country %in% countries_field_treated,][[along]]))))})
 
-    heatmap_wrapper(vars = c("should_act_CC_field", "measure_proposed_CC_field", "CC_field_no_worry", "CC_field_do_not_know", "CC_field_na"), labels = c("Action needed", "Measure proposed", "No action needed", "Do not know", "Empty"), name = "CC_field_mentions", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-
-    heatmap_wrapper(vars = var_CC_field_names[6:18], labels = as.character(CC_field_names_names[6:18]), name = "CC_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-    heatmap_wrapper(vars = var_CC_field_names[9:14], labels = as.character(CC_field_names_names[9:14]), name = "CC_field_sectors", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-    heatmap_wrapper(vars = var_CC_field_names[c(8,15:18)], labels = as.character(CC_field_names_names[c(8,15:18)]), name = "CC_field_instruments", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-    heatmap_wrapper(vars = variables_CC_field_contains, labels = sub("_", " ", sub("CC_field_contains_", "", variables_CC_field_contains)), name = "CC_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-    
-    variables_feedback <<- c("survey_biased_yes", "survey_biased_left", "survey_biased_right", "non_empty_comment_field", "comment_field_good", "critic_comment_field")
-    labels_feedback <<- c("Survey biased", "Left-wing biased", "Right-wing biased", "Comment: non empty", "Comment: liked", "Comment: disliked")
-    heatmap_wrapper(vars = variables_feedback, labels = labels_feedback, name = "feedback", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-    heatmap_wrapper(vars = variables_comment_field_contains, labels = sub("_", " ", sub("comment_field_contains_", "", variables_comment_field_contains)), name = "comment_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-    heatmap_wrapper(vars = var_comment_field_names, labels = comment_field_names, name = "comment_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
-    # unused: nb_actions_CC_field, nb_elements_CC_field
-
     
     ##### Heatmaps #####
 
@@ -1749,6 +1735,20 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # interested_politics: >= A lot; hit_by_covid: -1/1; polluting_sector: T/F; can_trust_people, govt: >= agree; view_govt: -1/0/1; know_treatment_policy: 0/1/2; availability_transport: >= fair
     labels_main_socio <<- c("Most people can be trusted", "Interested in politics", "Voted in last election", "Government could be trusted in last 10 years", "Government should do more", "Left-right on economics", "HH member lost income or job due to pandemic", "Works in a polluting sector", "Availability of public transport", "Urban")
     heatmap_wrapper(vars = main_variables_socio, labels = labels_main_socio, conditions = heatmap_conditions, name = "main_socio")
+    
+    heatmap_wrapper(vars = c("should_act_CC_field", "measure_proposed_CC_field", "CC_field_no_worry", "CC_field_do_not_know", "CC_field_na"), labels = c("Action needed", "Measure proposed", "No action needed", "Do not know", "Empty"), name = "CC_field_mentions", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    
+    heatmap_wrapper(vars = var_CC_field_names[6:18], labels = as.character(CC_field_names_names[6:18]), name = "CC_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = var_CC_field_names[9:14], labels = as.character(CC_field_names_names[9:14]), name = "CC_field_sectors", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = var_CC_field_names[c(8,15:18)], labels = as.character(CC_field_names_names[c(8,15:18)]), name = "CC_field_instruments", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = variables_CC_field_contains, labels = sub("_", " ", sub("CC_field_contains_", "", variables_CC_field_contains)), name = "CC_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    
+    variables_feedback <<- c("survey_biased_yes", "survey_biased_left", "survey_biased_right", "non_empty_comment_field", "comment_field_good", "critic_comment_field")
+    labels_feedback <<- c("Survey biased", "Left-wing biased", "Right-wing biased", "Comment: non empty", "Comment: liked", "Comment: disliked")
+    heatmap_wrapper(vars = variables_feedback, labels = labels_feedback, name = "feedback", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = variables_comment_field_contains, labels = sub("_", " ", sub("comment_field_contains_", "", variables_comment_field_contains)), name = "comment_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    heatmap_wrapper(vars = var_comment_field_names, labels = comment_field_names, name = "comment_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
+    # unused: nb_actions_CC_field, nb_elements_CC_field
     
     main_variables_affected <<- c(variables_affected_index[c(1,2,5:7)], "index_affected")
     labels_affected <<- c("Current/past job in a polluting sector", "Nb activities by car/motorbike", "Availability of transport", "Size of agglomeration", "Urban", "Index Affected by CC")
