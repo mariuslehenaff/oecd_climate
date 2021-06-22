@@ -367,10 +367,10 @@ desc_table(dep_vars = "policies_support > 0",
 # )
 
 ## Plots coefficient as figures
-e <- dk
+# e <- dk
 # Need to change names (e.g., _US, _DK, _FR) of files lines 398/400; 409/411; 417/419
 # e <- us
-# e <- fr
+e <- fr
 end_formula <- paste(c(control_variables), collapse = ') + (') #  treatment_climate * treatment_policy
 end_formula <- paste(c("(", end_formula), collapse = "")
 end_formula <- paste(c(end_formula, ")"), collapse = "")
@@ -395,9 +395,9 @@ cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTR
                  "income_factorQ4" = "Income Q4", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
                  "age65+" = "age: 65+", "vote_aggBiden" = "vote: Biden", "vote_aggTrump" = "vote: Trump", "index_affected" = "Index affected",
                  "index_knowledge" = "Index knowledge", "index_knowledge_efa" = "Index knowledge EFA", "CO2_emission" = "CO2 emissions (t/year)")
-coef_support_indexes_DK <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 
+coef_support_indexes_FR <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Support for all policies')
-save_plotly(coef_support_indexes_DK, width= 736, height=719)
+save_plotly(coef_support_indexes_FR, width= 736, height=719)
 
 # Indexes
 
@@ -406,17 +406,17 @@ models[["Affected Index"]] <- lm(as.formula(paste("index_affected ~ ", paste(c(e
 models[["Knowledge Index"]] <- lm(as.formula(paste("index_knowledge ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Knowledge Index (EFA)"]] <- lm(as.formula(paste("index_knowledge_efa ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 # models[["CO2 emissions (t/year)"]] <- lm(as.formula(paste("CO2_emission ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
-coef_indexes_DK <- modelplot(models, coef_map = cov_lab_mod, 
+coef_indexes_FR <- modelplot(models, coef_map = cov_lab_mod, 
                                   background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
-save_plotly(coef_indexes_DK, width= 736, height=719)
+save_plotly(coef_indexes_FR, width= 736, height=719)
 
 # Right_wing affiliation
 
 models <- list()
 models[["Right"]] <- lm(as.formula(paste("left_right > 0 ~ ", paste(c(c(control_variables[1:7]), "urban"), collapse = ' + '))), data = e, weights = e$weight)
-coef_Right_DK <- modelplot(models, coef_map = cov_lab_mod, 
-                             background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Republican Affiliation')
-save_plotly(coef_Right_DK, width= 736, height=719)
+coef_Right_FR <- modelplot(models, coef_map = cov_lab_mod, 
+                             background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Right-Wing Affiliation')
+save_plotly(coef_Right_FR, width= 736, height=719)
 
 # 
 # 
