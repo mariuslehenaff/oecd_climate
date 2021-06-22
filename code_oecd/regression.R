@@ -295,9 +295,26 @@ desc_table(dep_vars = c("survey_biased == 'No'", "survey_biased == 'Yes, right'"
 ## Indexes
 desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indexes",
            dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions (t/year)"),
-           nolabel = F,
+           nolabel = T,
            dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "urban"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
 )
+
+## TEMPORARY: for data w/o CO2
+desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa"), filename = "indexes_DK",
+           dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)"),
+           nolabel = F,
+           dep.var.caption = c(""), data = dk, indep_vars = c(control_variables, "urban"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
+)
+
+## SAME as above
+desc_table(dep_vars = "policies_support > 0", 
+           dep.var.caption = c("Support"), data = fr, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa"), 
+           filename = "support_all_indexes",
+           indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA"), mean_control = T,
+           nolabel =F,
+           indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F), c(rep(T, length(control_variables)), F, F, F), c(rep(T, length(control_variables)), T, F, F), c(rep(T, length(control_variables)), F, T, F), c(rep(T, length(control_variables)), F, F, T), c(rep(T, length(control_variables)), T, T, F), c(rep(T, length(control_variables)), T, F, T), c(rep(T, length(control_variables)), T, T, T))
+)
+
 
 # Support with indexes
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"), 
@@ -352,7 +369,7 @@ desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_suppo
 # Test new desc_table
 desc_table(dep_vars = "policies_support > 0", 
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
-           filename = "support_all_index",
+           filename = "support_all_indexes",
            indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T,
            nolabel =F,
            indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F, F), c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, F, F, F), c(rep(T, length(control_variables)), F, T, F, F), c(rep(T, length(control_variables)), F, F, T, F), c(rep(T, length(control_variables)), F, F, F, T), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, F, T, F), c(rep(T, length(control_variables)), T, T, T, T))
