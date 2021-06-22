@@ -31,4 +31,6 @@ support_by_political_US <- ggplot(mean_sd) +
   labs(x = 'Support', y = '', color="", title = 'Policy support by political affiliations') + 
   theme_minimal() + theme(legend.title = element_blank()) +
   scale_color_hue(breaks = unique(mean_sd$left_right), direction = +1)
+support_by_political_US
+# /!\ Need to be saved manually
 save_plotly(support_by_political_US, width= 800, height=400)
