@@ -367,9 +367,15 @@ desc_table(dep_vars = "policies_support > 0",
 # )
 
 ## Plots coefficient as figures
+e <- dk
+# Need to change names (e.g., _US, _DK, _FR) of files lines 398/400; 409/411; 417/419
+# e <- us
+# e <- fr
+end_formula <- paste(c(control_variables), collapse = ') + (') #  treatment_climate * treatment_policy
+end_formula <- paste(c("(", end_formula), collapse = "")
+end_formula <- paste(c(end_formula, ")"), collapse = "")
 
 # Policies support with indexes
-end_formula <- paste(c(control_variables), collapse = ' + ') #  treatment_climate * treatment_policy
 # end_formula3 <- paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + ') #  treatment_climate * treatment_policy
 
 models <- list()
@@ -388,11 +394,10 @@ cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTR
                  "as.factor(employment_agg)Working" = "status: Working", "income_factorQ2" = "Income Q2", "income_factorQ3" = "Income Q3", 
                  "income_factorQ4" = "Income Q4", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
                  "age65+" = "age: 65+", "vote_aggBiden" = "vote: Biden", "vote_aggTrump" = "vote: Trump", "index_affected" = "Index affected",
-                 "index_knowledge" = "Index knowledge", "index_knowledge_efa" = "Index knowledge EFA", "CO2_emission" = "CO2 emissions (t/year)",
-                 "urbanTRUE" = "Urban")
-coef_support_indexes_US <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 
+                 "index_knowledge" = "Index knowledge", "index_knowledge_efa" = "Index knowledge EFA", "CO2_emission" = "CO2 emissions (t/year)")
+coef_support_indexes_DK <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Support for all policies')
-save_plotly(coef_support_indexes_US, width= 736, height=719)
+save_plotly(coef_support_indexes_DK, width= 736, height=719)
 
 # Indexes
 
@@ -401,33 +406,35 @@ models[["Affected Index"]] <- lm(as.formula(paste("index_affected ~ ", paste(c(e
 models[["Knowledge Index"]] <- lm(as.formula(paste("index_knowledge ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Knowledge Index (EFA)"]] <- lm(as.formula(paste("index_knowledge_efa ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 # models[["CO2 emissions (t/year)"]] <- lm(as.formula(paste("CO2_emission ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
-coef_indexes_US <- modelplot(models, coef_map = cov_lab_mod, 
+coef_indexes_DK <- modelplot(models, coef_map = cov_lab_mod, 
                                   background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
-save_plotly(coef_indexes_US, width= 736, height=719)
+save_plotly(coef_indexes_DK, width= 736, height=719)
 
-# Republican affiliation
+# Right_wing affiliation
 
 models <- list()
-models[["Republican"]] <- lm(as.formula(paste("political_affiliation=='Republican' ~ ", paste(c(c(control_variables[1:7]), "urban"), collapse = ' + '))), data = e, weights = e$weight)
-coef_Rep_US <- modelplot(models, coef_map = cov_lab_mod, 
+models[["Right"]] <- lm(as.formula(paste("left_right > 0 ~ ", paste(c(c(control_variables[1:7]), "urban"), collapse = ' + '))), data = e, weights = e$weight)
+coef_Right_DK <- modelplot(models, coef_map = cov_lab_mod, 
                              background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Republican Affiliation')
-save_plotly(coef_Rep_US, width= 736, height=719)
+save_plotly(coef_Right_DK, width= 736, height=719)
 
-## Plot heterogeneity
-models <- list(models_1, models_2, models_3)
-
-models_1 <- dlply(e, "political_affiliation", function(x) 
-  lm(as.formula(paste("standard_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
-models_1 <- models_1[c(1,5)]
-models_2 <- dlply(e, "political_affiliation", function(x) 
-  lm(as.formula(paste("investments_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
-models_2 <- models_2[c(1,5)]
-names(models_2$Democrat$coefficients) <- "Mean 2"
-names(models_2$Republican$coefficients) <- "Mean 2"
-models <- list()
-# models_3 <- dlply(e, "political_affiliation", function(x) 
-#   lm(as.formula(paste("tax_transfers_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
-# models_3 <- models_3[c(1,5)]
-
-
-modelplot(models_1) + labs(x = 'Support', y = 'Policies', title = 'Support by political affiliation')
+# 
+# 
+# ## Plot heterogeneity [DEPRECATED SEE heterogeneity_graph.R]
+# models <- list(models_1, models_2, models_3)
+# 
+# models_1 <- dlply(e, "political_affiliation", function(x) 
+#   lm(as.formula(paste("standard_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
+# models_1 <- models_1[c(1,5)]
+# models_2 <- dlply(e, "political_affiliation", function(x) 
+#   lm(as.formula(paste("investments_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
+# models_2 <- models_2[c(1,5)]
+# names(models_2$Democrat$coefficients) <- "Mean 2"
+# names(models_2$Republican$coefficients) <- "Mean 2"
+# models <- list()
+# # models_3 <- dlply(e, "political_affiliation", function(x) 
+# #   lm(as.formula(paste("tax_transfers_support > 0 ~ ", paste(c("1"), collapse = ' + '))), data = x, weights = x$weight))
+# # models_3 <- models_3[c(1,5)]
+# 
+# 
+# modelplot(models_1) + labs(x = 'Support', y = 'Policies', title = 'Support by political affiliation')
