@@ -1,7 +1,7 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
 # TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
-# TODO! vote
+# TODO! vote, flight
 # beef.png
 # burden_sharing.png
 # CC_affects_self_inc.png
@@ -1419,11 +1419,11 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(policies_win_lose_self_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(names_policies, "win_lose_self", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=labels_policies))
       save_plotly_new_filename(policies_win_lose_self_US, width= 870, height=fig_height(3*nb_levels))})
     
-    try({(policies_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(names_policies, "support", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=labels_policies))
-      save_plotly_new_filename(policies_support_US, width= 1020, height=fig_height(3*nb_levels))})
-    
-    try({(policies_all_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("standard_public_transport_support", paste(names_policies, "support", sep="_")), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=c("Ban on combustion cars where<br>public transport made available", labels_policies)))
-      save_plotly_new_filename(policies_all_support_US, width= 790, height=fig_height(3*nb_levels))})
+    # try({(policies_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(names_policies, "support", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=labels_policies))
+    #   save_plotly_new_filename(policies_support_US, width= 1020, height=fig_height(3*nb_levels))})
+    # 
+    # try({(policies_all_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("standard_public_transport_support", paste(names_policies, "support", sep="_")), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=c("Ban on combustion cars where<br>public transport made available", labels_policies)))
+    #   save_plotly_new_filename(policies_all_support_US, width= 790, height=fig_height(3*nb_levels))})
     
     try({(standard_effects_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("standard_effect_less_pollution", "standard_effect_less_emission"), sort = F,rev = F, rev_color = T, 
                                          export_xls = export_xls, df = e, miss=F, labels=c("Reduce air pollution", "Reduce CO2 emissions from cars")))
@@ -1817,6 +1817,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     labels_standard_effects_short <<- c("Reduce car emissions", "Reduce air pollution", "Negative economic effect", "Large economic effect", "Costly way to fight CC")
     heatmap_wrapper(vars = variables_standard_effect, labels = labels_standard_effects_short, conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_standard_win_lose, labels = labels_standard_win_lose, conditions = heatmap_conditions)
+
+    heatmap_wrapper(name = "policies_support", vars = paste(names_policies, "support", sep="_"), labels = labels_policies, conditions = heatmap_conditions)
+    heatmap_wrapper(name = "policies_all_support", vars = c("standard_public_transport_support", paste(names_policies, "support", sep="_")), labels = c("Ban on combustion cars where\n public transport made available", labels_policies), conditions = heatmap_conditions)
     
     labels_investments_effects_short <<- c("Make electricity greener", "Popularize public transport", "Reduce air pollution", "Negative economic effect", "Large economic effect", "Costly way to fight CC")
     heatmap_wrapper(vars = variables_investments_effect, labels = labels_investments_effects_short, conditions = heatmap_conditions)
@@ -1828,6 +1831,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # , e.g. 0.1€/L)
     labels_policy_short <<- c("Tax on flying (+20%)", "Tax on fossil fuels ($45/tCO2)", "Ban polluting cars in city centers", "Subsidies to low-carbon technos", "Funding clean energy in LDC")
     heatmap_wrapper(vars = variables_policy, labels = labels_policy_short, conditions = heatmap_conditions)
+    
+    # labels_support_short <<- c("Tax on flying (+20%)", "Tax on fossil fuels ($45/tCO2)", "Ban polluting cars in city centers", "Subsidies to low-carbon technos", "Funding clean energy in LDC")
+    # heatmap_wrapper(vars = variables_support, labels = labels_policy_short, conditions = heatmap_conditions)
     
     labels_tax_short <<- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructure", "Subsidies to low-carbon technos", "Reduction in the deficit")
     heatmap_wrapper(vars = variables_tax, labels = labels_tax_short, conditions = heatmap_conditions)
