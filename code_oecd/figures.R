@@ -918,6 +918,11 @@ datasummary(CC_problem + as.numeric(CC_anthropogenic) ~ vote3 * Mean, e)
 datasummary(vote3 ~ (CO2_emission + CO2_emission_heating + CO2_emission_gas + flights_agg) * Mean, e)
 datasummary((CO2_emission < 13.7) + (CO2_emission %between% c(13.7, 21.5)) + (CO2_emission >= 21.5) ~ (policies_support + tax_transfers_support + CC_problem + CC_anthropogenic) * Mean, e)
 modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
+# ptet qu'un compromis entre tous les intervalles de confiance et aucun c'est d'en mettre juste un ?
+# un graphique avec des variables dépendantes vraiment différentes
+# peut-être qu'un truc qu'on pourrait faire, outre afficher les coef "toutes choses égales par ailleurs", c'est avoir des graphiques en niveau (pas en effet) pour la moyenne de chaque sous-groupe (e.g., soutien moyen aux politiques parmi les hommes, etc.)
+#  regarder l'hétérogénéité selon une dimension pour plusieurs variables. On peut aussi regarder l'hétérogénéité selon plein de dimensions pour une seule variable
+
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
 # TODO: heterogenous treatment Red/Dem; maps

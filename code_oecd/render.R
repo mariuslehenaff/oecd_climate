@@ -1078,7 +1078,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(gas_expenses_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "gas_expenses", export_xls = export_xls, df = e, miss=F, labels="Monthly gas expenses", rev = F))
       save_plotly_new_filename(gas_expenses_US, width= 800, height=fig_height(1*nb_levels))})
     
-    try({(flights_3y_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "flights_agg", export_xls = export_xls, df = e, miss=F, rev = F, labels="Round-trip flights between 2017 and 2019"))
+    try({(flights_3y_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "flights_3y", export_xls = export_xls, df = e, miss=F, rev = F, labels="Round-trip flights between 2017 and 2019"))
       save_plotly_new_filename(flights_3y_US, width= 800, height=fig_height(1*nb_levels))})
     
     try({(frequency_beef_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "frequency_beef", export_xls = export_xls, df = e, miss=F, rev = F, labels="How often do you eat beef?"))
