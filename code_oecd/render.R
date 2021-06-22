@@ -1,7 +1,7 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
 # TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
-# TODO! vote, flight
+# TODO! vote
 # beef.png
 # burden_sharing.png
 # CC_affects_self_inc.png

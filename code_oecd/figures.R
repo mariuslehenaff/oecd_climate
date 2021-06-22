@@ -922,6 +922,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # un graphique avec des variables dépendantes vraiment différentes
 # peut-être qu'un truc qu'on pourrait faire, outre afficher les coef "toutes choses égales par ailleurs", c'est avoir des graphiques en niveau (pas en effet) pour la moyenne de chaque sous-groupe (e.g., soutien moyen aux politiques parmi les hommes, etc.)
 #  regarder l'hétérogénéité selon une dimension pour plusieurs variables. On peut aussi regarder l'hétérogénéité selon plein de dimensions pour une seule variable
+# TODO! au-dessus, + mettre regression.R (et heterogeneity_graph?) sous forme de fonction
 
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
