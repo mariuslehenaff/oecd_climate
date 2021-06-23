@@ -3676,7 +3676,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
     # e$vote_agg[grepl("Le Pen|Dupont-Aignan", e$vote)] <- "Extrême-droite"
     # e$vote_agg[grepl("Cheminade|Lassalle|PNR", e$vote)] <- "PNR ou autre"
-  } else if (country == "DK") {
+  } else if (country == "DK") { # TODO! check left_right intensity of each party
     temp <- -2*(e$vote %in% c("Alternativet", "Enhedslisten", "Socialistisk Folkeparti")) -1*(e$vote %in% c("Socialdemokratiet", "Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Social democrats & Center","Right","Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Alternativet|Enhedslisten|Socialistisk Folkeparti; Social democrats & center: Socialdemokratiet|Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")

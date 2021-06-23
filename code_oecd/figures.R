@@ -923,14 +923,21 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # peut-être qu'un truc qu'on pourrait faire, outre afficher les coef "toutes choses égales par ailleurs", c'est avoir des graphiques en niveau (pas en effet) pour la moyenne de chaque sous-groupe (e.g., soutien moyen aux politiques parmi les hommes, etc.)
 #  regarder l'hétérogénéité selon une dimension pour plusieurs variables. On peut aussi regarder l'hétérogénéité selon plein de dimensions pour une seule variable
 # TODO! au-dessus, + mettre regression.R (et heterogeneity_graph?) sous forme de fonction
+#   knowledge per
 
 # Hypothesis: because of lack of information, people are too optimistic, find CC easy to solve
 # Interpretation: people lack of info, are too optimistic or think it's too easy to solve
 # TODO: heterogenous treatment Red/Dem; maps
-# TODO!: add option coal next to oil in heating, and add biomass in carbon neutral options. Pb: lacks cogeneration / reconsider heating spending
-# Suggestion: split sample into two for some of next countries to study acquiescence bias in positive vs. negative effects and costly vs. costless
+
+# missing options => add them / rewording => accept / we can add two questions per country
+# TODO!: add option coal next to oil in heating, and add biomass in carbon neutral options. 
+#         Pb: lacks cogeneration / reconsider heating spending
+# Suggestion: accepted. split sample into two for some of next countries to study acquiescence bias in positive vs. negative effects and costly vs. costless
 # Suggestion: in footprints pc: replace EU by Japan / India by Indonesia / China by South Africa
-# TODO: Questions: what to use for index knowledge (EFA or not)? What to use for vote_agg (non-voters as hypothetical voters or separate category)? Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
+# TODO: Questions: what to use for index knowledge (EFA or not)? 
+#    What to use for vote_agg (non-voters as hypothetical voters or separate category)? 
+#     Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
+
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
 # names(knowledge_all) <- c("Knowledge", "GhG", "Activities",  "Anthropogenic", "Exists", "Target", "Region")
