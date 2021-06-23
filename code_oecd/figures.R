@@ -937,7 +937,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # TODO: Questions: what to use for index knowledge (EFA or not)? 
 #    What to use for vote_agg (non-voters as hypothetical voters or separate category)? 
 #     Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
-
+# maintaining => sustaining satisfactory standard of living
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
 # names(knowledge_all) <- c("Knowledge", "GhG", "Activities",  "Anthropogenic", "Exists", "Target", "Region")

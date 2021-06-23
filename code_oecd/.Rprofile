@@ -946,6 +946,7 @@ correlogram <- function(grep = NULL, vars = NULL, df = e) {
 heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # type in full, upper, lower
   diag <- if(type=="full") T else F
   color_lims <- if(proportion) c(0,1) else { if (min(data)>=2 & max(data)<= 2) c(-2,2) else c(min(0, data), max(data)) }
+  # color_lims <- if(proportion) c(0,1) else { if (min(data, na.rm=T)>=2 & max(data, na.rm=T)<= 2) c(-2,2) else c(min(0, data, na.rm=T), max(data, na.rm=T)) }
   nb_digits <- if(proportion) 0 else 1
   col2 <- c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")
   col <- if (proportion) colorRampPalette(c(rep("#67001F", 10), col2))(200) else colorRampPalette(col2)(200)

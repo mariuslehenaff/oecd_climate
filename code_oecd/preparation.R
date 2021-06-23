@@ -3100,8 +3100,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                         names = c("Q1","Q2","Q3","Q4","Q5")),
                       annotation=Label(e$wealth))
 
-  temp <-  (e$frequency_beef %in% text_frequency_beef_rarely) + 2 * (e$frequency_beef %in% text_frequency_beef_weekly) + 3 * (e$frequency_beef %in% text_frequency_beef_daily) 
-  e$frequency_beef <- as.item(temp, labels = structure(c(0:3),
+  temp <-  -1*(e$frequency_beef %in% text_frequency_beef_never) + 1 * (e$frequency_beef %in% text_frequency_beef_weekly) + 2 * (e$frequency_beef %in% text_frequency_beef_daily) 
+  e$frequency_beef <- as.item(temp, labels = structure(c(-1:2),
                         names = c("Never", "Rarely", "Weekly", "Daily")),
                       annotation=Label(e$frequency_beef))
   
@@ -3550,8 +3550,22 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     max_e <- max_donation_country[country]
     e$donation_agg <- 0*(e$donation == 0) + 10*(e$donation %between% c(1, max_e/5)) + 30*(e$donation %between% c(max_e/5+1, max_e*2/5)) + 70*(e$donation %between% c(max_e*2/5+1, max_e-1)) + 100*(e$donation == max_e)
     e$donation_agg <- as.item(e$donation_agg, labels = structure(c(0,10,30,70,100), names = c("0", "1 to 20", "21 to 40", "41 to 99", "100")), annotation=attr(e$donation, "label"))
-    e$donation_percent <- e$donation * max_e/100
-    label(e$donation_percent) <- "donation_percent: Donation amount in percentage of maximal donation"
+    e$donation_percent <- e$donation / (max_e/100)
+    e$donation_fraction <- e$donation_percent / 100
+    label(e$donation_percent) <- "donation_percent: Donation amount in percentage of maximal donation (~$100)"
+    label(e$donation_fraction) <- "donation_fraction: Donation amount as a fraction of maximal donation (~$100)"
+  }
+  
+  if ("transport_work" %in% names(e)) {
+    e$car_work <- e$transport_work == "Car or Motorbike"
+    e$car_leisure <- e$transport_leisure == "Car or Motorbike"
+    e$car_shopping <- e$transport_shopping == "Car or Motorbike"
+    e$car_work[e$transport_work == "Not Applicable"] <- NA
+    e$car_leisure[e$transport_leisure == "Not Applicable"] <- NA
+    e$car_shopping[e$transport_shopping == "Not Applicable"] <- NA
+    label(e$car_work) <- "car_work: Uses car or motorbike to go to work or place of study (NA if Not Applicable)"
+    label(e$car_leisure) <- "car_leisure: Usually uses car or motorbike for leisure (NA if Not Applicable)"
+    label(e$car_shopping) <- "car_shopping: Uses car or motorbike to go shopping (NA if Not Applicable)"
   }
 
   e$treatment_climate <- ifelse(e$treatment_climate > sqrt(5/17), 1, 0)
@@ -3819,11 +3833,20 @@ convert <- function(e, country, wave = NULL, weighting = T) {
         e$footprint_reg_india[n] <- corrected_ranking[4]
       }
     }
-    
-    e$correct_footprint_pc_compare <- case_when(country %in% c("US") ~ e$footprint_pc_china < e$footprint_pc_US,
-                                                country %in% c(euro_countries, "JP") ~ e$footprint_pc_china < e$footprint_pc_EU,
-                                                country %in% c("CN", "SA", "IN", "ID") ~ e$footprint_pc_india < e$footprint_pc_china) 
-    label(e$correct_footprint_pc_compare) <- "correct_footprint_pc_compare: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or, for CN, SA, IN, ID, between Chinese and Indian ones)"
+    if (!("footprint_pc_own") %in% names(e)) {
+      if (country == "US") e$footprint_pc_own <- e$footprint_pc_US
+      else if (country %in% euro_countries) e$footprint_pc_own <- e$footprint_pc_EU
+      else if (country == "CN") e$footprint_pc_own <- e$footprint_pc_china
+      else if (country == "IN") e$footprint_pc_own <- e$footprint_pc_india
+      label(e$footprint_pc_own) <- "footprint_pc_own: In which region does the consumption of an average person contribute most to greenhouse gas emissions?\n\n\n\nPlease rank the regions from 1 (most) to 4 (least). - [region]"
+    }
+    e$correct_footprint_pc_compare_US <- e$footprint_pc_china > e$footprint_pc_US
+    e$correct_footprint_pc_compare_own <- case_when(country %in% c("US", euro_countries, "JP") ~ e$footprint_pc_china > e$footprint_pc_own,
+                                                country %in% c("ID") ~ e$footprint_pc_own > e$footprint_pc_china,
+                                                country %in% c("SA") ~ e$footprint_pc_own < e$footprint_pc_india,
+                                                country %in% c("CN", "IN") ~ e$footprint_pc_india > e$footprint_pc_china) 
+    label(e$correct_footprint_pc_compare_own) <- "correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA)"
+    label(e$correct_footprint_pc_compare_US) <- "correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's"
   }
 
   if ("footprint_el_coal" %in% names(e)) {
@@ -3870,6 +3893,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
       e[[paste("least_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_", v, ": Smallest footprint of type ", v, " according to the respondent", sep=""))
       if (v %in% c("reg", "pc")) e[[paste("least_footprint_no_pnr", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint_no_pnr", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_no_pnr_", v, ": Smallest footprint of type ", v, " according to the respondent. In case of ties, a region is picked in this order of priority: IN,CN,EU,US", sep=""))
     }
+    e$knows_beef_footprint <- e$footprint_fd_beef == 1
+    label(e$knows_beef_footprint) <- "knows_beef_footprint: T/F Correctly ranks footprint of beef (or lamb for India) above chicken and pasta."
   }
   
   z_score_computation <<- function(pair, df=e, weight=T){
@@ -4071,7 +4096,7 @@ if (all(variables_affected_index %in% names(e))) {
       
       # Recurrent topics that don't have a variable:
       # US: no mention of meat whatsoever, very few of plane. CC denial: CC is natural; too late to act / impossible to curb climate change; less harm adapting than mitigating; solar; need that other countries act / international cooperation; questions; climate education; retraining; research
-      # DK: talk a lot about meat, not at all of plane; sometimes: international; overpopulation; education; social justice; nuclear
+      # DK: talk a lot about meat, not at all of plane; sometimes: international; overpopulation; education; social justice; nuclear. About meat, note that the government proposed to introduce two mandatory meat-free days in all canteens at governmental/public workplace
       # Pépites:
       # US: "I have no concerns. The US is responsible for less than 85% of the worlds climate change."; "I live by some of the largest plants in the country. I worry about the jobs of people in my area getting cut before there is a safe sustainable alternative."; 
       #     "Cutting my carbon footprint has become increasingly important to me.  I'm WFH now during Covid & hope to stay that way post-Covid.  I found my 3 hour a day commute on public transportation to be inconvenient but I stuck with it because I felt it was the responsible thing to do"
