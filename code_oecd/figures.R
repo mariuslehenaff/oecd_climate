@@ -935,7 +935,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # Suggestion: accepted. split sample into two for some of next countries to study acquiescence bias in positive vs. negative effects and costly vs. costless
 # Suggestion: in footprints pc: replace EU by Japan / India by Indonesia / China by South Africa
 # TODO: Questions: what to use for index knowledge (EFA or not)? 
-#    What to use for vote_agg (non-voters as hypothetical voters or separate category)? 
+#    What to use for vote_agg (non-voters as hypothetical voters or separate category)? => vote_agg with hypothetical
 #     Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
 # maintaining => sustaining satisfactory standard of living
 
@@ -945,5 +945,5 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # p.matc <- cor.mtest(knowledge_all)
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
-# Ana: Spanish translation, Indonesian revision, South African voice, Zulu translation, caste
+# Ana: Spanish translation (incl. update), Indonesian revision, South African voice, Zulu translation, caste
 # Bluebery: elec prices, quotas
