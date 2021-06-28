@@ -4024,9 +4024,9 @@ if (all(variables_affected_index %in% names(e))) {
       # To recode CC_field (pre-treatment necessary so the following code works):
       # 1. use line below export CSV (change country in filename). 
       # 2. Create country.xlsm: if language has special characters, from 'template - no wrap'; if not, from 'template' and jump to step 5
-      # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row 6. Click on appropriate cells. 
+      # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row + Format>Column width>60 6. Click on appropriate cells. 
       # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
-                                 # paste0("../data/fields/csv/CC_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+      #      paste0("../data/fields/csv/CC_field_FR", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
   
       CC_field_names <- c("worrying / should act" = "worry", "no need to worry/act" = "no_worry", "NA / empty content" = "na",
                                               "don't know" = "do_not_know", "spelling mistake" = "bad_spelling", "damages" = "damage",
@@ -4141,7 +4141,7 @@ if (all(variables_affected_index %in% names(e))) {
     
     try({
       # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$comment_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
-      #                 paste0("../data/fields/csv/comment_field_DK", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+      #                 paste0("../data/fields/csv/comment_field_FR", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
       
       comment_field_names <- c("good", "bad", "bias", "problem")
       var_comment_field_names <<- paste0("comment_field_", comment_field_names)
