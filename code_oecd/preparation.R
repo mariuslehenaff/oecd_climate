@@ -4065,7 +4065,7 @@ if (all(variables_affected_index %in% names(e))) {
       label(e$measure_proposed_CC_field) <- "measure_proposed_CC_field: At least one measure mentioned and supported in CC_field."
       label(e$nb_actions_CC_field) <- "nb_actions_CC_field: Number of types (sectors or measures) for which an action is supported in CC_field, among: companies, trash, transport, energy, housing, land_agri, lifestyle, tax, ban, standard, spending"
       label(e$should_act_CC_field) <- "should_act_CC_field: T/F Supports at least one action in CC_field (either expresses general concern/support for action (CC_field_worry) or mentions specific action(s): nb_types_CC_field > 0, or both)"
-      e$weird_good_CC_field <- nchar(e$CC_field) < 15 & grepl("good|Good", e$CC_field)
+      e$weird_good_CC_field <- nchar(e$CC_field) < 15 & grepl("good|Good|PNR", e$CC_field)
       label(e$weird_good_CC_field) <- "weird_good_CC_field: T/F The answer to CC_field is weirdly 'good' or 'very good'. Flagged as low quality."
       e$nb_elements_CC_field <- rowSums(1*e[,paste0("CC_field_", names(recode_CC_field[[1]]))], na.rm=T) 
       e$nb_elements_CC_field[e$CC_field_na == TRUE] <- -1 
@@ -4090,13 +4090,14 @@ if (all(variables_affected_index %in% names(e))) {
         label(e[[v]]) <- paste0(v, ": T/F CC_field_english contains: ", grep_variables_CC_field_contains[v])  }
       
       # Impressions:
-      # In US, debate is about whether climate change is natural or man-made, if we can do something against it (or too late) and if it is worth it to do so (as later generations will adapt by natural selection anyway).
-      # In Denmark, debate is about speed and extent of the transition, notably on legislation regarding meat. Need for transition seem acknowledged, the critical comments are often like: be reasonable, don't go faster than other countries otherwise pollution will just be relocated through more imports.
-      # 
+      # US: excités. In US, debate is about whether climate change is natural or man-made, if we can do something against it (or too late) and if it is worth it to do so (as later generations will adapt by natural selection anyway).
+      # DK: réfléchis. In Denmark, debate is about speed and extent of the transition, notably on legislation regarding meat. Need for transition seem acknowledged, the critical comments are often like: be reasonable, don't go faster than other countries otherwise pollution will just be relocated through more imports.
+      # FR: désabusé. 
       
       # Recurrent topics that don't have a variable:
       # US: no mention of meat whatsoever, very few of plane. CC denial: CC is natural; too late to act / impossible to curb climate change; less harm adapting than mitigating; solar; need that other countries act / international cooperation; questions; climate education; retraining; research
       # DK: talk a lot about meat, not at all of plane; sometimes: international; overpopulation; education; social justice; nuclear. About meat, note that the government proposed to introduce two mandatory meat-free days in all canteens at governmental/public workplace
+      # FR: pollution, réduire les déplacements, sensibiliser/éduquer, taxer les entreprises (pas les individus)
       # Pépites:
       # US: "I have no concerns. The US is responsible for less than 85% of the worlds climate change."; "I live by some of the largest plants in the country. I worry about the jobs of people in my area getting cut before there is a safe sustainable alternative."; 
       #     "Cutting my carbon footprint has become increasingly important to me.  I'm WFH now during Covid & hope to stay that way post-Covid.  I found my 3 hour a day commute on public transportation to be inconvenient but I stuck with it because I felt it was the responsible thing to do"
@@ -4105,6 +4106,9 @@ if (all(variables_affected_index %in% names(e))) {
       #       Moreover, the power of money (read: the United States and the \ 'American Dream \') has too much power, so if they force politicians to do as they please. If, for example, Denmark stops consuming unnecessary electronics (new models of PC / TV), we will lag behind other countries, and will risk ending up as a developing country. \ n \ n
       #       The problem also lies in the fact that man is striving and so stupid as to think that material wealth is the future and worth striving for. The worst thing, however, is that people who say they have a given religion such as Christianity do not live up to it, but are still selfish, striving for more money and power for themselves."
       #     "Introduction of a uniform tax of DKK 1,500 per tonnes of CO2 equivalents"; "That we should have more wind farms. And biogas plants. But do not cut back on beef and agriculture"
+      # FR: "Utiliser moins de gaz et de panneaux solaires." "Tout d'abord il faut l'aborder au plan mondial, ce qui est loin d'être le cas.\n Si il faut s'y attaquer il est nécessaire de prévenir les populations et de leur dire ce qui les attend, ce qui n'est pas fait à l'heure actuelle"
+      #     "faire isoler toutes les vieilles maisons en se rendant chez les gens car ce sont souvent des personnes âgées et vulnérables et qui ignore les aident disponibles et ne savent pas se servir d'internet.\n Développer les nouvelles énergies en étant sur qu'elles ne sont pas plus nocives que le nucléaire et rendre le cout des voitures électriques abordable\n "
+      #     "c pas mon probleme" "On est foutu" "Fermer les usines très polluantes si elles ne se mettent pas au normes. Supprimer l'épandage de lisier qui pollue la mer. Supprimer les pesticides qui sont nuisible pour l’environnement et qui tuent les abeilles"
       # automatic translation: https://www.onlinedoctranslator.com/de/translationform
       
       # write.csv(gsub("\n", "\\\\\\n ", e$CC_field), "../data/CC_field_US.csv", row.names = T) # vertical instead of horizontal
