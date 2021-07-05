@@ -934,7 +934,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 #         Pb: lacks cogeneration / reconsider heating spending
 # Suggestion: accepted. split sample into two for some of next countries to study acquiescence bias in positive vs. negative effects and costly vs. costless
 # Suggestion: in footprints pc: replace EU by Japan / India by Indonesia / China by South Africa
-# TODO: Questions: what to use for index knowledge (EFA or not)? 
+# TODO: Questions: what to use for index knowledge (EFA or not)? => simple
 #    What to use for vote_agg (non-voters as hypothetical voters or separate category)? => vote_agg with hypothetical
 #     Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
 # maintaining => sustaining satisfactory standard of living
