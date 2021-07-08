@@ -47,13 +47,20 @@ loadings_efa <- list()
                  "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
                  "IN_region" = c("Northern", "Southern", "Central", "Eastern", "Western", "Rest"),
+                 "IN_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
                  "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
                  "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
                  "UK_region" = c("London", "Rest of England", "Scotland", "Wales", "Northern Ireland"),
                  "UK_urban_category" = c("Rural", "Large_urban", "City_Town"),
                  "PL_region" = c("North-West", "North-East", "Central", "South-West", "Central-East", "South-East"),
                  "ES_region" = c("East", "Center",  "South North", "North-West"),
-                 "DE_region" = c("Northern Germany", "Western Germany", "Central Germany", "Eastern Germany", "Southern Germany")
+                 "DE_region" = c("Northern Germany", "Western Germany", "Central Germany", "Eastern Germany", "Southern Germany"),
+                 "DE_urban_category" = c("Rural", "Town and Suburbs", "Cities"),
+                 "JP_region" = c("Kanto", "Kansai", "North", "Chubu", "South"),
+                 "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
+                 "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
+                 "CN_region" = c("North", "Northeast", "East", "South Central", "West")
+
   )
   
   pop_freq <- list("US" = list(
@@ -90,7 +97,8 @@ loadings_efa <- list()
     "income" = rep(.25, 4),
     "age" = c(),
     "urban" = c(FALSE, TRUE), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
-    "IN_region" = c(0.1317, 0.2015, 0.2654, 0.2256, 0.1380, 0.037907422)
+    "IN_region" = c(0.1317, 0.2015, 0.2654, 0.2256, 0.1380, 0.037907422),
+    "IN_urban_category" = c(0.4093,  0.2294,  0.1115,  0.1102,  0.1096,  0.02984315)
   ),
   "IT" = list(
     "gender" = c(0.524, 0.000001, 0.476),
@@ -112,8 +120,8 @@ loadings_efa <- list()
     "gender" = c(0.506, 0.000001, 0.494),
     "income" = rep(.25, 4),
     "age" = c(0.213, 0.285, 0.283, 0.161, 0.058),
-    "urban" = c(FALSE, TRUE), 
-    "SA_region" = c()
+    "urban" = c(0.511, 0.489), 
+    "SA_region" = c(0.237050995, 0.13460536,  0.12083205,  0.182435864, 0.325075732)
   ),
   "ES" = list(
     "gender" = c(0.506, 0.494),
@@ -126,36 +134,37 @@ loadings_efa <- list()
     "gender" = c(0.519, 0.000001, 0.481),
     "income" = rep(.25, 4),
     "age" = c(0.087, 0.170, 0.282, 0.236, 0.225),
-    "urban" = c(FALSE, TRUE), 
+    "urban" = c(0.422, 0.578), 
     "PL_region" = c(0.10514414,  0.067872784, 0.171493158, 0.101190091, 0.261978099, 0.292321728)
   ),
   "JP" = list(
     "gender" = c(0.519, 0.000001, 0.481),
     "income" = rep(.25, 4),
     "age" = c(0.078, 0.121, 0.244, 0.224, 0.334),
-    "urban" = c(FALSE, TRUE), 
-    "JP_region" = c()
+    "urban" = c(0.327, 0.673), 
+    "JP_region" = c(0.345997408, 0.176839094, 0.109666596, 0.167605084, 0.199891819)
   ),
   "DE" = list(
     "gender" = c(0.512, 0.000001, 0.488),
     "income" = rep(.25, 4),
     "age" = c(0.085, 0.150, 0.222, 0.280, 0.263),
     "urban" = c(FALSE, TRUE), 
-    "DE_region" = c(0.1808, 0.2769, 0.1013, 0.1498, 0.2913)
+    "DE_region" = c(0.1808, 0.2769, 0.1013, 0.1498, 0.2913),
+    "DE_urban_category" = c(0.2020653, 0.4032331, 0.395)
   ),
   "ID" = list(
     "gender" = c(0.500, 0.000001, 0.500),
     "income" = rep(.25, 4),
     "age" = c(0.170, 0.228, 0.310, 0.208, 0.084),
-    "urban" = c(FALSE, TRUE), 
-    "ID_region" = c()
+    "urban" = c(0.433, 0.567), 
+    "ID_region" = c(0.269977941, 0.299427716, 0.133590934, 0.082251799, 0.21475161)
   ),
   "CN" = list(
     "gender" = c(0.492, 0.000001, 0.508),
     "income" = rep(.25, 4),
     "age" = c(0.099, 0.204, 0.279, 0.265, 0.154),
-    "urban" = c(FALSE, TRUE), 
-    "CN_region" = c()
+    "urban" = c(0.4437874, 0.5562126), 
+    "CN_region" = c(0.123751183, 0.082229515, 0.28858566,  0.287981136, 0.217452506)
   ),
     "BR" = list(
     "gender" = c(0.512, 0.000001, 0.488),
@@ -3502,6 +3511,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                        e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
                        e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                        e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
+                       e$country == "DE" ~ e$urban_category %in% c("Town and Suburbs", "Cities"),
+                       e$country == "IN" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
                        TRUE ~ NA)
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
 
