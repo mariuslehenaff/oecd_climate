@@ -50,7 +50,7 @@ loadings_efa <- list()
                  "IN_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
                  "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
                  "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
-                 "UK_region" = c("London", "Rest of England", "Scotland", "Wales", "Northern Ireland"),
+                 "UK_region" = c("London", "Southern England", "Central UK", "Northern England", "Northern UK"),
                  "UK_urban_category" = c("Rural", "Large_urban", "City_Town"),
                  "PL_region" = c("North-West", "North-East", "Central", "South-West", "Central-East", "South-East"),
                  "ES_region" = c("East", "Center",  "South North", "North-West"),
@@ -114,7 +114,7 @@ loadings_efa <- list()
     "age" = c(0.102, 0.168, 0.244, 0.246, 0.241),
     "urban" = c(FALSE, TRUE),
     "UK_urban_category" = c(0.2175999, 0.3859355, 0.3964646),
-    "UK_region" = c(0.1340, 0.7090, 0.0820, 0.0470, 0.0280)
+    "UK_region" = c(0.1294,  0.3131,  0.2090,  0.2365,  0.1121)
   ),
   "SA" = list(
     "gender" = c(0.506, 0.000001, 0.494),
