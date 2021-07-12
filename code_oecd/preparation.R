@@ -35,7 +35,7 @@ loadings_efa <- list()
                  "income" = c("Q1", "Q2", "Q3", "Q4"),
                  "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
                  "urban" = c(FALSE, TRUE),
-                 "US_region" = c("Midwest","Northeast", "South", "West"),
+                 "US_region" = c("Northeast", "Midwest","South", "West"),
                  "US_core_metropolitan" = c(FALSE, TRUE),
                  "US_race" = c("White only", "Hispanic", "Black", "Other"),
                  "US_vote_2020" = c("Biden", "Trump", "Other/Non-voter"), #, "PNR/no right"),
