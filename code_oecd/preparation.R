@@ -31,7 +31,8 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
 loadings_efa <- list()
 
 { 
-  levels_quotas <- list("gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
+  levels_quotas <- list(
+                 "gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
                  "income" = c("Q1", "Q2", "Q3", "Q4"),
                  "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
                  "urban" = c(FALSE, TRUE),
@@ -63,7 +64,8 @@ loadings_efa <- list()
 
   )
   
-  pop_freq <- list("US" = list(
+  pop_freq <- list(
+  "US" = list(
     "gender" = c(0.5074,0.000001,0.4974),
     "income" = c(0.2034,0.239,0.2439,0.3137),
     "age" = c(0.118,0.180,0.243,0.2467,0.2118),
@@ -189,8 +191,8 @@ loadings_efa <- list()
   )      
   )
   
-  quotas <- list("US" = c("gender", "income", "age", "urban", "region", "race"), 
-                 "US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
+  quotas <- list("US" = c("gender", "income", "age", "region", "urban", "race"), 
+            "US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
                  "DK" = c("gender", "income", "age", "region", "urban"),
                  "FR" = c("gender", "income", "age", "region", "education") #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
                  # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
@@ -2630,7 +2632,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_duration <<- names(e)[grepl('duration', names(e))]
   if (length(grep('footprint', names(e)))>0) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
   for (i in intersect(c(variables_duration, variables_footprint,  # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
-    "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "age", "zipcode", "donation"
+    "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "zipcode", "donation"#, "age"
   ), names(e))) {
     lab <- label(e[[i]])
     e[[i]] <- as.numeric(as.vector( gsub("[^0-9]", "", e[[i]])))

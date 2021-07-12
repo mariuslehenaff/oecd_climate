@@ -1,4 +1,0 @@
-\babel@toc {english}{}
-\beamer@sectionintoc {1}{Questionnaire}{5}{0}{1}
-\beamer@sectionintoc {2}{Sample quality}{16}{0}{2}
-\beamer@sectionintoc {3}{Descriptive statistics}{17}{0}{3}
