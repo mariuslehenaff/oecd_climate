@@ -150,7 +150,7 @@ is.pnr <- function(variable, empty_as_pnr = T) {
     else return(is.missing(variable))    
   }
 }
-decrit <- function(variable, miss = TRUE, weights = NULL, numbers = FALSE, data = e, which = NULL, weight = T) { # TODO!: allow for boolean weights
+decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
   # if (!missing(data)) variable <- data[[variable]]
   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
   if (!missing(which)) variable <- variable[which] 
