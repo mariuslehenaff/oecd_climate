@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169,xcolor=dvipsnames, 10t]{beamer} 
+\documentclass[aspectratio=169,xcolor=dvipsnames, 11pt]{beamer} 
 
 %\documentclass[xcolor=dvipsnames,mathserif]{beamer} % this option has curvier math
 %\documentclass[xcolor=dvipsnames,11pt]{beamer}
@@ -53,14 +53,14 @@
 \usepackage{amsmath}
 \usepackage{setspace} % Only needed for spacing
 \usepackage{changepage} % Only needed for local margin setting
-\usepackage{mathpazo}
+\usepackage{mathpazo}% font, is overwritten by times
 %\usepackage[hypertexnames=false]{hyperref} %This makes hyperref ``dumber'', and, hence, more robust! (otherwise sometimes the appendix links don't work).
 \usepackage{hyperref}
 \usepackage{multimedia}
 \usepackage[english]{babel}
 \usepackage{graphicx}
 \usepackage{caption}
-\usepackage{subfig}
+%\usepackage{subfig}
 \usepackage{subfloat}
 \usepackage[en-US]{datetime2}
 \usepackage{tabulary}
@@ -77,10 +77,17 @@
 \setlength{\TPVertModule}{1cm}
 \captionsetup[figure]{labelformat=empty} % removes caption prefix figure
 \setlength{\itemsep}{\fill} % this is supposed to stretch items across full frame.
-\setlength{\parskip}{0.8\baselineskip} % This affects spacing between normal lines (not itemized).
-\usepackage{adjustbox} % to use resizebox for tables size.
+%\setlength{\parskip}{0.8\baselineskip} % This affects spacing between normal lines (not itemized).
 \usepackage{colortbl} % For cell colors
 \usepackage[final]{pdfpages}
+\usepackage{caption}
+\usepackage{subcaption}
+%\captionsetup{justification   = raggedright,
+%              singlelinecheck = false}
+%\usepackage{adjustbox} % to use resizebox for tables size.
+\usepackage[export]{adjustbox} % to use resizebox for tables size.
+\usepackage{eurosym}
+\usepackage{gensymb}
 
 %% TIKZ
 \usepackage{tikz}
@@ -145,7 +152,22 @@
   \end{frame}
 }
 
+%
+% Custom font for a frame.
+%
+\usepackage{environ}
+\newcommand{\customframefont}[1]{
+\setbeamertemplate{itemize/enumerate body begin}{#1}
+\setbeamertemplate{itemize/enumerate subbody begin}{#1}
+}
 
+\NewEnviron{framefont}[1]{
+\customframefont{#1} % for itemize/enumerate
+{#1 % For the text outside itemize/enumerate
+\BODY
+}
+\customframefont{\normalsize}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% OTHER PIECES OF TEMPLATE FILE
