@@ -36,6 +36,7 @@ loadings_efa <- list()
                  "income" = c("Q1", "Q2", "Q3", "Q4"),
                  "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
                  "urban" = c(FALSE, TRUE),
+                 "diploma" = c("No secondary", "Vocational", "High school", "College"), # "FR_education" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
                  "US_region" = c("Northeast", "Midwest","South", "West"),
                  "US_core_metropolitan" = c(FALSE, TRUE),
                  "US_race" = c("White only", "Hispanic", "Black", "Other"),
@@ -43,7 +44,7 @@ loadings_efa <- list()
                  "DK_region" = c("Hovedstaden", "Midtjylland", "Nordjylland", "Sjælland", "Syddanmark"),
                  "FR_region" = c("autre", "IDF", "Nord-Est", "Nord-Ouest", "Sud-Est", "Sud-Ouest"),
                  "FR_urban_category" = c("GP", "Couronne_GP", "Other"),
-                 "FR_education" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
+                 "FR_diploma" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
                  "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
                  "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
@@ -87,9 +88,10 @@ loadings_efa <- list()
     "income" = rep(.25, 4),
     "urban" = c(0.405, 0.595),
     "age" = c(0.120,0.150,0.240,0.240,0.250),
+    "diploma" = c(0.290, 0.248, 0.169, 0.293),
     "FR_region" = c(0.000001, 0.18920, 0.21968, 0.20041, 0.25097, 0.13980),
     "FR_urban_category" = c(0.595, 0.184, 0.222),
-    "FR_education" = c(0.290, 0.248, 0.169, 0.293),
+    "FR_diploma" = c(0.290, 0.248, 0.169, 0.293),
     "FR_CSP" = c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008),
     "FR_region9" = c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831),
     "FR_taille_agglo" = c(0.2166,0.1710,0.1408,0.3083,0.1633)
@@ -194,7 +196,7 @@ loadings_efa <- list()
   quotas <- list("US" = c("gender", "income", "age", "region", "urban", "race"), 
             "US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
                  "DK" = c("gender", "income", "age", "region", "urban"),
-                 "FR" = c("gender", "income", "age", "region", "education") #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
+                 "FR" = c("gender", "income", "age", "region", "diploma") #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
                  # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
   )
 }
@@ -3100,6 +3102,9 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$education <- as.item(temp, labels = structure(c(0:6),
                         names = c("None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
                       annotation=Label(e$education))
+  
+  temp <- case_when(e$education < 3 ~ 0, e$education == 3 ~ 1,  e$education == 4 ~ 2, e$education > 4 ~ 3) 
+  e$diploma <- as.item(temp, labels = structure(c(0:3), names = c("No secondary", "Vocational", "High school", "College")), annotation="diploma: recoded from education - What is the highest level of education you have completed?")
   
   temp <-  (e$income %in% text_income_q1) + 2 * (e$income %in% text_income_q2) + 3 * (e$income %in% text_income_q3) + 4 * (e$income %in% text_income_q4) 
   e$income <- as.item(temp, labels = structure(c(1:4),

@@ -134,7 +134,11 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
 
     try({(vote_agg_US <- barres(vars = "vote_agg", export_xls = export_xls, df = e, miss=T, rev = F, rev_color = T, sort = F, fr = "PNR or other", labels="Vote or hypothetical vote in last election"))
       save_plotly_new_filename(vote_agg_US, width= 900, height=140)}) 
-
+    
+    try({data_diploma <- cbind(dataKN("diploma", data=e, miss=F, weights = F), dataKN("diploma", data=e, miss=F, weights = T), pop_freq[[country]]$diploma)
+    (diploma_US_comp <- barres(data = data_diploma, export_xls = export_xls, df = e, miss=F, rev_color = T, sort = F, rev = F, labels=labels_comp, legend = dataKN("diploma", data=e, miss=F, return="legend")))
+    save_plotly_new_filename(diploma_US_comp, width= 620, height=240)})
+    
     try({data_vote_2020 <- cbind(dataKN("vote_2020", data=e, miss=T, weights = F), dataKN("vote_2020", data=e, miss=T, weights = T), pop_freq[[country]]$vote_2020)
       (vote_2020_US_comp <- barres(data = data_vote_2020, export_xls = export_xls, df = e, miss=T, sort = F, labels=labels_comp, legend = dataKN("vote_2020", data=e, miss=T, return="legend")))
       save_plotly_new_filename(vote_2020_US_comp, width= 550, height=240)})
@@ -169,6 +173,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     
     try({(education_US <- barres(vars = "education", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Highest level of education"))
       save_plotly_new_filename(education_US, width= 1080, height=140) })
+    
+    try({(diploma_US <- barres(vars = "diploma", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Highest diploma"))
+      save_plotly_new_filename(diploma_US, width= 620, height=140) })
     
     try({(employment_status_US <- barres(vars = "employment_agg", export_xls = export_xls, df = e, miss=F, labels="What is your employment status?"))
       save_plotly_new_filename(employment_status_US, width= 630, height=140)})
@@ -931,6 +938,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     try({(education_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "education", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Highest level of education"))
       save_plotly_new_filename(education_US, width= 1080, height=fig_height(1*nb_levels)) })
+    
+    try({(diploma_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "diploma", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Highest diploma"))
+      save_plotly_new_filename(diploma_US, width= 620, height=fig_height(1*nb_levels)) })
     
     try({(employment_status_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "employment_agg", export_xls = export_xls, df = e, miss=F, labels="What is your employment status?"))
       save_plotly_new_filename(employment_status_US, width= 630, height=fig_height(1*nb_levels))})

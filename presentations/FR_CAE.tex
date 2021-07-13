@@ -72,6 +72,19 @@ Antoine Dechezleprêtre, Adrien Fabre, Bluebery Planterose, Stefanie Stantcheva
 \makebox[\textwidth][c]{ \includegraphics[width=.75\textwidth]{"../figures/Country_coverage.png"}}
 \end{frame}
 
+\begin{frame}{Method: Large-scale Social Economics Surveys and Experiments}
+\bb
+\ip \textcolor{magenta}{Surveys are a key tool:}
+\bbs 
+\ip Some things can not be seen in other data, no matter how good it is: Perceptions, attitudes, knowledge, views.
+\ip Revealed preference with observational data has limits (data and assumptions required).
+
+\ip Unlike old-style surveys (that measure variables now better captured in admin data). 
+\ip New generation surveys: Customizable, controllable, interactive.	
+\ee
+\ip Here: $\approx$ 2,000 respondents per survey, broadly representative of the country, done through commercial survey companies. 
+\ee
+\end{frame}
 
 \begin{frame}{Improvements upon existing research}
 \bbs
@@ -103,11 +116,15 @@ and existing international surveys include only very general questions.
 \bbs
 \ip Treatments consist in one or two 2--5 min video either informing the respondent about
 \textcolor{blue}{three main climate policies}, or detailing the \textcolor{blue}{impacts of climate change in their country}.
-\ip \textcolor{blue}{Cross-country comparisons}: analyze how social preferences on climate change
-mitigation policies differ between countries.
-\ip \textcolor{blue}{Effects of informational treatments}: understand how perceptions may change after
-receiving new information on the effects of policies/climate change (in a video
-format) and how it translates into beliefs and support.
+\ip \textcolor{magenta}{Goal}: understand \textcolor{blue}{how perceptions may change after
+receiving new information} on the effects of policies/climate change (in a video
+format) and how it translates into policy support.
+\ip Will contribute to ongoing academic debate on importance of information for the acceptance of climate policies (e.g. Kahan, 2015; Sunstein et al., 2017):
+\bbvs
+\ip What do people really learn when information is provided?
+\ip Do they accept the info or can it backfire?
+\ip How does the effect interact with political values, previous knowledge, socio-demographics, country?
+\ee
 \ee
 \end{frame}
 
@@ -137,6 +154,12 @@ format) and how it translates into beliefs and support.
 
 % TODO: slide on how we ensured quality, quotas, sample size
 
+% TODO:
+%- Rajouter slide sur utilité des surveys (insister sur differences avec opinion polls) ~slides4/5
+%- Add more tables? Effect of misperception + heterogeneity (indexes) for instance
+%- Do we add something on the LDA ?%
+%- In table underline some key lines ? Like in slide 36 here: https://scholar.harvard.edu/files/stantcheva/files/understanding_taxes_slides.pdf
+%- Pour le moment la présentation est vraiment descriptive (liste les réponses à chaque question), mais est-ce que l'on veut faire ça ou avoir un narrative (à travers une research question à laquelle on veut réponse et en faisant des sections sur les résultats préliminaires que l'on a, plutôt que de grouper block par block - même si ça va sûrement être très proche)
 \begin{frame}{Sample Characteristics -- France}
 \begin{table}[h!]
 	%\caption{Sample Characteristics -- France}
@@ -1103,7 +1126,7 @@ Which come closer to your own view? }
 \begin{table}[h!]
 \caption{Attitudes towards Climate Change}
 \begin{center}
-\scalebox{.59}{\input{../tables/FR_1.tex}}
+\scalebox{.7}{\input{../tables/FR_1.tex}}
 \end{center}
 	{\tiny Note: The \textit{CC caused by humans} indicator variable equals one if the respondent thinks a lot or most of climate change is due to human actions. The \textit{CC likely to cause extinction} indicator variable equals one if the respondent thinks climate change is somewhat likely or very likely to cause the extinction of humankind if nothing is done to limit it. The \textit{Donation} variable is a continuous variable equal to the amount the respondent is willing to give to a charity. The \textit{Ambitious policies needed} indicator variable equals one if the respondent thinks policy must be a lot or a great deal ambitious in order to halt climate change. The \textit{Willing to limit driving} indicator variable equals one if the respondent is willing a lot or a great deal to limit driving. The three \textit{treatment} indicator variables indicate difference in mean compared to the control group (people who did not see any video). Controls include socio-demographic, economic affiliation, last vote and whether the respondent's household was hit by the COVID-19 pandemic. Standard errors are in parentheses.  *p$<$0.1; **p$<$0.05; ***p$<$0.01}
 \end{table}
