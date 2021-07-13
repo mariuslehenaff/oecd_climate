@@ -94,8 +94,8 @@ and existing international surveys include only very general questions.
 \ip For reviews of existing studies: Carattini et al. 2018, Drews and van den Bergh, 2016
 \ee 
 \ip \textcolor{blue}{Cross-country comparability}: having an international questionnaire informs whether differences in people’s attitudes are driven by survey characteristics (e.g. format and phrasing) or by true cross-country differences.
-\ip \textcolor{blue}{Causal evidence}: we document effects of informational treatments in a video format, wheareas cross-country evidence remains largely descriptive and national surveys use less effective treatments.
 \ip \textcolor{blue}{Incentive compatibility}: we offer an incentive relying on an actual payment and propose tangible actions.
+\ip \textcolor{blue}{Causal evidence}: we document effects of informational treatments in a video format, wheareas cross-country evidence remains largely descriptive and national surveys use less effective treatments.
 \ee
 \end{frame}
 
@@ -134,21 +134,21 @@ format) and how it translates into policy support.
 \vspace{.2cm}
 %\makebox[\textwidth][c]{
 %\begin{itemize}[<+>]
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-1.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-2.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-3.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-4.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-5.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-6.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-7.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-8.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-9.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow-10.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-1.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-2.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-3.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-4.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-5.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-6.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-7.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-8.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-9.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-10.pdf}}}
+\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-11.pdf}}}
 %\end{itemize}
 %}
 \end{frame}
 
-% TODO: screenshots of questions & videos, adding info on video within survey flow, remove slide in previous section about treatments
 
 \section{Sample quality}
 
@@ -196,6 +196,7 @@ format) and how it translates into policy support.
 \caption{What is the highest level of education you have completed?}
 \includegraphics[width=.78\paperwidth]{../figures/FR/education_FR.png} \\
 \vspace{.3cm}
+\includegraphics[width=.78\paperwidth]{../figures/FR/diploma_FR_comp.png}
 %\caption{What race or ethnicity do you identify with? (Multiple answers are possible)} % TODO
 %\includegraphics[width=.43\paperwidth]{../figures/FR/race_FR_comp.png}\\
 \end{figure}
@@ -332,7 +333,7 @@ format) and how it translates into policy support.
 \centering
 \includegraphics[width=.43\paperwidth]{../figures/FR/heating_FR.png} \\
 \vspace{.5cm}
-\caption{In a typical month, how much do you spend on heating for your accommodation?}
+\caption{In a typical month, how much do you spend on heating for your accommodation (in \euro{})?}
 \includegraphics[width=.61\paperwidth]{../figures/FR/heating_expenses_FR.png} \\
 \vspace{.5cm}
 \centering
@@ -344,7 +345,7 @@ format) and how it translates into policy support.
 \begin{frame}{}%\addtocounter{framenumber}{-1}
 \begin{figure}[h!]
 \centering
-\caption{In a typical month, how much do you spend on gas for driving?}
+\caption{In a typical month, how much do you spend on gas for driving (in \euro{})?}
 \includegraphics[width=.52\paperwidth]{../figures/FR/gas_expenses_FR.png} \\
 \vspace{.5cm}
 \caption{How many round-trip flights did you take between 2017 and 2019?}
@@ -378,26 +379,42 @@ Please write as much as you would like, your response will be very useful.}
 \end{figure}
 \end{frame}
 
+\begin{frame} % NEW
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+  \caption{Elements present in the open field (manually recoded).}
+  \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_mentions_raw_FR.png}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+  \caption{Summary of elements present in the open field.}
+  \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_mentions_FR.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
 \subsection{Treatments}
 
 % out
-%\begin{frame}{Watched climate and/or policy videos attentively}%\addtocounter{framenumber}{-1} % TODO
-%\begin{figure}[h!]
-%\centering
-%\caption{Number of wrong answers when answering knowledge questions about the content of the videos}
-%\footnotesize \begin{itemize}
-%\item What will be the rise in global average temperature in 2100 if greenhouse gas emissions continue on their current trend?
-%\item In the absence of ambitious action against climate change, how frequent will extreme temperatures occur across the French by the end of the century?
-%\item What is the emission limit described in the video? 
-%\item How would a green infrastructure program be financed?
-%\end{itemize}
-%
-%% \includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment.png}
-%\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_climate_FR.png} \\
-%\vspace{.5cm}
-%\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_policy_FR.png}
-%\end{figure}
-%\end{frame}
+\begin{frame}{Watched climate and/or policy videos attentively}%\addtocounter{framenumber}{-1} % TODO:other_countries
+\begin{figure}[h!]
+\centering
+\caption{Number of wrong answers when answering knowledge questions about the content of the videos}
+\footnotesize \begin{itemize}
+\item What will be the rise in global average temperature in 2100 if greenhouse gas emissions continue on their current trend?
+\item In the absence of ambitious action against climate change, how frequent will extreme temperatures occur across the French by the end of the century?
+\item What is the emission limit described in the video? 
+\item How would a green infrastructure program be financed?
+\end{itemize}
+
+% \includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment.png}
+\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_climate_FR.png} \\
+\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_policy_FR.png}
+\end{figure}
+\end{frame}
 
 
 \subsection{Climate Knowledge}
@@ -453,7 +470,8 @@ Please write as much as you would like, your response will be very useful.}
 \includegraphics[width=.30\paperwidth]{../figures/FR/GHG_FR.png}
 \vspace{.2cm} \\
 \includegraphics[width=.61\paperwidth]{../figures/FR/score_GHG_FR.png}
-\textit{Score on GHG = CO2 + methane + \textit{not} hydrogen + \textit{not}  particulates}
+
+\textit{Score on GHG = CO$_\text{2}$ + methane + }not\textit{ hydrogen + }not\textit{ particulates}
 %\caption{Which of the following elements contribute to climate change? (Multiple answers are possible))}
 \end{figure}
 \end{frame}
@@ -474,25 +492,33 @@ Please write as much as you would like, your response will be very useful.}
 % \end{figure}
 % \end{frame}
 
-\begin{frame}{Climate change knowledge}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{If a family of 4 travels 700 km from Copenhagen to Stockholm, with which mode of transportation do they emit the most greenhouse gases? % TODO!
-Please rank the items from 1 (most) to 3 (least).}
-\includegraphics[width=.26\paperwidth]{../figures/FR/footprint_transport_FR.png} \\
-\centering
+\begin{frame}{Climate change knowledge}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}
 \caption{Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
 Please rank the items from 1 (most) to 3 (least).}
-\includegraphics[width=.26\paperwidth]{../figures/FR/footprint_food_FR.png}
+\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_food_FR.png}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\caption{If a family of 4 travels 800 km from Bordeaux to Nice, with which mode of transportation do they emit the most greenhouse gases? % TODO:other_countries
+Please rank the items from 1 (most) to 3 (least).}
+\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_transport_FR.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Climate change knowledge}%\addtocounter{framenumber}{-1}
+\begin{figure}
+\caption{Which source of electric energy emits the most greenhouse gases to provide power for a house?}
+\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_elec_FR.png}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Climate change knowledge}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{Which source of electric energy emits the most greenhouse gases to provide power for a house?}
-\includegraphics[width=.26\paperwidth]{../figures/FR/footprint_elec_FR.png} \\
-\end{figure}
 \begin{figure}[h!]
 \centering
 \begin{subfigure}[b]{0.425\paperwidth}
@@ -548,9 +574,9 @@ Please rank the items from 1 (most) to 3 (least).}
 \begin{frame}{Beliefs about the future}%\addtocounter{framenumber}{-1}
 \begin{figure}[h!]
 \caption{To what extent do you think that it is technically feasible to stop greenhouse gas emissions while maintaining satisfactory standards of living in France?}
-\includegraphics[width=.52\paperwidth]{../figures/FR/net_zero_feasible_FR.png} \\
+\includegraphics[width=.7\paperwidth]{../figures/FR/net_zero_feasible_FR.png} \\
 \caption{To what extent do you think climate change already affects or will negatively affect your personal life?}
-\includegraphics[width=.61\paperwidth]{../figures/FR/CC_affects_self_FR.png} \\
+\includegraphics[width=.9\paperwidth]{../figures/FR/CC_affects_self_FR.png} \\
 % \caption{How ambitious do you think public policies should be to halt climate change?}
 % \includegraphics[width=.61\paperwidth]{../figures/FR/pro_ambitious_policies_FR.png}
 \end{figure}
@@ -563,7 +589,7 @@ Please rank the items from 1 (most) to 3 (least).}
 \includegraphics[width=.61\paperwidth]{../figures/FR/CC_will_end_FR.png}\\
 \caption{If we decide to halt climate change through ambitious policies, to what extent do you think it would negatively affect your lifestyle?}
 \includegraphics[width=.61\paperwidth]{../figures/FR/effect_halt_CC_lifestyle_FR.png} \\
-\caption{If we decide to halt climate change through ambitious policies, what would be the effects on the U.S economy and employment?}
+\caption{If we decide to halt climate change through ambitious policies, what would be the effects on the French economy and employment?} % TODO:other_countries "U.S "
 \includegraphics[width=.61\paperwidth]{../figures/FR/effect_halt_CC_economy_FR.png}
 \end{figure}
 \end{frame}
@@ -596,7 +622,7 @@ To what extent would you be willing to adopt the following behaviors?}
 \subsection{Policy 1: A ban on combustion-engine Cars}
 
 \begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
-To fight climate change, car producers can be required by law to produce cars that emit less CO2 per mile of the cars they sell. The emission limit is lowered every year so that only electric or hydrogen vehicles can be sold after 2030. This policy is called a \textit{ban on combustion-engine cars}. 
+To fight climate change, car producers can be required by law to produce cars that emit less CO$_\text{2}$ per mile of the cars they sell. The emission limit is lowered every year so that only electric or hydrogen vehicles can be sold after 2030. This policy is called a \textit{ban on combustion-engine cars}. 
 \end{frame}
 
 
@@ -612,7 +638,7 @@ To fight climate change, car producers can be required by law to produce cars th
 
 \begin{frame}{Incidence}%\addtocounter{framenumber}{-1}
 \begin{figure}[h!]
-\centering
+\centering % TODO! harmonize order
 \caption{In your view, would the following groups win or lose if a ban on combustion-engine cars was implemented in France?}
 \includegraphics[width=.87\paperwidth]{../figures/FR/standard_win_lose_FR.png}
 %\caption{}
@@ -697,7 +723,7 @@ What sources of funding do you find appropriate for a green infrastructure progr
 \subsection{Policy 3: Carbon Tax with Cash Transfers}
 
 \begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
-To fight climate change, the French government can make greenhouse gas emissions costly, to make people and firms change their equipment and reduce their emissions. The government could do this through a policy called a carbon tax with cash transfers. Under such a policy, the government would tax all products that emit greenhouse gas. For example, the price of gasoline would increase by 10 centimes par litre. To compensate households for the price increases, the revenues from the carbon tax would be redistributed to all households, regardless of their income. Each adult would thus receive 160\euro{} per year.
+To fight climate change, the French government can make greenhouse gas emissions costly, to make people and firms change their equipment and reduce their emissions. The government could do this through a policy called a carbon tax with cash transfers. Under such a policy, the government would tax all products that emit greenhouse gas. For example, the price of gasoline would increase by 10 cents per liter. To compensate households for the price increases, the revenues from the carbon tax would be redistributed to all households, regardless of their income. Each adult would thus receive 160\euro{} per year.
 \end{frame}
 
 \begin{frame}{Effects of the policy}%\addtocounter{framenumber}{-1}
@@ -871,7 +897,7 @@ The funding for these investments could be collected annually through an additio
 \begin{frame}{Donation}
 \begin{figure}[h!]
 \centering
-\caption{By taking this survey, you are entered into a lottery to win 100\euro{} (100\$). You can also donate a part of this additional compensation (should you be selected in the lottery) to a reforestation project through the charity The Gold Standard. If you win the 100\euro{} lottery, how much will you donate to the Gold Standard charity?}
+\caption{By taking this survey, you are entered into a lottery to win 100\euro{}. You can also donate a part of this additional compensation (should you be selected in the lottery) to a reforestation project through the charity The Gold Standard. If you win the 100\euro{} lottery, how much will you donate to the Gold Standard charity?}
 \includegraphics[width=.78\paperwidth]{../figures/FR/donation_agg_FR.png}
 \end{figure}
 %\textbf{We have a winner} who decided to donate the \$100 prize.
@@ -897,7 +923,7 @@ The funding for these investments could be collected annually through an additio
 \end{frame}
 
 % out
-\begin{frame}{US climate policy}%\addtocounter{framenumber}{-1}
+\begin{frame}{France climate policy}% TODO:other_countries "US" \addtocounter{framenumber}{-1}
 \begin{figure}[h!]
 \centering
 \caption{Do you agree or disagree with the following statement: ``France should take measures to fight climate change."}
@@ -951,10 +977,10 @@ Ideally, how should countries bear the costs of fighting climate change?}
 %\caption{\textit{i)} To reduce fuel consumption for heating and cooling, the French government could subsidize half of the costs to renovate the insulation of residential buildings to meet a certain energy efficiency standard. \\
 %\textit{ii)} Imagine that the French government makes it mandatory for all residential buildings to have insulation that meets a certain energy efficiency standard before 2040. The government would subsidize half of the insulation costs to help households with the transition. \\
 %Do you support or oppose such a policy?}
-\caption{Imagine that the French government makes it mandatory for all residential buildings to have insulation that meets a certain energy efficiency standard before 2040. The government would subsidize half of the insulation costs to help households with the transition. \\
-Displayed in disruption variant: [Insulating your home can take long, may cause disruptions to your daily life during the renovation works, and may even require you to leave your home until the renovation is completed.]  \\
+\caption{Imagine that the French government makes it mandatory for all residential buildings to have insulation that meets a certain energy efficiency standard before 2040. The government would subsidize half of the insulation costs to help households with the transition. \\ %TODO:other_countries textit
+\textit{Displayed in disruption variant:} [Insulating your home can take long, may cause disruptions to your daily life during the renovation works, and may even require you to leave your home until the renovation is completed.]  \\
 Do you support or oppose such policy? }
-\includegraphics[width=.78\paperwidth]{../figures/FR/insulation_support_variant_FR.png} 
+\includegraphics[width=.85\paperwidth]{../figures/FR/insulation_support_variant_FR.png} 
 % \vspace{.5cm}
 % \includegraphics[width=.56\paperwidth]{../figures/FR/ban_incentives_FR.png}
 \end{figure}
@@ -1008,15 +1034,17 @@ Which come closer to your own view? }
 \begin{figure}[h!]
 \caption{Do you feel that this survey was politically biased?}
 \includegraphics[width=.52\paperwidth]{../figures/FR/survey_biased_FR.png} \\
-\vspace{.5cm}
-\caption{The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below.}
+\vspace{.2cm}
+\caption{The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below. Right: recoded in \textit{Non empty}/\textit{Liked}/\textit{Disliked}.}
 \includegraphics[width=.26\paperwidth]{../figures/FR/comment_field_FR.png}
+\vspace{.2cm}
+\includegraphics[width=.4\paperwidth]{../figures/FR/comment_field_mentions_FR.png}
 \end{figure}
 \end{frame}
 
 \subsection{Heterogeneity Analysis}
 
-%\subsection{Republican vs. Democrat} % TODO
+%\subsection{Republican vs. Democrat} % TODO!
 %\begin{frame}{Willingness to change behavior}%\addtocounter{framenumber}{-1}
 %\vspace{-.2cm}
 %\begin{figure}[h!]

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.10.18)  13 JUL 2021 15:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.10.18)  13 JUL 2021 20:17
 entering extended mode
 **./FR_CAE.tex
 (FR_CAE.tex
@@ -1360,7 +1360,7 @@ Package pdftex.def Info: ../figures/Country_coverage.png  used on input line 73
 .
 (pdftex.def)             Requested size: 335.03113pt x 200.57503pt.
 
-Overfull \vbox (42.87453pt too high) detected at line 73
+Overfull \vbox (42.80249pt too high) detected at line 73
  []
 
 [3
@@ -1387,1067 +1387,1140 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <8> not available
 ] [7
 
 ]
-<../figures/survey_flow-1.pdf, id=146, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-1.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-1.pdf>
-Package pdftex.def Info: ../figures/survey_flow-1.pdf  used on input line 149.
+<../figures/survey_flow/survey_flow_new-1.pdf, id=146, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-1.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-1.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-1.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [8
 
- <../figures/survey_flow-1.pdf>]
-<../figures/survey_flow-2.pdf, id=164, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-2.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-2.pdf>
-Package pdftex.def Info: ../figures/survey_flow-2.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-1.pdf>]
+<../figures/survey_flow/survey_flow_new-2.pdf, id=164, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-2.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-2.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-2.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [9
 
- <../figures/survey_flow-2.pdf>]
-<../figures/survey_flow-3.pdf, id=182, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-3.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-3.pdf>
-Package pdftex.def Info: ../figures/survey_flow-3.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-2.pdf>]
+<../figures/survey_flow/survey_flow_new-3.pdf, id=182, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-3.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-3.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-3.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [10
 
- <../figures/survey_flow-3.pdf>]
-<../figures/survey_flow-4.pdf, id=200, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-4.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-4.pdf>
-Package pdftex.def Info: ../figures/survey_flow-4.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-3.pdf>]
+<../figures/survey_flow/survey_flow_new-4.pdf, id=211, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-4.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-4.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-4.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [11
 
- <../figures/survey_flow-4.pdf>]
-<../figures/survey_flow-5.pdf, id=218, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-5.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-5.pdf>
-Package pdftex.def Info: ../figures/survey_flow-5.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-4.pdf>]
+<../figures/survey_flow/survey_flow_new-5.pdf, id=229, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-5.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-5.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-5.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [12
 
- <../figures/survey_flow-5.pdf>]
-<../figures/survey_flow-6.pdf, id=243, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-6.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-6.pdf>
-Package pdftex.def Info: ../figures/survey_flow-6.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-5.pdf>]
+<../figures/survey_flow/survey_flow_new-6.pdf, id=249, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-6.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-6.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-6.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [13
 
- <../figures/survey_flow-6.pdf>]
-<../figures/survey_flow-7.pdf, id=269, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-7.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-7.pdf>
-Package pdftex.def Info: ../figures/survey_flow-7.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-6.pdf>]
+<../figures/survey_flow/survey_flow_new-7.pdf, id=276, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-7.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-7.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-7.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [14
 
- <../figures/survey_flow-7.pdf>]
-<../figures/survey_flow-8.pdf, id=294, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-8.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-8.pdf>
-Package pdftex.def Info: ../figures/survey_flow-8.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-7.pdf>]
+<../figures/survey_flow/survey_flow_new-8.pdf, id=301, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-8.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-8.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-8.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [15
 
- <../figures/survey_flow-8.pdf>]
-<../figures/survey_flow-9.pdf, id=319, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-9.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-9.pdf>
-Package pdftex.def Info: ../figures/survey_flow-9.pdf  used on input line 149.
+ <../figures/survey_flow/survey_flow_new-8.pdf>]
+<../figures/survey_flow/survey_flow_new-9.pdf, id=326, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-9.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-9.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-9.pdf  used on 
+input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (20.96873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [16
 
- <../figures/survey_flow-9.pdf>]
-<../figures/survey_flow-10.pdf, id=344, 963.6pt x 542.025pt>
-File: ../figures/survey_flow-10.pdf Graphic file (type pdf)
-<use ../figures/survey_flow-10.pdf>
-Package pdftex.def Info: ../figures/survey_flow-10.pdf  used on input line 149.
-
+ <../figures/survey_flow/survey_flow_new-9.pdf>]
+<../figures/survey_flow/survey_flow_new-10.pdf, id=351, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-10.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-10.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-10.pdf  used on
+ input line 150.
 (pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-Overfull \vbox (7.36873pt too high) detected at line 149
+Overfull \vbox (20.8967pt too high) detected at line 150
  []
 
 [17
 
- <../figures/survey_flow-10.pdf>] [18
+ <../figures/survey_flow/survey_flow_new-10.pdf>]
+<../figures/survey_flow/survey_flow_new-11.pdf, id=376, 963.6pt x 542.025pt>
+File: ../figures/survey_flow/survey_flow_new-11.pdf Graphic file (type pdf)
+<use ../figures/survey_flow/survey_flow_new-11.pdf>
+Package pdftex.def Info: ../figures/survey_flow/survey_flow_new-11.pdf  used on
+ input line 150.
+(pdftex.def)             Requested size: 402.03462pt x 226.14369pt.
 
-] [19
+Overfull \vbox (7.29669pt too high) detected at line 150
+ []
+
+[18
+
+ <../figures/survey_flow/survey_flow_new-11.pdf>] [19
+
+] [20
 
 ]
 (../tables/FR/summary_stat_fr_prez.tex)
-Overfull \vbox (64.34402pt too high) detected at line 184
+Overfull \vbox (64.27199pt too high) detected at line 181
  []
 
-[20
-
-] [21
+[21
 
 ] [22
 
+] [23
+
 ]
-<../figures/FR/education_FR.png, id=398, 983.675pt x 111.41624pt>
+<../figures/FR/education_FR.png, id=430, 983.675pt x 111.41624pt>
 File: ../figures/FR/education_FR.png Graphic file (type png)
 <use ../figures/FR/education_FR.png>
-Package pdftex.def Info: ../figures/FR/education_FR.png  used on input line 121
-4.
+Package pdftex.def Info: ../figures/FR/education_FR.png  used on input line 123
+9.
 (pdftex.def)             Requested size: 355.08981pt x 40.21861pt.
- [23
+<../figures/FR/diploma_FR_comp.png, id=431, 589.20125pt x 211.79124pt>
+File: ../figures/FR/diploma_FR_comp.png Graphic file (type png)
+<use ../figures/FR/diploma_FR_comp.png>
+Package pdftex.def Info: ../figures/FR/diploma_FR_comp.png  used on input line 
+1239.
+(pdftex.def)             Requested size: 355.08981pt x 127.64127pt.
+ [24
 
- <../figures/FR/education_FR.png>]
-<../figures/FR/left_right_FR.png, id=405, 887.315pt x 111.41624pt>
+ <../figures/FR/education_FR.png> <../figures/FR/diploma_FR_comp.png>]
+<../figures/FR/left_right_FR.png, id=439, 878.28125pt x 111.41624pt>
 File: ../figures/FR/left_right_FR.png Graphic file (type png)
 <use ../figures/FR/left_right_FR.png>
 Package pdftex.def Info: ../figures/FR/left_right_FR.png  used on input line 12
-14.
-(pdftex.def)             Requested size: 396.06012pt x 49.73051pt.
- [24
+39.
+(pdftex.def)             Requested size: 396.06012pt x 50.24394pt.
+ [25
 
  <../figures/FR/left_right_FR.png>]
-<../figures/FR/urban_FR_comp.png, id=412, 621.32124pt x 221.82875pt>
+<../figures/FR/urban_FR_comp.png, id=447, 621.32124pt x 221.82875pt>
 File: ../figures/FR/urban_FR_comp.png Graphic file (type png)
 <use ../figures/FR/urban_FR_comp.png>
 Package pdftex.def Info: ../figures/FR/urban_FR_comp.png  used on input line 12
-14.
+39.
 (pdftex.def)             Requested size: 195.75162pt x 69.88657pt.
- [25
+ [26
 
  <../figures/FR/urban_FR_comp.png>]
-<../figures/FR/gender_FR_comp.png, id=420, 453.695pt x 211.79124pt>
+<../figures/FR/gender_FR_comp.png, id=454, 453.695pt x 211.79124pt>
 File: ../figures/FR/gender_FR_comp.png Graphic file (type png)
 <use ../figures/FR/gender_FR_comp.png>
 Package pdftex.def Info: ../figures/FR/gender_FR_comp.png  used on input line 1
-214.
+239.
 (pdftex.def)             Requested size: 195.75162pt x 91.3787pt.
-<../figures/FR/age_FR_comp.png, id=421, 538.01pt x 211.79124pt>
+<../figures/FR/age_FR_comp.png, id=455, 538.01pt x 211.79124pt>
 File: ../figures/FR/age_FR_comp.png Graphic file (type png)
 <use ../figures/FR/age_FR_comp.png>
-Package pdftex.def Info: ../figures/FR/age_FR_comp.png  used on input line 1214
+Package pdftex.def Info: ../figures/FR/age_FR_comp.png  used on input line 1239
 .
 (pdftex.def)             Requested size: 195.75162pt x 77.05916pt.
 
-Overfull \vbox (4.73494pt too high) detected at line 1214
- []
-
-[26
-
- <../figures/FR/gender_FR_comp.png> <../figures/FR/age_FR_comp.png>]
-<../figures/FR/income_FR_comp.png, id=429, 486.81876pt x 211.79124pt>
-File: ../figures/FR/income_FR_comp.png Graphic file (type png)
-<use ../figures/FR/income_FR_comp.png>
-Package pdftex.def Info: ../figures/FR/income_FR_comp.png  used on input line 1
-214.
-(pdftex.def)             Requested size: 195.75162pt x 85.16096pt.
-<../figures/FR/wealth_FR.png, id=430, 462.72874pt x 111.41624pt>
-File: ../figures/FR/wealth_FR.png Graphic file (type png)
-<use ../figures/FR/wealth_FR.png>
-Package pdftex.def Info: ../figures/FR/wealth_FR.png  used on input line 1214.
-(pdftex.def)             Requested size: 195.75162pt x 47.13281pt.
-
-Overfull \vbox (18.81723pt too high) detected at line 1214
+Overfull \vbox (4.6629pt too high) detected at line 1239
  []
 
 [27
 
+ <../figures/FR/gender_FR_comp.png> <../figures/FR/age_FR_comp.png>]
+<../figures/FR/income_FR_comp.png, id=463, 486.81876pt x 211.79124pt>
+File: ../figures/FR/income_FR_comp.png Graphic file (type png)
+<use ../figures/FR/income_FR_comp.png>
+Package pdftex.def Info: ../figures/FR/income_FR_comp.png  used on input line 1
+239.
+(pdftex.def)             Requested size: 195.75162pt x 85.16096pt.
+<../figures/FR/wealth_FR.png, id=464, 462.72874pt x 111.41624pt>
+File: ../figures/FR/wealth_FR.png Graphic file (type png)
+<use ../figures/FR/wealth_FR.png>
+Package pdftex.def Info: ../figures/FR/wealth_FR.png  used on input line 1239.
+(pdftex.def)             Requested size: 195.75162pt x 47.13281pt.
+
+Overfull \vbox (18.7452pt too high) detected at line 1239
+ []
+
+[28
+
  <../figures/FR/income_FR_comp.png> <../figures/FR/wealth_FR.png>]
-<../figures/FR/employment_status_FR.png, id=438, 622.325pt x 111.41624pt>
+<../figures/FR/employment_status_FR.png, id=472, 622.325pt x 111.41624pt>
 File: ../figures/FR/employment_status_FR.png Graphic file (type png)
 <use ../figures/FR/employment_status_FR.png>
 Package pdftex.def Info: ../figures/FR/employment_status_FR.png  used on input 
-line 1214.
+line 1239.
 (pdftex.def)             Requested size: 318.66946pt x 57.05273pt.
-<../figures/FR/hit_by_covid_FR.png, id=439, 376.40625pt x 111.41624pt>
+<../figures/FR/hit_by_covid_FR.png, id=473, 376.40625pt x 111.41624pt>
 File: ../figures/FR/hit_by_covid_FR.png Graphic file (type png)
 <use ../figures/FR/hit_by_covid_FR.png>
 Package pdftex.def Info: ../figures/FR/hit_by_covid_FR.png  used on input line 
-1214.
+1239.
 (pdftex.def)             Requested size: 218.51521pt x 64.68266pt.
- [28
+ [29
 
  <../figures/FR/employment_status_FR.png> <../figures/FR/hit_by_covid_FR.png>]
-[29
+[30
 
 ]
-<../figures/FR/interested_politics_FR.png, id=453, 635.37375pt x 111.41624pt>
+<../figures/FR/interested_politics_FR.png, id=487, 635.37375pt x 111.41624pt>
 File: ../figures/FR/interested_politics_FR.png Graphic file (type png)
 <use ../figures/FR/interested_politics_FR.png>
 Package pdftex.def Info: ../figures/FR/interested_politics_FR.png  used on inpu
-t line 1214.
+t line 1239.
 (pdftex.def)             Requested size: 236.72885pt x 41.51237pt.
-<../figures/FR/member_environmental_orga_FR.png, id=454, 602.25pt x 111.41624pt
+<../figures/FR/member_environmental_orga_FR.png, id=488, 602.25pt x 111.41624pt
 >
 File: ../figures/FR/member_environmental_orga_FR.png Graphic file (type png)
 <use ../figures/FR/member_environmental_orga_FR.png>
 Package pdftex.def Info: ../figures/FR/member_environmental_orga_FR.png  used o
-n input line 1214.
+n input line 1239.
 (pdftex.def)             Requested size: 213.96527pt x 39.58449pt.
-<../figures/FR/relative_environmentalist_FR.png, id=455, 524.96124pt x 111.4162
+<../figures/FR/relative_environmentalist_FR.png, id=489, 524.96124pt x 111.4162
 4pt>
 File: ../figures/FR/relative_environmentalist_FR.png Graphic file (type png)
 <use ../figures/FR/relative_environmentalist_FR.png>
 Package pdftex.def Info: ../figures/FR/relative_environmentalist_FR.png  used o
-n input line 1214.
+n input line 1239.
 (pdftex.def)             Requested size: 213.96527pt x 45.41063pt.
- [30
+ [31
 
  <../figures/FR/interested_politics_FR.png> <../figures/FR/member_environmental
 _orga_FR.png> <../figures/FR/relative_environmentalist_FR.png>]
-<../figures/FR/vote_participation_FR.png, id=464, 508.90125pt x 111.41624pt>
+<../figures/FR/vote_participation_FR.png, id=499, 508.90125pt x 111.41624pt>
 File: ../figures/FR/vote_participation_FR.png Graphic file (type png)
 <use ../figures/FR/vote_participation_FR.png>
 Package pdftex.def Info: ../figures/FR/vote_participation_FR.png  used on input
- line 1214.
+ line 1239.
 (pdftex.def)             Requested size: 236.72885pt x 51.82841pt.
-<../figures/FR/vote_agg_FR.png, id=465, 835.12pt x 111.41624pt>
+<../figures/FR/vote_agg_FR.png, id=500, 835.12pt x 111.41624pt>
 File: ../figures/FR/vote_agg_FR.png Graphic file (type png)
 <use ../figures/FR/vote_agg_FR.png>
-Package pdftex.def Info: ../figures/FR/vote_agg_FR.png  used on input line 1214
+Package pdftex.def Info: ../figures/FR/vote_agg_FR.png  used on input line 1239
 .
 (pdftex.def)             Requested size: 318.66946pt x 42.51541pt.
 
-[31
+[32
 
  <../figures/FR/vote_participation_FR.png> <../figures/FR/vote_agg_FR.png>]
 File: ../figures/FR/left_right_FR.png Graphic file (type png)
 <use ../figures/FR/left_right_FR.png>
 Package pdftex.def Info: ../figures/FR/left_right_FR.png  used on input line 12
-14.
-(pdftex.def)             Requested size: 318.66946pt x 40.01291pt.
+39.
+(pdftex.def)             Requested size: 318.66946pt x 40.42603pt.
 
-[32
+[33
 
-] [33
+] [34
 
 ]
-<../figures/FR/heating_FR.png, id=485, 485.815pt x 111.41624pt>
+<../figures/FR/heating_FR.png, id=519, 485.815pt x 111.41624pt>
 File: ../figures/FR/heating_FR.png Graphic file (type png)
 <use ../figures/FR/heating_FR.png>
-Package pdftex.def Info: ../figures/FR/heating_FR.png  used on input line 1214.
+Package pdftex.def Info: ../figures/FR/heating_FR.png  used on input line 1239.
 
 (pdftex.def)             Requested size: 195.75162pt x 44.89212pt.
-<../figures/FR/heating_expenses_FR.png, id=486, 886.31125pt x 111.41624pt>
+<../figures/FR/heating_expenses_FR.png, id=520, 886.31125pt x 111.41624pt>
 File: ../figures/FR/heating_expenses_FR.png Graphic file (type png)
 <use ../figures/FR/heating_expenses_FR.png>
 Package pdftex.def Info: ../figures/FR/heating_expenses_FR.png  used on input l
-ine 1214.
+ine 1239.
 (pdftex.def)             Requested size: 277.69916pt x 34.90929pt.
-<../figures/FR/insulation_FR.png, id=487, 552.0625pt x 111.41624pt>
+<../figures/FR/insulation_FR.png, id=521, 552.0625pt x 111.41624pt>
 File: ../figures/FR/insulation_FR.png Graphic file (type png)
 <use ../figures/FR/insulation_FR.png>
 Package pdftex.def Info: ../figures/FR/insulation_FR.png  used on input line 12
-14.
+39.
 (pdftex.def)             Requested size: 236.72885pt x 47.77715pt.
-
-Overfull \vbox (0.15639pt too high) detected at line 1214
- []
-
-[34
+ [35
 
  <../figures/FR/heating_FR.png> <../figures/FR/heating_expenses_FR.png> <../fig
 ures/FR/insulation_FR.png>]
-<../figures/FR/gas_expenses_FR.png, id=496, 747.79375pt x 111.41624pt>
+<../figures/FR/gas_expenses_FR.png, id=531, 747.79375pt x 111.41624pt>
 File: ../figures/FR/gas_expenses_FR.png Graphic file (type png)
 <use ../figures/FR/gas_expenses_FR.png>
 Package pdftex.def Info: ../figures/FR/gas_expenses_FR.png  used on input line 
-1214.
+1239.
 (pdftex.def)             Requested size: 236.72885pt x 35.27141pt.
-<../figures/FR/flights_3y_FR.png, id=497, 790.955pt x 111.41624pt>
+<../figures/FR/flights_3y_FR.png, id=532, 790.955pt x 111.41624pt>
 File: ../figures/FR/flights_3y_FR.png Graphic file (type png)
 <use ../figures/FR/flights_3y_FR.png>
 Package pdftex.def Info: ../figures/FR/flights_3y_FR.png  used on input line 12
-14.
+39.
 (pdftex.def)             Requested size: 277.69916pt x 39.11697pt.
-<../figures/FR/frequency_beef_FR.png, id=498, 689.57625pt x 111.41624pt>
+<../figures/FR/frequency_beef_FR.png, id=533, 689.57625pt x 111.41624pt>
 File: ../figures/FR/frequency_beef_FR.png Graphic file (type png)
 <use ../figures/FR/frequency_beef_FR.png>
 Package pdftex.def Info: ../figures/FR/frequency_beef_FR.png  used on input lin
-e 1214.
+e 1239.
 (pdftex.def)             Requested size: 277.69916pt x 44.86832pt.
- [35
+ [36
 
  <../figures/FR/gas_expenses_FR.png> <../figures/FR/flights_3y_FR.png> <../figu
 res/FR/frequency_beef_FR.png>]
-<../figures/FR/transport_FR.png, id=507, 755.82375pt x 246.9225pt>
+<../figures/FR/transport_FR.png, id=542, 755.82375pt x 246.9225pt>
 File: ../figures/FR/transport_FR.png Graphic file (type png)
 <use ../figures/FR/transport_FR.png>
-Package pdftex.def Info: ../figures/FR/transport_FR.png  used on input line 121
-4.
+Package pdftex.def Info: ../figures/FR/transport_FR.png  used on input line 123
+9.
 (pdftex.def)             Requested size: 277.69916pt x 90.72313pt.
-<../figures/FR/availability_transport_FR.png, id=508, 850.17625pt x 114.4275pt>
+<../figures/FR/availability_transport_FR.png, id=543, 850.17625pt x 114.4275pt>
 
 File: ../figures/FR/availability_transport_FR.png Graphic file (type png)
 <use ../figures/FR/availability_transport_FR.png>
 Package pdftex.def Info: ../figures/FR/availability_transport_FR.png  used on i
-nput line 1214.
+nput line 1239.
 (pdftex.def)             Requested size: 355.08981pt x 47.79207pt.
- [36
+
+[37
 
  <../figures/FR/transport_FR.png> <../figures/FR/availability_transport_FR.png>
-] [37
+] [38
 
 ]
-<../figures/FR/CC_field_FR.png, id=523, 305.14pt x 259.97125pt>
+<../figures/FR/CC_field_FR.png, id=558, 305.14pt x 259.97125pt>
 File: ../figures/FR/CC_field_FR.png Graphic file (type png)
 <use ../figures/FR/CC_field_FR.png>
-Package pdftex.def Info: ../figures/FR/CC_field_FR.png  used on input line 1214
+Package pdftex.def Info: ../figures/FR/CC_field_FR.png  used on input line 1239
 .
 (pdftex.def)             Requested size: 195.75162pt x 166.78168pt.
+ [39
 
-[38
+ <../figures/FR/CC_field_FR.png>]
+<../figures/FR/CC_field_mentions_raw_FR.png, id=564, 377.41pt x 432.61626pt>
+File: ../figures/FR/CC_field_mentions_raw_FR.png Graphic file (type png)
+<use ../figures/FR/CC_field_mentions_raw_FR.png>
+Package pdftex.def Info: ../figures/FR/CC_field_mentions_raw_FR.png  used on in
+put line 1239.
+(pdftex.def)             Requested size: 195.75162pt x 224.38084pt.
+<../figures/FR/CC_field_mentions_FR.png, id=565, 410.53375pt x 251.94125pt>
+File: ../figures/FR/CC_field_mentions_FR.png Graphic file (type png)
+<use ../figures/FR/CC_field_mentions_FR.png>
+Package pdftex.def Info: ../figures/FR/CC_field_mentions_FR.png  used on input 
+line 1239.
+(pdftex.def)             Requested size: 195.75162pt x 120.1308pt.
 
- <../figures/FR/CC_field_FR.png>] [39
+Overfull \vbox (16.43391pt too high) detected at line 1239
+ []
 
-] [40
+[40
+
+ <../figures/FR/CC_field_mentions_raw_FR.png> <../figures/FR/CC_field_mentions_
+FR.png>] [41
 
 ]
-<../figures/FR/CC_talks_FR.png, id=541, 742.775pt x 111.41624pt>
-File: ../figures/FR/CC_talks_FR.png Graphic file (type png)
-<use ../figures/FR/CC_talks_FR.png>
-Package pdftex.def Info: ../figures/FR/CC_talks_FR.png  used on input line 1214
-.
-(pdftex.def)             Requested size: 277.69916pt x 41.65518pt.
-<../figures/FR/CC_anthropogenic_FR.png, id=542, 653.44125pt x 111.41624pt>
-File: ../figures/FR/CC_anthropogenic_FR.png Graphic file (type png)
-<use ../figures/FR/CC_anthropogenic_FR.png>
-Package pdftex.def Info: ../figures/FR/CC_anthropogenic_FR.png  used on input l
-ine 1214.
-(pdftex.def)             Requested size: 236.72885pt x 40.36311pt.
- [41
+<../figures/FR/know_treatment_climate_FR.png, id=579, 564.1075pt x 111.41624pt>
 
- <../figures/FR/CC_talks_FR.png> <../figures/FR/CC_anthropogenic_FR.png>]
-<../figures/FR/CC_knowledgeable_FR.png, id=550, 795.97375pt x 111.41624pt>
-File: ../figures/FR/CC_knowledgeable_FR.png Graphic file (type png)
-<use ../figures/FR/CC_knowledgeable_FR.png>
-Package pdftex.def Info: ../figures/FR/CC_knowledgeable_FR.png  used on input l
-ine 1214.
-(pdftex.def)             Requested size: 318.66946pt x 44.6048pt.
-<../figures/FR/CC_problem_FR.png, id=551, 1060.96375pt x 111.41624pt>
-File: ../figures/FR/CC_problem_FR.png Graphic file (type png)
-<use ../figures/FR/CC_problem_FR.png>
-Package pdftex.def Info: ../figures/FR/CC_problem_FR.png  used on input line 12
-14.
-(pdftex.def)             Requested size: 355.08981pt x 37.28938pt.
-<../figures/FR/CC_dynamic_FR.png, id=552, 583.17876pt x 114.4275pt>
-File: ../figures/FR/CC_dynamic_FR.png Graphic file (type png)
-<use ../figures/FR/CC_dynamic_FR.png>
-Package pdftex.def Info: ../figures/FR/CC_dynamic_FR.png  used on input line 12
-14.
-(pdftex.def)             Requested size: 277.69916pt x 54.4898pt.
+File: ../figures/FR/know_treatment_climate_FR.png Graphic file (type png)
+<use ../figures/FR/know_treatment_climate_FR.png>
+Package pdftex.def Info: ../figures/FR/know_treatment_climate_FR.png  used on i
+nput line 1239.
+(pdftex.def)             Requested size: 277.69916pt x 54.84775pt.
+<../figures/FR/know_treatment_policy_FR.png, id=580, 559.08875pt x 111.41624pt>
 
-Overfull \vbox (11.68108pt too high) detected at line 1214
+File: ../figures/FR/know_treatment_policy_FR.png Graphic file (type png)
+<use ../figures/FR/know_treatment_policy_FR.png>
+Package pdftex.def Info: ../figures/FR/know_treatment_policy_FR.png  used on in
+put line 1239.
+(pdftex.def)             Requested size: 277.69916pt x 55.34247pt.
+
+Overfull \vbox (2.98015pt too high) detected at line 1239
  []
 
 [42
 
- <../figures/FR/CC_knowledgeable_FR.png> <../figures/FR/CC_problem_FR.png> <../
-figures/FR/CC_dynamic_FR.png>]
-<../figures/FR/GHG_FR.png, id=561, 248.93pt x 203.76125pt>
-File: ../figures/FR/GHG_FR.png Graphic file (type png)
-<use ../figures/FR/GHG_FR.png>
-Package pdftex.def Info: ../figures/FR/GHG_FR.png  used on input line 1214.
-(pdftex.def)             Requested size: 136.5746pt x 111.79543pt.
-<../figures/FR/score_GHG_FR.png, id=562, 536.0025pt x 111.41624pt>
-File: ../figures/FR/score_GHG_FR.png Graphic file (type png)
-<use ../figures/FR/score_GHG_FR.png>
-Package pdftex.def Info: ../figures/FR/score_GHG_FR.png  used on input line 121
-4.
-(pdftex.def)             Requested size: 277.69916pt x 57.72256pt.
- [43
+ <../figures/FR/know_treatment_climate_FR.png> <../figures/FR/know_treatment_po
+licy_FR.png>] [43
 
- <../figures/FR/GHG_FR.png> <../figures/FR/score_GHG_FR.png>]
-<../figures/FR/footprint_transport_FR.png, id=571, 366.36874pt x 191.71625pt>
-File: ../figures/FR/footprint_transport_FR.png Graphic file (type png)
-<use ../figures/FR/footprint_transport_FR.png>
-Package pdftex.def Info: ../figures/FR/footprint_transport_FR.png  used on inpu
-t line 1214.
-(pdftex.def)             Requested size: 118.36095pt x 61.93552pt.
-<../figures/FR/footprint_food_FR.png, id=572, 370.38374pt x 191.71625pt>
-File: ../figures/FR/footprint_food_FR.png Graphic file (type png)
-<use ../figures/FR/footprint_food_FR.png>
-Package pdftex.def Info: ../figures/FR/footprint_food_FR.png  used on input lin
-e 1214.
-(pdftex.def)             Requested size: 118.36095pt x 61.26268pt.
+]
+<../figures/FR/CC_talks_FR.png, id=595, 742.775pt x 111.41624pt>
+File: ../figures/FR/CC_talks_FR.png Graphic file (type png)
+<use ../figures/FR/CC_talks_FR.png>
+Package pdftex.def Info: ../figures/FR/CC_talks_FR.png  used on input line 1239
+.
+(pdftex.def)             Requested size: 277.69916pt x 41.65518pt.
+<../figures/FR/CC_anthropogenic_FR.png, id=596, 653.44125pt x 111.41624pt>
+File: ../figures/FR/CC_anthropogenic_FR.png Graphic file (type png)
+<use ../figures/FR/CC_anthropogenic_FR.png>
+Package pdftex.def Info: ../figures/FR/CC_anthropogenic_FR.png  used on input l
+ine 1239.
+(pdftex.def)             Requested size: 236.72885pt x 40.36311pt.
  [44
 
- <../figures/FR/footprint_transport_FR.png> <../figures/FR/footprint_food_FR.pn
-g>]
-<../figures/FR/footprint_elec_FR.png, id=580, 356.33125pt x 191.71625pt>
-File: ../figures/FR/footprint_elec_FR.png Graphic file (type png)
-<use ../figures/FR/footprint_elec_FR.png>
-Package pdftex.def Info: ../figures/FR/footprint_elec_FR.png  used on input lin
-e 1214.
-(pdftex.def)             Requested size: 118.36095pt x 63.67902pt.
-<../figures/FR/footprint_region_no_miss_FR.png, id=581, 363.3575pt x 251.94125p
-t>
-File: ../figures/FR/footprint_region_no_miss_FR.png Graphic file (type png)
-<use ../figures/FR/footprint_region_no_miss_FR.png>
-Package pdftex.def Info: ../figures/FR/footprint_region_no_miss_FR.png  used on
- input line 1214.
-(pdftex.def)             Requested size: 193.48012pt x 134.15485pt.
-<../figures/FR/footprint_pc_no_miss_FR.png, id=582, 363.3575pt x 251.94125pt>
-File: ../figures/FR/footprint_pc_no_miss_FR.png Graphic file (type png)
-<use ../figures/FR/footprint_pc_no_miss_FR.png>
-Package pdftex.def Info: ../figures/FR/footprint_pc_no_miss_FR.png  used on inp
-ut line 1214.
-(pdftex.def)             Requested size: 193.48012pt x 134.15485pt.
+ <../figures/FR/CC_talks_FR.png> <../figures/FR/CC_anthropogenic_FR.png>]
+<../figures/FR/CC_knowledgeable_FR.png, id=604, 795.97375pt x 111.41624pt>
+File: ../figures/FR/CC_knowledgeable_FR.png Graphic file (type png)
+<use ../figures/FR/CC_knowledgeable_FR.png>
+Package pdftex.def Info: ../figures/FR/CC_knowledgeable_FR.png  used on input l
+ine 1239.
+(pdftex.def)             Requested size: 318.66946pt x 44.6048pt.
+<../figures/FR/CC_problem_FR.png, id=605, 1060.96375pt x 111.41624pt>
+File: ../figures/FR/CC_problem_FR.png Graphic file (type png)
+<use ../figures/FR/CC_problem_FR.png>
+Package pdftex.def Info: ../figures/FR/CC_problem_FR.png  used on input line 12
+39.
+(pdftex.def)             Requested size: 355.08981pt x 37.28938pt.
+<../figures/FR/CC_dynamic_FR.png, id=606, 583.17876pt x 114.4275pt>
+File: ../figures/FR/CC_dynamic_FR.png Graphic file (type png)
+<use ../figures/FR/CC_dynamic_FR.png>
+Package pdftex.def Info: ../figures/FR/CC_dynamic_FR.png  used on input line 12
+39.
+(pdftex.def)             Requested size: 277.69916pt x 54.4898pt.
 
-Overfull \vbox (51.13095pt too high) detected at line 1214
+Overfull \vbox (11.60904pt too high) detected at line 1239
  []
 
 [45
 
- <../figures/FR/footprint_elec_FR.png> <../figures/FR/footprint_region_no_miss_
-FR.png> <../figures/FR/footprint_pc_no_miss_FR.png>]
-<../figures/FR/CC_impacts_FR.png, id=591, 760.8425pt x 372.39125pt>
+ <../figures/FR/CC_knowledgeable_FR.png> <../figures/FR/CC_problem_FR.png> <../
+figures/FR/CC_dynamic_FR.png>]
+<../figures/FR/GHG_FR.png, id=615, 248.93pt x 203.76125pt>
+File: ../figures/FR/GHG_FR.png Graphic file (type png)
+<use ../figures/FR/GHG_FR.png>
+Package pdftex.def Info: ../figures/FR/GHG_FR.png  used on input line 1239.
+(pdftex.def)             Requested size: 136.5746pt x 111.79543pt.
+<../figures/FR/score_GHG_FR.png, id=616, 536.0025pt x 111.41624pt>
+File: ../figures/FR/score_GHG_FR.png Graphic file (type png)
+<use ../figures/FR/score_GHG_FR.png>
+Package pdftex.def Info: ../figures/FR/score_GHG_FR.png  used on input line 123
+9.
+(pdftex.def)             Requested size: 277.69916pt x 57.72256pt.
+ [46
+
+ <../figures/FR/GHG_FR.png> <../figures/FR/score_GHG_FR.png>]
+<../figures/FR/footprint_food_FR.png, id=624, 370.38374pt x 191.71625pt>
+File: ../figures/FR/footprint_food_FR.png Graphic file (type png)
+<use ../figures/FR/footprint_food_FR.png>
+Package pdftex.def Info: ../figures/FR/footprint_food_FR.png  used on input lin
+e 1239.
+(pdftex.def)             Requested size: 195.75162pt x 101.32536pt.
+<../figures/FR/footprint_transport_FR.png, id=625, 366.36874pt x 191.71625pt>
+File: ../figures/FR/footprint_transport_FR.png Graphic file (type png)
+<use ../figures/FR/footprint_transport_FR.png>
+Package pdftex.def Info: ../figures/FR/footprint_transport_FR.png  used on inpu
+t line 1239.
+(pdftex.def)             Requested size: 195.75162pt x 102.43407pt.
+ [47
+
+ <../figures/FR/footprint_food_FR.png> <../figures/FR/footprint_transport_FR.pn
+g>]
+<../figures/FR/footprint_elec_FR.png, id=633, 356.33125pt x 191.71625pt>
+File: ../figures/FR/footprint_elec_FR.png Graphic file (type png)
+<use ../figures/FR/footprint_elec_FR.png>
+Package pdftex.def Info: ../figures/FR/footprint_elec_FR.png  used on input lin
+e 1239.
+(pdftex.def)             Requested size: 195.75162pt x 105.31847pt.
+ [48
+
+ <../figures/FR/footprint_elec_FR.png>]
+<../figures/FR/footprint_region_no_miss_FR.png, id=640, 363.3575pt x 251.94125p
+t>
+File: ../figures/FR/footprint_region_no_miss_FR.png Graphic file (type png)
+<use ../figures/FR/footprint_region_no_miss_FR.png>
+Package pdftex.def Info: ../figures/FR/footprint_region_no_miss_FR.png  used on
+ input line 1239.
+(pdftex.def)             Requested size: 193.48012pt x 134.15485pt.
+<../figures/FR/footprint_pc_no_miss_FR.png, id=641, 363.3575pt x 251.94125pt>
+File: ../figures/FR/footprint_pc_no_miss_FR.png Graphic file (type png)
+<use ../figures/FR/footprint_pc_no_miss_FR.png>
+Package pdftex.def Info: ../figures/FR/footprint_pc_no_miss_FR.png  used on inp
+ut line 1239.
+(pdftex.def)             Requested size: 193.48012pt x 134.15485pt.
+ [49
+
+ <../figures/FR/footprint_region_no_miss_FR.png> <../figures/FR/footprint_pc_no
+_miss_FR.png>]
+<../figures/FR/CC_impacts_FR.png, id=650, 760.8425pt x 372.39125pt>
 File: ../figures/FR/CC_impacts_FR.png Graphic file (type png)
 <use ../figures/FR/CC_impacts_FR.png>
 Package pdftex.def Info: ../figures/FR/CC_impacts_FR.png  used on input line 12
-14.
+39.
 (pdftex.def)             Requested size: 336.88312pt x 164.88681pt.
- [46
+ [50
 
- <../figures/FR/CC_impacts_FR.png>] [47
+ <../figures/FR/CC_impacts_FR.png>] [51
 
 ]
-<../figures/FR/CC_responsible_FR.png, id=604, 680.5425pt x 272.01625pt>
+<../figures/FR/CC_responsible_FR.png, id=663, 680.5425pt x 272.01625pt>
 File: ../figures/FR/CC_responsible_FR.png Graphic file (type png)
 <use ../figures/FR/CC_responsible_FR.png>
 Package pdftex.def Info: ../figures/FR/CC_responsible_FR.png  used on input lin
-e 1214.
+e 1239.
 (pdftex.def)             Requested size: 318.66946pt x 127.37448pt.
- [48
+ [52
 
  <../figures/FR/CC_responsible_FR.png>]
-<../figures/FR/net_zero_feasible_FR.png, id=611, 613.29124pt x 114.4275pt>
+<../figures/FR/net_zero_feasible_FR.png, id=670, 613.29124pt x 114.4275pt>
 File: ../figures/FR/net_zero_feasible_FR.png Graphic file (type png)
 <use ../figures/FR/net_zero_feasible_FR.png>
 Package pdftex.def Info: ../figures/FR/net_zero_feasible_FR.png  used on input 
-line 1214.
-(pdftex.def)             Requested size: 236.72885pt x 44.16908pt.
-<../figures/FR/CC_affects_self_FR.png, id=612, 771.88374pt x 114.4275pt>
+line 1239.
+(pdftex.def)             Requested size: 318.66946pt x 59.45723pt.
+<../figures/FR/CC_affects_self_FR.png, id=671, 771.88374pt x 114.4275pt>
 File: ../figures/FR/CC_affects_self_FR.png Graphic file (type png)
 <use ../figures/FR/CC_affects_self_FR.png>
 Package pdftex.def Info: ../figures/FR/CC_affects_self_FR.png  used on input li
-ne 1214.
-(pdftex.def)             Requested size: 277.69916pt x 41.16766pt.
- [49
+ne 1239.
+(pdftex.def)             Requested size: 409.71689pt x 60.73708pt.
+ [53
 
  <../figures/FR/net_zero_feasible_FR.png> <../figures/FR/CC_affects_self_FR.png
 >]
-<../figures/FR/CC_will_end_FR.png, id=621, 821.0675pt x 111.41624pt>
+<../figures/FR/CC_will_end_FR.png, id=679, 821.0675pt x 111.41624pt>
 File: ../figures/FR/CC_will_end_FR.png Graphic file (type png)
 <use ../figures/FR/CC_will_end_FR.png>
 Package pdftex.def Info: ../figures/FR/CC_will_end_FR.png  used on input line 1
-214.
+239.
 (pdftex.def)             Requested size: 277.69916pt x 37.6821pt.
-<../figures/FR/effect_halt_CC_lifestyle_FR.png, id=622, 682.55pt x 114.4275pt>
+<../figures/FR/effect_halt_CC_lifestyle_FR.png, id=680, 682.55pt x 114.4275pt>
 File: ../figures/FR/effect_halt_CC_lifestyle_FR.png Graphic file (type png)
 <use ../figures/FR/effect_halt_CC_lifestyle_FR.png>
 Package pdftex.def Info: ../figures/FR/effect_halt_CC_lifestyle_FR.png  used on
- input line 1214.
+ input line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 46.5559pt.
-<../figures/FR/effect_halt_CC_economy_FR.png, id=623, 779.91376pt x 114.4275pt>
+<../figures/FR/effect_halt_CC_economy_FR.png, id=681, 779.91376pt x 114.4275pt>
 
 File: ../figures/FR/effect_halt_CC_economy_FR.png Graphic file (type png)
 <use ../figures/FR/effect_halt_CC_economy_FR.png>
 Package pdftex.def Info: ../figures/FR/effect_halt_CC_economy_FR.png  used on i
-nput line 1214.
+nput line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 40.7434pt.
 
-Overfull \vbox (12.27847pt too high) detected at line 1214
+Overfull \vbox (12.20644pt too high) detected at line 1239
  []
 
-[50
+[54
 
  <../figures/FR/CC_will_end_FR.png> <../figures/FR/effect_halt_CC_lifestyle_FR.
 png> <../figures/FR/effect_halt_CC_economy_FR.png>]
-<../figures/FR/willing_FR.png, id=632, 763.85374pt x 292.09125pt>
+<../figures/FR/willing_FR.png, id=690, 763.85374pt x 292.09125pt>
 File: ../figures/FR/willing_FR.png Graphic file (type png)
 <use ../figures/FR/willing_FR.png>
-Package pdftex.def Info: ../figures/FR/willing_FR.png  used on input line 1214.
+Package pdftex.def Info: ../figures/FR/willing_FR.png  used on input line 1239.
 
 (pdftex.def)             Requested size: 318.66946pt x 121.85739pt.
- [51
+ [55
 
  <../figures/FR/willing_FR.png>]
-<../figures/FR/condition_FR.png, id=639, 801.99625pt x 221.82875pt>
+<../figures/FR/condition_FR.png, id=698, 801.99625pt x 221.82875pt>
 File: ../figures/FR/condition_FR.png Graphic file (type png)
 <use ../figures/FR/condition_FR.png>
-Package pdftex.def Info: ../figures/FR/condition_FR.png  used on input line 121
-4.
+Package pdftex.def Info: ../figures/FR/condition_FR.png  used on input line 123
+9.
 (pdftex.def)             Requested size: 396.06012pt x 109.55pt.
- [52
+ [56
 
- <../figures/FR/condition_FR.png>] [53
+ <../figures/FR/condition_FR.png>] [57
 
-] [54
+] [58
 
 ]
-<../figures/FR/standard_effect_FR.png, id=657, 847.165pt x 296.10625pt>
+<../figures/FR/standard_effect_FR.png, id=716, 847.165pt x 296.10625pt>
 File: ../figures/FR/standard_effect_FR.png Graphic file (type png)
 <use ../figures/FR/standard_effect_FR.png>
 Package pdftex.def Info: ../figures/FR/standard_effect_FR.png  used on input li
-ne 1214.
+ne 1239.
 (pdftex.def)             Requested size: 396.06012pt x 138.43347pt.
- [55
+ [59
 
  <../figures/FR/standard_effect_FR.png>]
-<../figures/FR/standard_win_lose_FR.png, id=665, 990.70125pt x 292.09125pt>
+<../figures/FR/standard_win_lose_FR.png, id=723, 990.70125pt x 292.09125pt>
 File: ../figures/FR/standard_win_lose_FR.png Graphic file (type png)
 <use ../figures/FR/standard_win_lose_FR.png>
 Package pdftex.def Info: ../figures/FR/standard_win_lose_FR.png  used on input 
-line 1214.
+line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 116.77202pt.
- [56
+ [60
 
  <../figures/FR/standard_win_lose_FR.png>]
-<../figures/FR/standard_fair_FR.png, id=672, 1028.84375pt x 111.41624pt>
+<../figures/FR/standard_fair_FR.png, id=730, 1028.84375pt x 111.41624pt>
 File: ../figures/FR/standard_fair_FR.png Graphic file (type png)
 <use ../figures/FR/standard_fair_FR.png>
 Package pdftex.def Info: ../figures/FR/standard_fair_FR.png  used on input line
- 1214.
+ 1239.
 (pdftex.def)             Requested size: 396.06012pt x 42.89113pt.
-<../figures/FR/standard_support_FR.png, id=673, 923.45pt x 111.41624pt>
+<../figures/FR/standard_support_FR.png, id=731, 923.45pt x 111.41624pt>
 File: ../figures/FR/standard_support_FR.png Graphic file (type png)
 <use ../figures/FR/standard_support_FR.png>
 Package pdftex.def Info: ../figures/FR/standard_support_FR.png  used on input l
-ine 1214.
+ine 1239.
 (pdftex.def)             Requested size: 396.06012pt x 47.78564pt.
- [57
+ [61
 
  <../figures/FR/standard_fair_FR.png> <../figures/FR/standard_support_FR.png>]
-<../figures/FR/standard_public_transport_support_FR.png, id=681, 910.40125pt x 
+<../figures/FR/standard_public_transport_support_FR.png, id=740, 910.40125pt x 
 114.4275pt>
 File: ../figures/FR/standard_public_transport_support_FR.png Graphic file (type
  png)
 <use ../figures/FR/standard_public_transport_support_FR.png>
 Package pdftex.def Info: ../figures/FR/standard_public_transport_support_FR.png
-  used on input line 1214.
+  used on input line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 49.78079pt.
 
-[58
+[62
 
- <../figures/FR/standard_public_transport_support_FR.png>] [59
+ <../figures/FR/standard_public_transport_support_FR.png>] [63
 
-] [60
+] [64
 
 ]
-<../figures/FR/investments_effect_FR.png, id=699, 1069.9975pt x 295.1025pt>
+<../figures/FR/investments_effect_FR.png, id=758, 1069.9975pt x 295.1025pt>
 File: ../figures/FR/investments_effect_FR.png Graphic file (type png)
 <use ../figures/FR/investments_effect_FR.png>
 Package pdftex.def Info: ../figures/FR/investments_effect_FR.png  used on input
- line 1214.
+ line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 109.23123pt.
 
-[61
+[65
 
  <../figures/FR/investments_effect_FR.png>]
-<../figures/FR/investments_win_lose_FR.png, id=707, 967.615pt x 292.09125pt>
+<../figures/FR/investments_win_lose_FR.png, id=765, 967.615pt x 292.09125pt>
 File: ../figures/FR/investments_win_lose_FR.png Graphic file (type png)
 <use ../figures/FR/investments_win_lose_FR.png>
 Package pdftex.def Info: ../figures/FR/investments_win_lose_FR.png  used on inp
-ut line 1214.
+ut line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 119.55762pt.
- [62
+ [66
 
  <../figures/FR/investments_win_lose_FR.png>]
-<../figures/FR/investments_fair_FR.png, id=714, 1036.87375pt x 111.41624pt>
+<../figures/FR/investments_fair_FR.png, id=772, 1036.87375pt x 111.41624pt>
 File: ../figures/FR/investments_fair_FR.png Graphic file (type png)
 <use ../figures/FR/investments_fair_FR.png>
 Package pdftex.def Info: ../figures/FR/investments_fair_FR.png  used on input l
-ine 1214.
+ine 1239.
 (pdftex.def)             Requested size: 396.06012pt x 42.5579pt.
-<../figures/FR/investments_support_FR.png, id=715, 910.40125pt x 111.41624pt>
+<../figures/FR/investments_support_FR.png, id=773, 910.40125pt x 111.41624pt>
 File: ../figures/FR/investments_support_FR.png Graphic file (type png)
 <use ../figures/FR/investments_support_FR.png>
 Package pdftex.def Info: ../figures/FR/investments_support_FR.png  used on inpu
-t line 1214.
+t line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 48.47076pt.
- [63
+ [67
 
  <../figures/FR/investments_fair_FR.png> <../figures/FR/investments_support_FR.
 png>]
-<../figures/FR/investments_funding_FR.png, id=723, 553.06625pt x 241.90375pt>
+<../figures/FR/investments_funding_FR.png, id=782, 553.06625pt x 241.90375pt>
 File: ../figures/FR/investments_funding_FR.png Graphic file (type png)
 <use ../figures/FR/investments_funding_FR.png>
 Package pdftex.def Info: ../figures/FR/investments_funding_FR.png  used on inpu
-t line 1214.
+t line 1239.
 (pdftex.def)             Requested size: 318.66946pt x 139.38147pt.
- [64
+ [68
 
  <../figures/FR/investments_funding_FR.png>]
-[65
+[69
 
-] [66
+] [70
 
 ]
-<../figures/FR/tax_transfers_effect_FR.png, id=742, 947.54pt x 355.3275pt>
+<../figures/FR/tax_transfers_effect_FR.png, id=800, 947.54pt x 355.3275pt>
 File: ../figures/FR/tax_transfers_effect_FR.png Graphic file (type png)
 <use ../figures/FR/tax_transfers_effect_FR.png>
 Package pdftex.def Info: ../figures/FR/tax_transfers_effect_FR.png  used on inp
-ut line 1214.
+ut line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 148.52083pt.
- [67
+ [71
 
  <../figures/FR/tax_transfers_effect_FR.png>]
-<../figures/FR/tax_transfers_win_lose_FR.png, id=750, 990.70125pt x 292.09125pt
+<../figures/FR/tax_transfers_win_lose_FR.png, id=807, 990.70125pt x 292.09125pt
 >
 File: ../figures/FR/tax_transfers_win_lose_FR.png Graphic file (type png)
 <use ../figures/FR/tax_transfers_win_lose_FR.png>
 Package pdftex.def Info: ../figures/FR/tax_transfers_win_lose_FR.png  used on i
-nput line 1214.
+nput line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 116.77202pt.
- [68
+ [72
 
  <../figures/FR/tax_transfers_win_lose_FR.png>]
-<../figures/FR/tax_transfers_fair_FR.png, id=757, 999.735pt x 111.41624pt>
+<../figures/FR/tax_transfers_fair_FR.png, id=814, 999.735pt x 111.41624pt>
 File: ../figures/FR/tax_transfers_fair_FR.png Graphic file (type png)
 <use ../figures/FR/tax_transfers_fair_FR.png>
 Package pdftex.def Info: ../figures/FR/tax_transfers_fair_FR.png  used on input
- line 1214.
+ line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 44.13898pt.
-<../figures/FR/tax_transfers_support_FR.png, id=758, 892.33376pt x 111.41624pt>
+<../figures/FR/tax_transfers_support_FR.png, id=815, 892.33376pt x 111.41624pt>
 
 File: ../figures/FR/tax_transfers_support_FR.png Graphic file (type png)
 <use ../figures/FR/tax_transfers_support_FR.png>
 Package pdftex.def Info: ../figures/FR/tax_transfers_support_FR.png  used on in
-put line 1214.
+put line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 49.4517pt.
- [69
+ [73
 
  <../figures/FR/tax_transfers_fair_FR.png> <../figures/FR/tax_transfers_support
-_FR.png>] [70
+_FR.png>] [74
 
 ]
-<../figures/FR/policies_win_lose_self_FR.png, id=772, 829.0975pt x 211.79124pt>
+<../figures/FR/policies_win_lose_self_FR.png, id=830, 829.0975pt x 211.79124pt>
 
 File: ../figures/FR/policies_win_lose_self_FR.png Graphic file (type png)
 <use ../figures/FR/policies_win_lose_self_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_win_lose_self_FR.png  used on i
-nput line 1214.
+nput line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 70.93515pt.
-<../figures/FR/policies_win_lose_rural_FR.png, id=773, 829.0975pt x 211.79124pt
+<../figures/FR/policies_win_lose_rural_FR.png, id=831, 829.0975pt x 211.79124pt
 >
 File: ../figures/FR/policies_win_lose_rural_FR.png Graphic file (type png)
 <use ../figures/FR/policies_win_lose_rural_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_win_lose_rural_FR.png  used on 
-input line 1214.
+input line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 70.93515pt.
- [71
+ [75
 
  <../figures/FR/policies_win_lose_self_FR.png> <../figures/FR/policies_win_lose
 _rural_FR.png>]
-<../figures/FR/policies_win_lose_rich_FR.png, id=781, 828.09375pt x 211.79124pt
+<../figures/FR/policies_win_lose_rich_FR.png, id=839, 828.09375pt x 211.79124pt
 >
 File: ../figures/FR/policies_win_lose_rich_FR.png Graphic file (type png)
 <use ../figures/FR/policies_win_lose_rich_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_win_lose_rich_FR.png  used on i
-nput line 1214.
+nput line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 71.02563pt.
-<../figures/FR/policies_win_lose_poor_FR.png, id=782, 829.0975pt x 211.79124pt>
+<../figures/FR/policies_win_lose_poor_FR.png, id=840, 829.0975pt x 211.79124pt>
 
 File: ../figures/FR/policies_win_lose_poor_FR.png Graphic file (type png)
 <use ../figures/FR/policies_win_lose_poor_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_win_lose_poor_FR.png  used on i
-nput line 1214.
+nput line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 70.93515pt.
- [72
+ [76
 
  <../figures/FR/policies_win_lose_rich_FR.png> <../figures/FR/policies_win_lose
 _poor_FR.png>]
-<../figures/FR/policies_win_lose_middle_FR.png, id=790, 829.0975pt x 211.79124p
+<../figures/FR/policies_win_lose_middle_FR.png, id=848, 829.0975pt x 211.79124p
 t>
 File: ../figures/FR/policies_win_lose_middle_FR.png Graphic file (type png)
 <use ../figures/FR/policies_win_lose_middle_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_win_lose_middle_FR.png  used on
- input line 1214.
+ input line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 70.93515pt.
- [73
+ [77
 
  <../figures/FR/policies_win_lose_middle_FR.png>]
-<../figures/FR/policies_large_effect_FR.png, id=798, 1025.8325pt x 211.79124pt>
+<../figures/FR/policies_large_effect_FR.png, id=855, 1025.8325pt x 211.79124pt>
 
 File: ../figures/FR/policies_large_effect_FR.png Graphic file (type png)
 <use ../figures/FR/policies_large_effect_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_large_effect_FR.png  used on in
-put line 1214.
+put line 1239.
 (pdftex.def)             Requested size: 355.08981pt x 73.31042pt.
-<../figures/FR/policies_negative_effect_FR.png, id=799, 1025.8325pt x 211.79124
+<../figures/FR/policies_negative_effect_FR.png, id=856, 1025.8325pt x 211.79124
 pt>
 File: ../figures/FR/policies_negative_effect_FR.png Graphic file (type png)
 <use ../figures/FR/policies_negative_effect_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_negative_effect_FR.png  used on
- input line 1214.
+ input line 1239.
 (pdftex.def)             Requested size: 355.08981pt x 73.31042pt.
 
-Overfull \vbox (4.0725pt too high) detected at line 1214
+Overfull \vbox (4.00046pt too high) detected at line 1239
  []
 
-[74
+[78
 
  <../figures/FR/policies_large_effect_FR.png> <../figures/FR/policies_negative_
 effect_FR.png>]
-<../figures/FR/policies_cost_effective_FR.png, id=807, 1025.8325pt x 211.79124p
+<../figures/FR/policies_cost_effective_FR.png, id=864, 1025.8325pt x 211.79124p
 t>
 File: ../figures/FR/policies_cost_effective_FR.png Graphic file (type png)
 <use ../figures/FR/policies_cost_effective_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_cost_effective_FR.png  used on 
-input line 1214.
+input line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 81.77094pt.
- [75
+ [79
 
  <../figures/FR/policies_cost_effective_FR.png>]
-<../figures/FR/policies_fair_FR.png, id=814, 1025.8325pt x 211.79124pt>
+<../figures/FR/policies_fair_FR.png, id=872, 1025.8325pt x 211.79124pt>
 File: ../figures/FR/policies_fair_FR.png Graphic file (type png)
 <use ../figures/FR/policies_fair_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_fair_FR.png  used on input line
- 1214.
+ 1239.
 (pdftex.def)             Requested size: 318.66946pt x 65.79033pt.
-<../figures/FR/policies_support_FR.png, id=815, 957.5775pt x 211.79124pt>
+<../figures/FR/policies_support_FR.png, id=873, 957.5775pt x 211.79124pt>
 File: ../figures/FR/policies_support_FR.png Graphic file (type png)
 <use ../figures/FR/policies_support_FR.png>
 Package pdftex.def Info: ../figures/FR/policies_support_FR.png  used on input l
-ine 1214.
+ine 1239.
 (pdftex.def)             Requested size: 318.66946pt x 70.47948pt.
- [76
+ [80
 
  <../figures/FR/policies_fair_FR.png> <../figures/FR/policies_support_FR.png>]
-[77
-
-]
-<../figures/FR/policy_FR.png, id=829, 909.3975pt x 315.1775pt>
-File: ../figures/FR/policy_FR.png Graphic file (type png)
-<use ../figures/FR/policy_FR.png>
-Package pdftex.def Info: ../figures/FR/policy_FR.png  used on input line 1214.
-(pdftex.def)             Requested size: 396.06012pt x 137.26462pt.
- [78
-
- <../figures/FR/policy_FR.png>]
-<../figures/FR/tax_FR.png, id=836, 907.39pt x 375.4025pt>
-File: ../figures/FR/tax_FR.png Graphic file (type png)
-<use ../figures/FR/tax_FR.png>
-Package pdftex.def Info: ../figures/FR/tax_FR.png  used on input line 1214.
-(pdftex.def)             Requested size: 396.06012pt x 163.8544pt.
-
-Overfull \vbox (2.84203pt too high) detected at line 1214
- []
-
-[79
-
- <../figures/FR/tax_FR.png>] [80
-
-]
-<../figures/FR/wtp_FR.png, id=850, 660.4675pt x 312.16624pt>
-File: ../figures/FR/wtp_FR.png Graphic file (type png)
-<use ../figures/FR/wtp_FR.png>
-Package pdftex.def Info: ../figures/FR/wtp_FR.png  used on input line 1214.
-(pdftex.def)             Requested size: 277.69916pt x 131.25659pt.
-
-Overfull \vbox (24.55368pt too high) detected at line 1214
- []
-
 [81
 
+]
+<../figures/FR/policy_FR.png, id=887, 909.3975pt x 315.1775pt>
+File: ../figures/FR/policy_FR.png Graphic file (type png)
+<use ../figures/FR/policy_FR.png>
+Package pdftex.def Info: ../figures/FR/policy_FR.png  used on input line 1239.
+(pdftex.def)             Requested size: 396.06012pt x 137.26462pt.
+ [82
+
+ <../figures/FR/policy_FR.png>]
+<../figures/FR/tax_FR.png, id=894, 907.39pt x 375.4025pt>
+File: ../figures/FR/tax_FR.png Graphic file (type png)
+<use ../figures/FR/tax_FR.png>
+Package pdftex.def Info: ../figures/FR/tax_FR.png  used on input line 1239.
+(pdftex.def)             Requested size: 396.06012pt x 163.8544pt.
+
+Overfull \vbox (2.76999pt too high) detected at line 1239
+ []
+
+[83
+
+ <../figures/FR/tax_FR.png>] [84
+
+]
+<../figures/FR/wtp_FR.png, id=907, 660.4675pt x 312.16624pt>
+File: ../figures/FR/wtp_FR.png Graphic file (type png)
+<use ../figures/FR/wtp_FR.png>
+Package pdftex.def Info: ../figures/FR/wtp_FR.png  used on input line 1239.
+(pdftex.def)             Requested size: 277.69916pt x 131.25659pt.
+
+Overfull \vbox (24.48164pt too high) detected at line 1239
+ []
+
+[85
+
  <../figures/FR/wtp_FR.png>]
-<../figures/FR/donation_agg_FR.png, id=857, 495.8525pt x 114.4275pt>
+<../figures/FR/donation_agg_FR.png, id=915, 495.8525pt x 114.4275pt>
 File: ../figures/FR/donation_agg_FR.png Graphic file (type png)
 <use ../figures/FR/donation_agg_FR.png>
 Package pdftex.def Info: ../figures/FR/donation_agg_FR.png  used on input line 
-1214.
+1239.
 (pdftex.def)             Requested size: 355.08981pt x 81.94424pt.
- [82
+ [86
 
  <../figures/FR/donation_agg_FR.png>]
-[83
+[87
 
 ]
-<../figures/FR/scale_FR.png, id=870, 428.60126pt x 231.86626pt>
+<../figures/FR/scale_FR.png, id=928, 428.60126pt x 231.86626pt>
 File: ../figures/FR/scale_FR.png Graphic file (type png)
 <use ../figures/FR/scale_FR.png>
-Package pdftex.def Info: ../figures/FR/scale_FR.png  used on input line 1214.
+Package pdftex.def Info: ../figures/FR/scale_FR.png  used on input line 1239.
 (pdftex.def)             Requested size: 195.75162pt x 105.8991pt.
- [84
+ [88
 
  <../figures/FR/scale_FR.png>]
-<../figures/FR/should_fight_CC_FR.png, id=877, 968.61874pt x 111.41624pt>
+<../figures/FR/should_fight_CC_FR.png, id=935, 968.61874pt x 111.41624pt>
 File: ../figures/FR/should_fight_CC_FR.png Graphic file (type png)
 <use ../figures/FR/should_fight_CC_FR.png>
 Package pdftex.def Info: ../figures/FR/should_fight_CC_FR.png  used on input li
-ne 1214.
+ne 1239.
 (pdftex.def)             Requested size: 396.06012pt x 45.55684pt.
-<../figures/FR/if_other_do_FR.png, id=878, 812.03375pt x 171.64125pt>
+<../figures/FR/if_other_do_FR.png, id=936, 812.03375pt x 171.64125pt>
 File: ../figures/FR/if_other_do_FR.png Graphic file (type png)
 <use ../figures/FR/if_other_do_FR.png>
 Package pdftex.def Info: ../figures/FR/if_other_do_FR.png  used on input line 1
-214.
+239.
 (pdftex.def)             Requested size: 396.06012pt x 83.71469pt.
- [85
+ [89
 
  <../figures/FR/should_fight_CC_FR.png> <../figures/FR/if_other_do_FR.png>]
-<../figures/FR/burden_sharing_FR.png, id=887, 1089.06876pt x 300.12125pt>
+<../figures/FR/burden_sharing_FR.png, id=944, 1089.06876pt x 300.12125pt>
 File: ../figures/FR/burden_sharing_FR.png Graphic file (type png)
 <use ../figures/FR/burden_sharing_FR.png>
 Package pdftex.def Info: ../figures/FR/burden_sharing_FR.png  used on input lin
-e 1214.
+e 1239.
 (pdftex.def)             Requested size: 396.06012pt x 109.14264pt.
- [86
+ [90
 
  <../figures/FR/burden_sharing_FR.png>]
-<../figures/FR/global_policies_FR.png, id=894, 747.79375pt x 224.84pt>
+<../figures/FR/global_policies_FR.png, id=951, 747.79375pt x 224.84pt>
 File: ../figures/FR/global_policies_FR.png Graphic file (type png)
 <use ../figures/FR/global_policies_FR.png>
 Package pdftex.def Info: ../figures/FR/global_policies_FR.png  used on input li
-ne 1214.
+ne 1239.
 (pdftex.def)             Requested size: 396.06012pt x 119.08229pt.
- [87
+ [91
 
- <../figures/FR/global_policies_FR.png>] [88
+ <../figures/FR/global_policies_FR.png>] [92
 
 ]
-<../figures/FR/will_insulate_FR.png, id=907, 566.115pt x 114.4275pt>
+<../figures/FR/will_insulate_FR.png, id=965, 566.115pt x 114.4275pt>
 File: ../figures/FR/will_insulate_FR.png Graphic file (type png)
 <use ../figures/FR/will_insulate_FR.png>
 Package pdftex.def Info: ../figures/FR/will_insulate_FR.png  used on input line
- 1214.
+ 1239.
 (pdftex.def)             Requested size: 236.72885pt x 47.84969pt.
-<../figures/FR/obstacles_insulation_FR.png, id=908, 548.0475pt x 213.79875pt>
+<../figures/FR/obstacles_insulation_FR.png, id=966, 548.0475pt x 213.79875pt>
 File: ../figures/FR/obstacles_insulation_FR.png Graphic file (type png)
 <use ../figures/FR/obstacles_insulation_FR.png>
 Package pdftex.def Info: ../figures/FR/obstacles_insulation_FR.png  used on inp
-ut line 1214.
+ut line 1239.
 (pdftex.def)             Requested size: 213.96527pt x 83.46925pt.
- [89
+ [93
 
  <../figures/FR/will_insulate_FR.png> <../figures/FR/obstacles_insulation_FR.pn
 g>]
-<../figures/FR/insulation_support_variant_FR.png, id=916, 971.63pt x 211.79124p
+<../figures/FR/insulation_support_variant_FR.png, id=974, 971.63pt x 211.79124p
 t>
 File: ../figures/FR/insulation_support_variant_FR.png Graphic file (type png)
 <use ../figures/FR/insulation_support_variant_FR.png>
 Package pdftex.def Info: ../figures/FR/insulation_support_variant_FR.png  used 
-on input line 1214.
-(pdftex.def)             Requested size: 355.08981pt x 77.39848pt.
- [90
+on input line 1239.
+(pdftex.def)             Requested size: 386.96024pt x 84.34657pt.
+ [94
 
  <../figures/FR/insulation_support_variant_FR.png>]
-<../figures/FR/beef_FR.png, id=923, 898.35625pt x 214.8025pt>
+<../figures/FR/beef_FR.png, id=981, 898.35625pt x 214.8025pt>
 File: ../figures/FR/beef_FR.png Graphic file (type png)
 <use ../figures/FR/beef_FR.png>
-Package pdftex.def Info: ../figures/FR/beef_FR.png  used on input line 1214.
+Package pdftex.def Info: ../figures/FR/beef_FR.png  used on input line 1239.
 (pdftex.def)             Requested size: 396.06012pt x 94.70021pt.
- [91
+ [95
 
- <../figures/FR/beef_FR.png>] [92
+ <../figures/FR/beef_FR.png>] [96
 
 ]
-<../figures/FR/can_trust_people_FR.png, id=937, 950.55125pt x 111.41624pt>
+<../figures/FR/can_trust_people_FR.png, id=994, 950.55125pt x 111.41624pt>
 File: ../figures/FR/can_trust_people_FR.png Graphic file (type png)
 <use ../figures/FR/can_trust_people_FR.png>
 Package pdftex.def Info: ../figures/FR/can_trust_people_FR.png  used on input l
-ine 1214.
+ine 1239.
 (pdftex.def)             Requested size: 318.66946pt x 37.3523pt.
-<../figures/FR/can_trust_govt_FR.png, id=938, 851.18pt x 114.4275pt>
+<../figures/FR/can_trust_govt_FR.png, id=995, 851.18pt x 114.4275pt>
 File: ../figures/FR/can_trust_govt_FR.png Graphic file (type png)
 <use ../figures/FR/can_trust_govt_FR.png>
 Package pdftex.def Info: ../figures/FR/can_trust_govt_FR.png  used on input lin
-e 1214.
+e 1239.
 (pdftex.def)             Requested size: 318.66946pt x 42.84036pt.
 
-[93
+[97
 
  <../figures/FR/can_trust_people_FR.png> <../figures/FR/can_trust_govt_FR.png>]
-<../figures/FR/view_govt_FR.png, id=946, 678.535pt x 111.41624pt>
+<../figures/FR/view_govt_FR.png, id=1004, 678.535pt x 111.41624pt>
 File: ../figures/FR/view_govt_FR.png Graphic file (type png)
 <use ../figures/FR/view_govt_FR.png>
-Package pdftex.def Info: ../figures/FR/view_govt_FR.png  used on input line 121
-4.
+Package pdftex.def Info: ../figures/FR/view_govt_FR.png  used on input line 123
+9.
 (pdftex.def)             Requested size: 277.69916pt x 45.59764pt.
-<../figures/FR/problem_inequality_FR.png, id=947, 870.25125pt x 111.41624pt>
+<../figures/FR/problem_inequality_FR.png, id=1005, 870.25125pt x 111.41624pt>
 File: ../figures/FR/problem_inequality_FR.png Graphic file (type png)
 <use ../figures/FR/problem_inequality_FR.png>
 Package pdftex.def Info: ../figures/FR/problem_inequality_FR.png  used on input
- line 1214.
+ line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 35.55362pt.
-<../figures/FR/future_richness_FR.png, id=948, 814.04124pt x 111.41624pt>
+<../figures/FR/future_richness_FR.png, id=1006, 814.04124pt x 111.41624pt>
 File: ../figures/FR/future_richness_FR.png Graphic file (type png)
 <use ../figures/FR/future_richness_FR.png>
 Package pdftex.def Info: ../figures/FR/future_richness_FR.png  used on input li
-ne 1214.
+ne 1239.
 (pdftex.def)             Requested size: 277.69916pt x 38.00682pt.
 
-Overfull \vbox (6.4556pt too high) detected at line 1214
+Overfull \vbox (6.38356pt too high) detected at line 1239
  []
 
-[94
+[98
 
  <../figures/FR/view_govt_FR.png> <../figures/FR/problem_inequality_FR.png> <..
-/figures/FR/future_richness_FR.png>] [95
+/figures/FR/future_richness_FR.png>] [99
 
 ]
-<../figures/FR/survey_biased_FR.png, id=963, 709.65125pt x 111.41624pt>
+<../figures/FR/survey_biased_FR.png, id=1021, 709.65125pt x 111.41624pt>
 File: ../figures/FR/survey_biased_FR.png Graphic file (type png)
 <use ../figures/FR/survey_biased_FR.png>
 Package pdftex.def Info: ../figures/FR/survey_biased_FR.png  used on input line
- 1214.
+ 1239.
 (pdftex.def)             Requested size: 236.72885pt x 37.16698pt.
-<../figures/FR/comment_field_FR.png, id=964, 290.08376pt x 246.9225pt>
+<../figures/FR/comment_field_FR.png, id=1022, 290.08376pt x 246.9225pt>
 File: ../figures/FR/comment_field_FR.png Graphic file (type png)
 <use ../figures/FR/comment_field_FR.png>
 Package pdftex.def Info: ../figures/FR/comment_field_FR.png  used on input line
- 1214.
+ 1239.
 (pdftex.def)             Requested size: 118.36095pt x 100.74905pt.
- [96
+<../figures/FR/comment_field_mentions_FR.png, id=1023, 364.36125pt x 131.49126p
+t>
+File: ../figures/FR/comment_field_mentions_FR.png Graphic file (type png)
+<use ../figures/FR/comment_field_mentions_FR.png>
+Package pdftex.def Info: ../figures/FR/comment_field_mentions_FR.png  used on i
+nput line 1239.
+(pdftex.def)             Requested size: 182.09485pt x 65.71335pt.
+ [100
 
- <../figures/FR/survey_biased_FR.png> <../figures/FR/comment_field_FR.png>] [97
+ <../figures/FR/survey_biased_FR.png> <../figures/FR/comment_field_FR.png> <../
+figures/FR/comment_field_mentions_FR.png>] [101
 
 ]
-<../figures/FR/willing_limit_flying_FR_inc.png, id=978, 627.34375pt x 191.71625
-pt>
+<../figures/FR/willing_limit_flying_FR_inc.png, id=1037, 627.34375pt x 191.7162
+5pt>
 File: ../figures/FR/willing_limit_flying_FR_inc.png Graphic file (type png)
 <use ../figures/FR/willing_limit_flying_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/willing_limit_flying_FR_inc.png  used on
- input line 1214.
+ input line 1239.
 (pdftex.def)             Requested size: 236.72885pt x 72.34392pt.
-<../figures/FR/willing_limit_beef_FR_inc.png, id=979, 762.85pt x 191.71625pt>
+<../figures/FR/willing_limit_beef_FR_inc.png, id=1038, 762.85pt x 191.71625pt>
 File: ../figures/FR/willing_limit_beef_FR_inc.png Graphic file (type png)
 <use ../figures/FR/willing_limit_beef_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/willing_limit_beef_FR_inc.png  used on i
-nput line 1214.
+nput line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 69.79008pt.
- [98
+ [102
 
  <../figures/FR/willing_limit_flying_FR_inc.png> <../figures/FR/willing_limit_b
 eef_FR_inc.png>]
-<../figures/FR/future_richness_FR_inc.png, id=988, 925.4575pt x 194.7275pt>
+<../figures/FR/future_richness_FR_inc.png, id=1047, 925.4575pt x 194.7275pt>
 File: ../figures/FR/future_richness_FR_inc.png Graphic file (type png)
 <use ../figures/FR/future_richness_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/future_richness_FR_inc.png  used on inpu
-t line 1214.
+t line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 58.43057pt.
-<../figures/FR/effect_halt_CC_lifestyle_FR_inc.png, id=989, 1058.95625pt x 195.
-73125pt>
+<../figures/FR/effect_halt_CC_lifestyle_FR_inc.png, id=1048, 1058.95625pt x 195
+.73125pt>
 File: ../figures/FR/effect_halt_CC_lifestyle_FR_inc.png Graphic file (type png)
 
 <use ../figures/FR/effect_halt_CC_lifestyle_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/effect_halt_CC_lifestyle_FR_inc.png  use
-d on input line 1214.
+d on input line 1239.
 (pdftex.def)             Requested size: 277.69916pt x 51.32794pt.
- [99
+ [103
 
  <../figures/FR/future_richness_FR_inc.png> <../figures/FR/effect_halt_CC_lifes
 tyle_FR_inc.png>]
-<../figures/FR/policies_win_lose_self_FR_inc.png, id=997, 860.21375pt x 352.316
-25pt>
+<../figures/FR/policies_win_lose_self_FR_inc.png, id=1057, 860.21375pt x 352.31
+625pt>
 File: ../figures/FR/policies_win_lose_self_FR_inc.png Graphic file (type png)
 <use ../figures/FR/policies_win_lose_self_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/policies_win_lose_self_FR_inc.png  used 
-on input line 1214.
+on input line 1239.
 (pdftex.def)             Requested size: 236.72885pt x 96.95445pt.
-<../figures/FR/CC_affects_self_FR_inc.png, id=998, 765.86125pt x 195.73125pt>
+<../figures/FR/CC_affects_self_FR_inc.png, id=1058, 765.86125pt x 195.73125pt>
 File: ../figures/FR/CC_affects_self_FR_inc.png Graphic file (type png)
 <use ../figures/FR/CC_affects_self_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/CC_affects_self_FR_inc.png  used on inpu
-t line 1214.
+t line 1239.
 (pdftex.def)             Requested size: 195.75162pt x 50.02579pt.
- [100
+ [104
 
  <../figures/FR/policies_win_lose_self_FR_inc.png> <../figures/FR/CC_affects_se
 lf_FR_inc.png>]
-<../figures/FR/policies_support_FR_inc.png, id=1006, 989.6975pt x 352.31625pt>
+<../figures/FR/policies_support_FR_inc.png, id=1066, 989.6975pt x 352.31625pt>
 File: ../figures/FR/policies_support_FR_inc.png Graphic file (type png)
 <use ../figures/FR/policies_support_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/policies_support_FR_inc.png  used on inp
-ut line 1214.
+ut line 1239.
 (pdftex.def)             Requested size: 236.72885pt x 84.26732pt.
-<../figures/FR/global_assembly_support_FR_inc.png, id=1007, 947.54pt x 195.7312
+<../figures/FR/global_assembly_support_FR_inc.png, id=1067, 947.54pt x 195.7312
 5pt>
 File: ../figures/FR/global_assembly_support_FR_inc.png Graphic file (type png)
 <use ../figures/FR/global_assembly_support_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/global_assembly_support_FR_inc.png  used
- on input line 1214.
+ on input line 1239.
 (pdftex.def)             Requested size: 236.72885pt x 48.89983pt.
- [101
+ [105
 
  <../figures/FR/policies_support_FR_inc.png> <../figures/FR/global_assembly_sup
 port_FR_inc.png>]
-<../figures/FR/policies_negative_effect_FR_inc.png, id=1015, 1057.9525pt x 352.
+<../figures/FR/policies_negative_effect_FR_inc.png, id=1075, 1057.9525pt x 352.
 31625pt>
 File: ../figures/FR/policies_negative_effect_FR_inc.png Graphic file (type png)
 
 <use ../figures/FR/policies_negative_effect_FR_inc.png>
 Package pdftex.def Info: ../figures/FR/policies_negative_effect_FR_inc.png  use
-d on input line 1214.
+d on input line 1239.
 (pdftex.def)             Requested size: 318.66946pt x 106.12038pt.
- [102
+ [106
 
- <../figures/FR/policies_negative_effect_FR_inc.png>] [103
+ <../figures/FR/policies_negative_effect_FR_inc.png>] [107
 
 ] (../tables/FR_1.tex)
-Overfull \hbox (5.25504pt too wide) in paragraph at lines 1214--1214
+Overfull \hbox (5.25504pt too wide) in paragraph at lines 1239--1239
  [] 
  []
 
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 1214.
+(Font)              scaled to size 5.21004pt on input line 1239.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 1214.
+(Font)              scaled to size 5.21004pt on input line 1239.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <5> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1214.
-[104
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1239.
+[108
 
 ] (../tables/FR_2.tex)
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 1214.
+(Font)              scaled to size 9.37807pt on input line 1239.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 1214.
+(Font)              scaled to size 7.29405pt on input line 1239.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 1214.
+(Font)              scaled to size 9.37807pt on input line 1239.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 1214.
+(Font)              scaled to size 7.29405pt on input line 1239.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1214.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1239.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1214.
- [105
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1239.
+ [109
 
-] (../tables/FR_3.tex) [106
+] (../tables/FR_3.tex) [110
 
 ]
 \tf@nav=\write6
@@ -2459,32 +2532,32 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
 \tf@snm=\write8
 \openout8 = `FR_CAE.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1217.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1217.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1242.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1242.
  (FR_CAE.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1217.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1217.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1242.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1242.
 
 Package rerunfilecheck Info: File `FR_CAE.out' has not changed.
-(rerunfilecheck)             Checksum: C0AE9979BF7EF946E38671BD3A7A92D4;1600.
+(rerunfilecheck)             Checksum: 49C8B205F1BEF4AF28BF9711C3D3F185;1601.
  ) 
 Here is how much of TeX's memory you used:
- 31737 strings out of 480864
- 640353 string characters out of 2908001
- 1002230 words of memory out of 3000000
- 46531 multiletter control sequences out of 15000+200000
- 632200 words of font info for 150 fonts, out of 3000000 for 9000
+ 31795 strings out of 480864
+ 643134 string characters out of 2908001
+ 1009332 words of memory out of 3000000
+ 46572 multiletter control sequences out of 15000+200000
+ 635048 words of font info for 152 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 61i,11n,75p,1181b,1326s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 61i,11n,75p,1181b,1344s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX/fonts/type1
 /public/amsfonts/cm/cmsy10.pfb><C:/Users/afabre/AppData/Roaming/MiKTeX/fonts/ty
 pe1/public/eurosym/feymr10.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/u
 tmb8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Program
  Files/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FR_CAE.pdf (106 pages, 6475402 bytes).
+Output written on FR_CAE.pdf (110 pages, 7144138 bytes).
 PDF statistics:
- 1121 PDF objects out of 1200 (max. 8388607)
- 236 named destinations out of 1000 (max. 500000)
- 763 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1183 PDF objects out of 1200 (max. 8388607)
+ 244 named destinations out of 1000 (max. 500000)
+ 798 words of extra memory for PDF output out of 10000 (max. 10000000)
 
