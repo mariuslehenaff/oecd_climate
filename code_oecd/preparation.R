@@ -4042,7 +4042,7 @@ if (all(variables_affected_index %in% names(e))) {
       # To recode CC_field (pre-treatment necessary so the following code works):
       # 1. use line below export CSV (change country in filename). 
       # 2. Create country.xlsm: if language has special characters, from 'template - no wrap'; if not, from 'template' and jump to step 5
-      # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row + Format>Column width>60 6. Click on appropriate cells. 
+      # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row + Format>Column width>60 6. Click on appropriate cells. 7. update countries_field_treated
       # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
       #      paste0("../data/fields/csv/CC_field_FR", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
   
@@ -4055,7 +4055,6 @@ if (all(variables_affected_index %in% names(e))) {
       CC_field_names_names <- names(CC_field_names)
       names(CC_field_names_names) <- CC_field_names
       var_CC_field_names <<- paste0("CC_field_", CC_field_names)
-      
       e$CC_field_english <- e$CC_field
       recode_CC_field <- list()
       for (i in 1:4) {
@@ -4066,7 +4065,7 @@ if (all(variables_affected_index %in% names(e))) {
         if (file.exists(paste0("../data/fields/", country, "en.xlsm"))) e$CC_field_english[indices_i] <- names(recode_CC_field[[i]])
         row.names(recode_CC_field[[i]]) <- CC_field_names[row.names(recode_CC_field[[i]])]
         recode_CC_field[[i]] <- as.data.frame(t(recode_CC_field[[i]]), row.names = indices_i)
-        if (i == 1) for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]] <- NA # /!\ There may be a bug if there are NA in CC_field_names[names(recode_CC_field[[i]])], which happens when the variable/column names are unkown in CC_field_names
+        if (i == 1) for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]] <- NA # /!\ There may be a bug if there are NA in CC_field_names[names(recode_CC_field[[i]])], which happens when the variable/column names are unknown in CC_field_names
         for (v in names(recode_CC_field[[i]])) e[[paste0("CC_field_", v)]][indices_i] <- recode_CC_field[[i]][[v]]==1
       }
       label(e$CC_field_english) <- "CC_field_english: CC_field either original (if in English, French) or translated to English."
@@ -4339,7 +4338,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   return(e)
 }
 
-countries_field_treated <- c("DK", "US")
+countries_field_treated <- c("DK", "US", "FR")
 usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
 usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
 usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
