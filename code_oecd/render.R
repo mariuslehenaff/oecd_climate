@@ -707,7 +707,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # try({(vote_non_voters_2016_US <- barres(vars = "vote_non_voters_2016", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="In 2016, voted for (non-voters)"))
     #   save_plotly_new_filename(vote_non_voters_2016_US, width= 650, height=140)})
     
-    try({(left_right_US <- barres(vars = "left_right", export_xls = export_xls, df = e, rev_color = T, miss=T, labels="On economic policy matters, are you..."))
+    try({(left_right_US <- barres(vars = "left_right", export_xls = export_xls, df = e, rev_color = T, rev = F, miss=T, labels="On economic policy matters, are you..."))
       save_plotly_new_filename(left_right_US, width= 950, height=140)})
     
     try({(political_affiliation_US <- barres(vars = "political_affiliation", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Political affiliation"))
@@ -749,7 +749,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       save_plotly_new_filename(comment_field_feeling_US, width= 2000, height=150)})
     
     try({(comment_field_mentions_US <- barres(vars = c("non_empty_comment_field", "comment_field_good", "critic_comment_field"), export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=c("Non empty", "Liked", "Disliked")))
-      save_plotly_new_filename(comment_field_mentions_US, width= 2000, height=150)})
+      save_plotly_new_filename(comment_field_mentions_US, width= 400, height=150)})
     
     ##### Heterogeneity: function #####
     plot_heterogeneity12 <- function(dfs = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", text_file = paste0(replacement_text, "_inc"), export_xls = F) {
