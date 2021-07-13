@@ -1,24 +1,24 @@
 \babel@toc {english}{}
-\beamer@sectionintoc {1}{Questionnaire}{6}{0}{1}
-\beamer@sectionintoc {2}{Sample quality}{17}{0}{2}
-\beamer@sectionintoc {3}{Descriptive statistics}{19}{0}{3}
-\beamer@subsectionintoc {3}{1}{Socio-Demographics}{20}{0}{3}
-\beamer@subsectionintoc {3}{2}{Political Views}{27}{0}{3}
-\beamer@subsectionintoc {3}{3}{Household Composition and Energy Characteristics}{31}{0}{3}
-\beamer@subsectionintoc {3}{4}{Essay}{35}{0}{3}
-\beamer@subsectionintoc {3}{5}{Treatments}{37}{0}{3}
-\beamer@subsectionintoc {3}{6}{Climate Knowledge}{38}{0}{3}
-\beamer@subsectionintoc {3}{7}{Climate Attitudes}{45}{0}{3}
-\beamer@subsectionintoc {3}{8}{Policy 1: A ban on combustion-engine Cars}{51}{0}{3}
-\beamer@subsectionintoc {3}{9}{Policy 2: Green Infrastructure Program}{57}{0}{3}
-\beamer@subsectionintoc {3}{10}{Policy 3: Carbon Tax with Cash Transfers}{63}{0}{3}
-\beamer@subsectionintoc {3}{11}{Comparison across the 3 Policies:}{68}{0}{3}
-\beamer@subsectionintoc {3}{12}{Preferences for Climate Policies}{75}{0}{3}
-\beamer@subsectionintoc {3}{13}{Willingness to Pay}{78}{0}{3}
-\beamer@subsectionintoc {3}{14}{International Burden-Sharing}{81}{0}{3}
-\beamer@subsectionintoc {3}{15}{Housing/Preferences for Bans vs. Incentives}{86}{0}{3}
-\beamer@subsectionintoc {3}{16}{Trust and institutions}{90}{0}{3}
-\beamer@subsectionintoc {3}{17}{Feedback}{93}{0}{3}
-\beamer@subsectionintoc {3}{18}{Heterogeneity Analysis}{95}{0}{3}
-\beamer@subsubsectionintoc {3}{18}{1}{Low-income vs. High-income}{96}{0}{3}
-\beamer@subsectionintoc {3}{19}{Treatment Effects}{101}{0}{3}
+\beamer@sectionintoc {1}{Questionnaire}{7}{0}{1}
+\beamer@sectionintoc {2}{Sample quality}{18}{0}{2}
+\beamer@sectionintoc {3}{Descriptive statistics}{21}{0}{3}
+\beamer@subsectionintoc {3}{1}{Socio-Demographics}{22}{0}{3}
+\beamer@subsectionintoc {3}{2}{Political Views}{29}{0}{3}
+\beamer@subsectionintoc {3}{3}{Household Composition and Energy Characteristics}{33}{0}{3}
+\beamer@subsectionintoc {3}{4}{Essay}{37}{0}{3}
+\beamer@subsectionintoc {3}{5}{Treatments}{39}{0}{3}
+\beamer@subsectionintoc {3}{6}{Climate Knowledge}{40}{0}{3}
+\beamer@subsectionintoc {3}{7}{Climate Attitudes}{47}{0}{3}
+\beamer@subsectionintoc {3}{8}{Policy 1: A ban on combustion-engine Cars}{53}{0}{3}
+\beamer@subsectionintoc {3}{9}{Policy 2: Green Infrastructure Program}{59}{0}{3}
+\beamer@subsectionintoc {3}{10}{Policy 3: Carbon Tax with Cash Transfers}{65}{0}{3}
+\beamer@subsectionintoc {3}{11}{Comparison across the 3 Policies:}{70}{0}{3}
+\beamer@subsectionintoc {3}{12}{Preferences for Climate Policies}{77}{0}{3}
+\beamer@subsectionintoc {3}{13}{Willingness to Pay}{80}{0}{3}
+\beamer@subsectionintoc {3}{14}{International Burden-Sharing}{83}{0}{3}
+\beamer@subsectionintoc {3}{15}{Housing/Preferences for Bans vs. Incentives}{88}{0}{3}
+\beamer@subsectionintoc {3}{16}{Trust and institutions}{92}{0}{3}
+\beamer@subsectionintoc {3}{17}{Feedback}{95}{0}{3}
+\beamer@subsectionintoc {3}{18}{Heterogeneity Analysis}{97}{0}{3}
+\beamer@subsubsectionintoc {3}{18}{1}{Low-income vs. High-income}{98}{0}{3}
+\beamer@subsectionintoc {3}{19}{Treatment Effects}{103}{0}{3}
