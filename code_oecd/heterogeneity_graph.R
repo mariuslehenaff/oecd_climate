@@ -11,8 +11,8 @@ heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, df=e, weig
   return(mean_sd)
 }
 
-e <- us
-# e <- fr
+# e <- us
+e <- fr
 # e <- dk
 variables_list <- c("standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
 
@@ -26,11 +26,11 @@ policies_label <- c("Ban of combustion engine \n (public transport made availabl
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
 # 120 130 vert
-support_by_political_US <- ggplot(mean_sd) +
+support_by_political_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = left_right, xmin = V2, xmax = V3)) +
   labs(x = 'Support', y = '', color="", title = 'Policy support by political affiliations') + 
   theme_minimal() + theme(legend.title = element_blank()) +
   scale_color_hue(breaks = unique(mean_sd$left_right), direction = +1)
-support_by_political_US
+support_by_political_FR
 # /!\ Need to be saved manually
 save_plotly(support_by_political_US, width= 800, height=400)
