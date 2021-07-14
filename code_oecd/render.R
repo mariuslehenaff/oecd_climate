@@ -135,6 +135,12 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(vote_agg_US <- barres(vars = "vote_agg", export_xls = export_xls, df = e, miss=T, rev = F, rev_color = T, sort = F, fr = "PNR or other", labels="Vote or hypothetical vote in last election"))
       save_plotly_new_filename(vote_agg_US, width= 900, height=140)}) 
     
+    try({(vote_mode_leaning_US <- barres(vars = "vote_mode_leaning", export_xls = export_xls, df = e, miss=T, rev = F, rev_color = T, sort = F, labels="Vote or hypothetical vote in last election"))
+      save_plotly_new_filename(vote_mode_leaning_US, width= 900, height=140)}) 
+    
+    try({(vote_main_US <- barres(vars = "vote_main", export_xls = export_xls, df = e, miss=T, rev = F, rev_color = T, sort = F, labels="Vote or hypothetical vote in last election"))
+      save_plotly_new_filename(vote_main_US, width= 900, height=140)}) 
+    
     try({data_diploma <- cbind(dataKN("diploma", data=e, miss=F, weights = F), dataKN("diploma", data=e, miss=F, weights = T), pop_freq[[country]]$diploma)
     (diploma_US_comp <- barres(data = data_diploma, export_xls = export_xls, df = e, miss=F, rev_color = T, sort = F, rev = F, labels=labels_comp, legend = dataKN("diploma", data=e, miss=F, return="legend")))
     save_plotly_new_filename(diploma_US_comp, width= 620, height=240)})
@@ -1570,6 +1576,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     try({(vote_participation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_participation", export_xls = export_xls, df = e, miss=T, labels="Voted in last election"))
       save_plotly_new_filename(vote_participation_US, width= 540, height=fig_height(1*nb_levels)) })
+    
+    try({(vote_mode_leaning_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_mode_leaning", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=T, labels="Last election vote or hypothetical vote"))
+      save_plotly_new_filename(vote_mode_leaning_US, width= 660, height=fig_height(1*nb_levels)) })
     
     # try({(vote_participation_2016_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "vote_participation_2016", export_xls = export_xls, df = e, miss=T, labels="Voted in 2016 election"))
     #   save_plotly_new_filename(vote_participation_2016_US, width= 540, height=fig_height(1*nb_levels)) })
