@@ -381,6 +381,11 @@ save_plotly(tax_transfers_fair_US, width= 1100, height=140)
 save_plotly(tax_transfers_support_US, width= 980, height=140)
 
 ##### 6-8. Specific policies #####
+plot(jitter(e$tax_transfers_support, 1) ~ jitter(e$investments_support, 1), pch = '.', xlab = "Support for a green infrastructure program", ylab = "Support for a carbon tax with cash transfers")
+save_plot(filename = paste0(folder, "plot_investments_tax_support"), height = 400, width = 400)
+plot(jitter(e$tax_transfers_support, 1) ~ jitter(e$standard_support, 1), pch = '.', xlab = "Support for a ban on combustion-engine cars", ylab = "Support for a carbon tax with cash transfers")
+save_plot(filename = paste0(folder, "plot_standard_tax_support"), height = 400, width = 400)
+
 labels_policies <- c("A ban on combustion-engine cars", "A green infrastructure program", "A carbon tax with cash transfers")
 (policies_cost_effective_US <- barres(vars = paste(names_policies, "cost_effective", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_policies))
 save_plotly(policies_cost_effective_US, width= 1100, height=240)
