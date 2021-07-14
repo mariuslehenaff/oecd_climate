@@ -1681,7 +1681,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     main_variables_socio <<- c("can_trust_people", "interested_politics", "voted", "can_trust_govt", "view_govt", "left_right", "hit_by_covid", "polluting_sector", "availability_transport", "urban")
     # interested_politics: >= A lot; hit_by_covid: -1/1; polluting_sector: T/F; can_trust_people, govt: >= agree; view_govt: -1/0/1; know_treatment_policy: 0/1/2; availability_transport: >= fair
     labels_main_socio <<- c("Most people can be trusted", "Interested in politics", "Voted in last election", "Government could be trusted in last 10 years", "Government should do more", "Left-right on economics", "HH member lost income or job due to pandemic", "Works in a polluting sector", "Availability of public transport", "Urban")
-    heatmap_wrapper(vars = main_variables_socio, labels = labels_main_socio, conditions = heatmap_conditions, name = "main_socio")
+    heatmap_wrapper(vars = main_variables_socio, labels = labels_main_socio, conditions = heatmap_conditions, name = "socio")
     
     heatmap_wrapper(vars = c("should_act_CC_field", "measure_proposed_CC_field", "CC_field_no_worry", "CC_field_do_not_know", "CC_field_na"), labels = c("Action needed", "Measure proposed", "No action needed", "Do not know", "Empty"), name = "CC_field_mentions", conditions = "> 0", df = e[e$country %in% countries_field_treated,])
     
@@ -1751,6 +1751,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = variables_obstacles_insulation[c(5,2,1,3,4)], labels = sub("<br>", "\n", labels_obstacles_insulation[c(5,2,1,3,4)]), name = 'obstacles_insulation', conditions = "> 0")
     
     variables_burden_sharing_all <<- c(variables_scale, "if_other_do_more", "if_other_do_less", variables_burden_sharing, variables_global_policies)
+    variables_burden_sharing_main <<- c("scale_global", variables_burden_sharing, variables_global_policies)
+    variables_burden_sharing_few <<- variables_burden_sharing_all[c(1,7,11,12,14)]
     # Levels: T/F; If...: >= More; burden_sharing: >= agree; Global..: >= somewhat support
     labels_heatmap_scale <<- paste("Level of climate policies needed:", c("global", "federal/continental", "state/national", "local"))
     labels_heatmap_burden_sharing <<- c("All countries should pay in proportion to income", "All countries should pay in proportion to current emissions", "All countries should pay in proportion to post-1990 emissions", "Richest should countries pay it all so poor ones don't pay", "Richest countries should pay even more to help vulnerable ones")
@@ -1759,6 +1761,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = variables_burden_sharing, labels = labels_heatmap_burden_sharing, conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_global_policies, labels = sub("<br>", "", labels_global_policies), conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_burden_sharing_all, labels = labels_burden_sharing_all, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_sharing_main, labels = labels_burden_sharing_all[c(1,7:14)], conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_sharing_few, labels = labels_burden_sharing_all[c(1,7,11,12,14)], conditions = heatmap_conditions)
     # labels_burden_sharing_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
     # heatmap_wrapper(vars = variables_burden_sharing, labels = labels_burden_sharing_short, conditions = heatmap_conditions)
     # 
