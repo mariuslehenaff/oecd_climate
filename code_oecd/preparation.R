@@ -28,6 +28,7 @@ Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland"
 country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Chinese", "Indian", "Indonesian", "South African")
 tax_price_increase <- c("$0.40/gallon", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "0.40 zł/L", "0.10 €/L", "0.08 £/L",	"¥12/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.6/L")
 names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- countries
+parties_leaning <- list()
 loadings_efa <- list()
 
 { 
@@ -3687,9 +3688,35 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   e$income_factor <- as.factor(e$income)
   
+  
+  if (all(c("vote", "left_right", "weight") %in% names(e))) {
+    # recode_parties: doesn't work so well as Macron est classé à droite et Fillon classé au centre whatever the method, "mode" is better as it's the only one that classifies Le Pen "Very right"
+    thresholds <- c(-1.5, -.5, .5, 1.5)
+    parties <- Levels(e$vote)
+    adj_leaning <- mean_leaning <- mode_leaning <- rep(NA, length(parties))
+    names(adj_leaning) <- names(mean_leaning) <- names(mode_leaning) <- parties
+    for (i in parties) {
+      mean_leaning[i] <- wtd.mean(e$left_right[e$vote==i], weights = e$weight[e$vote==i], na.rm = T)
+      vote_i <- table(e$left_right[e$vote==i])
+      mode_leaning[i] <- names(sort(-vote_i[names(vote_i) != "PNR"]))[1]
+      adj_leaning[i] <- case_when(mean_leaning[i] < thresholds[1] ~ -2,
+                                  mean_leaning[i] >= thresholds[1] & mean_leaning[i] < thresholds[2] ~ -1,
+                                  mean_leaning[i] >= thresholds[2] & mean_leaning[i] < thresholds[3] ~ 0,
+                                  mean_leaning[i] >= thresholds[3] & mean_leaning[i] < thresholds[4] ~ 1,
+                                  mean_leaning[i] >= thresholds[4] ~ 2)  }
+    round_mean_leaning <- round(mean_leaning)
+    # mean_leaning
+    # adj_leaning
+    # round_mean_leaning
+    # mode_leaning
+    parties_leaning[country] <- list(mode_leaning)
+    e$vote_mode_leaning <- mode_leaning[e$vote]
+    label(e$vote_mode_leaning) <- "vote_mode_leaning: left_right leaning of respondent's vote, computed as the mode to left_right question for respondents with same vote"
+  }  
+  
   # political position
   e$vote_agg <- as.character(e$vote)
-  if (country == "US") {
+  if (country == "US") { # Automatic classification yields Trump: Very right and all others (incl. Biden, PNR): Center
     temp <- -1*grepl("Biden", e$vote) + 2*grepl("Trump", e$vote) -0.1*(!(e$vote %in% c("Biden", "Trump")))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,2,-0.1), names = c("Biden","Trump","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Biden, Trump")
@@ -3699,7 +3726,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # # e$vote_agg[e$vote_participation != "Yes] <- "Other" # add non-voters as others
   # # e$vote_agg <- as.factor(e$vote_agg)
   # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
-  } else if (country == "FR") {
+  } else if (country == "FR") {  # Automatic classification is close but leads to an inversion Fillon (center) / Macron (right) + some minor discrepancies (Arthaud as Center, Dupont-Aignan as Right, Lassalle as Center, Cheminade as Very right)
     temp <- -2*grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
     e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Hamon|Mélenchon|Arthaud|Poutou; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
@@ -3708,7 +3735,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
     # e$vote_agg[grepl("Le Pen|Dupont-Aignan", e$vote)] <- "Extrême-droite"
     # e$vote_agg[grepl("Cheminade|Lassalle|PNR", e$vote)] <- "PNR ou autre"
-  } else if (country == "DK") { # TODO! check left_right intensity of each party
+  } else if (country == "DK") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -2*(e$vote %in% c("Alternativet", "Enhedslisten", "Socialistisk Folkeparti")) -1*(e$vote %in% c("Socialdemokratiet", "Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Social democrats & Center","Right","Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Alternativet|Enhedslisten|Socialistisk Folkeparti; Social democrats & center: Socialdemokratiet|Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")
@@ -4206,6 +4233,7 @@ if (all(variables_affected_index %in% names(e))) {
     })
     print("success")
   }
+  
   # e <- e[, -c(9:17)] 
   return(e)
 }
