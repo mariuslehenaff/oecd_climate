@@ -3,6 +3,18 @@
 # TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 # TODO! vote, comparison heterogeneity, function coef along, quality (know_treatment_climate, watched_climate)
 
+update_constant <- function(data = all) {
+  e <<- data
+  country <- deparse(substitute(data))
+  if (country == "all") {
+    folder <<- paste0('../figures/country_comparison/')
+    replacement_text <<- "_countries"
+  } else {
+    folder <<- paste0('../figures/', country, '/')
+    replacement_text <<- paste0("_", toupper(country))
+  }
+}
+
 # /!\ open the Plots pane at its maximum before running the function
 render_figures_tables_country <- function(data, country, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T) {
   print(country)  
@@ -503,6 +515,19 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     
     try({(policies_all_support_US <- barres(vars = c("standard_public_transport_support", paste(names_policies, "support", sep="_")), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, sort = F, labels=c("Ban on combustion cars where<br>public transport made available", labels_policies)))
       save_plotly_new_filename(policies_all_support_US, width= 790, height=270)})
+
+    try({(policies_less_pollution_US <- barres(vars = c("standard_effect_less_pollution", "investments_effect_less_pollution", "tax_transfers_effect_less_pollution"), sort = F,rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=labels_policies))
+      save_plotly_new_filename(policies_less_pollution_US, width= 1100, height=240)})
+    
+    # try({(policies_effects_all_US <- barres(vars = c("standard_effect_less_pollution", "standard_effect_less_emission", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F,rev = F, rev_color = T, 
+    #                                      export_xls = export_xls, df = e, miss=F, labels=c("Ban on combustion-engine cars<br>Reduce air pollution", "Ban on combustion-engine cars<br>Reduce CO2 emissions from cars","Green infrastructure program<br>Reduce air pollution", "Green infrastructure program<br>Increase the use of public transport", "Green infrastructure program<br>Make electricity production greener", 
+    # "Tax with cash transfers: Reduce air pollution", "Tax with cash transfers: Increase the use of public transport", "Tax with cash transfers: Make electricity production greener")))
+    #   save_plotly_new_filename(policies_effects_all_US, width= 1100, height=fig_height(9))})
+    
+    try({(policies_effects_US <- barres(vars = c("standard_effect_less_emission", "investments_effect_public_transport", "investments_effect_elec_greener", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F,rev = F, rev_color = T, 
+                                         export_xls = export_xls, df = e, miss=F, labels=c("A ban on combustion-engine cars<br>Reduce CO2 emissions from cars", "A green infrastructure program<br>Increase the use of public transport", "A green infrastructure program<br>Make electricity production greener", "A carbon tax with cash transfers<br>Reduce GHG emissions", "A carbon tax with cash transfers<br>Encourage insulation of buildings", "A carbon tax with cash transfers<br>Encourage people to drive less")))
+      save_plotly_new_filename(policies_effects_US, width= 1100, height=400)})
+    
     
     try({(standard_effects_US <- barres(vars = c("standard_effect_less_pollution", "standard_effect_less_emission"), sort = F,rev = F, rev_color = T, 
                                    export_xls = export_xls, df = e, miss=F, labels=c("Reduce air pollution", "Reduce CO2 emissions from cars")))
@@ -1841,6 +1866,10 @@ render_figures_tables_country(fr, "FR", folder_country = T, tables = F, export_x
 render_figures_tables_country(us, "US", folder_country = T, tables = F, export_xls = T)
 
 render_country_comparison(along = "country_name", parentheses = F, nolabel = T, folder_country = T, name_country = T, on_control = T, export_xls = F, figures = T, tables = T)
+
+update_constant(fr)
+update_constant(all)
+update_constant(dk)
 
 # # (temp <- barresN(vars = "CC_anthropogenic", export_xls = export_xls, df = all, along = "country", rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic"))
 # # (temp <- barresN(vars = "CC_anthropogenic", export_xls = export_xls, df = all, along = "country_name", rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic", parentheses = F, nolabel = T))
