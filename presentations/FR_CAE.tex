@@ -79,7 +79,7 @@ OECD/CAE \\
 \ip \textcolor{blue}{covering two-thirds of global CO$_\text{2}$ emissions}, including 16 out of the 21 largest polluters.
 \ee
 \ee
-\makebox[\textwidth][c]{ \includegraphics[width=.75\textwidth]{"../figures/Country_coverage.png"}}
+\makebox[\textwidth][c]{ \includegraphics[width=.75\textwidth]{"../figures/Country_coverage"}}
 \end{frame}
 
 \begin{frame}{Method: Large-scale Social Economics Surveys and Experiments}
@@ -185,7 +185,7 @@ format) and how it translates into policy support.
 \begin{table}[h!]
 	%\caption{Sample Characteristics -- France}
 	\begin{center}
-		\scalebox{0.65}{\input{"../tables/FR/summary_stat_fr_prez"}}
+		\scalebox{0.55}{\input{"../tables/FR/summary_stat_fr_prez"}}
 	\end{center}
 \end{table}	
 \end{frame}
@@ -294,27 +294,6 @@ format) and how it translates into policy support.
 
 
 
-\subsection{Treatments}
-
-% out
-\begin{frame}{Watched climate and/or policy videos attentively}%\addtocounter{framenumber}{-1} % TODO:other_countries
-\begin{figure}[h!]
-\centering
-\caption{Number of wrong answers when answering knowledge questions about the content of the videos}
-\footnotesize \begin{itemize}
-\item What will be the rise in global average temperature in 2100 if greenhouse gas emissions continue on their current trend?
-\item In the absence of ambitious action against climate change, how frequent will extreme temperatures occur across the French by the end of the century?
-\item What is the emission limit described in the video? 
-\item How would a green infrastructure program be financed?
-\end{itemize}
-
-% \includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment.png}
-\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_climate_FR.png} \\
-\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_policy_FR.png}
-\end{figure}
-\end{frame}
-
-
 \subsection{Climate Knowledge}
 
 %\begin{frame}{Climate knowledge: summary} % TODO
@@ -340,8 +319,8 @@ format) and how it translates into policy support.
 % \centering
 % \caption{\textit{If answered yes to previous question:} What part of climate change do you think is due to human activity?}
 % \includegraphics[width=.52\paperwidth]{../figures/FR/CC_anthropogenic_non_deniers_FR.png} # TOOD choose
-\caption{What part of climate change do you think is due to human activity?}
-\includegraphics[width=.52\paperwidth]{../figures/FR/CC_anthropogenic_FR.png}
+\caption{What part of climate change do you think is due to human activity? \footnotesize{\textit{Right answer: Most}}}
+\includegraphics[width=.52\paperwidth]{../figures/FR/CC_anthropogenic_FR.png} \\
 \end{figure}
 \end{frame}
 
@@ -355,15 +334,16 @@ format) and how it translates into policy support.
 \caption{Do you agree or disagree with the following statement: ``Climate change is an important problem."}
 \includegraphics[width=.78\paperwidth]{../figures/FR/CC_problem_FR.png}
 %\centering
-\caption{Do you think that cutting global greenhouse gas emissions by half would be sufficient to eventually stop temperatures from rising? (Right answer: No)}
-\includegraphics[width=.61\paperwidth]{../figures/FR/CC_dynamic_FR.png}
+\caption{Do you think that cutting global greenhouse gas emissions by half would be sufficient to eventually stop temperatures from rising? \footnotesize{\textit{Right answer: No}}}
+\includegraphics[width=.55\paperwidth]{../figures/FR/CC_dynamic_FR.png}
+
 \end{figure}
 \end{frame}
 
 \begin{frame}{Climate change knowledge: general}%\addtocounter{framenumber}{-1}
 \begin{figure}[h!]
 \centering
-\caption{Which of the following elements contribute to climate change? (Multiple answers are possible)  }
+\caption{Which of the following elements contribute to climate change? (Multiple answers are possible) \newline \footnotesize{\textit{Right answer: CO$_\text{2}$; Methane}}}
 \centering
 \includegraphics[width=.30\paperwidth]{../figures/FR/GHG_FR.png}
 \vspace{.2cm} \\
@@ -395,14 +375,16 @@ format) and how it translates into policy support.
 \begin{column}{0.5\textwidth}
 \begin{figure}
 \caption{Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
-Please rank the items from 1 (most) to 3 (least).}
+Please rank the items from 1 (most) to 3 (least).
+\newline \footnotesize{\textit{Right answer: Beef (1), Chicken (2), Pasta (3)}}}
 \includegraphics[width=.43\paperwidth]{../figures/FR/footprint_food_FR.png}
 \end{figure}
 \end{column}
 \begin{column}{0.5\textwidth}
 \begin{figure}
 \caption{If a family of 4 travels 800 km from Bordeaux to Nice, with which mode of transportation do they emit the most greenhouse gases? % TODO:other_countries
-Please rank the items from 1 (most) to 3 (least).}
+Please rank the items from 1 (most) to 3 (least).
+\newline \footnotesize{\textit{Right answer: Plane (1), Car (2), Coach (3)}}}
 \includegraphics[width=.43\paperwidth]{../figures/FR/footprint_transport_FR.png}
 \end{figure}
 \end{column}
@@ -411,7 +393,8 @@ Please rank the items from 1 (most) to 3 (least).}
 
 \begin{frame}{Climate change knowledge}%\addtocounter{framenumber}{-1}
 \begin{figure}
-\caption{Which source of electric energy emits the most greenhouse gases to provide power for a house?}
+\caption{Which source of electric energy emits the most greenhouse gases to provide power for a house?
+\newline \footnotesize{\textit{Right answer: Coal (1), Gas (2), Nuclear (3)}}}
 \includegraphics[width=.43\paperwidth]{../figures/FR/footprint_elec_FR.png}
 \end{figure}
 \end{frame}
@@ -421,13 +404,15 @@ Please rank the items from 1 (most) to 3 (least).}
 \centering
 \begin{subfigure}[b]{0.425\paperwidth}
 \centering
-\caption{Which region contributes most to global greenhouse gas emissions?} % True ranking: China>US>EU>India. 
+\caption{Which region contributes most to global greenhouse gas emissions?
+\newline \footnotesize{\textit{Right answer: China (1), US (2), EU (3), India (4)}}} % True ranking: China>US>EU>India. 
 \includegraphics[width=.425\paperwidth]{../figures/FR/footprint_region_no_miss_FR.png}
 \end{subfigure}
 \hfill
 \begin{subfigure}[b]{0.425\paperwidth}
 \centering
-\caption{In which region does the consumption of an average person contribute most to climate change?} % True ranking: US>EU>China>India. 
+\caption{In which region does the consumption of an average person contribute most to climate change?
+\newline \footnotesize{\textit{Right answer: US (1), EU (2), China (3), India (4)}}} % True ranking: US>EU>China>India. 
 \includegraphics[width=.425\paperwidth]{../figures/FR/footprint_pc_no_miss_FR.png}
 \end{subfigure}
 \end{figure}
@@ -438,7 +423,8 @@ Please rank the items from 1 (most) to 3 (least).}
 \centering
 %\caption{Impacts of climate change}
 %\vspace{2mm}
-\caption{If nothing is done to limit climate change, how likely do you think it is that climate change will lead to the following events?}
+\caption{If nothing is done to limit climate change, how likely do you think it is that climate change will lead to the following events?
+\newline\footnotesize{\textit{Right answer: Likely: Severe droughts and heatwaves; Rising sea levels / Unlikely: More frequent volcanic eruptions}}}
 \includegraphics[width=.74\paperwidth]{../figures/FR/CC_impacts_FR.png} \\
 %\caption{}
 \end{figure}
@@ -517,150 +503,15 @@ To what extent would you be willing to adopt the following behaviors?}
 %\end{figure}
 %\end{frame}
 
-\subsection{Policy 1: A ban on combustion-engine Cars}
-
-\begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
-To fight climate change, car producers can be required by law to produce cars that emit less CO$_\text{2}$ per mile of the cars they sell. The emission limit is lowered every year so that only electric or hydrogen vehicles can be sold after 2030. This policy is called a \textit{ban on combustion-engine cars}. 
-\end{frame}
-
-
-\begin{frame}{Effects of the policy}%\addtocounter{framenumber}{-1}
-
-\begin{figure}[h!]
-\centering
-\caption{Do you agree or disagree with the following statements? A ban on combustion-engine cars would…}
-\includegraphics[width=.87\paperwidth]{../figures/FR/standard_effect_FR.png}
-%\caption{}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Incidence}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering % TODO! harmonize order
-\caption{In your view, would the following groups win or lose if a ban on combustion-engine cars was implemented in France?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/standard_win_lose_FR.png}
-%\caption{}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Fairness and support}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{Do you agree or disagree with the following statement: ``A ban on combustion-engine cars is fair"?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/standard_fair_FR.png}
-\vspace{.5cm}
-\centering
-\caption{Do you support or oppose a ban on combustion-engine cars?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/standard_support_FR.png}
-\end{figure}
-
-%\textbf{Support decreased} from 61\% in pilot, where it concerned ``an emission limit for cars''.
-\end{frame}
-
-\begin{frame}{}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{Do you support or oppose a ban on combustion-engine cars where alternatives such as public transports are made available to people?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/standard_public_transport_support_FR.png}
-%\caption{}
-\end{figure}
-\end{frame}
-
-\subsection{Policy 2: Green Infrastructure Program}
-
-\begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
-A green infrastructure program is a large public investment program, which would be financed by additional public debt, to accomplish the transition needed to cut greenhouse gases emissions. Investments would concern renewable power plants, public transportation, thermal renovation of building, and sustainable agriculture.
-\end{frame}
-
-\begin{frame}{Effects of the policy}%\addtocounter{framenumber}{-1}
-
-%\textbf{Problem:} strong acquiescence bias. In the pilot, 57\% agreed that it was ``cost-effective''. Formulation changed to ``costly'' and 57\% agree.
-
-\begin{figure}[h!]
-\centering
-\caption{Do you agree or disagree with the following statements? A green infrastructure program would…}
-\includegraphics[width=.87\paperwidth]{../figures/FR/investments_effect_FR.png}
-%\caption{}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Incidence}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{In your view, would the following groups win or lose with a green infrastructure program?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/investments_win_lose_FR.png}
-%\caption{}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Fairness and support}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{Do you agree or disagree with the following statement: ``A green infrastructure program mainly financed by public debt is fair."}
-\includegraphics[width=.87\paperwidth]{../figures/FR/investments_fair_FR.png}
-\vspace{.5cm}
-\centering
-\caption{Do you support or oppose a green infrastructure program?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/investments_support_FR.png}
-%\caption{}
-\end{figure}
-
-
-%\textbf{Support decreased} from 69\% in pilot.
-\end{frame}
-
-\begin{frame}{}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
-What sources of funding do you find appropriate for a green infrastructure program? (Multiple answers are possible)}
-\includegraphics[width=.7\paperwidth]{../figures/FR/investments_funding_FR.png}
-\end{figure}
-\end{frame}
-
-\subsection{Policy 3: Carbon Tax with Cash Transfers}
-
-\begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
-To fight climate change, the French government can make greenhouse gas emissions costly, to make people and firms change their equipment and reduce their emissions. The government could do this through a policy called a carbon tax with cash transfers. Under such a policy, the government would tax all products that emit greenhouse gas. For example, the price of gasoline would increase by 10 cents per liter. To compensate households for the price increases, the revenues from the carbon tax would be redistributed to all households, regardless of their income. Each adult would thus receive 160\euro{} per year.
-\end{frame}
-
-\begin{frame}{Effects of the policy}%\addtocounter{framenumber}{-1}
-%
-%\textbf{Problem:} strong acquiescence bias. In the pilot, 53\% agreed that it was ``cost-effective''. Formulation changed to ``costly'' and 57\% agree.
-
-\begin{figure}[h!]
-\centering
-\caption{Do you agree or disagree with the following statements? A carbon tax with cash transfers would…}
-\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_effect_FR.png}
-%\caption{}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Incidence}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{In your view, would the following groups win or lose under a carbon tax with cash transfers?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_win_lose_FR.png}
-%\caption{}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Fairness and support}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\centering
-\caption{Do you agree or disagree with the following statement: ``A carbon tax with cash transfers is fair."}
-\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_fair_FR.png}
-\vspace{.5cm}
-\centering
-\caption{Do you support or oppose a carbon tax with cash transfers?}
-\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_support_FR.png}
-%\caption{}
-\end{figure}
-
-%\textbf{Support decreased} from 48\% in pilot, where it concerned ``an emission limit for cars''.
-\end{frame}
-
 \subsection{Comparison across the 3 Policies:}
+
+\begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
+\begin{itemize}
+\item A Ban on Combustion Engine Cars: To fight climate change, car producers can be required by law to produce cars that emit less CO$_\text{2}$ per mile of the cars they sell. The emission limit is lowered every year so that only electric or hydrogen vehicles can be sold after 2030. This policy is called a \textit{ban on combustion-engine cars}.
+\item Green Infrastructure Program: A green infrastructure program is a large public investment program, which would be financed by additional public debt, to accomplish the transition needed to cut greenhouse gases emissions. Investments would concern renewable power plants, public transportation, thermal renovation of building, and sustainable agriculture.
+\item Carbon Tax with Cash Transfers: To fight climate change, the French government can make greenhouse gas emissions costly, to make people and firms change their equipment and reduce their emissions. The government could do this through a policy called a carbon tax with cash transfers. Under such a policy, the government would tax all products that emit greenhouse gas. For example, the price of gasoline would increase by 10 cents per liter. To compensate households for the price increases, the revenues from the carbon tax would be redistributed to all households, regardless of their income. Each adult would thus receive 160\euro{} per year.
+\end{itemize}
+\end{frame}
 
 \begin{frame}{Policy Incidence}%\addtocounter{framenumber}{-1}
 \begin{figure}[h!]
@@ -732,13 +583,32 @@ To fight climate change, the French government can make greenhouse gas emissions
 \includegraphics[width=.7\paperwidth]{../figures/FR/policies_fair_FR.png}
 \vspace{-.1cm}
 \centering
-\caption{\textit{Comparison of responses to each policy question:} do you support or oppose \textit{the following policy}?}
+\caption{\textit{Comparison of responses to each policy question:} Do you support or oppose \textit{the following policy}?}
 \includegraphics[width=.7\paperwidth]{../figures/FR/policies_support_FR.png}
 %\caption{}
 \end{figure}
 
 
 %\textbf{Support decreased} from 48-61\% in pilot to 37-49\%. Largest drop for cars which was the most supported when it concerned ``an emission limit for cars'' .
+\end{frame}
+
+
+\begin{frame}{Support ban on combustion-engine cars with alternatives}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{Do you support or oppose a ban on combustion-engine cars where alternatives such as public transports are made available to people?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/standard_public_transport_support_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Funding of Green Infrastructure Program}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+What sources of funding do you find appropriate for a green infrastructure program? (Multiple answers are possible)}
+\includegraphics[width=.7\paperwidth]{../figures/FR/investments_funding_FR.png}
+\end{figure}
 \end{frame}
 
 \subsection{Preferences for Climate Policies}
@@ -1157,6 +1027,222 @@ Do you support or oppose the following options?}
 \end{figure}
 \end{frame}
 
+ \subsection{Essay}
+
+
+ \begin{frame}{}%\addtocounter{framenumber}{-1}
+ \begin{figure}[h!]
+ \centering
+ \caption{Word cloud -- When thinking about climate change, what are your main considerations? What should the French government do regarding climate change?
+ Please write as much as you would like, your response will be very useful.}
+ \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_FR.png} \\
+ \end{figure}
+ \end{frame}
+
+\begin{frame} % NEW
+ \begin{columns}
+ \begin{column}{0.5\textwidth}
+ \begin{figure}
+   \caption{Elements present in the open field (manually recoded).}
+   \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_mentions_raw_FR.png}
+ \end{figure}
+ \end{column}
+ \begin{column}{0.5\textwidth}
+ \begin{figure}
+   \caption{Summary of elements present in the open field.}
+   \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_mentions_FR.png}
+ \end{figure}
+ \end{column}
+ \end{columns}
+ \end{frame}
+
+\subsection{Treatments}
+
+% out
+\begin{frame}{Watched climate and/or policy videos attentively}%\addtocounter{framenumber}{-1} % TODO:other_countries
+\begin{figure}[h!]
+\centering
+\caption{Number of wrong answers when answering two knowledge questions about the content of the videos}
+\footnotesize \begin{itemize}
+\item What will be the rise in global average temperature in 2100 if greenhouse gas emissions continue on their current trend?
+\item In the absence of ambitious action against climate change, how frequent will extreme temperatures occur across the French by the end of the century?
+\item What is the emission limit described in the video? 
+\item How would a green infrastructure program be financed?
+\end{itemize}
+
+% \includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment.png}
+\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_climate_FR.png} \\
+\includegraphics[width=.61\paperwidth]{../figures/FR/know_treatment_policy_FR.png}
+\end{figure}
+\end{frame}
+
+
+
+\subsection{Policy 1: A ban on combustion-engine Cars}
+
+\begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
+To fight climate change, car producers can be required by law to produce cars that emit less CO$_\text{2}$ per mile of the cars they sell. The emission limit is lowered every year so that only electric or hydrogen vehicles can be sold after 2030. This policy is called a \textit{ban on combustion-engine cars}. 
+\end{frame}
+
+
+\begin{frame}{Effects of the policy}%\addtocounter{framenumber}{-1}
+
+\begin{figure}[h!]
+\centering
+\caption{Do you agree or disagree with the following statements? A ban on combustion-engine cars would…}
+\includegraphics[width=.87\paperwidth]{../figures/FR/standard_effect_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Incidence}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering % TODO! harmonize order
+\caption{In your view, would the following groups win or lose if a ban on combustion-engine cars was implemented in France?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/standard_win_lose_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Fairness and support}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{Do you agree or disagree with the following statement: ``A ban on combustion-engine cars is fair"?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/standard_fair_FR.png}
+\vspace{.5cm}
+\centering
+\caption{Do you support or oppose a ban on combustion-engine cars?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/standard_support_FR.png}
+\end{figure}
+
+%\textbf{Support decreased} from 61\% in pilot, where it concerned ``an emission limit for cars''.
+\end{frame}
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{Do you support or oppose a ban on combustion-engine cars where alternatives such as public transports are made available to people?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/standard_public_transport_support_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\subsection{Policy 2: Green Infrastructure Program}
+
+\begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
+A green infrastructure program is a large public investment program, which would be financed by additional public debt, to accomplish the transition needed to cut greenhouse gases emissions. Investments would concern renewable power plants, public transportation, thermal renovation of building, and sustainable agriculture.
+\end{frame}
+
+\begin{frame}{Effects of the policy}%\addtocounter{framenumber}{-1}
+
+%\textbf{Problem:} strong acquiescence bias. In the pilot, 57\% agreed that it was ``cost-effective''. Formulation changed to ``costly'' and 57\% agree.
+
+\begin{figure}[h!]
+\centering
+\caption{Do you agree or disagree with the following statements? A green infrastructure program would…}
+\includegraphics[width=.87\paperwidth]{../figures/FR/investments_effect_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Incidence}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{In your view, would the following groups win or lose with a green infrastructure program?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/investments_win_lose_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Fairness and support}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{Do you agree or disagree with the following statement: ``A green infrastructure program mainly financed by public debt is fair."}
+\includegraphics[width=.87\paperwidth]{../figures/FR/investments_fair_FR.png}
+\vspace{.5cm}
+\centering
+\caption{Do you support or oppose a green infrastructure program?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/investments_support_FR.png}
+%\caption{}
+\end{figure}
+
+
+%\textbf{Support decreased} from 69\% in pilot.
+\end{frame}
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+What sources of funding do you find appropriate for a green infrastructure program? (Multiple answers are possible)}
+\includegraphics[width=.7\paperwidth]{../figures/FR/investments_funding_FR.png}
+\end{figure}
+\end{frame}
+
+\subsection{Policy 3: Carbon Tax with Cash Transfers}
+
+\begin{frame}{Policy description}%\addtocounter{framenumber}{-1}
+To fight climate change, the French government can make greenhouse gas emissions costly, to make people and firms change their equipment and reduce their emissions. The government could do this through a policy called a carbon tax with cash transfers. Under such a policy, the government would tax all products that emit greenhouse gas. For example, the price of gasoline would increase by 10 cents per liter. To compensate households for the price increases, the revenues from the carbon tax would be redistributed to all households, regardless of their income. Each adult would thus receive 160\euro{} per year.
+\end{frame}
+
+\begin{frame}{Effects of the policy}%\addtocounter{framenumber}{-1}
+%
+%\textbf{Problem:} strong acquiescence bias. In the pilot, 53\% agreed that it was ``cost-effective''. Formulation changed to ``costly'' and 57\% agree.
+
+\begin{figure}[h!]
+\centering
+\caption{Do you agree or disagree with the following statements? A carbon tax with cash transfers would…}
+\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_effect_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Incidence}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{In your view, would the following groups win or lose under a carbon tax with cash transfers?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_win_lose_FR.png}
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Fairness and support}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+\caption{Do you agree or disagree with the following statement: ``A carbon tax with cash transfers is fair."}
+\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_fair_FR.png}
+\vspace{.5cm}
+\centering
+\caption{Do you support or oppose a carbon tax with cash transfers?}
+\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_support_FR.png}
+%\caption{}
+\end{figure}
+
+%\textbf{Support decreased} from 48\% in pilot, where it concerned ``an emission limit for cars''.
+\end{frame}
+
+ \subsection{Willingness to Pay}
+
+\begin{frame}{WTP}%\addtocounter{framenumber}{-1}
+ \begin{figure}[h!]
+ \centering
+ %\caption{Hoannually through an additional individual contribution to limit global warming to safe levels (less than 3.6 degrees Fahrenheit)?}
+ \caption{To fight global warming, the French government could implement a policy package to reduce emissions, for example by investing in clean technologies (renewable energy, electric vehicles, public transport, more efficient insulation, etc.). \\
+ The funding for these investments could be collected annually through an additional individual contribution for the foreseeable future. Assume that everyone in France as well as citizens of other countries would be required to contribute according to their means. \\ Are you willing to pay [amount] annually through an additional individual contribution to limit global warming to safe levels (less than 2 \degree{}C)?}
+ \includegraphics[width=.61\paperwidth]{../figures/FR/wtp_FR.png} % TODO! scale. TODO: wtp_FR_anthropogenic?
+ \end{figure}
+ \end{frame}
+
+\begin{frame}{Donation}
+ \begin{figure}[h!]
+ \centering
+ \caption{By taking this survey, you are entered into a lottery to win 100\euro{}. You can also donate a part of this additional compensation (should you be selected in the lottery) to a reforestation project through the charity The Gold Standard. If you win the 100\euro{} lottery, how much will you donate to the Gold Standard charity?}
+ \includegraphics[width=.78\paperwidth]{../figures/FR/donation_agg_FR.png}
+ \end{figure}
+ %\textbf{We have a winner} who decided to donate the \$100 prize.
+ \end{frame}
+
+
 \subsection{Trust and institutions}
 
 \begin{frame}{Trust}%\addtocounter{framenumber}{-1}
@@ -1202,70 +1288,10 @@ Which come closer to your own view? }
 \end{figure}
 \end{frame}
 
- \subsection{Essay}
 
-
- \begin{frame}{}%\addtocounter{framenumber}{-1}
- \begin{figure}[h!]
- \centering
- \caption{Word cloud -- When thinking about climate change, what are your main considerations? What should the French government do regarding climate change?
- Please write as much as you would like, your response will be very useful.}
- \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_FR.png} \\
- \end{figure}
- \end{frame}
-
-\begin{frame} % NEW
- \begin{columns}
- \begin{column}{0.5\textwidth}
- \begin{figure}
-   \caption{Elements present in the open field (manually recoded).}
-   \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_mentions_raw_FR.png}
- \end{figure}
- \end{column}
- \begin{column}{0.5\textwidth}
- \begin{figure}
-   \caption{Summary of elements present in the open field.}
-   \includegraphics[width=.43\paperwidth]{../figures/FR/CC_field_mentions_FR.png}
- \end{figure}
- \end{column}
- \end{columns}
- \end{frame}
-
- \subsection{Willingness to Pay}
-
-\begin{frame}{WTP}%\addtocounter{framenumber}{-1}
- \begin{figure}[h!]
- \centering
- %\caption{Hoannually through an additional individual contribution to limit global warming to safe levels (less than 3.6 degrees Fahrenheit)?}
- \caption{To fight global warming, the French government could implement a policy package to reduce emissions, for example by investing in clean technologies (renewable energy, electric vehicles, public transport, more efficient insulation, etc.). \\
- The funding for these investments could be collected annually through an additional individual contribution for the foreseeable future. Assume that everyone in France as well as citizens of other countries would be required to contribute according to their means. \\ Are you willing to pay [amount] annually through an additional individual contribution to limit global warming to safe levels (less than 2 \degree{}C)?}
- \includegraphics[width=.61\paperwidth]{../figures/FR/wtp_FR.png} % TODO! scale. TODO: wtp_FR_anthropogenic?
- \end{figure}
- \end{frame}
-
-\begin{frame}{Donation}
- \begin{figure}[h!]
- \centering
- \caption{By taking this survey, you are entered into a lottery to win 100\euro{}. You can also donate a part of this additional compensation (should you be selected in the lottery) to a reforestation project through the charity The Gold Standard. If you win the 100\euro{} lottery, how much will you donate to the Gold Standard charity?}
- \includegraphics[width=.78\paperwidth]{../figures/FR/donation_agg_FR.png}
- \end{figure}
- %\textbf{We have a winner} who decided to donate the \$100 prize.
- \end{frame}
 
 \end{framefont}
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
 
