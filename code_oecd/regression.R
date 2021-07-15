@@ -388,12 +388,19 @@ desc_table(dep_vars = "policies_support > 0",
 # Need to change names (e.g., _US, _DK, _FR) of files lines 398/400; 409/411; 417/419
 # e <- us
 e <- fr
+
+e$Gilets_jaunes_agg <- e$Gilets_jaunes
+e$Gilets_jaunes_agg[e$Gilets_jaunes == "soutient"] <- "soutient"
+e$availability_transport_dummy <- e$availability_transport >= 0
+
+
 end_formula <- paste(c(control_variables), collapse = ') + (') #  treatment_climate * treatment_policy
 end_formula <- paste(c("(", end_formula), collapse = "")
 end_formula <- paste(c(end_formula, ")"), collapse = "")
 
 # Policies support with indexes
 # end_formula3 <- paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + ') #  treatment_climate * treatment_policy
+
 
 models <- list()
 models[["Policies support (simple no vote)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(control_variables[1:7]), collapse = ' + '))), data = e, weights = e$weight)
@@ -406,13 +413,16 @@ models[["Policies support (affected+knowledge)"]] <- lm(as.formula(paste("polici
 models[["Policies support (affected+knowledge efa)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge_efa"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Policies support (all)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + '))), data = e, weights = e$weight)
 
+models[["Policies support"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "Gilets_jaunes_agg", "polluting_sector", "availability_transport_dummy", "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + '))), data = e, weights = e$weight)
+
+
 cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "children1" = "Children", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "income_factorQ2" = "Income Q2", "income_factorQ3" = "Income Q3", 
                  "income_factorQ4" = "Income Q4", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
                  "age65+" = "age: 65+", "vote_aggBiden" = "vote: Biden", "vote_aggTrump" = "vote: Trump", "index_affected" = "Index affected",
-                 "index_knowledge" = "Index knowledge", "index_knowledge_efa" = "Index knowledge EFA", "CO2_emission" = "CO2 emissions (t/year)")
-coef_support_indexes_FR <- modelplot(models, coef_map = cov_lab_mod, conf_level = 0, 
+                 "index_knowledge" = "Index knowledge")
+coef_support_indexes_FR <- modelplot(models, coef_map = cov_lab_mod, conf_level = .95, 
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Support for all policies')
 save_plotly(coef_support_indexes_FR, width= 736, height=719)
 
