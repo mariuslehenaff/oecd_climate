@@ -943,6 +943,7 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 #    What to use for vote_agg (non-voters as hypothetical voters or separate category)? => vote_agg with hypothetical
 #     Comme control: left_right numeric (+ lr^2?), <0/==0/>0/PNR, vote_agg => binaire?
 # maintaining => sustaining satisfactory standard of living
+# TODO: pourquoi gilets jaunes + pro climat? ont-ils changé d'avis ? de composition ? framing ? pck il manque 1/4?
 
 # knowledge_all <- cbind(e$knowledge_CC, knowledge)
 # names(knowledge_all) <- c("Knowledge", "GhG", "Activities",  "Anthropogenic", "Exists", "Target", "Region")
