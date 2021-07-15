@@ -428,19 +428,20 @@ positive_all_by_female_FR <- ggplot(mean_sd) +
   scale_color_manual(labels = c("Male", "Female"),values = c("#FDAE61", "#ABD9E9"))
 positive_all_by_female_FR
 
-# Yellow jackets
-e$yellow_jacket <- e$gilets_jaunes > 0
+# Yellow Vests
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "yellow_jacket", df=e, weights = "weight")))
+                             heterogeneity_group = "Gilets_jaunes_agg", df=e, weights = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+mean_sd$Gilets_jaunes_agg <- factor(mean_sd$Gilets_jaunes_agg, levels = c("oppose", "NSP", "comprend", "soutient", "est_dedans"))
 
-positive_all_by_yellow_jacket_FR <- ggplot(mean_sd) +
-  geom_pointrange( aes(x = V1, y = policy, color = yellow_jacket, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+
+positive_all_by_yellow_vests_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = Gilets_jaunes_agg, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = 'Positive answers in (%)', y = '', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
-  scale_color_manual(labels = c("Do not support Yellow Jackets", "Support Yellow Jackets"),values = c("#FDAE61", "#ABD9E9"))
-positive_all_by_yellow_jacket_FR
+  scale_color_manual(labels = c("Oppose", "Understand", "Support", "Participate", "PNR"),values = c(brewer.pal(4, "RdBu")), na.value = "grey70")
+positive_all_by_yellow_vests_FR
 
 # CC anthropogenic
 e$CC_anthropogenic_dummy <- e$CC_anthropogenic > 0
@@ -471,7 +472,7 @@ positive_all_by_children_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = children, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = 'Positive answers in (%)', y = '', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
-  scale_color_manual(labels = c("No children", "Children"),values = c("#FDAE61", "#ABD9E9"))
+  scale_color_manual(labels = c("No child", "child(ren) at home"),values = c("#FDAE61", "#ABD9E9"))
 positive_all_by_children_FR
 
 #Employment
