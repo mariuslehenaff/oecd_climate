@@ -950,5 +950,5 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # p.matc <- cor.mtest(knowledge_all)
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
-# Ana: Spanish translation (incl. update), Indonesian revision, South African voice, Zulu translation, caste
-# Bluebery: elec prices, quotas
+# Ana: Spanish translation (incl. update), Indonesian revision, Indian revision
+# Bluebery: gas/heating oil prices, => party classification
