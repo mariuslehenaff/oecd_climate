@@ -455,3 +455,34 @@ positive_all_by_CC_anthropogenic_FR <- ggplot(mean_sd) +
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
   scale_color_manual(labels = c("CC is not anthropogenic", "CC is anthropogenic"),values = c("#FDAE61", "#ABD9E9"))
 positive_all_by_CC_anthropogenic_FR
+
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "children", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+#Children
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "children", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_children_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = children, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("No children", "Children"),values = c("#FDAE61", "#ABD9E9"))
+positive_all_by_children_FR
+
+#Employment
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "employment_status", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_employment_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = employment_status, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(values = c(brewer.pal(7, "RdBu")))
+positive_all_by_employment_FR
