@@ -3468,7 +3468,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$Gilets_jaunes <- relevel(e$Gilets_jaunes, 'oppose')
     
     e$Gilets_jaunes_agg <- e$Gilets_jaunes
-    e$Gilets_jaunes_agg[e$Gilets_jaunes == "soutient"] <- "soutient"
+    e$Gilets_jaunes_agg[e$Gilets_jaunes == "est_dedans"] <- "soutient"
     # e$Gilets_jaunes_agg[e$Gilets_jaunes %in% c("est_dedans", "soutient")] <- "supports"
     # e$Gilets_jaunes_agg[e$Gilets_jaunes %in% c("comprend")] <- "understands"
     # e$Gilets_jaunes_agg[e$Gilets_jaunes %in% c("NSP")] <- "PNR"
