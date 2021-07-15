@@ -248,7 +248,7 @@ willing_by_income_FR <- ggplot(mean_sd) +
   scale_color_manual(values = c(brewer.pal(4, "RdBu")))
 willing_by_incomes_FR
 
-### INDEXES PART
+### ALL POSITIVE ANSWERS PART
 
 # heterogeneity_mean_CI_01 <- function(variable_name, heterogeneity_group, df=e, weights = "weight"){
 #   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
@@ -296,7 +296,7 @@ positive_all_by_political_FR
 # Vote_agg
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                              heterogeneity_group = "vote_agg", df=e, weights = "weight")))
-mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 mean_sd$vote_agg <- factor(mean_sd$vote_agg, levels = c("Left", "Center", "Right", "Far right", "PNR or other"))
 
 positive_all_by_vote_agg_FR <- ggplot(mean_sd) +
@@ -311,7 +311,7 @@ mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI,
                              heterogeneity_group = "urban_category", df=e, weights = "weight")))
 mean_sd <- mean_sd %>%
   subset(urban_category != "0") # 1 obs is 0
-mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 mean_sd$urban_category <- factor(mean_sd$urban_category, levels = c("Other", "Couronne_GP", "GP"))
 
 positive_all_by_urban_FR <- ggplot(mean_sd) +
@@ -325,7 +325,7 @@ positive_all_by_urban_FR
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                              heterogeneity_group = "polluting_sector", df=e, weights = "weight")))
 
-mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
 positive_all_by_polluting_sector_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = polluting_sector, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
@@ -339,7 +339,7 @@ e$availability_transport_dummy <- e$availability_transport >= 0
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                              heterogeneity_group = "availability_transport_dummy", df=e, weights = "weight")))
 
-mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
 positive_all_by_availability_transport_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = availability_transport_dummy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
@@ -353,7 +353,7 @@ e$gas_expenses_dummy <- e$gas_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                              heterogeneity_group = "gas_expenses_dummy", df=e, weights = "weight")))
 
-mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
 positive_all_by_gas_expenses_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = gas_expenses_dummy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
@@ -367,7 +367,7 @@ e$heating_expenses_dummy <- e$heating_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                              heterogeneity_group = "heating_expenses_dummy", df=e, weights = "weight")))
 
-mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
 positive_all_by_heating_expenses_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = heating_expenses_dummy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
@@ -380,11 +380,78 @@ positive_all_by_heating_expenses_FR
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                              heterogeneity_group = "income", df=e, weights = "weight")))
 
-mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
 positive_all_by_income_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = income, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = 'Positive answers in (%)', y = '', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
   scale_color_manual(values = c(brewer.pal(4, "RdBu")))
-positive_all_by_incomes_FR
+positive_all_by_income_FR
+
+# Age
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "age", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_age_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = age, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(values = c(brewer.pal(5, "RdBu")))
+positive_all_by_age_FR
+
+# Diploma
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "diploma", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_diploma_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = diploma, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(values = c(brewer.pal(4, "RdBu")))
+positive_all_by_diploma_FR
+
+# Female
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "female", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_female_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = female, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Male", "Female"),values = c("#FDAE61", "#ABD9E9"))
+positive_all_by_female_FR
+
+# Yellow jackets
+e$yellow_jacket <- e$gilets_jaunes > 0
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "yellow_jacket", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_yellow_jacket_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = yellow_jacket, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Do not support Yellow Jackets", "Support Yellow Jackets"),values = c("#FDAE61", "#ABD9E9"))
+positive_all_by_yellow_jacket_FR
+
+# CC anthropogenic
+e$CC_anthropogenic_dummy <- e$CC_anthropogenic > 0
+mean_sd <- bind_rows((lapply(variables_list[2:10], heterogeneity_mean_CI, 
+                             heterogeneity_group = "CC_anthropogenic_dummy", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list[2:10], labels = policies_label[2:10]))
+
+positive_all_by_CC_anthropogenic_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = CC_anthropogenic_dummy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("CC is not anthropogenic", "CC is anthropogenic"),values = c("#FDAE61", "#ABD9E9"))
+positive_all_by_CC_anthropogenic_FR
