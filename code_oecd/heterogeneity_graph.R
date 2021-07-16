@@ -429,18 +429,22 @@ positive_all_by_female_FR <- ggplot(mean_sd) +
 positive_all_by_female_FR
 
 # Yellow Vests
+e$Gilets_jaunes_agg <- e$Gilets_jaunes
+e$Gilets_jaunes_agg[e$Gilets_jaunes == "est_dedans"] <- "soutient"
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                              heterogeneity_group = "Gilets_jaunes_agg", df=e, weights = "weight")))
 
+mean_sd <- mean_sd %>%
+  subset(Gilets_jaunes_agg != "est_dedans")
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
-mean_sd$Gilets_jaunes_agg <- factor(mean_sd$Gilets_jaunes_agg, levels = c("oppose", "NSP", "comprend", "soutient", "est_dedans"))
+mean_sd$Gilets_jaunes_agg <- factor(mean_sd$Gilets_jaunes_agg, levels = c("oppose", "NSP", "comprend", "soutient"))
 
 
 positive_all_by_yellow_vests_FR <- ggplot(mean_sd) +
   geom_pointrange( aes(x = V1, y = policy, color = Gilets_jaunes_agg, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = 'Positive answers in (%)', y = '', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
-  scale_color_manual(labels = c("Oppose", "Understand", "Support", "Participate", "PNR"),values = c(brewer.pal(4, "RdBu")), na.value = "grey70")
+  scale_color_manual(labels = c("Oppose", "PNR", "Understand", "Support"),values = c(brewer.pal(4, "RdBu")))
 positive_all_by_yellow_vests_FR
 
 # CC anthropogenic
@@ -487,3 +491,102 @@ positive_all_by_employment_FR <- ggplot(mean_sd) +
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
   scale_color_manual(values = c(brewer.pal(7, "RdBu")))
 positive_all_by_employment_FR
+
+
+
+### CC responsible
+
+# Graphs
+e$responsible_CC_companies_dummy_2 <- e$responsible_CC_companies == 2
+e$responsible_CC_each_dummy_2 <- e$responsible_CC_each == 2
+e$responsible_CC_govt_dummy_2 <- e$responsible_CC_govt == 2
+
+e$responsible_CC_companies_dummy_pos <- e$responsible_CC_companies > 0
+e$responsible_CC_each_dummy_pos <- e$responsible_CC_each > 0
+e$responsible_CC_govt_dummy_pos <- e$responsible_CC_govt > 0
+
+e$collective_pb_score <- e$responsible_CC_each - (e$responsible_CC_rich + e$responsible_CC_govt + e$responsible_CC_companies)/3
+e$collective_pb_score_dummy <- e$collective_pb_score > 0
+
+# Option 1
+mean_sd <- bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
+                             heterogeneity_group = "responsible_CC_companies_dummy_2", df=e, weights = "weight")))
+mean_sd$responsible_CC_companies_dummy_2[mean_sd$responsible_CC_companies_dummy_2 == "TRUE"] <- "T_companies" 
+mean_sd$responsible_CC_companies_dummy_2[mean_sd$responsible_CC_companies_dummy_2 == "FALSE"] <- "F_companies" 
+mean_sd <- mean_sd %>%
+  rename(responsible_CC_each_dummy_2 = responsible_CC_companies_dummy_2)
+
+mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
+                             heterogeneity_group = "responsible_CC_each_dummy_2", df=e, weights = "weight"))))
+mean_sd$responsible_CC_each_dummy_2[mean_sd$responsible_CC_each_dummy_2 == "TRUE"] <- "T_each" 
+mean_sd$responsible_CC_each_dummy_2[mean_sd$responsible_CC_each_dummy_2 == "FALSE"] <- "F_each" 
+mean_sd <- mean_sd %>%
+  rename(responsible_CC_govt_dummy_2 = responsible_CC_each_dummy_2)
+
+mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
+                                           heterogeneity_group = "responsible_CC_govt_dummy_2", df=e, weights = "weight"))))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+
+positive_all_by_responsible_option1_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = responsible_CC_govt_dummy_2, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Not companies", "Not each", "Not government", "Companies", "Each", "Government"),values = c("#FDDBC7", "#EF8A62", "#B2182B", "#D1E5F0", "#67A9CF", "#2166AC"))
+positive_all_by_responsible_option1_FR
+
+# Option 2 (same graph)
+mean_sd <- bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
+                             heterogeneity_group = "responsible_CC_companies_dummy_pos", df=e, weights = "weight")))
+mean_sd$responsible_CC_companies_dummy_pos[mean_sd$responsible_CC_companies_dummy_pos == "TRUE"] <- "T_companies" 
+mean_sd$responsible_CC_companies_dummy_pos[mean_sd$responsible_CC_companies_dummy_pos == "FALSE"] <- "F_companies" 
+mean_sd <- mean_sd %>%
+  rename(responsible_CC_each_dummy_pos = responsible_CC_companies_dummy_pos)
+
+mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
+                                            heterogeneity_group = "responsible_CC_each_dummy_pos", df=e, weights = "weight"))))
+mean_sd$responsible_CC_each_dummy_pos[mean_sd$responsible_CC_each_dummy_pos == "TRUE"] <- "T_each" 
+mean_sd$responsible_CC_each_dummy_pos[mean_sd$responsible_CC_each_dummy_pos == "FALSE"] <- "F_each" 
+mean_sd <- mean_sd %>%
+  rename(responsible_CC_govt_dummy_pos = responsible_CC_each_dummy_pos)
+
+mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
+                                            heterogeneity_group = "responsible_CC_govt_dummy_pos", df=e, weights = "weight"))))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+
+positive_all_by_responsible_option2_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = responsible_CC_govt_dummy_pos, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Not companies", "Not each", "Not government", "Companies", "Each", "Government"),values = c("#FDDBC7", "#EF8A62", "#B2182B", "#D1E5F0", "#67A9CF", "#2166AC"))
+positive_all_by_responsible_option2_FR
+
+# Option 3
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "collective_pb_score_dummy", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_responsible_option3_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = collective_pb_score_dummy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Negative score", "Positive score"),values = c("#FDAE61", "#ABD9E9"))
+positive_all_by_responsible_option3_FR
+
+# Trust
+e$can_trust_govt_dummy <- e$can_trust_govt > 0
+mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "can_trust_govt_dummy", df=e, weights = "weight")))
+
+mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
+
+positive_all_by_trust_govt_FR <- ggplot(mean_sd) +
+  geom_pointrange( aes(x = V1, y = policy, color = can_trust_govt_dummy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers in (%)', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Don't trust govt", "Trust govt") ,values = c("#FDAE61", "#ABD9E9"))
+positive_all_by_trust_govt_FR

@@ -389,9 +389,11 @@ desc_table(dep_vars = "policies_support > 0",
 # e <- us
 e <- fr
 
-e$Gilets_jaunes_agg <- e$Gilets_jaunes
-e$Gilets_jaunes_agg[e$Gilets_jaunes == "soutient"] <- "soutient"
+
 e$availability_transport_dummy <- e$availability_transport >= 0
+
+e$Gilets_jaunes_agg <- e$Gilets_jaunes
+e$Gilets_jaunes_agg[e$Gilets_jaunes == "est_dedans"] <- "soutient"
 
 control_variables <- c(control_variables[1:7], "as.factor(vote_agg)")
 end_formula <- paste(c(control_variables), collapse = ') + (') #  treatment_climate * treatment_policy
@@ -416,14 +418,14 @@ models[["Policies support (all)"]] <- lm(as.formula(paste("policies_support > 0 
 models[["Policies support"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "polluting_sector", "availability_transport_dummy", "index_affected", "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight)
 
 
-cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Children", "collegeNo college" = "No college",
+cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "income_factorQ2" = "Income Q2", "income_factorQ3" = "Income Q3", 
                  "income_factorQ4" = "Income Q4", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
                  "age65+" = "age: 65+", "vote_aggBiden" = "vote: Biden", "vote_aggTrump" = "vote: Trump", "index_affected" = "Index affected",
                  "index_knowledge" = "Index knowledge")
 
-cov_lab_mod2 <- c("childrenTRUE" = "Children", "collegeNo college" = "No college",
+cov_lab_mod2 <- c("childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
                  "age65+" = "age: 65+","as.factor(vote_agg)Center" = "vote: Center", "as.factor(vote_agg)Right" = "vote: Right", "as.factor(vote_agg)Far right" = "vote: Far right", "polluting_sectorTRUE"= "Work in polluting sector",
