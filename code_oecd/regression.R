@@ -473,3 +473,18 @@ save_plotly(coef_Right_FR, width= 736, height=719)
 # 
 # 
 # modelplot(models_1) + labs(x = 'Support', y = 'Policies', title = 'Support by political affiliation')
+
+# Yellow Vests
+all_controls <- c("income", "interested_politics", "member_environmental_orga", "left_right", "gender", "urban", "urbanity", "age", "diploma", "employment_status", "polluting_sector", "region", "HH_size", "Nb_children__14", "children", "couple", "marital_status", "heating", "gas_expenses", "heating_expenses", "availability_transport", "transport_work", "transport_leisure")
+desc_table(dep_vars = c("tax_transfers_support > 0", "tax_transfers_support >= 0"), filename = "FR/yellow_vests_tax_transfers",
+           dep.var.labels = c("Approval", "Acceptance"), nolabel = T,
+           dep.var.caption = c("Tax with cash transfers"), data = fr, indep_vars = c("Gilets_jaunes", 'index_knowledge_efa', "(CC_problem == 2)", all_controls))
+desc_table(dep_vars = c("CC_anthropogenic > 0", "index_knowledge_efa", "CC_problem == 2"), filename = "FR/yellow_vests_climate",
+           dep.var.labels = c("CC is anthropogenic", "Knowledge about CC", "CC an important problem"), nolabel = T,
+           data = fr, indep_vars = c("Gilets_jaunes", all_controls))
+
+summary(lm(as.formula(paste("tax_transfers_support > 0 ~ ", paste(c("Gilets_jaunes", 'index_knowledge_efa', "(CC_problem == 2)", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
+summary(lm(as.formula(paste("tax_transfers_support >= 0 ~ ", paste(c("Gilets_jaunes", 'index_knowledge_efa', "(CC_problem == 2)", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
+summary(lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(c("Gilets_jaunes", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
+summary(lm(as.formula(paste("index_knowledge_efa ~ ", paste(c("Gilets_jaunes", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
+summary(lm(as.formula(paste("CC_problem == 2 ~ ", paste(c("Gilets_jaunes", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
