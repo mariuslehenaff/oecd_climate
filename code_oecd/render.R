@@ -38,7 +38,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     variables_controls <- variables_main_controls[which(variables_main_controls %in% names(e))] 
     print(paste0("Missing controls for ", country, ": ", variables_main_controls[which(!(variables_main_controls %in% names(e)))]))
     
-    try({desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC > 0", "willing_limit_driving > 0"), filename = paste0(toupper(country), "_1"), save_folder = "../tables/", 
+    try({desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC == 2", "willing_limit_driving > 0"), filename = paste0(toupper(country), "_1"), save_folder = "../tables/", 
                     dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\% of max)", paste0(toupper(country), " should fight CC"), "Willing to limit driving"),
                     data = e, keep = c("treatment"), indep_vars = c(variables_controls, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
     )})
@@ -265,7 +265,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     #   save_plotly_new_filename(know_treatment_climate_US, width= 580, height=140)})
     
     try({(know_treatment_climate_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Score knowledge climate video"))
-      save_plotly_new_filename(know_treatment_climate_US, width= 580, height=140)})
+      save_plotly_new_filename(know_treatment_climate_US, width= 580, height=140)}) # TODO "all wrong"..
     
     # try({(know_treatment_climate_watched_US <- barres(vars = "know_treatment_climate", rev = F, rev_color = T, export_xls = export_xls, df = e[e$watched_climate=='Yes',], miss=F, labels="Score knowledge climate video"))
     #   save_plotly_new_filename(know_treatment_climate_watched_US, width= 580, height=140)})
@@ -1092,7 +1092,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(GHG_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("GHG_CO2", "GHG_methane", "GHG_H2", "GHG_particulates"), export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, showLegend = F, labels=c("CO<sub>2</sub>", "Methane", "Hydrogen", "Particulates")))
       save_plotly_new_filename(GHG_US, width= 270, height=fig_height(4*nb_levels))})
     
-    try({(score_GHG_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "score_GHG", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG"))
+    try({(score_GHG_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "score_GHG", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG")) # TODO: add "0 (all wrong)" "4 (all right)"
       save_plotly_new_filename(score_GHG_US, width= 550, height=fig_height(1*nb_levels))}) 
     
     try({(footprint_elec_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$el[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$el[c(2,1,3)]))
@@ -1168,7 +1168,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(scores_footprint_US, width= 500, height=fig_height(3*nb_levels))})
     
     labels_CC_impacts <- c()
-    for (v in variables_CC_impacts) labels_CC_impacts <- c(labels_CC_impacts, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+    for (v in variables_CC_impacts) labels_CC_impacts <- c(labels_CC_impacts, sub('.* - ', '', sub('.*: ', '', Label(e[[v]])))) # TODO? change color/rev?
     try({(CC_impacts_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = variables_CC_impacts, export_xls = export_xls, df = e, miss=F, rev_color=T, labels=labels_CC_impacts))
       save_plotly_new_filename(CC_impacts_US, width= 800, height=fig_height(5*nb_levels)) })
     
