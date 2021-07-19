@@ -4415,4 +4415,4 @@ for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_k
 all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = weights, na.rm = T))
 label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
-write.csv2(all, "../data/all.csv")
+# write.csv(all, "../data/all.csv") # bug: quotes are not put around items so that messes things up as there are "," and ";" in some of them.
