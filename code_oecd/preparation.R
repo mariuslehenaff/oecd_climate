@@ -4416,3 +4416,7 @@ all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all
 label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
 write.csv2(all, "../data/all.csv")
+# all_bis <- janitor::clean_names(all)
+# df = as.data.frame(apply(all_bis, 2, function(x){
+#   if(class(x) == 'character') substr(x, 1, 128) else x}))
+# write_dta(df, "all.dta")
