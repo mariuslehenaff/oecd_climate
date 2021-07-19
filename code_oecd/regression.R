@@ -391,6 +391,8 @@ e <- fr
 
 
 e$availability_transport_dummy <- e$availability_transport >= 0
+e$can_trust_govt_dummy <- e$can_trust_govt > 0
+
 
 e$Gilets_jaunes_agg <- e$Gilets_jaunes
 e$Gilets_jaunes_agg[e$Gilets_jaunes == "est_dedans"] <- "soutient"
@@ -415,7 +417,7 @@ models[["Policies support (affected+knowledge)"]] <- lm(as.formula(paste("polici
 models[["Policies support (affected+knowledge efa)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge_efa"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Policies support (all)"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + '))), data = e, weights = e$weight)
 
-models[["Policies support"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "polluting_sector", "availability_transport_dummy", "index_affected", "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight)
+models[["Policies support"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "polluting_sector", "can_trust_govt_dummy", "availability_transport_dummy", "index_affected", "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight)
 
 
 cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
@@ -428,8 +430,10 @@ cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTR
 cov_lab_mod2 <- c("childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
-                 "age65+" = "age: 65+","as.factor(vote_agg)Center" = "vote: Center", "as.factor(vote_agg)Right" = "vote: Right", "as.factor(vote_agg)Far right" = "vote: Far right", "polluting_sectorTRUE"= "Work in polluting sector",
-                "availability_transport_dummyTRUE" = "Public transport available" ,"index_affected" = "Index affected","index_knowledge" = "Index knowledge")
+                 "age65+" = "age: 65+","as.factor(vote_agg)Center" = "vote: Center", "as.factor(vote_agg)Right" = "vote: Right", "as.factor(vote_agg)Far right" = "vote: Far right", 
+                "can_trust_govt_dummyTRUE" = "Trust government","polluting_sectorTRUE"= "Work in polluting sector",
+                "availability_transport_dummyTRUE" = "Public transport available",
+                "index_affected" = "Index affected","index_knowledge" = "Index knowledge")
 coef_support_indexes_FR <- modelplot(models, conf_level = .95, coef_map = cov_lab_mod2,
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = '')
 save_plotly(coef_support_indexes_FR, width= 736, height=719)
