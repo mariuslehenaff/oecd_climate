@@ -109,8 +109,8 @@ loadings_efa <- list()
     "gender" = c(0.524, 0.000001, 0.476),
     "income" = rep(.25, 4),
     "urban" = c(0.4699139, 0.5300861), 
-    "IT_region" = c(0.2666, 0.1931, 0.1991, 0.2312, 0.1100),
-    "IT_urban_category" = c(0.3560815, 0.4741165, 0.169802),
+    "IT_region" = c(0.2659,  0.1920,  0.1971,  0.2340,  0.1109),
+    "IT_urban_category" = c(0.349, 0.480, 0.170),
     "age" = c(0.080, 0.122, 0.242, 0.271, 0.285)
   ),
   "UK" = list(
@@ -4415,4 +4415,8 @@ for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_k
 all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = weights, na.rm = T))
 label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
+# all_bis <- janitor::clean_names(all)
+# df = as.data.frame(apply(all_bis, 2, function(x){
+#   if(class(x) == 'character') substr(x, 1, 128) else x}))
+# write_dta(df, "all.dta")
 # write.csv(all, "../data/all.csv") # bug: quotes are not put around items so that messes things up as there are "," and ";" in some of them.
