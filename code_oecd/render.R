@@ -315,7 +315,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       save_plotly_new_filename(footprint_elec_US, width= 400, height=220) })
     
     try({(footprint_transport_US <- barres(vars = Variables_footprint$tr[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$tr[c(2,1,3)]))
-      save_plotly_new_filename(footprint_transport_US, width= 400, height=220) })
+      save_plotly_new_filename(footprint_transport_US, width= 400, height=220) }) # TODO: train for some countries
     
     try({(footprint_food_US <- barres(vars = Variables_footprint$fd[c(2,3,1)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$fd[c(2,3,1)]))
       save_plotly_new_filename(footprint_food_US, width= 400, height=220) }) # TODO India no beef
@@ -1874,6 +1874,7 @@ render_country_comparison(along = "country_name", parentheses = F, nolabel = T, 
 update_constant(fr)
 update_constant(all)
 update_constant(dk)
+update_constant(us)
 
 # # (temp <- barresN(vars = "CC_anthropogenic", export_xls = export_xls, df = all, along = "country", rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic"))
 # # (temp <- barresN(vars = "CC_anthropogenic", export_xls = export_xls, df = all, along = "country_name", rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic", parentheses = F, nolabel = T))
