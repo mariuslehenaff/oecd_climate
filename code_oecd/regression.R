@@ -492,3 +492,12 @@ summary(lm(as.formula(paste("tax_transfers_support >= 0 ~ ", paste(c("Gilets_jau
 summary(lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(c("Gilets_jaunes", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
 summary(lm(as.formula(paste("index_knowledge_efa ~ ", paste(c("Gilets_jaunes", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
 summary(lm(as.formula(paste("CC_problem == 2 ~ ", paste(c("Gilets_jaunes", all_controls), collapse = '+'))), data = fr, weights = fr$weight))
+decrit(fr$effect_halt_CC_economy)
+# Insulation support ~ tenant
+summary(lm(insulation_support > 0 ~ home_tenant, data = fr, weights = fr$weight))
+summary(lm(policies_support > 0 ~ policies_negative_effect > 0, data = fr, weights = fr$weight))
+summary(lm(policies_support > 0 ~ effect_halt_CC_economy > 0, data = fr, weights = fr$weight))
+summary(lm(policies_support ~ policies_negative_effect, data = fr, weights = fr$weight))
+summary(lm(policies_support ~ effect_halt_CC_economy, data = fr, weights = fr$weight))
+end_formula
+summary(lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "polluting_sector", "can_trust_govt_dummy", "availability_transport_dummy", "index_affected", "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight))
