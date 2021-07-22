@@ -32,7 +32,7 @@ df_4 <- df_4[!duplicated(df_4),]
 merge_1 <- merge(x=df_4, y=data2[,c("zipcode", "pop.total", "density_type")], by=c("zipcode"), all.x=T)
 merge_1$density_type <- as.integer(merge_1$density_type)
 
-# For each name and Vorwahl (to uniquely identify a city) we give max zipcode
+# For each name and Vorwahl (to uniquely identify a city) we give max density_type
 # This allows to allocate a density_type for each zip code
 merge_1 <- merge_1 %>%
   group_by(name,Vorwahl) %>%
@@ -48,7 +48,7 @@ merge_1$density_type_2[merge_1$density_type_2<0] <- 3
 
 Northern <-	c("Bremen", "Hamburg", "Niedersachsen", "Mecklenburg-Vorpommern", "Schlewig-Holstein")
 Western	<- c("Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland")
-Central	<- c("Hesses", "Thüringen")
+Central	<- c("Hessen", "Thüringen")
 Eastern <- c("Berlin", "Brandenburg", "Sachsen", "Sachsen-Anhalt")
 Southern <- c("Baden-Württemberg", "Bayern")
 
@@ -58,10 +58,11 @@ merge_1$Region[merge_1$Bundesland %in% Central] <- "Central"
 merge_1$Region[merge_1$Bundesland %in% Eastern] <- "Eastern"
 merge_1$Region[merge_1$Bundesland %in% Southern] <- "Southern"
 
-merge_1$Urbanity[merge_1$density_type_2 < 3] <- "Urban"
+merge_1$Urbanity[merge_1$density_type_2 == 1] <- "Cities"
+merge_1$Urbanity[merge_1$density_type_2 == 2] <- "Towns_and_Suburbs"
 merge_1$Urbanity[merge_1$density_type_2 == 3] <- "Rural"
 
 merge_1 <- merge_1 %>%
   select(zipcode, Urbanity, Region)
 
-write.csv(merge_1,"Germany_zipcode.csv", row.names=T)
+write.csv(merge_1,"Germany_zipcode.csv", row.names=F)
