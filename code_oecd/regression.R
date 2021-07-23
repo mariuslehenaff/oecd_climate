@@ -384,18 +384,18 @@ desc_table(dep_vars = "policies_support > 0",
 # )
 
 ## Plots coefficient as figures
-# e <- dk
+e <- dk
 # Need to change names (e.g., _US, _DK, _FR) of files lines 398/400; 409/411; 417/419
 # e <- us
-e <- fr
+# e <- fr
 
 
 e$availability_transport_dummy <- e$availability_transport >= 0
 e$can_trust_govt_dummy <- e$can_trust_govt > 0
 
 
-e$Gilets_jaunes_agg <- e$Gilets_jaunes
-e$Gilets_jaunes_agg[e$Gilets_jaunes == "est_dedans"] <- "soutient"
+# e$Gilets_jaunes_agg <- e$Gilets_jaunes
+# e$Gilets_jaunes_agg[e$Gilets_jaunes == "est_dedans"] <- "soutient"
 
 control_variables <- c(control_variables[1:7], "as.factor(vote_agg)")
 end_formula <- paste(c(control_variables), collapse = ') + (') #  treatment_climate * treatment_policy
@@ -430,13 +430,16 @@ cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTR
 cov_lab_mod2 <- c("childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
-                 "age65+" = "age: 65+","as.factor(vote_agg)Center" = "vote: Center", "as.factor(vote_agg)Right" = "vote: Right", "as.factor(vote_agg)Far right" = "vote: Far right", 
+                 "age65+" = "age: 65+", "as.factor(vote_agg)Social democracts & Center" = "vote: Social democracts & Center", "as.factor(vote_agg)Right" = "vote: Right",
+                 "as.factor(vote_agg)Far right" = "vote: Far right", "as.factor(vote_agg)Trump" = "vote: Trump", "as.factor(vote_agg)Center" = "vote: Center", "as.factor(vote_agg)Right" = "vote: Right", "as.factor(vote_agg)Far right" = "vote: Far right", 
                 "can_trust_govt_dummyTRUE" = "Trust government","polluting_sectorTRUE"= "Work in polluting sector",
                 "availability_transport_dummyTRUE" = "Public transport available",
                 "index_affected" = "Index affected","index_knowledge" = "Index knowledge")
-coef_support_indexes_FR <- modelplot(models, conf_level = .95, coef_map = cov_lab_mod2,
+# Run first w/o coef_map to check variables you want to include
+# Include in cov_lab_mod, only the variables you want to display. Order matter for order of appearance on the graph
+coef_support_indexes_US <- modelplot(models, conf_level = .95,
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = '')
-save_plotly(coef_support_indexes_FR, width= 736, height=719)
+save_plotly(coef_support_indexes_US, width= 736, height=719)
 
 # Indexes
 
