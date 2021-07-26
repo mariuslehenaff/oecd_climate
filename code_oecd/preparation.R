@@ -11,9 +11,9 @@ control_variables_w_treatment <- c("dominant_origin", "female", "children", "col
 cov_lab_w_treatment <- c("race: White only", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center", "Climate treatment only", "Policy treatment only", "Both treatments")
 
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
-euro_countries <- c("DK", "FR", "DE", "IT", "PL", "ES", "UK")
-euro_countries_names <- c("Denmark", "France", "Germany", "Italy", "Poland", "Spain", "United Kingdom")
-year_countries <- c(2020, 2019, 2019, 2019, 2019, 2019, 2018)
+euro_countries <- c("DK", "FR", "DE", "IT", "PL", "ES", "UK") # , "TR"
+euro_countries_names <- c("Denmark", "France", "Germany", "Italy", "Poland", "Spain", "United Kingdom") # , "Turkey"
+year_countries <- c(2020, 2019, 2019, 2019, 2019, 2019, 2018) # , 2019
 names(year_countries) <- euro_countries
 inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised disposable income deciles in LCU
 for (i in 1:9) for (c in euro_countries) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", year_countries[c])]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)]))
