@@ -1704,7 +1704,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     main_variables_behavior <<- c("flights_agg", "flights_agg", "frequency_beef", "transport_work", "CC_talks", "member_environmental_orga")
     # future_richness: >= richer, net_zero_feasible, CC_affects_self, effect_halt_CC_lifestyle: >= A lot; effect_halt_CC..: >= positive; CC_will_end: >= somewhat likely
     labels_main_behavior <<- c("At least one flight between 2017 and 2019", "More than one flight per year on average", "Eats beef at least once a week", "Commutes by car/motorbike", "Talks or thinks of CC several times a month", "Is member of an environmental organisation")
-    try({temp <- heatmap_table(vars = main_variables_behavior, along = along, conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T)
+    try({temp <- heatmap_table(vars = main_variables_behavior, along = along, conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T) # TODO! change commutes by leisure
     row.names(temp) <- labels_main_behavior
     heatmap_plot(temp, proportion = (cond != ""))
     save_plot(filename = paste0(folder, "behavior", replacement_text), width = 800, height = 400)})
