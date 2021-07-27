@@ -252,7 +252,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(transport_US <- barres(vars = variables_transport_graph, export_xls = export_xls, df = e, rev = F, miss = F,rev_color = T,  labels=labels_transport))
       save_plotly_new_filename(transport_US, width= 850, height=275) })
     
-    try({(availability_transport_US <- barres(vars = "availability_transport", export_xls = export_xls, df = e, rev_color = F, miss=F, labels="Quality and availability of public transport near your home"))
+    try({(availability_transport_US <- barres(vars = "availability_transport", export_xls = export_xls, df = e, rev_color = T, rev = F, miss=F, labels="Quality and availability of public transport near your home"))
       save_plotly_new_filename(availability_transport_US, width= 870, height=140)})
     
     ##### POST-TREATMENT #####
@@ -564,7 +564,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     labels_policy[5] <- "Financing clean energy in low-income countries" 
     labels_policy[2] <- paste0("National tax on fossil fuels (+", tax_price_increase[country], ")") 
     try({(policy_US <- barres(vars = variables_policy, export_xls = export_xls, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_policy, hover=labels_support))
-      save_plotly_new_filename(policy_US, width= 920, height=340)})
+      save_plotly_new_filename(policy_US, width= 920, height=340)}) # TODO: policy_all with insulation_support
     
     labels_tax <- c()
     for (v in variables_tax) labels_tax <- c(labels_tax, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -1030,7 +1030,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(transport_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = variables_transport_graph, export_xls = export_xls, df = e, rev = F, miss = F,rev_color = T,  labels=labels_transport))
       save_plotly_new_filename(transport_US, width= 850, height=fig_height(3*nb_levels)) })
     
-    try({(availability_transport_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "availability_transport", export_xls = export_xls, df = e, rev_color = T, miss=F, labels="Quality and availability of public transport near your home"))
+    try({(availability_transport_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "availability_transport", export_xls = export_xls, df = e, rev_color = T, rev = F, miss=F, labels="Quality and availability of public transport near your home"))
       save_plotly_new_filename(availability_transport_US, width= 870, height=fig_height(1*nb_levels))})
     
     ##### POST-TREATMENT #####
@@ -1698,16 +1698,16 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # unused: nb_actions_CC_field, nb_elements_CC_field
     
     main_variables_affected <<- c(variables_affected_index[c(1,2,5:7)], "index_affected")
-    labels_affected <<- c("Current/past job in a polluting sector", "Nb activities by car/motorbike", "Availability of transport", "Size of agglomeration", "Urban", "Index Affected by CC")
+    labels_affected <<- c("Current/past job in a polluting sector", "Uses car/motorbike", "Availability of transport", "Size of agglomeration", "Urban", "Index Affected by CC")
     heatmap_wrapper(vars = main_variables_affected, labels = labels_affected, conditions = heatmap_conditions, name = "affected")
     
     main_variables_behavior <<- c("flights_agg", "flights_agg", "frequency_beef", "transport_work", "CC_talks", "member_environmental_orga")
     # future_richness: >= richer, net_zero_feasible, CC_affects_self, effect_halt_CC_lifestyle: >= A lot; effect_halt_CC..: >= positive; CC_will_end: >= somewhat likely
-    labels_main_behavior <<- c("At least one flight between 2017 and 2019", "More than one flight per year on average", "Eat beef at least once a week", "Commutes by car/motorbike", "Talks or thinks of CC several times a month", "Is member of an environmental organisation")
-    try({temp <- heatmap_table(vars = main_variables_behavior, along = along, conditions = list("> 0", "> 1", ">= 2", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T)
+    labels_main_behavior <<- c("At least one flight between 2017 and 2019", "More than one flight per year on average", "Eats beef at least once a week", "Commutes by car/motorbike", "Talks or thinks of CC several times a month", "Is member of an environmental organisation")
+    try({temp <- heatmap_table(vars = main_variables_behavior, along = along, conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T)
     row.names(temp) <- labels_main_behavior
     heatmap_plot(temp, proportion = (cond != ""))
-    save_plot(filename = paste0(folder, "behavior_mean", replacement_text), width = 800, height = 400)})
+    save_plot(filename = paste0(folder, "behavior", replacement_text), width = 800, height = 400)})
     
     heatmap_wrapper(vars = c("car_work", "car_shopping", "car_leisure"), labels = paste("Uses own vehicle to", c("go to work", "go shopping", "leisure")), conditions = c("> 0"), name = "transport")
     variables_scores_footprint <<- c("score_footprint_elec", "score_footprint_food", "score_footprint_transport", "score_footprint_pc", "score_footprint_region")
@@ -1724,7 +1724,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     variables_future <<- c("future_richness", "net_zero_feasible",  "CC_will_end", "CC_affects_self","CC_impacts_extinction", "effect_halt_CC_economy", "effect_halt_CC_lifestyle")
     # future_richness: >= richer, net_zero_feasible, CC_affects_self, effect_halt_CC_lifestyle: >= A lot; effect_halt_CC..: >= positive; CC_will_end: >= somewhat likely
-    labels_future <<- c("World will be richer in 100 years", "Technically possible to stop emissions by 2100", "Likely that humans halt CC by 2100", "CC will affect me negatively", "Likely that CC causes extinction of humankind", "With ambitious climate policies, effects on economy", "Ambitious climate policies negative for my lifestyle")
+    labels_future <<- c("World will be richer in 100 years", "Technically possible to stop emissions by 2100", "Likely that humans halt CC by 2100", "CC will affect me negatively", "Likely that CC causes extinction of humankind", "Ambitious climate policies positive for economy", "Ambitious climate policies negative for my lifestyle")
     heatmap_wrapper(vars = variables_future, labels = labels_future, conditions = heatmap_conditions)
 
     heatmap_wrapper(vars = c("CC_anthropogenic", "CC_dynamic", "CC_problem", "CC_affects_self", "net_zero_feasible", "CC_will_end", "effect_halt_CC_economy", "effect_halt_CC_lifestyle") , 
@@ -1752,7 +1752,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     variables_burden_sharing_all <<- c(variables_scale, "if_other_do_more", "if_other_do_less", variables_burden_sharing, variables_global_policies)
     variables_burden_sharing_main <<- c("scale_global", variables_burden_sharing, variables_global_policies)
-    variables_burden_sharing_few <<- variables_burden_sharing_all[c(1,7,11,12,14)]
+    variables_burden_sharing_few <<- variables_burden_sharing_all[c(1,8,11,12,14)]
     # Levels: T/F; If...: >= More; burden_sharing: >= agree; Global..: >= somewhat support
     labels_heatmap_scale <<- paste("Level of climate policies needed:", c("global", "federal/continental", "state/national", "local"))
     labels_heatmap_burden_sharing <<- c("All countries should pay in proportion to income", "All countries should pay in proportion to current emissions", "All countries should pay in proportion to post-1990 emissions", "Richest should countries pay it all so poor ones don't pay", "Richest countries should pay even more to help vulnerable ones")
@@ -1762,7 +1762,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = variables_global_policies, labels = sub("<br>", "", labels_global_policies), conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_burden_sharing_all, labels = labels_burden_sharing_all, conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_burden_sharing_main, labels = labels_burden_sharing_all[c(1,7:14)], conditions = heatmap_conditions)
-    heatmap_wrapper(vars = variables_burden_sharing_few, labels = labels_burden_sharing_all[c(1,7,11,12,14)], conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_sharing_few, labels = labels_burden_sharing_all[c(1,8,11,12,14)], conditions = heatmap_conditions)
     # labels_burden_sharing_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
     # heatmap_wrapper(vars = variables_burden_sharing, labels = labels_burden_sharing_short, conditions = heatmap_conditions)
     # 
