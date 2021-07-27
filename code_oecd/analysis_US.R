@@ -533,3 +533,8 @@ summary(lm(should_fight_CC ~ future_richness + CC_anthropogenic, data = e))
 ##### Quality of answers #####
 decrit(e$duration[e$weird_good_CC_field==T]) # short
 decrit(e$zipcode[e$weird_good_CC_field==T]) # seem normal
+
+
+##### Beef #####
+decrit("willing_limit_beef", all)
+decrit("willing_limit_beef", all, which = all$frequency_beef > 0)
