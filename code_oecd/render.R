@@ -1781,7 +1781,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = variables_standard_win_lose, labels = labels_standard_win_lose, conditions = heatmap_conditions)
 
     heatmap_wrapper(name = "policies_support", vars = paste(names_policies, "support", sep="_"), labels = labels_policies, conditions = heatmap_conditions)
-    heatmap_wrapper(name = "policies_all_support", vars = c("standard_public_transport_support", paste(names_policies, "support", sep="_")), labels = c("Ban on combustion cars where\n public transport made available", labels_policies), conditions = heatmap_conditions)
+    heatmap_wrapper(name = "policies_all_support", vars = c(paste(rev(names_policies), "support", sep="_"), "standard_public_transport_support"), labels = c(rev(labels_policies), "Ban on combustion cars where\n public transport made available"), conditions = heatmap_conditions)
+    labels_policies_attitudes <<- c("Negative effect on economy and employment", "Large effect on economy and employment", "Costless way to reduce emissions", "Incidence on low-income earners", "Incidence on the middle class", "Incidence on high-income earners", "Incidence on those living in rural areas", "Incidence own household", "Fair")
+    heatmap_wrapper(name = "policies_attitudes", vars = variables_policies_attitudes,  labels = labels_policies_attitudes, conditions = heatmap_conditions)
+    heatmap_wrapper(name = "policies_attitudes_all", vars = c(variables_policies_attitudes, "policies_support"), labels = c(labels_policies_attitudes, "Support"), conditions = heatmap_conditions)# TODO! add reduce air pollution and effective (first items)
     
     labels_investments_effects_short <<- c("Make electricity greener", "Popularize public transport", "Reduce air pollution", "Negative economic effect", "Large economic effect", "Costly way to fight CC")
     heatmap_wrapper(vars = variables_investments_effect, labels = labels_investments_effects_short, conditions = heatmap_conditions)
@@ -1793,6 +1796,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # , e.g. 0.1€/L)
     labels_policy_short <<- c("Tax on flying (+20%)", "Tax on fossil fuels ($45/tCO2)", "Ban polluting cars in city centers", "Subsidies to low-carbon technos", "Funding clean energy in LDC")
     heatmap_wrapper(vars = variables_policy, labels = labels_policy_short, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_policy, labels = labels_policy_short, conditions = heatmap_conditions)
+    heatmap_wrapper(name = "policy_all", vars = c(variables_policy, "insulation_support"), labels = c(labels_policy_short, "Mandatory, subsidised insulation"), conditions = heatmap_conditions)
     
     # labels_support_short <<- c("Tax on flying (+20%)", "Tax on fossil fuels ($45/tCO2)", "Ban polluting cars in city centers", "Subsidies to low-carbon technos", "Funding clean energy in LDC")
     # heatmap_wrapper(vars = variables_support, labels = labels_policy_short, conditions = heatmap_conditions)

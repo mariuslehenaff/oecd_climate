@@ -2716,6 +2716,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
   if ("standard_fair" %in% names(e)) variables_policies_fair  <<- names(e)[grepl('_fair', names(e))]
   variables_policies_support <<- c("standard_support", "investments_support", "tax_transfers_support")
+  variables_policies_attitudes <<- paste0("policies_", c("negative_effect", "large_effect", "cost_effective", "poor", "middle", "rich", "rural", "self", "fair"))
   variables_support <<- names(e)[grepl('_support', names(e)) & !grepl('order_', names(e))]
   variables_incidence <<- names(e)[grepl('incidence_', names(e))]
   variables_standard_incidence <<- names(e)[grepl('standard_incidence_', names(e))]
