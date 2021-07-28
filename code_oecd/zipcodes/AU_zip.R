@@ -144,6 +144,8 @@ data.POA <- merge_1 %>%
   group_by(POA_CODE_2016) %>%
   summarise(pop = sum(Person, na.rm = T), total_dwellings = sum(Dwelling, na.rm = T), tot.area = sum(AREA_ALBERS_SQKM, na.rm = T), Region.POA = Region.POA, Rural.urban.POA = Rural.urban.POA) %>%
   ungroup()
+data.POA <- data.POA[!duplicated(data.POA),]
+
 
 data.POA$Density.pop <- data.POA$pop/data.POA$tot.area
 data.POA$Density.dwe <- data.POA$total_dwellings/data.POA$tot.area
