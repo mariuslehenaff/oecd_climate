@@ -3114,7 +3114,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                       annotation=Label(e$income))
   
   temp <-  (e$wealth %in% text_wealth_q1) + 2 * (e$wealth %in% text_wealth_q2) + 3 * (e$wealth %in% text_wealth_q3) + 4 * (e$wealth %in% text_wealth_q4) + 5 * (e$wealth %in% text_wealth_q5) 
-  e$wealth <- as.item(temp, labels = structure(c(1:5),
+  e$wealth <- as.item(temp, labels = structure(c(1:5), # /!\ in the US, data is individual but question is household. In DK, FR, both are household. In other countries, both are individual.
                         names = c("Q1","Q2","Q3","Q4","Q5")),
                       annotation=Label(e$wealth))
 
