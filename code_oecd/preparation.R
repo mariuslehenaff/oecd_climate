@@ -62,7 +62,15 @@ loadings_efa <- list()
                  "JP_region" = c("Kanto", "Kansai", "North", "Chubu", "South"),
                  "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
                  "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
-                 "CN_region" = c("North", "Northeast", "East", "South Central", "West")
+                 "CN_region" = c("North", "Northeast", "East", "South Central", "West"),
+                 "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
+                 "MX_region" = c("Centra-Western", "Central-Eastern", "North-East", "North-West", "South"),
+                 "SK_region" = c("Seoul", "North", "Central-West", "South-West", "East"),
+                 "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
+                 "CA_region" = c("North-West", "Central", "Ontario", "Quebec", "East"),
+                 "TR_region" = c("Anatolia", "Marmara", "Mediterranean", "Aegean", "Black-Sea"),
+                 "UA_region" = c("Center-East", "Center-West", "East", "South", "West")
+
 
   )
   
@@ -176,22 +184,50 @@ loadings_efa <- list()
     "income" = rep(.25, 4),
     "age" = c(0.149, 0.215, 0.296, 0.212, 0.128),
     "urban" = c(FALSE, TRUE), 
-    "BR_region" = c()
+    "BR_region" = c(0.088179878, 0.270945458, 0.42035347,  0.14258089,  0.077940304)
   ),
     "MX" = list(
     "gender" = c(0.518, 0.000001, 0.482),
     "income" = rep(.25, 4),
     "age" = c(0.176, 0.233, 0.300, 0.183, 0.109),
     "urban" = c(FALSE, TRUE), 
-    "MX_region" = c()
+    "MX_region" = c(0.215061603, 0.329736673, 0.098869535, 0.127872823, 0.228459366)
   ),
     "SK" = list(
     "gender" = c(0.498, 0.000001, 0.502),
     "income" = rep(.25, 4),
     "age" = c(0.098, 0.159, 0.274, 0.282, 0.187),
     "urban" = c(FALSE, TRUE), 
-    "SK_region" = c()
-  )      
+    "SK_region" = c(0.186166268, 0.343251015, 0.109213095, 0.111043501, 0.25032612)
+  ),
+    "AU" = list(
+    "gender" = c(0.506, 0.000001, 0.494),
+    "income" = rep(.25, 4),
+    "age" = c(0.112, 0.186, 0.262, 0.230, 0.210),
+    "urban" = c(0.284 0.716), 
+    "AU_region" = c(0.113539668, 0.202217231, 0.334920221, 0.06893035,  0.280392531)
+  ),
+    "CA" = list(
+    "gender" = c(0.507, 0.000001, 0.493),
+    "income" = rep(.25, 4),
+    "age" = c(0.104, 0.175, 0.245, 0.253, 0.223),
+    "urban" = c(0.167, 0.833), 
+    "CA_region" = c(0.255595117, 0.067210485, 0.387866504, 0.225157997, 0.064169897)
+  ),
+    "TR" = list(
+    "gender" = c(0.513, 0.000001, 0.487),
+    "income" = rep(.25, 4),
+    "age" = c(0.158, 0.213, 0.297, 0.206, 0.126),
+    "urban" = c(FALSE, TRUE), 
+    "TR_region" = c(0.341962972, 0.303696271, 0.130995254, 0.128080832, 0.095264671)
+  ),
+    "UA" = list(
+    "gender" = c(0.549, 0.000001, 0.451),
+    "income" = rep(.25, 4),
+    "age" = c(0.082, 0.178, 0.282, 0.249, 0.209),
+    "urban" = c(FALSE, TRUE), 
+    "UA_region" = c(0.082140396, 0.229168347, 0.213095418, 0.224565659, 0.251030179)
+  )    
   )
   
   quotas <- list("US" = c("gender", "income", "age", "region", "urban", "race"), 
