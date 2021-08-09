@@ -17,17 +17,33 @@ decrit("know_temperature_2100", data = e)
 decrit("know_local_damage", data = e)
 decrit("know_investments_funding", data = e)
 decrit("know_ban", data = e)
-decrit("variant_flight_quota", data = e)
 decrit("attentive", data = e)
 decrit("survey_biased", data = e)
-decrit("signed_petition", data = e)
-decrit("clicked_petition", data = e)
+decrit("petition", data = e)
+decrit("positive_treatment", data = e)
 decrit("left_click_petition", data = e)
 decrit("right_click_petition", data = e)
 decrit("petition", data = e)
 decrit("petition", data = e, which = e$variant_petition_real == T)
 decrit("polluting_sector", data = e)
 any(duplicated(e$PSID))
+# New questions
+decrit("origin_country", data = e)
+decrit("origin_continent", data = e)
+decrit("origin_other", data = e)
+decrit("standard_prefer_ban", data = e)
+decrit("standard_prefer_10k_fine", data = e)
+decrit("standard_prefer_100k_fine", data = e)
+decrit("standard_10k_fine", data = e)
+decrit("standard_100k_fine", data = e)
+decrit("policy_ban_coal", data = e)
+decrit("tax_reduction_EEG_Umlage", data = e)
+decrit("tax_more_commuter_allowance", data = e)
+decrit("global_quota", data = e)
+decrit("burden_share_population", data = e)
+decrit("burden_share_emissions", data = e)
+decrit("burden_share_historical", data = e)
+decrit("burden_share_damages", data = e)
 
 
 ##### Durations ######
@@ -494,6 +510,7 @@ e$obstacles_insulation_other[!is.na(e$obstacles_insulation_other)]
 rpart.plot(tree_support <- rpart(as.formula(paste("policies_support>0 ~", end_formula3)), e)) # instead of formula, could be: var ~ . 
 prp(tree_support, box.palette = "Blues", tweak = 1.2)
 
+##### To check #####
 # To check (quality, autres consignes)
 # - duration is fine: 24.5 min in median (28 in mean, 17-34 quartiles).
 # - comprehension question (for the videos): results in-line with the first survey, though improved for the policy video where almost everyone gets that we talk of a ban on combustion-engine cars. Still about half of people who get it wrong for the other questions (even when there is no number: probably due to a lack of attention because only 3% didn't watch until the end).

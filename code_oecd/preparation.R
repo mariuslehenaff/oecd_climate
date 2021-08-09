@@ -3,6 +3,7 @@
 
 source(".Rprofile")
 
+# TODO! DE: know_local_damage
 # TODO!!: affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; code CSP, cu, share of policies approved, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, index_pro_climate, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
@@ -31,7 +32,7 @@ names(tax_price_increase) <- names(countries_names) <- names(country_names) <- n
 parties_leaning <- list()
 loadings_efa <- list()
 
-{ 
+{
   levels_quotas <- list(
                  "gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
                  "income" = c("Q1", "Q2", "Q3", "Q4"),
@@ -204,7 +205,7 @@ loadings_efa <- list()
     "gender" = c(0.506, 0.000001, 0.494),
     "income" = rep(.25, 4),
     "age" = c(0.112, 0.186, 0.262, 0.230, 0.210),
-    "urban" = c(0.284 0.716), 
+    "urban" = c(0.284, 0.716), 
     "AU_region" = c(0.113539668, 0.202217231, 0.334920221, 0.06893035,  0.280392531)
   ),
     "CA" = list(
@@ -233,8 +234,9 @@ loadings_efa <- list()
   quotas <- list("US" = c("gender", "income", "age", "region", "urban", "race"), 
             "US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
                  "DK" = c("gender", "income", "age", "region", "urban"),
-                 "FR" = c("gender", "income", "age", "region", "diploma") #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
+                 "FR" = c("gender", "income", "age", "region", "diploma"), #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
                  # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
+                 "DE" = c("gender", "income", "age", "region", "urban_category")
   )
 }
 
@@ -249,7 +251,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  # e <- read_csv("../data/FR.csv")
+  # e <- read_csv("../data/DE.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -2096,7 +2098,322 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "clicked_petition" 
      )
   }
-  if (missing(wave) | wave == "full") e <- e[,-c((which(names(e)=="clicked_petition")+1):length(names(e)))]
+  if (country == "DE") {
+    names(e) <- c(
+      "date",
+      "date_end",
+      "statut_reponse",
+      "progress",
+      "time",
+      "terminated",
+      "date_recored",
+      "distr",
+      "lang",
+      "consent",
+      "gender",
+      "age",
+      "zipcode",
+      "urbanity",
+      "origin_country", # TODO!
+      "origin_continent",
+      "origin_other",
+      "origin_pnr",
+      "couple",
+      "marital_status",
+      "HH_size",
+      "Nb_children__14", 
+      "education", 
+      "employment_status",
+      "polluting_sector_active", 
+      "polluting_sector_inactive",
+      "sector_active", 
+      "sector_inactive",
+      "income", 
+      "hit_by_covid",
+      "home_tenant",
+      "home_owner",
+      "home_landlord",
+      "home_hosted",
+      "wealth", 
+      "interested_politics", 
+      "member_environmental_orga",
+      "relative_environmentalist",
+      "vote_participation", 
+      "vote_voters",
+      "vote_non_voters",
+      "left_right", 
+      "heating",
+      "heating_expenses",
+      "insulation",
+      "gas_expenses",
+      "flights_3y", 
+      "frequency_beef",
+      "transport_work",
+      "transport_shopping",
+      "transport_leisure",
+      "availability_transport",
+      "Q3.7_First",
+      "Q3.7_Last",
+      "duration_energy",
+      "Q3.7_Click",
+      "Q5.1_First",
+      "Q5.1_Last",
+      "duration_CC_field",
+      "Q5.1_Click",
+      "CC_field",
+      "Q140_First",
+      "Q140_Last",
+      "duration_treatment_climate",
+      "Q140_Click",
+      "watched_climate", 
+      "know_temperature_2100",
+      "know_local_damage",
+      "Q141_First",
+      "Q141_Last",
+      "duration_treatment_policy",
+      "Q141_Click",
+      "watched_policy",
+      "know_ban",
+      "know_investments_funding",
+      "CC_talks",
+      "CC_real",
+      "CC_anthropogenic",
+      "CC_problem",
+      "CC_knowledgeable",
+      "GHG_CO2",
+      "GHG_H2",
+      "GHG_methane",
+      "GHG_particulates",
+      "CC_dynamic",
+      "footprint_tr_car",
+      "footprint_tr_coach",
+      "footprint_tr_plane",
+      "footprint_tr_order_car",
+      "footprint_tr_order_coach",
+      "footprint_tr_order_plane",
+      "footprint_fd_beef",
+      "footprint_fd_pasta",
+      "footprint_fd_chicken",
+      "footprint_fd_order_beef",
+      "footprint_fd_order_pasta",
+      "footprint_fd_order_chicken",
+      "footprint_el_gas",
+      "footprint_el_nuclear", 
+      "footprint_el_coal",
+      "footprint_el_order_gas",
+      "footprint_el_order_nuclear",
+      "footprint_el_order_coal",
+      "footprint_reg_US",
+      "footprint_reg_EU",
+      "footprint_reg_china",
+      "footprint_reg_india",
+      "footprint_reg_order_US",
+      "footprint_reg_order_EU",
+      "footprint_reg_order_china",
+      "footprint_reg_order_india",
+      "footprint_pc_US",
+      "footprint_pc_EU",
+      "footprint_pc_china",
+      "footprint_pc_india",
+      "footprint_pc_order_US", 
+      "footprint_pc_order_EU",
+      "footprint_pc_order_china",
+      "footprint_pc_order_india",
+      "CC_impacts_droughts",
+      "CC_impacts_volcanos",
+      "CC_impacts_sea_rise",
+      "CC_impacts_low_yield",
+      "CC_impacts_drop_conso",
+      "CC_impacts_more_migration",
+      "CC_impacts_more_wars",
+      "CC_impacts_extinction",
+      "responsible_CC_each", 
+      "responsible_CC_rich",
+      "responsible_CC_govt",
+      "responsible_CC_companies",
+      "responsible_CC_past", 
+      "responsible_CC_order_each",
+      "responsible_CC_order_rich",
+      "responsible_CC_order_govt",
+      "responsible_CC_order_companies",
+      "responsible_CC_order_past",
+      "net_zero_feasible", 
+      "CC_affects_self",
+      "CC_will_end",
+      "effect_halt_CC_economy",
+      "effect_halt_CC_lifestyle",
+      "willing_limit_flying",
+      "willing_limit_driving",
+      "willing_electric_car",
+      "willing_limit_beef",
+      "willing_limit_heating",
+      "condition_ambitious_policies",
+      "condition_financial_aid",
+      "condition_people_change",
+      "condition_rich_change",
+      "standard_effect_less_emission",
+      "standard_effect_less_pollution",
+      "standard_negative_effect",
+      "standard_large_effect",
+      "standard_cost_effective",
+      "standard_win_lose_poor",
+      "standard_win_lose_middle",
+      "standard_win_lose_rich",
+      "standard_win_lose_rural",
+      "standard_win_lose_self",
+      "standard_fair",
+      "standard_support",
+      "standard_public_transport_support",
+      "standard_prefer_ban", # TODO!
+      "standard_prefer_10k_fine",
+      "standard_prefer_100k_fine",
+      "standard_prefer_order_ban",
+      "standard_prefer_order_10k_fine",
+      "standard_prefer_order_100k_fine",
+      "standard_10k_fine",
+      "standard_100k_fine",
+      "investments_effect_elec_greener",
+      "investments_effect_public_transport",
+      "investments_effect_less_pollution",
+      "investments_negative_effect",
+      "investments_large_effect",
+      "investments_cost_effective",
+      "investments_win_lose_poor",
+      "investments_win_lose_middle",
+      "investments_win_lose_rich",
+      "investments_win_lose_rural",
+      "investments_win_lose_self",
+      "investments_fair",
+      "investments_support",
+      "investments_funding_debt",
+      "investments_funding_sales_tax",
+      "investments_funding_wealth_tax",
+      "investments_funding_less_social",
+      "investments_funding_less_military",
+      "Q142_First",
+      "Q142_Last",
+      "duration_tax_transfers",
+      "Q142_Click",
+      "tax_transfers_effect_driving",
+      "tax_transfers_effect_insulation",
+      "tax_transfers_effect_less_emission",
+      "tax_transfers_effect_less_pollution",
+      "tax_transfers_negative_effect",
+      "tax_transfers_large_effect",
+      "tax_transfers_cost_effective",
+      "tax_transfers_win_lose_poor",
+      "tax_transfers_win_lose_middle",
+      "tax_transfers_win_lose_rich",
+      "tax_transfers_win_lose_rural",
+      "tax_transfers_win_lose_self",
+      "tax_transfers_fair",
+      "tax_transfers_support",
+      "tax_transfers_progressive_fair",
+      "tax_transfers_progressive_support",
+      "Q142_First",
+      "Q142_Last",
+      "duration_policies",
+      "Q142_Click",
+      "attention_test",
+      "policy_tax_flying",
+      "policy_tax_fuels",
+      "policy_ban_city_centers",
+      "policy_ban_coal", # TODO!
+      "policy_subsidies",
+      "policy_climate_fund",
+      "policy_order_tax_flying",
+      "policy_order_tax_fuels",
+      "policy_order_ban_city_centers", 
+      "policy_order_ban_coal",
+      "policy_order_subsidies",
+      "policy_order_climate_fund",
+      "tax_transfer_constrained_hh", 
+      "tax_transfer_poor",
+      "tax_transfer_all",
+      "tax_reduction_EEG_Umlage", # TODO!
+      "tax_more_commuter_allowance",
+      "tax_reduction_personal_tax",
+      "tax_reduction_corporate_tax",
+      "tax_rebates_affected_firms",
+      "tax_investments",
+      "tax_subsidies",
+      "tax_reduction_deficit",
+      "tax_order_transfers_constrained_hh",
+      "tax_order_transfers_poor",
+      "tax_order_transfers_all",
+      "tax_order_reduction_EEG_Umlage",
+      "tax_order_more_commuter_allowance",
+      "tax_order_reduction_personal_tax",
+      "tax_order_reduction_corporate_tax",
+      "tax_order_rebates_affected_firms",
+      "tax_order_investments",
+      "tax_order_subsidies",
+      "tax_order_reduction_deficit",
+      "wtp_10",
+      "wtp_30",
+      "wtp_50",
+      "wtp_100",
+      "wtp_300",
+      "wtp_500",
+      "wtp_1000",
+      "donation",
+      "Q147_First",
+      "Q147_Last",
+      "duration_burden_sharing",
+      "Q147_Click",
+      "scale_global",
+      "scale_federal",
+      "scale_state",
+      "scale_local",
+      "should_fight_CC",
+      "if_other_do_more",
+      "if_other_do_less",
+      "global_quota", # TODO!
+      "burden_share_population",
+      "burden_share_emissions",
+      "burden_share_historical",
+      "burden_share_damages",
+      "global_assembly_support",
+      "global_tax_support", 
+      "tax_1p_support",
+      "will_insulate",
+      "obstacles_insulation_cannot",
+      "obstacles_insulation_cost",
+      "obstacles_insulation_effort",
+      "obstacles_insulation_useless",
+      "obstacles_insulation_satisfactory",
+      "insulation_mandatory_support_no_priming", 
+      "insulation_mandatory_support_priming",
+      "beef_tax_support",
+      "beef_subsidies_vegetables_support",
+      "beef_subsidies_removal_support",
+      "beef_ban_intensive_support",
+      "beef_order_tax_support",
+      "beef_order_subsidies_vegetables_support",
+      "beef_order_subsidies_removal_support",
+      "beef_order_ban_intensive_support",
+      "can_trust_people",
+      "can_trust_govt",
+      "view_govt",
+      "problem_inequality",
+      "future_richness",
+      "survey_biased", 
+      "comment_field",
+      "petition",
+      "language",
+      "finished",
+      "excluded",
+      "duration",
+      "urban_category",
+      "treatment_climate",
+      "treatment_policy",
+      "region",
+      "winner_latent",
+      "winner",
+      "positive_treatment" # TODO!
+    )
+  }
+  if (missing(wave) | wave == "full") e <- e[,-c((which(names(e) %in% c("clicked_petition", "positive_treatment"))+1):length(names(e)))]
   
   for (i in 1:length(e)) {
     label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="")
@@ -3266,24 +3583,26 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                         names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
                       missing.values=-0.1, annotation=Label(e$equal_quota))
   
-  e$pro_polluter_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0)
-  label(e$pro_polluter_pay) <- "pro_polluter_pay: In favor of a burden_sharing option where polluter pay: agree to _income, _emissions or _cumulative."
-  e$pro_rich_pay <- (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
-  label(e$pro_rich_pay) <- "pro_rich_pay: In favor of burden_sharing where rich countries pay it all (including where vulnerable countries receive): agree to _rich_pay or _poor_receive."
-  e$pro_grand_fathering <- pmax(e$burden_sharing_cumulative, e$burden_sharing_rich_pay, e$burden_sharing_poor_receive) < 0
-  label(e$pro_grand_fathering) <- "pro_grand_fathering: In favor of burden_sharing akin to grand-fathering. Inferred as disagreement to _cumulative, _rich_pay and _poor_receive, i.e.: countries pay in proportion to cumulative emissions, and to options where poor and vulnerable countries don't pay. Results are in line with US pilot on 502 people, where the more explicit usp$equal_quota == grand-fathering gathered 6%."
-  e$pro_polluter_and_rich_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0) & (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
-  e$pro_global_tax_dividend <- (e$burden_sharing_emissions > 0) & (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
-  label(e$pro_polluter_and_rich_pay) <- "pro_polluter_and_rich_pay: In favor of burden_sharing where polluters and only rich countries pay. Inferred as agreeing to at least one polluter-pay option and one option where rich countries pay it all: (_income, _emissions or _cumulative) and (_rich_pay or _poor_receive)."
-  label(e$pro_global_tax_dividend) <- "pro_global_tax_dividend: In favor of burden_sharing akin to global tax & dividend. Inferred as agreeing to paying in proportion to current emissions and one option where rich countries pay it all: _emissions and (_rich_pay or _poor_receive)."
-  # e$pro_limited_global_tax_dividend <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0) & (e$burden_sharing_rich_pay > 0) & (e$burden_sharing_poor_receive < 0) & (e$burden_sharing_cumulative < 0)
-  # label(e$pro_limited_global_tax_dividend) <- "pro_limited_global_tax_dividend: In favor of burden_sharing akin to a limited global tax & dividend."
-  e$pro_differentiated_responsibilities_strict <- e$burden_sharing_cumulative > 0 & e$burden_sharing_poor_receive > 0
-  label(e$pro_differentiated_responsibilities_strict) <- "pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
-  e$pro_differentiated_responsibilities_large <- e$pro_polluter_pay == T & e$burden_sharing_poor_receive > 0
-  label(e$pro_differentiated_responsibilities_large) <- "pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
-  # e$pro_other_burden_sharing <- e$pro_grand_fathering == F & e$pro_rich_pay == F & e$pro_polluter_pay == F # e$pro_global_tax_dividend_large == F & e$pro_differentiated_responsibilities_large == F
-  variables_burden_sharing_inferred <<- c("pro_polluter_pay", "pro_rich_pay",  "pro_grand_fathering", "pro_polluter_and_rich_pay", "pro_global_tax_dividend", "pro_differentiated_responsibilities_large", "pro_differentiated_responsibilities_strict")
+  if ("burden_sharing_income" %in% names(e)) {
+    e$pro_polluter_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0)
+    label(e$pro_polluter_pay) <- "pro_polluter_pay: In favor of a burden_sharing option where polluter pay: agree to _income, _emissions or _cumulative."
+    e$pro_rich_pay <- (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
+    label(e$pro_rich_pay) <- "pro_rich_pay: In favor of burden_sharing where rich countries pay it all (including where vulnerable countries receive): agree to _rich_pay or _poor_receive."
+    e$pro_grand_fathering <- pmax(e$burden_sharing_cumulative, e$burden_sharing_rich_pay, e$burden_sharing_poor_receive) < 0
+    label(e$pro_grand_fathering) <- "pro_grand_fathering: In favor of burden_sharing akin to grand-fathering. Inferred as disagreement to _cumulative, _rich_pay and _poor_receive, i.e.: countries pay in proportion to cumulative emissions, and to options where poor and vulnerable countries don't pay. Results are in line with US pilot on 502 people, where the more explicit usp$equal_quota == grand-fathering gathered 6%."
+    e$pro_polluter_and_rich_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0) & (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
+    e$pro_global_tax_dividend <- (e$burden_sharing_emissions > 0) & (e$burden_sharing_rich_pay > 0 | e$burden_sharing_poor_receive > 0)
+    label(e$pro_polluter_and_rich_pay) <- "pro_polluter_and_rich_pay: In favor of burden_sharing where polluters and only rich countries pay. Inferred as agreeing to at least one polluter-pay option and one option where rich countries pay it all: (_income, _emissions or _cumulative) and (_rich_pay or _poor_receive)."
+    label(e$pro_global_tax_dividend) <- "pro_global_tax_dividend: In favor of burden_sharing akin to global tax & dividend. Inferred as agreeing to paying in proportion to current emissions and one option where rich countries pay it all: _emissions and (_rich_pay or _poor_receive)."
+    # e$pro_limited_global_tax_dividend <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0) & (e$burden_sharing_rich_pay > 0) & (e$burden_sharing_poor_receive < 0) & (e$burden_sharing_cumulative < 0)
+    # label(e$pro_limited_global_tax_dividend) <- "pro_limited_global_tax_dividend: In favor of burden_sharing akin to a limited global tax & dividend."
+    e$pro_differentiated_responsibilities_strict <- e$burden_sharing_cumulative > 0 & e$burden_sharing_poor_receive > 0
+    label(e$pro_differentiated_responsibilities_strict) <- "pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
+    e$pro_differentiated_responsibilities_large <- e$pro_polluter_pay == T & e$burden_sharing_poor_receive > 0
+    label(e$pro_differentiated_responsibilities_large) <- "pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
+    # e$pro_other_burden_sharing <- e$pro_grand_fathering == F & e$pro_rich_pay == F & e$pro_polluter_pay == F # e$pro_global_tax_dividend_large == F & e$pro_differentiated_responsibilities_large == F
+    variables_burden_sharing_inferred <<- c("pro_polluter_pay", "pro_rich_pay",  "pro_grand_fathering", "pro_polluter_and_rich_pay", "pro_global_tax_dividend", "pro_differentiated_responsibilities_large", "pro_differentiated_responsibilities_strict")
+  }
   
   if (country=="US" & wave=="pilot2") e$equal_quota2 <- as.item(e$equal_quota, labels = structure(c(-2,-1,1,2,-0.1),
                                                                                          names = c("No, against restriction","No, grand-fathering","Yes","No, more to vulnerable","PNR")),
@@ -4432,6 +4751,7 @@ us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_s
 e <- us <- prepare(country = "US", duration_min = 686)
 e <- dk <- prepare(country = "DK", duration_min = 686)
 e <- fr <- prepare(country = "FR", duration_min = 686)
+e <- de <- prepare(country = "DE", duration_min = 686)
 current_countries <- c("DK", "US", "FR")
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
 
