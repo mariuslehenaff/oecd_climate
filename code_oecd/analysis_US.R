@@ -44,6 +44,9 @@ decrit("burden_share_population", data = e)
 decrit("burden_share_emissions", data = e)
 decrit("burden_share_historical", data = e)
 decrit("burden_share_damages", data = e)
+# DE ~30 zipcodes absent from .csv:
+e$zipcode[is.na(e$region)]
+sum(is.na(e$region))
 
 
 ##### Durations ######
