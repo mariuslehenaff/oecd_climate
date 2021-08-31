@@ -65,7 +65,8 @@ loadings_efa <- list()
                  "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
                  "CN_region" = c("North", "Northeast", "East", "South Central", "West"),
                  "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
-                 "MX_region" = c("Centra-Western", "Central-Eastern", "North-East", "North-West", "South"),
+                 "MX_region" = c("Central-Western", "Central-Eastern", "North-East", "North-West", "South"),
+                 "MX_urban_category" = c("Rural", "Semiurban", "Urban"),
                  "SK_region" = c("Seoul", "North", "Central-West", "South-West", "East"),
                  "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
                  "CA_region" = c("North-West", "Central", "Ontario", "Quebec", "East"),
@@ -191,7 +192,8 @@ loadings_efa <- list()
     "gender" = c(0.518, 0.000001, 0.482),
     "income" = rep(.25, 4),
     "age" = c(0.176, 0.233, 0.300, 0.183, 0.109),
-    "urban" = c(FALSE, TRUE), 
+    "urban" = c(FALSE, TRUE),
+    "MX_urban_category" = c(0.214, 0.149, 0.637),
     "MX_region" = c(0.215061603, 0.329736673, 0.098869535, 0.127872823, 0.228459366)
   ),
     "SK" = list(
@@ -3883,6 +3885,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                        e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
                        e$country == "DE" ~ e$urban_category %in% c("Town and Suburbs", "Cities"),
                        e$country == "IN" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
+                       e$country == "MX" ~ e$urban_category %in% c("Urban"),
                        TRUE ~ NA)
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
 
