@@ -50,7 +50,7 @@ loadings_efa <- list()
                  "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
                  "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
-                 "IN_region" = c("Northern", "Southern", "Central", "Eastern", "Western", "Rest"),
+                 "IN_region" = c("Northern", "Southern", "Central", "Eastern", "Western"),
                  "IN_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
                  "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
                  "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
@@ -111,7 +111,7 @@ loadings_efa <- list()
     "income" = rep(.25, 4),
     "age" = c(),
     "urban" = c(FALSE, TRUE), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
-    "IN_region" = c(0.1317, 0.2015, 0.2654, 0.2256, 0.1380, 0.037907422),
+    "IN_region" = c(0.1317, 0.2015, 0.2654, 0,2635, 0.1380),
     "IN_urban_category" = c(0.4093,  0.2294,  0.1115,  0.1102,  0.1096,  0.02984315)
   ),
   "IT" = list(
