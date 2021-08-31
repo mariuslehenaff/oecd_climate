@@ -6,7 +6,7 @@ package <- function(p, version = NULL) {
     if (missing(version)) install.packages(p)
     else {
       package("remotes")
-      install_version(p, version = version, repos = "http://cran.us.r-project.org", upgrade = "never")
+      install_version(p, version = version, repos = "http://cran.us.r-project.org", upgrade = "never", dependencies = TRUE)
     }
   }
   else { if(!missing(version)) warning(paste("'", p, "' is already installed with a (potentially) newer version. You may want to install the required version (", version, ") to avoid bugs.", sep=""))}
@@ -21,7 +21,7 @@ if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.1.1/library",
 chooseCRANmirror(ind = 1)
 package("plyr")
 package("tm")
-package("memisc", version = "0.99.22")
+package("memisc", version = "0.99.22") 
 package('tidyverse')
 package("xtable")
 package("rms")
@@ -99,7 +99,7 @@ package("Peacock.test")
 package("openxlsx")
 package("devtools")
 # LDA
-package("quanteda")
+package("quanteda") 
 package("topicmodels")
 package("broom")
 package("tidytext")
