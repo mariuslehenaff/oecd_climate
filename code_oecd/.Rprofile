@@ -16,7 +16,7 @@ package <- function(p, version = NULL) {
 Paths = c("/Users/Bluebii/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Documents/www/oecd_climate/code_oecd")
 names(Paths) = c("Bluebii", "afabre")
 setwd(Paths[Sys.info()[7]])
-if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.0.3/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")) 
+if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.1.1/library", "C:/Users/afabre/R-4.0.3/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")) 
 
 chooseCRANmirror(ind = 1)
 package("plyr")
