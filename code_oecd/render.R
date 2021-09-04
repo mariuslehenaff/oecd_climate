@@ -3,6 +3,7 @@
 # TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 # TODO! vote, comparison heterogeneity, function coef along, quality (know_treatment_climate, watched_climate)
 
+export_xls <- F
 update_constant <- function(data = all) {
   e <<- data
   country <- deparse(substitute(data))
@@ -26,7 +27,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
   else folder <- '../figures/'
   replacement_text <- ifelse(name_country, paste0("_", toupper(country)), "")
   
-  save_plotly_new_filename <- function(plot, filename = NULL, width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
+  save_plotly_new_filename <<- function(plot, filename = NULL, width = dev.size('px')[1], height = dev.size('px')[2], method='orca', trim = T) {
     if (missing(filename)) filename <- sub("_US", replacement_text, deparse(substitute(plot)))
     return(save_plotly(plot, filename = filename, folder = folder, width = width, height = height, method=method, trim = trim))
   }
@@ -422,9 +423,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       save_plotly_new_filename(standard_effect_US, width= 890, height=320) })
     
     labels_win_lose <- c("Lose a lot", "Mostly lose", "Neither win nor lose", "Mostly win", "Win a lot")
-    labels_standard_win_lose <- c()
-    for (v in variables_standard_win_lose) labels_standard_win_lose <- c(labels_standard_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-    labels_standard_win_lose[5] <- "Your household financially"
+    labels_standard_win_lose <<- c()
+    for (v in variables_standard_win_lose) labels_standard_win_lose <<- c(labels_standard_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+    labels_standard_win_lose[5] <<- "Your household financially"
     try({(standard_win_lose_US <- barres(vars = variables_standard_win_lose, export_xls = export_xls, df = e, rev_color = T,rev = F, sort=F, miss = F, showLegend=T, labels=labels_standard_win_lose, hover = labels_win_lose))
       save_plotly_new_filename(standard_win_lose_US, width= 1100, height=320) })
     
@@ -443,9 +444,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(investments_effect_US <- barres(vars = rev(variables_investments_effect), export_xls = export_xls, df = e, sort = F, rev_color = T , rev = F, miss = F, showLegend=T, labels=rev(labels_investments_effects), hover=labels_agree))
       save_plotly_new_filename(investments_effect_US, width= 1100, height=320) })
     
-    labels_investments_win_lose <- c()
-    for (v in variables_investments_win_lose) labels_investments_win_lose <- c(labels_investments_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-    labels_investments_win_lose[5] <- "Your household financially"
+    labels_investments_win_lose <<- c()
+    for (v in variables_investments_win_lose) labels_investments_win_lose <<- c(labels_investments_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+    labels_investments_win_lose[5] <<- "Your household financially"
     try({(investments_win_lose_US <- barres(vars = variables_investments_win_lose, export_xls = export_xls, df = e, rev_color = T,rev = F, miss = F, showLegend=T, labels=labels_investments_win_lose, hover = labels_win_lose))
       save_plotly_new_filename(investments_win_lose_US, width= 1100, height=320) })
     
@@ -469,9 +470,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(tax_transfers_effect_US <- barres(vars = rev(variables_tax_transfers_effect), export_xls = export_xls, df = e, sort = F, rev_color = T , rev = F, miss = F, showLegend=T, labels=rev(labels_tax_transfers_effects), hover=labels_agree))
       save_plotly_new_filename(tax_transfers_effect_US, width= 960, height=380) })
     
-    labels_tax_transfers_win_lose <- c()
-    for (v in variables_tax_transfers_win_lose) labels_tax_transfers_win_lose <- c(labels_tax_transfers_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-    labels_tax_transfers_win_lose[5] <- "Your household financially"
+    labels_tax_transfers_win_lose <<- c()
+    for (v in variables_tax_transfers_win_lose) labels_tax_transfers_win_lose <<- c(labels_tax_transfers_win_lose, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
+    labels_tax_transfers_win_lose[5] <<- "Your household financially"
     try({(tax_transfers_win_lose_US <- barres(vars = variables_tax_transfers_win_lose, export_xls = export_xls, df = e, rev_color = T,rev = F, miss = F, showLegend=T, labels=labels_tax_transfers_win_lose, hover = labels_win_lose))
       save_plotly_new_filename(tax_transfers_win_lose_US, width= 1100, height=320) })
     
@@ -561,7 +562,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # labels_policy[5] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
     # labels_policy[6] <- "Financing clean energy in low-income countries" 
     labels_policy[4] <- "Subsidies for low-carbon technologies (renewables, CCS...)"
-    labels_policy[5] <- "Financing clean energy in low-income countries" 
+    labels_policy[5] <- "Financing clean energy in low-income countries" # TODO!DE
     labels_policy[2] <- paste0("National tax on fossil fuels (+", tax_price_increase[country], ")") 
     try({(policy_US <- barres(vars = variables_policy, export_xls = export_xls, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_policy, hover=labels_support))
       save_plotly_new_filename(policy_US, width= 920, height=340)}) # TODO: policy_all with insulation_support
@@ -570,7 +571,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     for (v in variables_tax) labels_tax <- c(labels_tax, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
     labels_tax[7] <- "Funding environmental infrastructures (e.g. public transport)"
     labels_tax[1] <- "Cash transfers to HH with no alternative to fossil fuels"
-    labels_tax[8] <- "Subsidizing low-carbon technologies, including renewables"
+    labels_tax[8] <- "Subsidizing low-carbon technologies, including renewables"# TODO!DE
     try({(tax_US <- barres(vars = variables_tax, export_xls = export_xls, df = e, rev = F, rev_color = T, miss = F, showLegend=T, labels=labels_tax, hover=labels_support))
       save_plotly_new_filename(tax_US, width= 930, height=400) })
     
@@ -1371,7 +1372,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(standard_effects_US, width= 1100, height=fig_height(2*nb_levels))})
     
     try({(standard_all_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("standard_fair", "standard_cost_effective", "standard_negative_effect", "standard_large_effect", "standard_effect_less_pollution", "standard_effect_less_emission"), sort = F,rev = F, rev_color = T, 
-                                     export_xls = export_xls, df = e, miss=F, labels=c("Be fair", "Costly way<br>to fight climate change", paste0("Negative effect on ", Country_names[country], "<br>economy and employment"), paste0("Large effect on ", Country_names[country], "<br>economy and employment"), "Reduce air pollution", "Reduce CO2 emissions from cars")))
+                                     export_xls = export_xls, df = e, miss=F, labels=c("Be fair", "Costly way<br>to fight climate change", paste0("Negative effect on [country] <br>economy and employment"), paste0("Large effect on [country] <br>economy and employment"), "Reduce air pollution", "Reduce CO2 emissions from cars")))
       save_plotly_new_filename(standard_all_US, width= 1100, height=fig_height(5*nb_levels))})
     
     try({(investments_effects_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), sort = F,rev = F, rev_color = T, 
@@ -1379,7 +1380,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(investments_effects_US, width= 1150, height=fig_height(3*nb_levels))})
     
     try({(investments_all_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("investments_cost_effective", "investments_negative_effect", "investments_large_effect", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), rev = F, rev_color = T, 
-                                        export_xls = export_xls, df = e, miss=F, labels=c("Costly way<br>to fight climate change", paste0("Negative effect on ", Country_names[country], "<br>economy and employment"), paste0("Large effect on ", Country_names[country], "<br>economy and employment"), "Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
+                                        export_xls = export_xls, df = e, miss=F, labels=c("Costly way<br>to fight climate change", paste0("Negative effect on [country] <br>economy and employment"), paste0("Large effect on [country] <br>economy and employment"), "Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
       save_plotly_new_filename(investments_all_US, width= 1150, height=fig_height(5*nb_levels))})
     
     try({(tax_transfers_effects_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F,rev = F, rev_color = T, 
@@ -1387,7 +1388,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(tax_transfers_effects_US, width= 1100, height=fig_height(4*nb_levels))})
     
     try({(tax_transfers_all_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("tax_transfers_cost_effective", "tax_transfers_negative_effect", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), rev = F, rev_color = T, 
-                                          export_xls = export_xls, df = e, miss=F, labels=c("Costly way<br>to fight climate change", paste0("Negative effect on ", Country_names[country], "<br>economy and employment"), paste0("Large effect on ", country_names[country], "<br>economy and employment"), "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
+                                          export_xls = export_xls, df = e, miss=F, labels=c("Costly way<br>to fight climate change", paste0("Negative effect on [country] <br>economy and employment"), paste0("Large effect on [country] <br>economy and employment"), "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
       save_plotly_new_filename(tax_transfers_all_US, width= 1150, height=fig_height(5*nb_levels))})
     
     
@@ -1869,6 +1870,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
 render_figures_tables_country(dk, "DK", folder_country = T) # 7.5 min
 render_figures_tables_country(fr, "FR", folder_country = T)
 render_figures_tables_country(us, "US", folder_country = T)
+render_figures_tables_country(de, "DE", folder_country = T)
 
 render_figures_tables_country(dk, "DK", folder_country = T, tables = F, export_xls = T) # 7.5 min
 render_figures_tables_country(fr, "FR", folder_country = T, tables = F, export_xls = T)
@@ -1880,6 +1882,7 @@ update_constant(fr)
 update_constant(all)
 update_constant(dk)
 update_constant(us)
+update_constant(de)
 
 # # (temp <- barresN(vars = "CC_anthropogenic", export_xls = export_xls, df = all, along = "country", rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic"))
 # # (temp <- barresN(vars = "CC_anthropogenic", export_xls = export_xls, df = all, along = "country_name", rev = F, rev_color = T, miss=F, labels="Part of climate change anthropogenic", parentheses = F, nolabel = T))
