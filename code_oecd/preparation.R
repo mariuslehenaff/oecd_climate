@@ -3,7 +3,7 @@
 
 source(".Rprofile")
 
-# TODO! DE: know_local_damage
+# TODO! DE: know_local_damage, left_right, vote, heating, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
 # TODO!!: affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; code CSP, cu, share of policies approved, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, index_pro_climate, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
@@ -112,7 +112,7 @@ loadings_efa <- list()
     "income" = rep(.25, 4),
     "age" = c(),
     "urban" = c(0.639, 0.361), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
-    "IN_region" = c(0.1317, 0.2015, 0.2654, 0,2635, 0.1380),
+    "IN_region" = c(0.1317, 0.2015, 0.2654, 0,2635, 0.1380)
     # "IN_urban_category" = c(0.4093,  0.2294,  0.1115,  0.1102,  0.1096,  0.02984315)
   ),
   "IT" = list(
@@ -2370,7 +2370,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
       "should_fight_CC",
       "if_other_do_more",
       "if_other_do_less",
-      "global_quota", # TODO!
+      "global_quota", # TODO!DE
       "burden_share_population",
       "burden_share_emissions",
       "burden_share_historical",
@@ -2978,7 +2978,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                 "FR" = "Oui")
   text_no <- c("US" = "No", "US" = "No or I don't have a partner", 
                "FR" = "Non ou je n'ai pas de partenaire")
-  names_policies <- c("standard", "investments", "tax_transfers")
+  names_policies <<- c("standard", "investments", "tax_transfers")
   
   for (i in 1:length(e)) {
     # levels(e[[i]]) <- c(levels(e[[i]]), "PNR")
@@ -2989,6 +2989,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   variables_duration <<- names(e)[grepl('duration', names(e))]
   if (length(grep('footprint', names(e)))>0) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
+  else variables_footprint <- c()
   for (i in intersect(c(variables_duration, variables_footprint,  # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
     "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "zipcode", "donation"#, "age"
   ), names(e))) {
@@ -3086,6 +3087,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_investments <<- c("investments_support", "investments_trust", "investments_effective", "investments_employment", "investments_side_effects", variables_investments_incidence, variables_investments_win_lose)
   variables_tax_transfers <<- c("tax_transfers_support", "tax_transfers_trust", "tax_transfers_effective", "tax_transfers_employment", "tax_transfers_side_effects", variables_tax_transfers_incidence, variables_tax_transfers_win_lose)
   if (length(grep('_side_effects', names(e)))>0) variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
+  else variables_side_effects <- c()
   if (length(grep('_employment', names(e)))>0) variables_employment <<- names(e)[grepl('_employment', names(e))]
   if (length(grep('willing_', names(e)))>0) variables_willing <<- names(e)[grepl('willing_', names(e))]
   if (length(grep('condition_', names(e)))>0) variables_condition <<- names(e)[grepl('condition_', names(e))]
@@ -4061,7 +4063,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if (all(c("vote", "left_right", "weight") %in% names(e))) {
     # recode_parties: doesn't work so well as Macron est classé à droite et Fillon classé au centre whatever the method, "mode" is better as it's the only one that classifies Le Pen "Very right"
     thresholds <- c(-1.5, -.5, .5, 1.5)
-    parties <- Levels(e$vote)
+    parties <- Levels("vote", data = e)
     adj_leaning <- mean_leaning <- mode_leaning <- rep(NA, length(parties))
     names(adj_leaning) <- names(mean_leaning) <- names(mode_leaning) <- parties
     for (i in parties) {
@@ -4450,14 +4452,14 @@ if (all(variables_affected_index %in% names(e))) {
       # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
       #      paste0("../data/fields/csv/CC_field_FR", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
   
-      CC_field_names <- c("worrying / should act" = "worry", "no need to worry/act" = "no_worry", "NA / empty content" = "na",
+      CC_field_names <<- c("worrying / should act" = "worry", "no need to worry/act" = "no_worry", "NA / empty content" = "na",
                                               "don't know" = "do_not_know", "spelling mistake" = "bad_spelling", "damages" = "damage",
                                               "adaptation" = "adaptation", "change lifestyle" = "lifestyle", "companies" = "companies",
                                               "trash/recycling/plastic" = "trash", "cars/transport" = "transport", "power/energy" = "energy",
                                               "housing/insulation" = "housing", "agriculture/forest" = "land_agri", "tax/incentives" = "tax",
                                               "bans/sanctions" = "ban", "standard" = "standard", "subsidies/investment" = "spending")
-      CC_field_names_names <- names(CC_field_names)
-      names(CC_field_names_names) <- CC_field_names
+      CC_field_names_names <<- names(CC_field_names)
+      names(CC_field_names_names) <<- CC_field_names
       var_CC_field_names <<- paste0("CC_field_", CC_field_names)
       e$CC_field_english <- e$CC_field
       recode_CC_field <- list()
@@ -4568,7 +4570,7 @@ if (all(variables_affected_index %in% names(e))) {
       # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$comment_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
       #                 paste0("../data/fields/csv/comment_field_FR", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
       
-      comment_field_names <- c("good", "bad", "bias", "problem")
+      comment_field_names <<- c("good", "bad", "bias", "problem")
       var_comment_field_names <<- paste0("comment_field_", comment_field_names)
       e$comment_field_english <- e$comment_field
       recode_comment_field <- list()
@@ -4755,7 +4757,7 @@ e <- us <- prepare(country = "US", duration_min = 686)
 e <- dk <- prepare(country = "DK", duration_min = 686)
 e <- fr <- prepare(country = "FR", duration_min = 686)
 e <- de <- prepare(country = "DE", duration_min = 686)
-current_countries <- c("DK", "US", "FR")
+current_countries <- c("DK", "US", "FR", "DE")
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
 
 all$knows_anthropogenic <- all$CC_anthropogenic == 2
@@ -4772,7 +4774,7 @@ loadings_efa[["all"]] <- loadings
 # print(loadings_z)
 all$index_knowledge_efa_global <- 0
 for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
-all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = weights, na.rm = T))
+all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weights, na.rm = T))
 label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
 # all_bis <- janitor::clean_names(all)
