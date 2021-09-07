@@ -39,4 +39,4 @@ data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Chernivetska", "Ivano-Frankiv
 data.final <- data.zip[,c("Postcode", "Region", "Rural.urban")]
 data.final <- data.final[!duplicated(data.final),]
 
-write(data.final, "UA_zipcode.csv", row.names = F)
+write.csv(data.final, "UA_zipcode.csv", row.names = F)
