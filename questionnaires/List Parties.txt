@@ -1,0 +1,135 @@
+Italy: 2018 Italian general election
+
+Far Left:
+Left: Partito Democratico; Liberi e Uguali;
+Center: Movimento 5 Stelle; +Europa; Civica Popolare; Partito Autonomista Trentino Tirolese; MAIE; USEI
+Right: Forza Italia; Noi con l'Italia,
+Far-right: Lega Nord; Fratelii d'Italia
+
+Poland: 2020 Polish presidential election
+
+Far Left: 
+Left: Robert Biedroń; Waldemar Witkowski
+Center: Szymon Hołownia; Władysław Kosiniak-Kamysz
+Right: Rafał Trzaskowski; Stanisław Żółtek; Marek Jakubiak; Paweł Tanajno; Mirosław Piotrowski
+Far-right: Andrzej Duda; Krzysztof Bosak
+
+MX
+o	PRI (Centro derecha)
+o	PAN (derecha)
+o	PRD (izquierda)
+o	MORENA  (izquierda)
+o	MOVIMIENTO CIUDADANO (izquierda)
+o	PT (izquierda)
+o	VERDE (izquierda)
+
+JP
+-	自由民主党The Liberal Democratic Party　- right
+-	公明党 Komeito –centre-right 
+-	立憲民主党 The Constitutional Democratic Party of Japan –centre-left
+-	国民民主党 Democratic Party For the People - centre-right
+-	日本維新の会Japan Innovation Party - centre-right
+-	日本共産党Japanese Communist Party – left
+-	社民党 Social Democratic Party – centre-left
+
+ES: November 2019 Spanish general election
+
+Far-left: Unidos Podemos; EH Bildu
+Left: PSOE (Partido Socialista Obrero Español); ERC-Sobiranistes; Bloque Nacionalista Galego
+Center: Ciudadanos; Junts per Catalunya; Partido Nacionalista Vasco; Acuerdo de Unidad Nacionalista; Partido Regionalista de Cantabria
+Right: Partido Popular; Navarra Suma
+Far-right: Vox
+
+IN: 2019 Indian general election
+
+Far-left: Communist Party of India; All India Anna Dravida Munnetra Kazhagam
+Left: Indian National Congress; All India Grassroots Congress; Bahujan Samaj Party; Samajwadi Party; Dravida Munnetra Kazhagam; Telugu Desam Party; Janata Dal (United); Rashtriya Janata Dal
+Center: YSR Congress Party; Biju Janata Dal; Nationalist Congress Party
+Right: Bharatiya Janata Party; Telangana Rashtra Samithi
+Far-right: Shiv Sena
+
+Others <1%
+
+ID: 2019 Indonesian general election
+
+Far-left:
+Left: Partai Demokrasi Indonesia Perjuangan; Partai Solidaritas Indonesia
+Center: Partai Kebangkitan Bangsa; Partai Amanat Nasional; Partai Hati Nurani Rakyat, Partai Hanura; Partai Gerakan Perubahan Indonesia
+Right: Partai NasDem; Partai Demokrat; Partai Persatuan Pembangunan; Partai Persatuan Indonesia; Partai Keadilan dan Persatuan Indonesia
+Far-right: Partai Gerakan Indonesia Raya, Gerindra; Golkar; Partai Keadilan Sejahtera; Partai Berkarya; Partai Bulan Bintang
+
+SA: 2019 South African general election
+
+Far-left: Economic Freedom Fighters (EFF)
+Left: African National Congress
+Center: Democratic Alliance
+Right: Inkatha Freedom Party (IFP)
+Far-right: Freedom Front Plus
+
+Others < 1%
+
+GE: Bundestagswahl 2017
+
+Far-left: Die Linke; Die Grünen
+Left: SPD
+Center: FDP (Freie Demokratische Partei)
+Right: CDU/CSU
+Far-right: Alternative für Deutschland
+
+CA: 2021 Federal election
+
+Far-left:
+Left: Liberal Party of Canada; New Democratic Party; Bloc québécois; Green Party of Canada
+Center:
+Right: Conservative Party of Canada
+Far-right: People's Party of Canada
+
+UA: 2019 Presidential elections
+
+Far-left:
+Left: Petro Poroshenko;
+Center: Volodymyr Zelensky; Ioulia Tymochenko; Iouri Boïko; Anatoliy Hrytsenko; Oleksandr Vilkul
+Right: Ihor Smeshko; Oleh Lyashko
+Far-right: Ruslan Koshulynskyi
+
+Other <1%
+
+SK: 2017 South Korean presidential election
+
+Far-left:
+Left: Moon Jae-in; Sim Sang-jung
+Center: Ahn Cheol-soo
+Right: Yoo Seong-min
+Far-right: Hong Joon-pyo
+
+Others <0.15%
+
+TR: 2018 Turkish general election
+
+Far-left: Vatan Partisi
+Left: Cumhuriyet Halk Partisi; Halkların Demokratik Partisi
+Center: İYİ Parti
+Right: Adalet ve Kalkınma Partisi
+Far-right: Milliyetçi Hareket Partisi; Saadet Partisi; Hür Dava Partisi
+
+Others < 0.15%
+
+AU: 2019 Australian federal election (House of Representatives)
+
+Far-left:
+Left: Australian Labor Party; Australian Greens;
+Center: Katter's Australian Party; Centre Alliance
+Right: Liberal Party of Australia; Liberal National Party of Queensland; National Party of Australia; Country Liberal Party
+Far-right:
+
+Others ~15%
+
+BR: 2018 Brazilian general election
+
+Far-left: Guilherme Boulos
+Left: Fernando Haddad; Marina Silva
+Center: Ciro Gomes; Geraldo Alckmin; Henrique Meirelles; Alvaro Dias
+Right: João Amoêdo
+Far-right: Jair Bolsonaro; Cabo Daciolo
+
+Others < 1%
