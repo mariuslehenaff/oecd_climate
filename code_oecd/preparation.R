@@ -4133,6 +4133,25 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # e$vote_agg[grepl("Dansk Folkeparti|Nye Borgerlige", e$vote)] <- "Far right"
     # e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
   } 
+  } else if (country == "IT") { # Automatic classification is the same except that Far right parties are then considered Right
+    temp <- -1*(e$vote %in% c("Partito Democratico", "Liberi e Uguali")) -0*(e$vote %in% c("Movimento 5 Stelle", "+Europa", "Civica Popolare", "Partito Autonomista Trentino Tirolese", "MAIE", "USEI")) + 1*(e$vote %in% c("Forza Italia", "Noi con l'Italia")) + 2*(e$vote %in% c("Lega", "Fratelii d'Italia")) -0.1*(e$vote %in% c("Other", "Altro", "PNR"))
+    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
+                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Partito Democratico|Liberi e Uguali; Center: Movimento 5 Stelle|+Europa|Civica Popolare|Partito Autonomista Trentino Tirolese|MAIE|USEI; Right: Forza Italia|Noi con l'Italia; Far right: Lega Nord|Fratelii d'Italia")
+  
+  } 
+  } else if (country == "PL") { # Automatic classification is the same except that Far right parties are then considered Right
+    temp <- -1*(e$vote %in% c("Robert Biedroń", "Waldemar Witkowski")) -0*(e$vote %in% c("Szymon Hołownia", "Władysław Kosiniak-Kamysz")) + 1*(e$vote %in% c("Rafał Trzaskowski", "Stanisław Żółtek", "Marek Jakubiak", "Paweł Tanajno", "Mirosław Piotrowski")) + 2*(e$vote %in% c("Andrzej Duda", "Krzysztof Bosak")) -0.1*(e$vote %in% c("Other", "PNR"))
+    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
+                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Robert Biedroń|Waldemar Witkowski; Center: Szymon Hołownia|Władysław Kosiniak-Kamysz; Right: Rafał Trzaskowski|Stanisław Żółtek|Marek Jakubiak|Paweł Tanajno|Mirosław Piotrowski; Far right: Andrzej Duda|Krzysztof Bosak")
+  
+  } 
+    } else if (country == "MX") { # Automatic classification is the same except that Far right parties are then considered Right
+    temp <- -1*(e$vote %in% c("PRD", "MORENA", "Movimiento Ciudadano", "PT", "VERDE")) -0*(e$vote %in% c("PRI")) + 1*(e$vote %in% c("PAN"))-0.1*(e$vote %in% c("Other", "Otro", "PNR"))
+    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Center","Right","PNR or other")),
+                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: PRD|Morena|Movimiento Ciudadano|PT|Verde; Center: PRI; Right: PAN")
+  
+  } 
+
   e$vote_agg_number <- as.numeric(e$vote_agg)
   label(e$vote_agg_number) <- "vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other"
   
