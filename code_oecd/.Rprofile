@@ -683,7 +683,7 @@ labelsN <- function(labels, levels, parentheses = T) {
   # return(sapply(labels, function(l) {return(paste(l, levels, sep=": "))})) # version var: lev1 / var: lev2 / ...
 }
 barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), 
-                    rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F) {
+                    rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F, error_margin = F) {
   if (nolabel & length(labels)==1) labels <- "" 
   if (is.data.frame(df)) df <- list(df)
   if (!missing(along)) levels <- sub("^\\*", "", rev(Levels(df[[1]][[along]])))
@@ -704,7 +704,7 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
   else if (return=="legend") return(legend)
   else return(barres(data = dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = ""), 
                      labels=labels, legend=legend, # labels12(labels[agree], en = !fr, comp = comp, orig = orig) # /!\ doesn't currently support multiple vars
-                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls))
+                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls, error_margin = error_margin))
 }
 color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
 color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') {
@@ -884,7 +884,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   if (nrow(data)>1) { for (i in 2:nrow(data)) { # evaluate=TRUE, 
     bars <- add_trace(bars, x = data[i,], name=legend[i], text = values[,i], hoverinfo = 'text', hovertext = hovers[,i], marker = list(color = color[i]), 
                       error_x = list(visible = error_margin, array=qnorm(1-0.05/2)*sqrt(data[i,]*(1-data[i,])/(N-1)), color = color_margin)) # width thickness (in px)
-  } }
+  } } # /!\ When data and vars are not provided, N cannot be computed, but error_margin=T still returns a (zero) confidence interval
   if (online) { api_create(bars, filename=file, sharing="public") }
   if (!missing(file) & save) save_plotly(bars, filename = file) # new
   if (export_xls) {
