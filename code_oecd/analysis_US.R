@@ -465,7 +465,7 @@ decrit("flight_quota", which = fr$variant_flight_quota == "1 trip", data = fr)
 decrit("flight_quota", which = fr$variant_flight_quota == "1000km", data = fr)
 decrit("flight_quota", which = fr$variant_flight_quota == "1000km global", data = fr)
 all(as.integer(e$flights)==e$flights) # TODO: table, plot flight_pref(revenu/nb_flight)
-for (v in variables_flight_quota) print(decrit(v, data = e, miss = F))
+for (v in variables_flight_quota) print(decrit(v, data = e, miss = F)) # <<<
 # More want it tradable when it is global (normal). Those who fly more / richer prefer more market when quota is global
 for (v in variables_flight_quota[1:2]) print(decrit(v, data = e, which = e$flights == 0))
 for (v in variables_flight_quota[1:2]) print(decrit(v, data = e, which = e$flights < 2.5, miss = F))
