@@ -8,6 +8,7 @@ source(".Rprofile")
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
 # TODO: Create a set of weights for all such that we get the global average of variables (maybe, assuming that e.g. Brazil represents all Latin America, etc.)
+# TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
 control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0", "treatment")
@@ -3097,7 +3098,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if (length(grep('condition_', names(e)))>0) variables_condition <<- names(e)[grepl('condition_', names(e))]
   if (length(grep('CC_impacts_', names(e)))>0) variables_CC_impacts <<- names(e)[grepl('CC_impacts_', names(e))]
   variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
-  variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p", names(e))]
+  variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p|EEG_Umlage|commuter_allowance", names(e))]
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "urban", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "urban")
@@ -4134,95 +4135,77 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # e$vote_agg[grepl("Det Konservative Folkeparti|Liberal Alliance|Venstre", e$vote)] <- "Right"
     # e$vote_agg[grepl("Dansk Folkeparti|Nye Borgerlige", e$vote)] <- "Far right"
     # e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
-  } 
   } else if (country == "IT") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("Partito Democratico", "Liberi e Uguali")) -0*(e$vote %in% c("Movimento 5 Stelle", "+Europa", "Civica Popolare", "Partito Autonomista Trentino Tirolese", "MAIE", "USEI")) + 1*(e$vote %in% c("Forza Italia", "Noi con l'Italia")) + 2*(e$vote %in% c("Lega", "Fratelii d'Italia")) -0.1*(e$vote %in% c("Other", "Altro", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Partito Democratico|Liberi e Uguali; Center: Movimento 5 Stelle|+Europa|Civica Popolare|Partito Autonomista Trentino Tirolese|MAIE|USEI; Right: Forza Italia|Noi con l'Italia; Far right: Lega Nord|Fratelii d'Italia")
   
-  } 
   } else if (country == "PL") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("Robert Biedroń", "Waldemar Witkowski")) -0*(e$vote %in% c("Szymon Hołownia", "Władysław Kosiniak-Kamysz")) + 1*(e$vote %in% c("Rafał Trzaskowski", "Stanisław Żółtek", "Marek Jakubiak", "Paweł Tanajno", "Mirosław Piotrowski")) + 2*(e$vote %in% c("Andrzej Duda", "Krzysztof Bosak")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Robert Biedroń|Waldemar Witkowski; Center: Szymon Hołownia|Władysław Kosiniak-Kamysz; Right: Rafał Trzaskowski|Stanisław Żółtek|Marek Jakubiak|Paweł Tanajno|Mirosław Piotrowski; Far right: Andrzej Duda|Krzysztof Bosak")
   
-  } 
     } else if (country == "MX") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("PRD", "MORENA", "Movimiento Ciudadano", "PT", "VERDE")) -0*(e$vote %in% c("PRI")) + 1*(e$vote %in% c("PAN"))-0.1*(e$vote %in% c("Other", "Otro", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,-0.1), names = c("Left","Center","Right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: PRD|Morena|Movimiento Ciudadano|PT|Verde; Center: PRI; Right: PAN")
   
-  }
     } else if (country == "JP") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -2*(e$vote %in% c("Japanese Communist Party")) -1*(e$vote %in% c("Constitutional Democratic Party of Japan", "Social Democratic Party")) -0*(e$vote %in% c("Komeito", "Democratic Party For the People", "Japan Innovation Party")) + 1*(e$vote %in% c("Liberal Democratic Party"))-0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,-0.1), names = c("Far left", "Left","Center","Right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Far left: Japanese Communist Party; Left: Constitutional Democratic Party of Japan|Social Democratic Party; Center: Komeito|Democratic Party For the People|Japan Innovation Party; Right: Liberal Democratic Party")
   
-  }
     } else if (country == "ES") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -2*(e$vote %in% c("Unidas Podemos")) -1*(e$vote %in% c("PSOE", "Esquerra Republicana")) -0*(e$vote %in% c("Ciudadanos")) + 1*(e$vote %in% c("PP")) + 2*(e$vote %in% c("VOX")) -0.1*(e$vote %in% c("Other", "Otro", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Unidas Podemos; Left: PSOE|Esquerra Republicana; Center: Ciudadanos; Right: PP; Far right: VOX")
   
-  } 
     } else if (country == "IN") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("Congress", "BSP", "TMC")) -0*(e$vote %in% c("AAP")) + 1*(e$vote %in% c("BJP", "Akaali Dal")) + 2*(e$vote %in% c("Shiv-Sena")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Congress|BSP|TMC; Center: AAP; Right: BJP|Akaali Dal; Far right: Shiv-Sena")
   
-  }
     } else if (country == "ID") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("PDI-P")) -0*(e$vote %in% c("PKB", "PAN")) + 1*(e$vote %in% c("Nasdem", "Demokrat", "PPP", "Golkar")) + 2*(e$vote %in% c("Gerindra", "PKS")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: PDI-P; Center: PKB|PAN; Right: Nasdem|Demokrat|PPP|Golkar; Far right: Gerindra|PKS")
   
-  } 
     } else if (country == "SA") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -2*(e$vote %in% c("Economic Freedom Fighters (EFF)")) -1*(e$vote %in% c("African National Congress (ANC)")) -0*(e$vote %in% c("Democratic Alliance (DA)")) + 1*(e$vote %in% c("Inkatha Freedom Party (IFP)")) + 2*(e$vote %in% c("Freedom Front Plus (FF Plus)")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Economic Freedom Fighters (EFF); Left: African National Congress (ANC); Center: Democratic Alliance (DA); Right: Inkatha Freedom Party (IFP); Far right: Freedom Front Plus (FF Plus)")
   
-  }
     } else if (country == "DE") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -2*(e$vote %in% c("Die Linke")) -1*(e$vote %in% c("SPD", "Bündnis 90/ Die Grünen")) -0*(e$vote %in% c("FDP")) + 1*(e$vote %in% c("CDU/CSU")) + 2*(e$vote %in% c("AfD")) -0.1*(e$vote %in% c("Other", "Sonstige","PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Die Linke; Left: SPD|Bündnis 90/ Die Grünen; Center: FDP; Right: CDU/CSU; Far right: AfD")
   
-  } 
     } else if (country == "CA") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("Liberal", "Bloc québécois", "New Democratic", "Green")) + 1*(e$vote %in% c("Conservative")) +2*(e$vote %in% c("People's Party")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,1,2,-0.1), names = c("Left","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: Liberal|Bloc québécois|New Democratic|Green; Right: Conservative; Far right: People's Party")
   
-  } 
     } else if (country == "AU") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("Labor", "Greens")) + 1*(e$vote %in% c("Liberal/National coalition")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,1,-0.1), names = c("Left","Right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Left: Labor|Greens; Right: Liberal/National coalition")
   
-  } 
       } else if (country == "UA") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <-  -1*(e$vote %in% c("Petro Poroshenko")) -0*(e$vote %in% c("Volodymyr Zelensky", "Ioulia Tymochenko", "Iouri Boïko", "Anatoliy Hrytsenko", "Oleksandr Vilkul")) + 1*(e$vote %in% c("Ihor Smeshko", "Oleh Lyashko")) + 2*(e$vote %in% c("Ruslan Koshulynskyi")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Petro Poroshenko; Center: Volodymyr Zelensky|Ioulia Tymochenko|Iouri Boïko|Anatoliy Hrytsenko|Oleksandr Vilkul; Right: Ihor Smeshko|Oleh Lyashko; Far right: Ruslan Koshulynskyi")
   
-  } 
-
       } else if (country == "SK") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("Moon Jae-in", "Sim Sang-jung")) -0*(e$vote %in% c("Ahn Cheol-soo")) + 1*(e$vote %in% c("Yoo Seong-min")) + 2*(e$vote %in% c("Hong Joon-pyo")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Moon Jae-in|Sim Sang-jung; Center: Ahn Cheol-soo; Right: Yoo Seong-min; Far right: Hong Joon-pyo")
   
-  }
-
       } else if (country == "TR") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -2*(e$vote %in% c("Vatan Partisi")) -1*(e$vote %in% c("Cumhuriyet Halk Partisi", "Halkların Demokratik Partisi")) -0*(e$vote %in% c("İYİ Parti")) + 1*(e$vote %in% c("Adalet ve Kalkınma Partisi")) + 2*(e$vote %in% c("Milliyetçi Hareket Partisi", "Saadet Partisi", "Hür Dava Partisi")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Vatan Partisi; Left: Cumhuriyet Halk Partisi|Halkların Demokratik Partisi; Center: İYİ Parti; Right: Adalet ve Kalkınma Partisi; Far right: Milliyetçi Hareket Partisi|Saadet Partisi|Hür Dava Partisi")
   
-  } 
-
-      } else if (country == "BR") { # Automatic classification is the same except that Far right parties are then considered Right
+   } else if (country == "BR") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -2*(e$vote %in% c("Guilherme Boulos")) -1*(e$vote %in% c("Fernando Haddad", "Marina Silva")) -0*(e$vote %in% c("Ciro Gomes", "Geraldo Alckmin", "Henrique Meirelles", "Alvaro Dias")) + 1*(e$vote %in% c("João Amoêdo")) + 2*(e$vote %in% c("Jair Bolsonaro", "Cabo Daciolo")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Guilherme Boulos; Left: Fernando Haddad|Marina Silva; Center: Ciro Gomes|Geraldo Alckmin|Henrique Meirelles|Alvaro Dias; Right: João Amoêdo; Far right: Jair Bolsonaro|Cabo Daciolo")
