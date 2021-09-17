@@ -294,6 +294,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(CC_anthropogenic_US <- barres(vars = "CC_anthropogenic", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Part of climate change anthropogenic"))
       save_plotly_new_filename(CC_anthropogenic_US, width= 660, height=140)})
     
+    try({(CC_anthropogenic_US_CI <- barres(vars = "CC_anthropogenic", error_margin = T, rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Part of climate change anthropogenic"))
+      save_plotly_new_filename(CC_anthropogenic_US_CI, width= 660, height=140)})
+    
     try({(CC_anthropogenic_non_deniers_US <- barres(vars = "CC_anthropogenic", rev = F, rev_color = T, export_xls = export_xls, df = e[e$CC_real!="No",], miss=F, labels="Part of climate change anthropogenic"))
       save_plotly_new_filename(CC_anthropogenic_non_deniers_US, width= 660, height=140)})
     
@@ -1077,6 +1080,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     try({(CC_anthropogenic_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "CC_anthropogenic", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Part of climate change anthropogenic"))
       save_plotly_new_filename(CC_anthropogenic_US, width= 660, height=fig_height(1*nb_levels))})
+    
+    try({(CC_anthropogenic_US_CI <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "CC_anthropogenic", error_margin = T, rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Part of climate change anthropogenic"))
+      save_plotly_new_filename(CC_anthropogenic_US_CI, width= 660, height=fig_height(1*nb_levels))})
     
     try({(CC_anthropogenic_non_deniers_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "CC_anthropogenic", rev = F, rev_color = T, export_xls = export_xls, df = e[e$CC_real!="No",], miss=F, labels="Part of climate change anthropogenic"))
       save_plotly_new_filename(CC_anthropogenic_non_deniers_US, width= 660, height=fig_height(1*nb_levels))})
