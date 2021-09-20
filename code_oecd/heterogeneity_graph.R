@@ -590,3 +590,85 @@ positive_all_by_trust_govt_FR <- ggplot(mean_sd) +
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
   scale_color_manual(labels = c("Don't trust govt", "Trust govt") ,values = c("#FDAE61", "#ABD9E9"))
 positive_all_by_trust_govt_FR
+
+
+
+### Comparative graph for Urban_Rural
+# Urban category
+variables_list <- c("standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
+policies_label <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
+
+# FR
+mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "urban", df=fr, weights = "weight")))
+mean_sd_FR <- mean_sd_FR %>%
+  subset(urban != "0") # 1 obs is 0
+mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
+
+support_by_urban_FR <- ggplot(mean_sd_FR) +
+  geom_pointrange( aes(x = V1, y = policy, color = urban, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'France', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9"))
+support_by_urban_FR
+
+# US
+mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "urban", df = us, weights = "weight")))
+
+mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
+mean_sd_US$urban_category <- factor(mean_sd_US$urban, levels = c("Rural", "Urban"))
+
+support_by_urban_US <- ggplot(mean_sd_US) +
+  geom_pointrange( aes(x = V1, y = policy, color = urban, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'U.S.', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "none", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9"))
+support_by_urban_US
+
+# DK
+mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "urban", df=dk, weights = "weight")))
+
+mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
+mean_sd_DK$urban_category <- factor(mean_sd_DK$urban, levels = c("Rural", "Urban"))
+
+support_by_urban_DK <- ggplot(mean_sd_DK) +
+  geom_pointrange( aes(x = V1, y = policy, color = urban, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Support', y = 'Denmark', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "none", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9"))
+support_by_urban_DK
+
+# DE
+mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                             heterogeneity_group = "urban", df=de, weights = "weight")))
+mean_sd_DE <- mean_sd_DE %>%
+  subset(urban != "0") # 1 obs is 0
+mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
+
+support_by_urban_DE <- ggplot(mean_sd_DE) +
+  geom_pointrange( aes(x = V1, y = policy, color = urban, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Support', y = 'Germany', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "none", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9"))
+support_by_urban_DE
+
+
+# mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI,
+#                                 heterogeneity_group = "urban_category", df=de, weights = "weight")))
+# mean_sd_DE <- mean_sd_DE %>%
+#   subset(urban_category != "0") # 1 obs is 0
+# mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
+# mean_sd_DE$urban_category <- factor(mean_sd_DE$urban, levels = c('"Rural"', '"Towns_and_Suburbs"', '"Cities"'))
+# 
+# support_by_urban_cat_DE <- ggplot(mean_sd_DE) +
+#   geom_pointrange( aes(x = V1, y = policy, color = urban_category, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+#   labs(x = 'Support', y = 'Germany', color="") +
+#   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+#   scale_color_manual(labels = c("Rural", "Towns and Suburbs", "Cities"), values = c("#FDAE61", "#FFED6F", "#ABD9E9"))
+# support_by_urban_cat_DE
+
+# Add the 4 graphs together
+ggarrange(support_by_urban_FR, support_by_urban_US, support_by_urban_DE, support_by_urban_DK,
+          nrow=2, ncol=2, common.legend = TRUE, legend = "top")
