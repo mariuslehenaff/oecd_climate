@@ -3887,7 +3887,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                        e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
                        e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                        e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
-                       e$country == "DE" ~ e$urban_category %in% c("Town and Suburbs", "Cities"),
+                       e$country == "DE" ~ e$urban_category %in% c('"Towns_and_Suburbs"', '"Cities"'), # Fix some typos in the variable names
                       # e$country == "IN" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
                        e$country == "MX" ~ e$urban_category %in% c("Urban"),
                        e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
