@@ -3881,6 +3881,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, text_incidence, "rural", sep="_")]]/3
   if ("standard_incidence_urban" %in% names(e)) for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, text_incidence, "urban", sep="_")]]/3
 
+  if (country %in% c("FR", "IT", "UK", "DE", "MX", "SK")) {
+    e$urban_category[e$urban_category == "0"] <- NA
+  }
+  
   if (country=="US") {
     e$urban <- e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
     label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"   
