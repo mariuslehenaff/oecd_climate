@@ -4,7 +4,7 @@
 heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, df=e, weights = "weight"){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
   mean_sd <- as.data.frame(sapply(split(df, df[[heterogeneity_group]]), function(x) c(wtd.mean(x[[variable_name]] > 0, w = x[[weights]], na.rm=T)*100, sqrt(wtd.var(x[[variable_name]] > 0, w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]]))*100)))
-  # Get low and high bounds of CI. For the moment only 10% CI
+  # Get low and high bounds of CI. For the moment only 90% CI
   mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-1.645*x[2], x[1]+1.645*x[2]))))
   mean_sd <- tibble::rownames_to_column(mean_sd, heterogeneity_group)
   mean_sd$policy <- variable_name
@@ -792,24 +792,73 @@ support_by_incomeM_DE <- ggplot(mean_sd_DE) +
   xlim(29.5, 65.5)
 support_by_incomeM_DE
 
-# All
+## All Countries
 ggarrange(support_by_incomeM_FR, support_by_incomeM_US, support_by_incomeM_DE, support_by_incomeM_DK,
           nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
 
 
 ## Attitudes positives
-variables_list <- c("CC_anthropogenic", "CC_dynamic", "CC_problem", "CC_affects_self", "net_zero_feasible", "CC_will_end", "effect_halt_CC_economy", "effect_halt_CC_lifestyle")
-policies_label <- c("CC exists, is anthropogenic", "Cutting GHG emisions by half \n sufficient to stop rise in temperatures", "CC is an important problem", "CC will negatively affect personal lifestyle", "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "Likely to halt CC by the end of the century", "Positive effects of ambitious policies \n on the [country] economy and employment", "Negative effects of ambitious policies on lifestyle")
+variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
+policies_label <- c("CC is an important problem", "CC exists, is anthropogenic", "Cutting GHG emisions by half \n sufficient to stop rise in temperatures", "Likely to halt CC by the end of the century",
+                    "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "CC will negatively affect personal lifestyle", "Negative effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
 
-# FR
 mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                                  heterogeneity_group = "country", df=all, weights = "weight")))
 mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
 
 CC_attitude_positive_CI_countries <- ggplot(mean_sd_all) +
-  geom_pointrange( aes(x = V1, y = policy, color = country, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  geom_pointrange( aes(x = V1, y = fct_rev(policy), color = country, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = 'Positive answers', y = '', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
   scale_color_manual(labels = c("Germany", "Denmark", "France", "U.S."), values = c("#D7191C", "#FDAE61", "#FFED6F", "#ABD9E9"))
 
 CC_attitude_positive_CI_countries
+
+## Willing to change behavior
+variables_list <- c("willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_beef", "willing_limit_heating")
+policies_label <- c("Willing to limit flying", "Willing to limit driving", "Willing to have a fuel-efficient or electric vehicle", "Willing to limit beef consumption", "Willing to limit heating or cooling your home")
+
+
+mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                 heterogeneity_group = "country", df=all, weights = "weight")))
+mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
+
+willing_positive_CI_countries <- ggplot(mean_sd_all) +
+  geom_pointrange( aes(x = V1, y = fct_rev(policy), color = country, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Germany", "Denmark", "France", "U.S."), values = c("#D7191C", "#FDAE61", "#FFED6F", "#ABD9E9"))
+
+willing_positive_CI_countries
+
+## Support Policies
+variables_list <- c("standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
+policies_label <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
+
+mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                 heterogeneity_group = "country", df=all, weights = "weight")))
+mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
+
+policies_all_support_positive_CI_countries <- ggplot(mean_sd_all) +
+  geom_pointrange( aes(x = V1, y = fct_rev(policy), color = country, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Support', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Germany", "Denmark", "France", "U.S."), values = c("#D7191C", "#FDAE61", "#FFED6F", "#ABD9E9"))
+
+policies_all_support_positive_CI_countries
+
+## Use of tax revenue
+variables_list <- c("tax_transfer_constrained_hh", "tax_transfer_poor", "tax_transfer_all", "tax_reduction_personal_tax", "tax_reduction_corporate_tax", "tax_rebates_affected_firms", "tax_investments", "tax_subsidies", "tax_reduction_deficit")
+policies_label <- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructures", "Subsidies to low-carbon technologies", "Reduction in the deficit")
+
+mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                 heterogeneity_group = "country", df=all, weights = "weight")))
+mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
+
+tax_all_positive_CI_countries <- ggplot(mean_sd_all) +
+  geom_pointrange( aes(x = V1, y = fct_rev(policy), color = country, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers', y = '', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+  scale_color_manual(labels = c("Germany", "Denmark", "France", "U.S."), values = c("#D7191C", "#FDAE61", "#FFED6F", "#ABD9E9"))
+
+tax_all_positive_CI_countries
