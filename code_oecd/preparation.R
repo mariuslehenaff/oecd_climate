@@ -62,7 +62,7 @@ loadings_efa <- list()
                  "PL_region" = c("North", "Central", "South-West", "Central-East", "South-East"),
                  "ES_region" = c("East", "Center",  "South North", "North-West"),
                  "DE_region" = c("Northern", "Western", "Central", "Eastern", "Southern"),
-                 "DE_urban_category" = c("Rural", "Town_and_Suburbs", "Cities"),
+                 "DE_urban_category" = c("Rural", "Towns_and_Suburbs", "Cities"),
                  "JP_region" = c("Kanto", "Kansai", "North", "Chubu", "South"),
                  "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
                  "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
@@ -3894,7 +3894,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                        e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
                        e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                        e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
-                       e$country == "DE" ~ e$urban_category %in% c('"Towns_and_Suburbs"', '"Cities"'), # Fix some typos in the variable names
+                       e$country == "DE" ~ e$urban_category %in% c("Towns_and_Suburbs", "Cities"),
                       # e$country == "IN" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
                        e$country == "MX" ~ e$urban_category %in% c("Urban"),
                        e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
