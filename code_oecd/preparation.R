@@ -4065,9 +4065,6 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   e$income_factor <- as.factor(e$income)
   
-  e$income_med <- "M1"
-  e$income_med[e$income > 2] <- "M2"
-  label(e$income_med) <- "income_med: Has income greater than Q2"
   ### WEIGHTING
   if (weighting) {
     e$weight <- weighting(e, country) 
