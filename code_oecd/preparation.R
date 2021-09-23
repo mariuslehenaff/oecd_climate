@@ -61,8 +61,8 @@ loadings_efa <- list()
                  "UK_urban_category" = c("Rural", "City_Town", "Large_urban"),
                  "PL_region" = c("North", "Central", "South-West", "Central-East", "South-East"),
                  "ES_region" = c("East", "Center",  "South North", "North-West"),
-                 "DE_region" = c("Northern Germany", "Western Germany", "Central Germany", "Eastern Germany", "Southern Germany"),
-                 "DE_urban_category" = c("Rural", "Town and Suburbs", "Cities"),
+                 "DE_region" = c("Northern", "Western", "Central", "Eastern", "Southern"),
+                 "DE_urban_category" = c("Rural", "Town_and_Suburbs", "Cities"),
                  "JP_region" = c("Kanto", "Kansai", "North", "Chubu", "South"),
                  "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
                  "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
@@ -2990,7 +2990,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e[[i]][e[[i]] %in% text_pnr] <- "PNR"
   }
 
-  for (v in c("urban_category")) e[[v]] <- sub("\r$", "", sub("\n$", "", e[[v]]))
+  for (v in c("urban_category", "region")) e[[v]] <- sub("\r$", "", gsub('"', '', sub("\n$", "", e[[v]])))
   
   variables_duration <<- names(e)[grepl('duration', names(e))]
   if (length(grep('footprint', names(e)))>0) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
