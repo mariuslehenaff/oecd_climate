@@ -106,6 +106,7 @@ package("broom")
 package("tidytext")
 package("modelsummary")
 package("dplR")
+package("ggpubr")
 
 # package("forcats")
 # package("quanteda")
