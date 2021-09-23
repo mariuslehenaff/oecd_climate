@@ -1,16 +1,21 @@
 
 # Nb: condition is > 0. Might be different for other variables
 # Return a df with mean and CI for each sub-group
-heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, df=e, weights = "weight"){
+# condition: corresponds to condition we want to apply to variables of interests. Default is "> 0" as origianlly the function
+# was made for support variables
+# heterogeneity_condition: corresponds to condition we want to apply to a subgroup. For instance, focus on people who don't trust
+# by default there is no condition.
+heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", df=e, weights = "weight", condition = "> 0", CI = 1-0.05/2){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
-  mean_sd <- as.data.frame(sapply(split(df, df[[heterogeneity_group]]), function(x) c(wtd.mean(x[[variable_name]] > 0, w = x[[weights]], na.rm=T)*100, sqrt(wtd.var(x[[variable_name]] > 0, w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]]))*100)))
+  mean_sd <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(wtd.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]]))*100"))))))
   # Get low and high bounds of CI. For the moment only 90% CI
-  mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-1.645*x[2], x[1]+1.645*x[2]))))
+  mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
   mean_sd <- tibble::rownames_to_column(mean_sd, heterogeneity_group)
   mean_sd$policy <- variable_name
   
   return(mean_sd)
 }
+
 
 # e <- us
 e <- fr
@@ -611,7 +616,7 @@ support_by_urban_FR <- ggplot(mean_sd_FR) +
   labs(x = '', y = 'France', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(25, 67)
+  xlim(24.5, 67.5)
 support_by_urban_FR
 
 # US
@@ -626,7 +631,7 @@ support_by_urban_US <- ggplot(mean_sd_US) +
   labs(x = '', y = 'U.S.', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "none", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(25, 67)
+  xlim(24.5, 67.5)
 support_by_urban_US
 
 # DK
@@ -641,7 +646,7 @@ support_by_urban_DK <- ggplot(mean_sd_DK) +
   labs(x = 'Support', y = 'Denmark', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "none", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(25, 67)
+  xlim(24.5, 67.5)
 support_by_urban_DK
 
 # DE
@@ -656,7 +661,7 @@ support_by_urban_DE <- ggplot(mean_sd_DE) +
   labs(x = 'Support', y = 'Germany', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "none", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Rural", "Urban"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(25, 67)
+  xlim(24.5, 67.5)
 support_by_urban_DE
 
 
@@ -691,7 +696,7 @@ support_by_incomeQ_FR <- ggplot(mean_sd_FR) +
   labs(x = '', y = 'France', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Q1", "Q2", "Q3", "Q4"),values = c(brewer.pal(4, "RdBu"))) +
-  xlim(27.5, 68)
+  xlim(27, 68)
 support_by_incomeQ_FR
 
 # US
@@ -704,7 +709,7 @@ support_by_incomeQ_US <- ggplot(mean_sd_US) +
   labs(x = '', y = 'U.S.', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Q1", "Q2", "Q3", "Q4"),values = c(brewer.pal(4, "RdBu"))) +
-  xlim(27.5, 68)
+  xlim(27, 68)
 support_by_incomeQ_US
 
 # DK
@@ -717,7 +722,7 @@ support_by_incomeQ_DK <- ggplot(mean_sd_DK) +
   labs(x = 'Support', y = 'Denmark', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Q1", "Q2", "Q3", "Q4"),values = c(brewer.pal(4, "RdBu"))) +
-  xlim(27.5, 68)
+  xlim(27, 68)
 support_by_incomeQ_DK
 
 # DE
@@ -730,7 +735,7 @@ support_by_incomeQ_DE <- ggplot(mean_sd_DE) +
   labs(x = 'Support', y = 'Germany', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("Q1", "Q2", "Q3", "Q4"),values = c(brewer.pal(4, "RdBu"))) +
-  xlim(27.5, 68)
+  xlim(27, 68)
 support_by_incomeQ_DE
 
 # All
@@ -742,60 +747,75 @@ ggarrange(support_by_incomeQ_FR, support_by_incomeQ_US, support_by_incomeQ_DE, s
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income_med", df=fr, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=fr, weights = "weight")))
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_FR <- ggplot(mean_sd_FR) +
-  geom_pointrange( aes(x = V1, y = policy, color = income_med, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  geom_pointrange( aes(x = V1, y = policy, color = income, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = '', y = 'France', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("M1", "M2"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(29.5, 65.5)
+  xlim(29, 66)
 support_by_incomeM_FR
 
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income_med", df=us, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=us, weights = "weight")))
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_US <- ggplot(mean_sd_US) +
-  geom_pointrange( aes(x = V1, y = policy, color = income_med, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  geom_pointrange( aes(x = V1, y = policy, color = income, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = '', y = 'U.S.', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("M1", "M2"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(29.5, 65.5)
+  xlim(29, 66)
 support_by_incomeM_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income_med", df=dk, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=dk, weights = "weight")))
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_DK <- ggplot(mean_sd_DK) +
-  geom_pointrange( aes(x = V1, y = policy, color = income_med, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  geom_pointrange( aes(x = V1, y = policy, color = income, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = 'Support', y = 'Denmark', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("M1", "M2"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(29.5, 65.5)
+  xlim(29, 66)
 support_by_incomeM_DK
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income_med", df=de, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=de, weights = "weight")))
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_DE <- ggplot(mean_sd_DE) +
-  geom_pointrange( aes(x = V1, y = policy, color = income_med, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  geom_pointrange( aes(x = V1, y = policy, color = income, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = 'Support', y = 'Germany', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
   scale_color_manual(labels = c("M1", "M2"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(29.5, 65.5)
+  xlim(29, 66)
 support_by_incomeM_DE
 
 ## All Countries
 ggarrange(support_by_incomeM_FR, support_by_incomeM_US, support_by_incomeM_DE, support_by_incomeM_DK,
           nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
 
+
+## Trust in government
+
+# FR
+mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "can_trust_govt < 0", df=fr, weights = "weight", condition = " > 0")))
+mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
+
+support_by_govtrust_FR <- ggplot(mean_sd_FR) +
+  geom_pointrange( aes(x = V1, y = policy, color = can_trust_govt, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'France', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("M1", "M2"), values = c("#FDAE61", "#ABD9E9")) +
+  xlim(29, 66)
+support_by_govtrust_FR
 
 ## Attitudes positives
 variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
