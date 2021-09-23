@@ -806,16 +806,59 @@ ggarrange(support_by_incomeM_FR, support_by_incomeM_US, support_by_incomeM_DE, s
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "can_trust_govt < 0", df=fr, weights = "weight", condition = " > 0")))
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=fr, weights = "weight")))
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
 
 support_by_govtrust_FR <- ggplot(mean_sd_FR) +
   geom_pointrange( aes(x = V1, y = policy, color = can_trust_govt, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
   labs(x = '', y = 'France', color="") + 
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
-  scale_color_manual(labels = c("M1", "M2"), values = c("#FDAE61", "#ABD9E9")) +
-  xlim(29, 66)
+  scale_color_manual(labels = c("Others", "Do not trust Government"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(22.5, 66.5)
 support_by_govtrust_FR
+
+# US
+mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=us, weights = "weight")))
+mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
+
+support_by_govtrust_US <- ggplot(mean_sd_US) +
+  geom_pointrange( aes(x = V1, y = policy, color = can_trust_govt, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'U.S.', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Others", "Do not trust Government"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(22.5, 66.5)
+support_by_govtrust_US
+
+# DK
+mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=dk, weights = "weight")))
+mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
+
+support_by_govtrust_DK <- ggplot(mean_sd_DK) +
+  geom_pointrange( aes(x = V1, y = policy, color = can_trust_govt, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Support', y = 'Denmark', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Others", "Do not trust Government"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(22.5, 66.5)
+support_by_govtrust_DK
+
+# DE
+mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=de, weights = "weight")))
+mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
+
+support_by_govtrust_DE <- ggplot(mean_sd_DE) +
+  geom_pointrange( aes(x = V1, y = policy, color = can_trust_govt, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Support', y = 'Germany', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Others", "Do not trust Government"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(22.5, 66.5)
+support_by_govtrust_DE
+
+## All Countries
+ggarrange(support_by_govtrust_FR, support_by_govtrust_US, support_by_govtrust_DE, support_by_govtrust_DK,
+          nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
 
 ## Attitudes positives
 variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
@@ -882,3 +925,62 @@ tax_all_positive_CI_countries <- ggplot(mean_sd_all) +
   scale_color_manual(labels = c("Germany", "Denmark", "France", "U.S."), values = c("#D7191C", "#FDAE61", "#FFED6F", "#ABD9E9"))
 
 tax_all_positive_CI_countries
+
+# Details by country: perception of inequalities
+# FR
+mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=fr, weights = "weight")))
+mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
+
+tax_positive_by_inequality_CI95_FR <- ggplot(mean_sd_FR) +
+  geom_pointrange( aes(x = V1, y = policy, color = problem_inequality, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'France', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Others", "Concerned about inequalities"), values = c("#FDAE61", "#ABD9E9")) +
+  xlim(20.5, 77)
+tax_positive_by_inequality_CI95_FR
+
+# US
+mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=us, weights = "weight")))
+mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
+
+tax_positive_by_inequality_CI95_US <- ggplot(mean_sd_US) +
+  geom_pointrange( aes(x = V1, y = policy, color = problem_inequality, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'U.S.', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Others", "Concerned about inequalities"), values = c("#FDAE61", "#ABD9E9")) +
+  xlim(20.5, 77)
+tax_positive_by_inequality_CI95_US
+
+# DK
+mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=dk, weights = "weight")))
+mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
+
+tax_positive_by_inequality_CI95_DK <- ggplot(mean_sd_DK) +
+  geom_pointrange( aes(x = V1, y = policy, color = problem_inequality, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers', y = 'Denmark', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Others", "Concerned about inequalities"), values = c("#FDAE61", "#ABD9E9")) +
+  xlim(20.5, 77)
+tax_positive_by_inequality_CI95_DK
+
+# DE
+mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=de, weights = "weight")))
+mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
+
+tax_positive_by_inequality_CI95_DE <- ggplot(mean_sd_DE) +
+  geom_pointrange( aes(x = V1, y = policy, color = problem_inequality, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Positive answers', y = 'Germany', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("Others", "Concerned about inequalities"), values = c("#FDAE61", "#ABD9E9")) +
+  xlim(20.5, 77)
+tax_positive_by_inequality_CI95_DE
+
+## All Countries
+ggarrange(tax_positive_by_inequality_CI95_FR, tax_positive_by_inequality_CI95_US, tax_positive_by_inequality_CI95_DE, tax_positive_by_inequality_CI95_DK,
+          nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
+
+
