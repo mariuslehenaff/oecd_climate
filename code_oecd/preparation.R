@@ -4803,6 +4803,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
     data <- gsub("[country]", country_names[country], data, fixed = T)
     writeLines(data, con=file)  }
   e <- read_csv(file)
+  # e <- read_csv("../data/IT.csv")
 
   if (missing(wave)) wave <- "full"
   e <- relabel_and_rename(e, country = country, wave = wave)
@@ -4844,6 +4845,11 @@ e <- us <- prepare(country = "US", duration_min = 686)
 e <- dk <- prepare(country = "DK", duration_min = 686)
 e <- fr <- prepare(country = "FR", duration_min = 686)
 e <- de <- prepare(country = "DE", duration_min = 686)
+
+e <- it <- prepare(country = "IT", duration_min = 686)
+e <- sp <- prepare(country = "SP", duration_min = 686)
+e <- jp <- prepare(country = "JP", duration_min = 686)
+e <- uk <- prepare(country = "UK", duration_min = 686)
 current_countries <- c("DK", "US", "FR", "DE")
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
 
