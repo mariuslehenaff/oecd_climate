@@ -847,6 +847,7 @@ save_plotly(wtp_US_anthropogenic, width= 830, height=220)
 # save_plotly(policies_win_lose_self_US_pol, width= 870, height=380)
 # 
 # (policies_support_US_pol <- barres12(vars = paste(names_policies, "support", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss=F, sort = F, labels=labels_policies))
+# (policies_support_US_pol <- barres12(vars = paste(names_policies, "support", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$left_right %in% c("Very right", "Right", "Center"),], e[e$left_right %in% c("Left", "Very left"),]), comp = "(Left)", orig="<br>(Center or Right)", miss=F, sort = F, labels=labels_policies))
 # save_plotly(policies_support_US_pol, width= 1020, height=380) # TODO: sort=F respected
 # 
 # (donation_agg_US_pol <- barres12(vars = "donation_agg", export_xls = export_xls, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss=F, rev = F, rev_color = T, labels="Donation to climate charity (in $)"))
