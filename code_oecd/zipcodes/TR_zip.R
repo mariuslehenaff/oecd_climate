@@ -69,4 +69,4 @@ merge_1 <- merge(x = data.zip, y=data.pop[,c(6:NCOL(data.pop))], by = c("Provinc
 data.final <- merge_1[, c("Postal.Code", "Region", "Rural.urban")]
 data.final <- data.final[!duplicated(data.final),]
 
-write.csv(final,"TR_zipcode.csv", row.names=F)
+write.csv(data.final,"TR_zipcode.csv", row.names=F)
