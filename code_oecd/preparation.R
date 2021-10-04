@@ -74,7 +74,7 @@ loadings_efa <- list()
                  "SK_urban_category" = c("District", "Town", "City"),
                  "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
                  "CA_region" = c("North-West", "Central", "Ontario", "Quebec", "East"),
-                 "TR_region" = c("Anatolia", "Marmara", "Mediterranean", "North-West"),
+                 "TR_region" = c("Marmara", "West", "Central", "East"),
                  "UA_region" = c("Center", "East", "South", "West")
 
 
@@ -227,7 +227,7 @@ loadings_efa <- list()
     "income" = rep(.25, 4),
     "age" = c(0.158, 0.213, 0.297, 0.206, 0.126),
     "urban" = c(0.130, 0.870), 
-    "TR_region" = c(0.341962972, 0.303696271, 0.130995254, 0.223345503)
+    "TR_region" = c(0.303696271, 0.259076086, 0.252983823, 0.18424382)
   ),
     "UA" = list(
     "gender" = c(0.549, 0.000001, 0.451),
