@@ -13,23 +13,23 @@ data.zip$District <- toupper(data.zip$District)
 data.zip$Province <- toupper(data.zip$Province)
 
 # Generate regions based on Provinces
-aegan_provinces <- c("UŞAK","MUĞLA","MANİSA","KÜTAHYA","İZMİR", "DENİZLİ",
-                     "AFYONKARAHİSAR", "AYDIN")
-black_sea_provinces <- c("ZONGULDAK","TRABZON","TOKAT","SİNOP","SAMSUN","RİZE",
-                         "ORDU","KASTAMONU","KARABÜK", "GÜMÜŞHANE", "GİRESUN",
-                         "DÜZCE", "ÇORUM", "AMASYA", "ARTVİN", "BARTIN",
+aegan_provinces <- c("UŞAK","MUĞLA","MANİSA", "MANISA","KÜTAHYA","İZMİR", "İZMIR", "DENİZLİ", "DENIZLI",
+                     "AFYONKARAHİSAR", "AFYONKARAHISAR", "AYDIN")
+black_sea_provinces <- c("ZONGULDAK","TRABZON","TOKAT","SİNOP", "SINOP","SAMSUN","RİZE", "RIZE",
+                         "ORDU","KASTAMONU","KARABÜK", "GÜMÜŞHANE", "GİRESUN", "GIRESUN",
+                         "DÜZCE", "ÇORUM", "AMASYA", "ARTVİN", "ARTVIN", "BARTIN",
                          "BAYBURT", "BOLU")
-anatolia_provinces <- c("YOZGAT","VAN","TUNCELİ","ŞIRNAK","ŞANLIURFA","SİVAS",
-                        "SİİRT","NİĞDE","NEVŞEHİR","MUŞ","MARDİN","MALATYA",
-                        "KONYA","KİLİS","KIRŞEHİR","KIRIKKALE","KAYSERİ","KARS",
-                        "KARAMAN","IĞDIR", "HAKKARİ", "GAZİANTEP", "ESKİŞEHİR",
-                        "ERZURUM", "ERZİNCAN", "ELAZIĞ", "DİYARBAKIR", "ADIYAMAN",
-                        "AĞRI", "AKSARAY", "ANKARA", "ARDAHAN", "BATMAN", "BİNGÖL",
-                        "BİTLİS", "ÇANKIRI")
-marmara_provinces <- c("BALIKESİR", "BİLECİK", "BURSA", "ÇANAKKALE", "EDİRNE",
-                       "İSTANBUL", "KIRKLARELİ", "KOCAELİ", "SAKARYA", "TEKİRDAĞ",
+anatolia_provinces <- c("YOZGAT","VAN","TUNCELİ", "TUNCELI","ŞIRNAK","ŞANLIURFA","SİVAS", "SIVAS",
+                        "SİİRT", "SIIRT","NİĞDE", "NIĞDE","NEVŞEHİR", "NEVŞEHIR","MUŞ","MARDİN", "MARDIN","MALATYA",
+                        "KONYA","KİLİS", "KILIS","KIRŞEHİR", "KIRŞEHIR","KIRIKKALE","KAYSERİ", "KAYSERI","KARS",
+                        "KARAMAN","IĞDIR", "HAKKARİ", "HAKKARI", "GAZİANTEP", "GAZIANTEP", "ESKİŞEHİR", "ESKIŞEHIR",
+                        "ERZURUM", "ERZİNCAN", "ERZINCAN", "ELAZIĞ", "DİYARBAKIR", "DIYARBAKIR", "ADIYAMAN",
+                        "AĞRI", "AKSARAY", "ANKARA", "ARDAHAN", "BATMAN", "BİNGÖL", "BINGÖL",
+                        "BİTLİS", "BITLIS", "ÇANKIRI")
+marmara_provinces <- c("BALIKESİR", "BALIKESIR", "BİLECİK", "BILECIK", "BURSA", "ÇANAKKALE", "EDİRNE", "EDIRNE",
+                       "İSTANBUL", "KIRKLARELİ", "KIRKLARELI", "KOCAELİ", "KOCAELI", "SAKARYA", "TEKİRDAĞ", "TEKIRDAĞ",
                        "YALOVA")
-mediterranean_provinces <- c("OSMANİYE","MERSİN","KAHRAMANMARAŞ", "ISPARTA", "HATAY",
+mediterranean_provinces <- c("OSMANİYE", "OSMANIYE","MERSİN", "MERSIN","KAHRAMANMARAŞ", "ISPARTA", "HATAY",
                              "ADANA", "ANTALYA", "BURDUR")
 data.zip$Region <- ""
 data.zip$Region[data.zip$Province %in% anatolia_provinces] <- "Anatolia"
