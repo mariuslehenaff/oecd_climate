@@ -70,12 +70,12 @@ loadings_efa <- list()
                  "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
                  "MX_region" = c("Central-Western", "Central-Eastern", "North-East", "North-West", "South"),
                  "MX_urban_category" = c("Rural", "Semiurban", "Urban"),
-                 "SK_region" = c("Seoul", "North", "Central-West", "South-West", "East"),
+                 "SK_region" = c("Seoul", "North", "West", "East"),
                  "SK_urban_category" = c("District", "Town", "City"),
                  "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
                  "CA_region" = c("North-West", "Central", "Ontario", "Quebec", "East"),
-                 "TR_region" = c("Anatolia", "Marmara", "Mediterranean", "Aegean", "Black-Sea"),
-                 "UA_region" = c("Center-East", "Center-West", "East", "South", "West")
+                 "TR_region" = c("Anatolia", "Marmara", "Mediterranean", "North-West"),
+                 "UA_region" = c("Center", "East", "South", "West")
 
 
   )
@@ -206,7 +206,7 @@ loadings_efa <- list()
     "age" = c(0.098, 0.159, 0.274, 0.282, 0.187),
     "urban" = c(FALSE, TRUE),
     "SK_urban_category" = c(0.08407891, 0.4967454, 0.4191757),
-    "SK_region" = c(0.186166268, 0.343251015, 0.109213095, 0.111043501, 0.25032612)
+    "SK_region" = c(0.186166268, 0.343251015, 0.220256596, 0.25032612)
   ),
     "AU" = list(
     "gender" = c(0.506, 0.000001, 0.494),
@@ -227,14 +227,14 @@ loadings_efa <- list()
     "income" = rep(.25, 4),
     "age" = c(0.158, 0.213, 0.297, 0.206, 0.126),
     "urban" = c(0.130, 0.870), 
-    "TR_region" = c(0.341962972, 0.303696271, 0.130995254, 0.128080832, 0.095264671)
+    "TR_region" = c(0.341962972, 0.303696271, 0.130995254, 0.223345503)
   ),
     "UA" = list(
     "gender" = c(0.549, 0.000001, 0.451),
     "income" = rep(.25, 4),
     "age" = c(0.082, 0.178, 0.282, 0.249, 0.209),
     "urban" = c(0.3046, 0.6954), 
-    "UA_region" = c(0.082140396, 0.229168347, 0.213095418, 0.224565659, 0.251030179)
+    "UA_region" = c(0.311308744, 0.213095418, 0.224565659, 0.251030179)
   )    
   )
   
