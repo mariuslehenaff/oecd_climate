@@ -24,8 +24,8 @@ data.zip$division.2[is.na(data.zip$division.2) | data.zip$division.2 == ""] <- "
 data.zip$Region <- ""
 data.zip$Region[data.zip$Province %in% c("Seoul")] <- "Seoul"
 data.zip$Region[data.zip$Province %in% c("Gyeonggi-do", "Incheon", "Gangwon-do")] <- "North"
-data.zip$Region[data.zip$Province %in% c("Chungcheongnam-do", "Chungcheongbuk-do", "Daejeon", "Sejong-si")] <- "Central-West"
-data.zip$Region[data.zip$Province %in% c("Jeollanam-do", "Jeollabuk-do", "Gwangju", "Jeju-do")] <- "South-West"
+data.zip$Region[data.zip$Province %in% c("Chungcheongnam-do", "Chungcheongbuk-do", "Daejeon", "Sejong-si")] <- "Central-West" <- "West"
+data.zip$Region[data.zip$Province %in% c("Jeollanam-do", "Jeollabuk-do", "Gwangju", "Jeju-do")] <- "South-West" <- "West"
 data.zip$Region[data.zip$Province %in% c("Gyeongsangnam-do", "Gyeongsangbuk-do", "Daegu", "Busan", "Ulsan")] <- "East"
 
 data.zip.short <- data.zip[, c("Postal.code", "Region", "division.2", "division.1")]
