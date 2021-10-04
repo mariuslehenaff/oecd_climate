@@ -19,24 +19,26 @@ black_sea_provinces <- c("ZONGULDAK","TRABZON","TOKAT","SİNOP", "SINOP","SAMSUN
                          "ORDU","KASTAMONU","KARABÜK", "GÜMÜŞHANE", "GİRESUN", "GIRESUN",
                          "DÜZCE", "ÇORUM", "AMASYA", "ARTVİN", "ARTVIN", "BARTIN",
                          "BAYBURT", "BOLU")
-anatolia_provinces <- c("YOZGAT","VAN","TUNCELİ", "TUNCELI","ŞIRNAK","ŞANLIURFA","SİVAS", "SIVAS",
-                        "SİİRT", "SIIRT","NİĞDE", "NIĞDE","NEVŞEHİR", "NEVŞEHIR","MUŞ","MARDİN", "MARDIN","MALATYA",
-                        "KONYA","KİLİS", "KILIS","KIRŞEHİR", "KIRŞEHIR","KIRIKKALE","KAYSERİ", "KAYSERI","KARS",
-                        "KARAMAN","IĞDIR", "HAKKARİ", "HAKKARI", "GAZİANTEP", "GAZIANTEP", "ESKİŞEHİR", "ESKIŞEHIR",
-                        "ERZURUM", "ERZİNCAN", "ERZINCAN", "ELAZIĞ", "DİYARBAKIR", "DIYARBAKIR", "ADIYAMAN",
-                        "AĞRI", "AKSARAY", "ANKARA", "ARDAHAN", "BATMAN", "BİNGÖL", "BINGÖL",
-                        "BİTLİS", "BITLIS", "ÇANKIRI")
+
+central_anatolia_provinces <- c("ANKARA", "AKSARAY", "ÇANKIRI", "ESKİŞEHİR", "ESKIŞEHIR", "KARAMAN", "KAYSERİ", "KAYSERI",
+                                "KIRIKKALE", "KIRŞEHİR", "KIRŞEHIR", "KONYA", "NEVŞEHİR", "NEVŞEHIR")
+
+eastern_anatolia_provinces <- c("AĞRI", "ARDAHAN", "BİNGÖL", "BINGÖL", "BİTLİS", "BITLIS", "ELAZIĞ", "ERZİNCAN", "ERZINCAN", 
+                                "ERZURUM", "HAKKARİ", "HAKKARI", "IĞDIR", "KARS", "MALATYA","MUŞ", "TUNCELİ", "TUNCELI", "VAN")
+
+southeastern_anatolia_provinces <- c("ADIYAMAN", "BATMAN", "DİYARBAKIR", "DIYARBAKIR", "GAZİANTEP", "GAZIANTEP", "KİLİS", "KILIS",
+                                     "MARDİN", "MARDIN", "ŞANLIURFA", "SİİRT", "SIIRT", "ŞIRNAK", "NİĞDE", "NIĞDE","SİVAS", "SIVAS","YOZGAT")
+
 marmara_provinces <- c("BALIKESİR", "BALIKESIR", "BİLECİK", "BILECIK", "BURSA", "ÇANAKKALE", "EDİRNE", "EDIRNE",
                        "İSTANBUL", "KIRKLARELİ", "KIRKLARELI", "KOCAELİ", "KOCAELI", "SAKARYA", "TEKİRDAĞ", "TEKIRDAĞ",
                        "YALOVA")
 mediterranean_provinces <- c("OSMANİYE", "OSMANIYE","MERSİN", "MERSIN","KAHRAMANMARAŞ", "ISPARTA", "HATAY",
                              "ADANA", "ANTALYA", "BURDUR")
 data.zip$Region <- ""
-data.zip$Region[data.zip$Province %in% anatolia_provinces] <- "Anatolia"
+data.zip$Region[data.zip$Province %in% c(aegan_provinces, mediterranean_provinces)] <- "West"
 data.zip$Region[data.zip$Province %in% marmara_provinces] <- "Marmara"
-data.zip$Region[data.zip$Province %in% mediterranean_provinces] <- "Mediterranean"
-data.zip$Region[data.zip$Province %in% aegan_provinces] <- "North-West"
-data.zip$Region[data.zip$Province %in% black_sea_provinces] <- "North-West"
+data.zip$Region[data.zip$Province %in% c(black_sea_provinces, central_anatolia_provinces)] <- "Central"
+data.zip$Region[data.zip$Province %in% c(eastern_anatolia_provinces, southeastern_anatolia_provinces)] <- "East"
 
 ## Step 2: Get population Data
 # source: https://biruni.tuik.gov.tr/medas/?kn=95&locale=tr
