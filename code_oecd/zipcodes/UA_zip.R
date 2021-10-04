@@ -23,8 +23,8 @@ data.zip$Rural.urban[data.zip$Postcode == 67804] <- "Urban"
 
 # Create the regions according to our quota
 data.zip$Region <- ""
-data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Chernihivska", "Poltavska", "Sumska")] <- "Center-East"
-data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Cherkaska", "Kirovohradska", "Kyivska", "Vinnytska", "Zhytomyrska")] <- "Center-West"
+data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Chernihivska", "Poltavska", "Sumska")] <- "Center-East" <- "Center"
+data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Cherkaska", "Kirovohradska", "Kyivska", "Vinnytska", "Zhytomyrska")] <- "Center-West" <- "Center"
 data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Donetska", "Kharkivska", "Luhanska")] <- "East"
 data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Dnipropetrovska", "Khersonska", "Mykolaivska", "Odeska", "Zaporizka")] <- "South"
 data.zip$Region[data.zip$`Region.(Oblast)` %in% c("Chernivetska", "Ivano-Frankivska", "Khmelnytska", "Lvivska", "Rivnenska", "Ternopilska", "Volynska", "Zakarpatska")] <- "West"

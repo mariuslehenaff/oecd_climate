@@ -35,8 +35,8 @@ data.zip$Region <- ""
 data.zip$Region[data.zip$Province %in% anatolia_provinces] <- "Anatolia"
 data.zip$Region[data.zip$Province %in% marmara_provinces] <- "Marmara"
 data.zip$Region[data.zip$Province %in% mediterranean_provinces] <- "Mediterranean"
-data.zip$Region[data.zip$Province %in% aegan_provinces] <- "Aegan"
-data.zip$Region[data.zip$Province %in% black_sea_provinces] <- "Black Sea"
+data.zip$Region[data.zip$Province %in% aegan_provinces] <- "North-West"
+data.zip$Region[data.zip$Province %in% black_sea_provinces] <- "North-West"
 
 ## Step 2: Get population Data
 # source: https://biruni.tuik.gov.tr/medas/?kn=95&locale=tr
