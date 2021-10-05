@@ -1,4 +1,12 @@
 ##### Metadata #####
+e <- it
+e <- jp
+e <- sa
+e <- pl
+e <- mx
+e <- id
+e <- sp
+e <- au
 decrit("finished", data = e)
 decrit("excluded", data = e)
 sum(is.na(e$excluded) & e$finished == 1)
