@@ -329,7 +329,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
                                              multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space #, omit.stat = c("n")
                                         )))
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
-    first_lab <- latexify(ifelse(missing(indep_labels), indep_vars[1], indep_labels[1]))
+    first_lab <- ifelse(missing(indep_labels), latexify(indep_vars[1]), paste0(latexify(indep_labels[1]), " &")) # was: latexify(ifelse(missing(indep_labels), indep_vars[1], indep_labels[1]))
     if (only_mean) {
       table <- write_clip(gsub(paste(first_lab, ".*"), paste(mean_line, '\\\\\\\\'), table), collapse=' ')
       table <- table[c(1:grep('(Mean|Control group mean) &[^\\]*', table)[1], (length(table)-3):length(table))]
