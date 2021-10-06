@@ -7,10 +7,12 @@ e <- mx
 e <- id
 e <- sp
 e <- au
+e <- In
+e <- tr
 decrit("finished", data = e)
 decrit("excluded", data = e)
 sum(is.na(e$excluded) & e$finished == 1)
-decrit("duration", data = e) # mean(26.8, 23.2, 24.7, 27, 27.5, 22.7, 19.4, 18.4, 20.8, 30.9, 24.8)
+decrit("duration", data = e) # mean(26.8, 23.2, 24.7, 27, 27.5, 22.7, 19.4, 18.4, 20.8, 30.9, 24.8, 26, 25.9)
 decrit("duration", data = e, which = e$duration > 686/60)
 decrit("language", data = e)
 decrit("urban_category", data = e) 

@@ -258,7 +258,8 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  # e <- read_csv("../data/UK.csv")
+  # remove_id("TR")
+  # e <- read_csv("../data/TR.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -1372,6 +1373,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$origin <- e$race    
     for (v in variables_origin) e$nb_origin[e[[v]]==T] <- e$nb_origin[e[[v]]==T] + 1
     e$dominant_origin <- e$race == "White only"
+  } else if (country == "IN") {
+    e$dominant_origin <- e$religion == "Hinduism"
   } else if (!"origin" %in% names(e)) {
     variables_origin <<- names(e)[grepl('origin_', names(e)) & !grepl('other$', names(e))]
     e$origin <- NA
@@ -2177,9 +2180,11 @@ e <- jp <- prepare(country = "JP", duration_min = 686, weighting = F)
 e <- sp <- prepare(country = "SP", duration_min = 686, weighting = F)
 e <- au <- prepare(country = "AU", duration_min = 686, weighting = F)
 e <- sa <- prepare(country = "SA", duration_min = 686, weighting = F)
-e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k"
+e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IN
 e <- ca <- prepare(country = "CA", duration_min = 686, weighting = F)
 e <- uk <- prepare(country = "UK", duration_min = 686, weighting = F)
+e <- In <- prepare(country = "IN", duration_min = 686, weighting = F)
+e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
 current_countries <- c("DK", "US", "FR", "DE")
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
 
