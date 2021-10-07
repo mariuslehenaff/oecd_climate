@@ -107,6 +107,7 @@ package("tidytext")
 package("modelsummary")
 package("dplR")
 package("ggpubr")
+package("RStata")
 
 # package("forcats")
 # package("quanteda")
