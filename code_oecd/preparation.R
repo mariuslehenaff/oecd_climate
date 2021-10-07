@@ -1773,6 +1773,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   if (all(variables_knowledge_index %in% names(e))) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
+    # If need double standardization :
+    # e$index_knowledge2SD <- (e$index_knowledge - wtd.mean(e$index_knowledge, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_knowledge, w = e$weight, na.rm=T))
     label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is standardized with survey weights and impute mean of treatment group to missing values." }
  
   if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
