@@ -46,27 +46,32 @@ get_table <- function(row){
       read_html() %>%
       html_nodes(xpath = '//table[@class="data"]') %>%
       html_table()
-      table <- table[[1]]
-      table$Prefecture <- prefecture
-      if(!(prefecture %in% c("Dōngguān Shì", "Zhōngshān Shì"))){
-        # delete last row as it contains province-wide info
-        table <- table[c(2:nrow(table)-1),]
-      }else{
-        table <- table[c(3:nrow(table)-1),]
-      }
+    table <- table[[1]]
+    table$Prefecture <- prefecture
+    if(!(prefecture %in% c("Dōngguān Shì", "Zhōngshān Shì"))){
+      # delete last row as it contains province-wide info
+      table <- table[c(2:nrow(table)-1),]
+    }else{
+      table <- table[c(3:nrow(table)-1),]
+    }
   }else{
   # Get the table from the URL
     
   table <- url %>%
     read_html() %>%
-    html_nodes(xpath = '//table[@id="ts"]') %>%
+    html_nodes(xpath = '//table[@class="data"]') %>% ## can try @id="ts" instead
     html_table()
-    table <- table[[1]]
-    table$Prefecture <- prefecture
+  table <- table[[1]]
+  table$Prefecture <- prefecture
   }
   
   
   return(table)
+}
+
+
+for (i in c(1:342)){
+  html_table(html_nodes(read_html(pages[i,1]), xpath = '//table[@class="data"]'))[[1]]
 }
 
 final.table <- 1:nrow(pages) %>%
