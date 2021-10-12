@@ -26,7 +26,7 @@ for (c in euro_countries) {
   inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
   inc_quartiles[c,2] <- inc_deciles[c,5]
   inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
-countries <- c("US", euro_countries, "JP", "CN", "IN", "ID", "SA")  # countries[sample(1:12, 1)]
+countries <- c("US", euro_countries, "JP", "CN", "IA", "ID", "SA")  # countries[sample(1:12, 1)]
 countries_names <- c("United States", euro_countries_names, "Japan", "China", "India", "Indonesia", "South Africa") # TODO? USA? UK?
 Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland", "Spain", "the U.K.", "Japan", "China", "India", "Indonesia", "South Africa")
 country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Chinese", "Indian", "Indonesian", "South African")
@@ -53,8 +53,8 @@ loadings_efa <- list()
                  "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
                  "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
-                 "IN_region" = c("Northern", "Southern", "Central", "Eastern", "Western"),
-                 #"IN_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
+                 "IA_region" = c("Northern", "Southern", "Central", "Eastern", "Western"),
+                 #"IA_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
                  "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
                  "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
                  "UK_region" = c("London", "Southern England", "Central UK", "Northern England", "Northern UK"),
@@ -112,13 +112,13 @@ loadings_efa <- list()
     "FR_region9" = c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831),
     "FR_taille_agglo" = c(0.2166,0.1710,0.1408,0.3083,0.1633)
   ),
-  "IN" = list(
+  "IA" = list(
     "gender" = c(0.486, 0.000001, 0.514),
     "income" = rep(.25, 4),
     "age" = c(),
-    "urban" = c(0.639, 0.361), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IN_urban_category (same for all countries)
-    "IN_region" = c(0.1317, 0.2015, 0.2654, 0,2635, 0.1380)
-    # "IN_urban_category" = c(0.4093,  0.2294,  0.1115,  0.1102,  0.1096,  0.02984315)
+    "urban" = c(0.639, 0.361), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IA_urban_category (same for all countries)
+    "IA_region" = c(0.1317, 0.2015, 0.2654, 0,2635, 0.1380)
+    # "IA_urban_category" = c(0.4093,  0.2294,  0.1115,  0.1102,  0.1096,  0.02984315)
   ),
   "IT" = list(
     "gender" = c(0.524, 0.000001, 0.476),
@@ -260,8 +260,8 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  # remove_id("BR")
-  # e <- read_csv("../data/BR.csv")
+  # remove_id("MX")
+  # e <- read_csv("../data/MX.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -1222,7 +1222,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                        e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                        e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
                        e$country == "DE" ~ e$urban_category %in% c("Towns_and_Suburbs", "Cities"),
-                      # e$country == "IN" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
+                      # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
                        e$country == "MX" ~ e$urban_category %in% c("Urban"),
                        e$country == "CN" ~ e$urban_category %in% c("Urban", "Small_Urban"),
                        e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
@@ -1376,7 +1376,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$origin <- e$race    
     for (v in variables_origin) e$nb_origin[e[[v]]==T] <- e$nb_origin[e[[v]]==T] + 1
     e$dominant_origin <- e$race == "White only"
-  } else if (country == "IN") {
+  } else if (country == "IA") {
     e$dominant_origin <- e$religion == "Hinduism"
   } else if (!"origin" %in% names(e)) {
     variables_origin <<- names(e)[grepl('origin_', names(e)) & !grepl('other$', names(e))]
@@ -1495,7 +1495,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Unidas Podemos; Left: PSOE|Esquerra Republicana; Center: Ciudadanos; Right: PP; Far right: VOX")
   
-    } else if (country == "IN") { # Automatic classification is the same except that Far right parties are then considered Right
+    } else if (country == "IA") { # Automatic classification is the same except that Far right parties are then considered Right
     temp <- -1*(e$vote %in% c("Congress", "BSP", "TMC")) -0*(e$vote %in% c("AAP")) + 1*(e$vote %in% c("BJP", "Akaali Dal")) + 2*(e$vote %in% c("Shiv-Sena")) -0.1*(e$vote %in% c("Other", "PNR"))
     e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
                           missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Congress|BSP|TMC; Center: AAP; Right: BJP|Akaali Dal; Far right: Shiv-Sena")
@@ -1679,14 +1679,14 @@ convert <- function(e, country, wave = NULL, weighting = T) {
       if (country == "US") e$footprint_pc_country <- e$footprint_pc_US
       else if (country %in% euro_countries) e$footprint_pc_country <- e$footprint_pc_EU
       else if (country == "CN") e$footprint_pc_country <- e$footprint_pc_china
-      else if (country == "IN") e$footprint_pc_country <- e$footprint_pc_india
+      else if (country == "IA") e$footprint_pc_country <- e$footprint_pc_india
       label(e$footprint_pc_country) <- "footprint_pc_country: In which region does the consumption of an average person contribute most to greenhouse gas emissions?\n\n\n\nPlease rank the regions from 1 (most) to 4 (least). - [region]"
     }
     e$correct_footprint_pc_compare_US <- e$footprint_pc_china > e$footprint_pc_US
     e$correct_footprint_pc_compare_own <- case_when(country %in% c("US", euro_countries, "JP") ~ e$footprint_pc_china > e$footprint_pc_country,
                                                 country %in% c("ID") ~ e$footprint_pc_country > e$footprint_pc_china,
                                                 country %in% c("SA") ~ e$footprint_pc_country < e$footprint_pc_india,
-                                                country %in% c("CN", "IN") ~ e$footprint_pc_india > e$footprint_pc_china) 
+                                                country %in% c("CN", "IA") ~ e$footprint_pc_india > e$footprint_pc_china) 
     label(e$correct_footprint_pc_compare_own) <- "correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA)"
     label(e$correct_footprint_pc_compare_US) <- "correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's"
   }
@@ -1733,7 +1733,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
       } }
       e[[paste("most_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("most_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("most_footprint_", v, ": Largest footprint of type ", v, " according to the respondent", sep=""))
       e[[paste("least_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_", v, ": Smallest footprint of type ", v, " according to the respondent", sep=""))
-      if (v %in% c("reg", "pc")) e[[paste("least_footprint_no_pnr", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint_no_pnr", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_no_pnr_", v, ": Smallest footprint of type ", v, " according to the respondent. In case of ties, a region is picked in this order of priority: IN,CN,EU,US", sep=""))
+      if (v %in% c("reg", "pc")) e[[paste("least_footprint_no_pnr", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint_no_pnr", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_no_pnr_", v, ": Smallest footprint of type ", v, " according to the respondent. In case of ties, a region is picked in this order of priority: IA,CN,EU,US", sep=""))
     }
     e$knows_beef_footprint <- e$footprint_fd_beef == 1
     label(e$knows_beef_footprint) <- "knows_beef_footprint: T/F Correctly ranks footprint of beef (or lamb for India) above chicken and pasta."
@@ -2185,13 +2185,17 @@ e <- jp <- prepare(country = "JP", duration_min = 686, weighting = F)
 e <- sp <- prepare(country = "SP", duration_min = 686, weighting = F)
 e <- au <- prepare(country = "AU", duration_min = 686, weighting = F)
 e <- sa <- prepare(country = "SA", duration_min = 686, weighting = F)
-e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IN
+e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IA
 e <- ca <- prepare(country = "CA", duration_min = 686, weighting = F)
 e <- uk <- prepare(country = "UK", duration_min = 686, weighting = F)
-e <- In <- prepare(country = "IN", duration_min = 686, weighting = F)
+e <- ia <- prepare(country = "IA", duration_min = 686, weighting = F)
 e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
 e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
+e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
 current_countries <- c("DK", "US", "FR", "DE")
+ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX")
+All <- list()
+for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
 
 all$knows_anthropogenic <- all$CC_anthropogenic == 2
