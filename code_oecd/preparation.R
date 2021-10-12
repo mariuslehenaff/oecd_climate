@@ -490,18 +490,19 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   text_50_64 <- c("US" = "50 to 64", "FR" = "Entre 50 et 64 ans")
   text_65_ <- c("US" = "65 or above", "FR" = "65 ans ou plus")
   
-  text_rural <- c("US" = "A rural area", 
+  text_rural <- c("US" = "A rural area", "CN" = "A rural area (less than 10,000 inhabitants)",
                   "FR" = "en zone rurale")
   text_small_town <- c("US" = "A small town (between 5,000 and 20,000 inhabitants)", "US" = "A small town (5,000 – 20,000 inhabitants)", 
-                       "FR" = "dans une petite ville (entre 5 000 et 20 000 habitants)")
+                       "FR" = "dans une petite ville (entre 5 000 et 20 000 habitants)", "CN" = "A small town (10,000 – 50,000 inhabitants)")
   text_large_town <- c("US" = "A large town (between 20,000 and 50,000 inhabitants)", "US" = "A large town (20,000 – 50,000 inhabitants)", 
-                       "FR" = "dans une ville moyenne (entre 20 000 et 50 000 habitants)")
+                       "FR" = "dans une ville moyenne (entre 20 000 et 50 000 habitants)", "CN" = "A large town (50,000 – 100,000 inhabitants)")
   text_small_city <- c("US" = "A small city (between 50,000 and 250,000 inhabitants)", "US" = "A small city (50,000 – 250,000 inhabitants)", 
-                       "FR" = "dans une grande ville (entre 50 000 et 250 000 habitants)")
+                       "FR" = "dans une grande ville (entre 50 000 et 250 000 habitants)", "CN" = "A small city or its suburbs (100,000 – 500,000 inhabitants)")
   text_medium_city <- c("US" = " A medium-size city (between 250,000 and 3,000,000 inhabitants)", "US" = "A medium-sized city (250,000 – 3,000,000 inhabitants)", 
-                        "FR" = "dans une métropole (plus de 250 000 habitants, hors Paris)")
+                        "FR" = "dans une métropole (plus de 250 000 habitants, hors Paris)", "CN" = "A large city or its suburbs (500,000 – 1,000,000 inhabitants)")
   text_large_city <- c("US" = "A large city (more than 3 million inhabitants)", 
-                       "FR" = "en région parisienne")
+                       "FR" = "en région parisienne", "CN" = "A very large city or its suburbs (1,000,000 – 10,000,000 inhabitants)")
+  text_megalopolis <- c("CN" = "A megalopolis or its suburbs (more than 10 million inhabitants)")
   
   text_4_ <- c("US" = "4 or more", "FR" = "4 ou plus")
   text_5_ <- c("US" = "5 or more", "FR" = "5 ou plus")
@@ -778,7 +779,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   } }
   
   if (country == "DK") temp <- (e$urbanity %in% text_large_town) + 2 * (e$urbanity %in% text_small_city) + 3 * (e$urbanity %in% text_medium_city) + 4 * (e$urbanity %in% text_large_city) + 5 * (e$urbanity == "Copenhagen")
-  else temp <-  (e$urbanity %in% text_small_town) + 2 * (e$urbanity %in% text_large_town) + 3 * (e$urbanity %in% text_small_city) + 4 * (e$urbanity %in% text_medium_city) + 5 * (e$urbanity %in% text_large_city)
+  else temp <-  (e$urbanity %in% text_small_town) + 2 * (e$urbanity %in% text_large_town) + 3 * (e$urbanity %in% text_small_city) + 4 * (e$urbanity %in% text_medium_city) + 5 * (e$urbanity %in% c(text_large_city, text_megalopolis))
   e$urbanity <- as.item(temp, labels = structure(c(0:5),
                         # names = c("Rural","Small town","Large town","Small city","Medium-size city","Large city")),
                         names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")), 
