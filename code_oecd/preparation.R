@@ -67,6 +67,7 @@ loadings_efa <- list()
                  "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
                  "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
                  "CN_region" = c("North", "Northeast", "East", "South Central", "West"),
+                 "CN_urban_category" = c("Rural", "Small_Urban", "Urban"),
                  "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
                  "MX_region" = c("Central-Western", "Central-Eastern", "North-East", "North-West", "South"),
                  "MX_urban_category" = c("Rural", "Semiurban", "Urban"),
@@ -182,7 +183,8 @@ loadings_efa <- list()
     "gender" = c(0.492, 0.000001, 0.508),
     "income" = rep(.25, 4),
     "age" = c(0.099, 0.204, 0.279, 0.265, 0.154),
-    "urban" = c(0.4437874, 0.5562126), 
+    "urban" = c(FALSE, TRUE),
+    "CN_urban_category" = c(0.369993069, 0.352742656, 0.277264275),
     "CN_region" = c(0.123751183, 0.082229515, 0.28858566,  0.287981136, 0.217452506)
   ),
     "BR" = list(
@@ -1222,6 +1224,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
                        e$country == "DE" ~ e$urban_category %in% c("Towns_and_Suburbs", "Cities"),
                       # e$country == "IN" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
                        e$country == "MX" ~ e$urban_category %in% c("Urban"),
+                       e$country == "CN" ~ e$urban_category %in% c("Urban", "Small_Urban"),
                        e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
                        TRUE ~ NA)
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
