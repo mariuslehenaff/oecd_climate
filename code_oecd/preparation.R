@@ -30,7 +30,7 @@ countries <- c("US", euro_countries, "JP", "CN", "IA", "ID", "SA")  # countries[
 countries_names <- c("United States", euro_countries_names, "Japan", "China", "India", "Indonesia", "South Africa") # TODO? USA? UK?
 Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland", "Spain", "the U.K.", "Japan", "China", "India", "Indonesia", "South Africa")
 country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Chinese", "Indian", "Indonesian", "South African")
-tax_price_increase <- c("$0.40/gallon", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "0.40 zł/L", "0.10 €/L", "0.08 £/L",	"¥12/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.6/L")
+tax_price_increase <- c("$0.40/gallon", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "0.40 zł/L", "0.10 €/L", "0.08 £/L", "¥12/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.6/L")
 names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- countries
 parties_leaning <- list()
 loadings_efa <- list()
@@ -183,7 +183,7 @@ loadings_efa <- list()
     "gender" = c(0.492, 0.000001, 0.508),
     "income" = rep(.25, 4),
     "age" = c(0.099, 0.204, 0.279, 0.265, 0.154),
-    "urban" = c(FALSE, TRUE),
+    "urban" = c(FALSE, TRUE), 
     "CN_urban_category" = c(0.369993069, 0.352742656, 0.277264275),
     "CN_region" = c(0.123751183, 0.082229515, 0.28858566,  0.287981136, 0.217452506)
   ),
