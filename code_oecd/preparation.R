@@ -1744,38 +1744,56 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     label(e$knows_beef_footprint) <- "knows_beef_footprint: T/F Correctly ranks footprint of beef (or lamb for India) above chicken and pasta."
   }
   
-  z_score_computation <<- function(pair, df=e, weight=T){
-    variable_name <- pair[1]
+  z_score_computation <<- function(group, df=e, weight=T){
+    variable_name <- group[1]
     variable_name_zscore <-  paste(variable_name,"zscore", sep = "_")
-    negative <- pair[2]
-    if (negative) df[[variable_name]] <- - 1*df[[variable_name]]
+    negative <- group[2]
+    condition <- group[3]
+    before_treatment <- group[4]
+
+    # First we check if the variable is in the data frame, otherwise we return the NULL value
+    if(variable_name %in% names(df)) {
+      if (negative) df[[variable_name]] <- - 1*df[[variable_name]]
     
-    # get mean and sd by treatment groups
-    mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
-                                    function(x) { if (weight) weights <- x$weight
-                                    else weights <- NULL
-                                    return(c(wtd.mean(x[[variable_name]], w = weights, na.rm=T), sqrt(wtd.var(x[[variable_name]], w = weights, na.rm=T)))) } ))
-    
-    # compute z-score
-    df[[variable_name_zscore]] <- ((df[[variable_name]])-mean_sd[1,1])/mean_sd[2,1]
-    
-    # replace missing values with its group mean
-    df[[variable_name_zscore]][df$treatment == "None"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,1]-mean_sd[1,1])/mean_sd[2,1]
-    df[[variable_name_zscore]][df$treatment == "Climate"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,2]-mean_sd[1,1])/mean_sd[2,1]
-    df[[variable_name_zscore]][df$treatment == "Policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
-    df[[variable_name_zscore]][df$treatment == "Both"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,4]-mean_sd[1,1])/mean_sd[2,1]
-    
-    zscore <- as.numeric(df[[variable_name_zscore]])
-    
+      # for questions asked before the treatment, we simply need the variable mean and sd (not the ones by treatment groups)
+      if(before_treatment) {
+        if (weight) weights <- df$weight else weights <- NULL
+        
+        df[[variable_name_zscore]] <- ((eval(str2expression(paste("df[[variable_name]]", condition))))-eval(str2expression(paste("wtd.mean(df[[variable_name]]", condition," , w = weights, na.rm=T)"))))/eval(str2expression(paste("sqrt(wtd.var(df[[variable_name]]", condition," , w = weights, na.rm=T))")))
+
+        df[[variable_name_zscore]][is.pnr(df[[variable_name]])] <- 0
+      } else {
+        # get mean and sd by treatment groups
+        mean_sd <- as.data.frame(sapply(split(df, df$treatment), 
+                                        function(x) { if (weight) weights <- x$weight else weights <- NULL
+                                        return(c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition," , w = weights, na.rm=T)"))), eval(str2expression(paste("sqrt(wtd.var(x[[variable_name]]", condition," , w = weights, na.rm=T))"))))) } ))
+        
+        # compute z-score
+        df[[variable_name_zscore]] <- ((eval(str2expression(paste("df[[variable_name]]", condition))))-mean_sd[1,1])/mean_sd[2,1]
+        
+        # replace missing values with its group mean
+        df[[variable_name_zscore]][df$treatment == "None"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,1]-mean_sd[1,1])/mean_sd[2,1]
+        df[[variable_name_zscore]][df$treatment == "Climate"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,2]-mean_sd[1,1])/mean_sd[2,1]
+        df[[variable_name_zscore]][df$treatment == "Policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
+        df[[variable_name_zscore]][df$treatment == "Both"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,4]-mean_sd[1,1])/mean_sd[2,1]
+      }
+
+      zscore <- as.numeric(df[[variable_name_zscore]])
+    } else {
+      zscore <- NULL
+    }
     return(zscore)
   } 
-
-  index_zscore <<- function(variables, negatives, df=e, weight=T) {
-    pairs <- list()
-    for (i in seq_along(variables)) pairs <- c(pairs, list(c(variables[i], negatives[i])))
-    zscores <- as.data.frame(lapply(pairs, z_score_computation, df=df, weight=weight))
+# Conditions : conditions to transform into dummy variables; before_treatment : T if question asked before the treatment
+# /!\ Be careful of the logical implications of using both negatives and conditions! : if no condition just set negative = T,
+# if dummy leave negative = F and inverse condition (e.g., < 0 instead of > 0) or set condition accordingly (e.g., >-1 for logical)
+  index_zscore <<- function(variables, negatives, conditions = rep("", max(seq_along(variables))), before_treatment = rep(F, max(seq_along(variables))), df=e, weight=T) {
+    groups <- list()
+    for (i in seq_along(variables)) groups <- c(groups, list(c(variables[i], negatives[i], conditions[i], before_treatment[i])))
+    zscores <- as.data.frame(lapply(groups, z_score_computation, df=df, weight=weight))
     #zscore_names<- as.vector(sapply(variables_list,function(x) paste(x,"zscore", sep = "_")))
     #colnames(zscore) <- zscore_names
+
     return(rowMeans(zscores))
   }
   
@@ -1822,7 +1840,11 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
 
 if (all(variables_affected_index %in% names(e))) {
-    e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, df = e, weight = weighting)
+    e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, before_treatment = rep(T,7), df = e, weight = weighting)
+    e$index_affected_dummies <- index_zscore(variables_affected_index, negatives_affected_index, conditions = c(rep("> 0", 5), "> -2", " > -1"), before_treatment = rep(T,7), df = e, weight = weighting)
+    # Double standardization
+    e$index_affected_dummies2SD <- (e$index_affected_dummies - wtd.mean(e$index_affected_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_dummies, w = e$weight, na.rm=T))
+    
     label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values." }
 
   if ("clicked_petition" %in% names(e)) {
