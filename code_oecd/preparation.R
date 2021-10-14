@@ -260,8 +260,8 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  # remove_id("MX")
-  # e <- read_csv("../data/MX.csv")
+  # remove_id("CN")
+  # e <- read_csv("../data/CN.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -1070,22 +1070,24 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$media[e$media %in% text_media_web] <- "News websites"
   }
   
-  e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
-  if ("vote_voters_2016" %in% names(e)) {
-    e$vote_participation_2016[e$vote_participation_2016 %in% text_vote_participation_no_right] <- "No right to vote"
-    e$vote_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"] <- e$vote_voters_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"]
-    e$vote_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"] <- e$vote_non_voters_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"]
-    e$vote_participation_2016 <- as.item(as.character(e$vote_participation_2016), missing.values = 'PNR', annotation=Label(e$vote_participation_2016))
-    e$vote_2016 <- as.item(as.character(e$vote_2016), missing.values = 'PNR', annotation=Label(e$vote_2016))
-    e$vote_2016_factor <- as.factor(e$vote_2016)
-    e$vote_2016_factor <- relevel(relevel(e$vote_2016_factor, "Stein"), "Clinton")
+  if ("vote_participation" %in% names(e)) {
+    e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
+    if ("vote_voters_2016" %in% names(e)) {
+      e$vote_participation_2016[e$vote_participation_2016 %in% text_vote_participation_no_right] <- "No right to vote"
+      e$vote_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"] <- e$vote_voters_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"]
+      e$vote_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"] <- e$vote_non_voters_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"]
+      e$vote_participation_2016 <- as.item(as.character(e$vote_participation_2016), missing.values = 'PNR', annotation=Label(e$vote_participation_2016))
+      e$vote_2016 <- as.item(as.character(e$vote_2016), missing.values = 'PNR', annotation=Label(e$vote_2016))
+      e$vote_2016_factor <- as.factor(e$vote_2016)
+      e$vote_2016_factor <- relevel(relevel(e$vote_2016_factor, "Stein"), "Clinton")
+    }
+    e$vote[!is.na(e$vote_voters) & e$vote_participation=="Yes"] <- e$vote_voters[!is.na(e$vote_voters) & e$vote_participation=="Yes"]
+    e$vote[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"] <- e$vote_non_voters[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"]
+    e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
+    e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation=Label(e$vote))
+    e$voted <- e$vote_participation == 'Yes'
+    label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
   }
-  e$vote[!is.na(e$vote_voters) & e$vote_participation=="Yes"] <- e$vote_voters[!is.na(e$vote_voters) & e$vote_participation=="Yes"]
-  e$vote[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"] <- e$vote_non_voters[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"]
-  e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
-  e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation=Label(e$vote))
-  e$voted <- e$vote_participation == 'Yes'
-  label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
   
   e$survey_biased[e$survey_biased %in% text_survey_biased_pro_envi] <- "Yes, pro environment"
   e$survey_biased[e$survey_biased %in% text_survey_biased_anti_envi] <- "Yes, anti environment"
@@ -1433,135 +1435,137 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }  
   
   # political position
-  e$vote_agg <- as.character(e$vote)
-  if (country == "US") { # Automatic classification yields Trump: Very right and all others (incl. Biden, PNR): Center
-    temp <- -1*grepl("Biden", e$vote) + 2*grepl("Trump", e$vote) -0.1*(!(e$vote %in% c("Biden", "Trump")))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,2,-0.1), names = c("Biden","Trump","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Biden, Trump")
-    
-    # e$vote_agg[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
-    # if ("Other" %in% levels(as.factor(e$vote_agg))) e$vote_agg <- relevel(as.factor(e$vote_agg), "Other")
-  # # e$vote_agg[e$vote_participation != "Yes] <- "Other" # add non-voters as others
-  # # e$vote_agg <- as.factor(e$vote_agg)
-  # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
-  } else if (country == "FR") {  # Automatic classification is close but leads to an inversion Fillon (center) / Macron (right) + some minor discrepancies (Arthaud as Center, Dupont-Aignan as Right, Lassalle as Center, Cheminade as Very right)
-    temp <- -2*grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Hamon|Mélenchon|Arthaud|Poutou; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
-    # e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
-    # e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
-    # e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
-    # e$vote_agg[grepl("Le Pen|Dupont-Aignan", e$vote)] <- "Extrême-droite"
-    # e$vote_agg[grepl("Cheminade|Lassalle|PNR", e$vote)] <- "PNR ou autre"
-    e$vote_main <- case_when(e$vote == "Jean-Luc Mélenchon" ~ -2,
-                             e$vote == "Benoît Hamon" ~ -1,
-                             e$vote == "Emmanuel Macron" ~ 0,
-                             e$vote == "François Fillon" ~ 1,
-                             e$vote == "Marine Le Pen" ~ 2,
-                             TRUE ~ -0.1)
-    e$vote_main <- as.item(e$vote_main, labels = structure(c(-2:2,-0.1), names = c("Mélenchon","Hamon","Macron","Fillon","Le Pen","PNR or other")),
-                          missing.values=-0.1, annotation="vote_main: vote recoded as 5 main candidates + PNR or other.")
-  } else if (country == "DK") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -2*(e$vote %in% c("Alternativet", "Enhedslisten", "Socialistisk Folkeparti")) -1*(e$vote %in% c("Socialdemokratiet", "Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Social democrats & Center","Right","Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Alternativet|Enhedslisten|Socialistisk Folkeparti; Social democrats & center: Socialdemokratiet|Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")
-    
-    # e$vote_agg[grepl("Alternativet|Enhedslisten|Socialistisk Folkeparti", e$vote)] <- "Left"
-    # e$vote_agg[grepl("Socialdemokratiet|Radikale Venstre", e$vote)] <- "Social democrats & center"
-    # e$vote_agg[grepl("Det Konservative Folkeparti|Liberal Alliance|Venstre", e$vote)] <- "Right"
-    # e$vote_agg[grepl("Dansk Folkeparti|Nye Borgerlige", e$vote)] <- "Far right"
-    # e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
-  } else if (country == "IT") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("Partito Democratico", "Liberi e Uguali")) -0*(e$vote %in% c("Movimento 5 Stelle", "+Europa", "Civica Popolare", "Partito Autonomista Trentino Tirolese", "MAIE", "USEI")) + 1*(e$vote %in% c("Forza Italia", "Noi con l'Italia")) + 2*(e$vote %in% c("Lega", "Fratelii d'Italia")) -0.1*(e$vote %in% c("Other", "Altro", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Partito Democratico|Liberi e Uguali; Center: Movimento 5 Stelle|+Europa|Civica Popolare|Partito Autonomista Trentino Tirolese|MAIE|USEI; Right: Forza Italia|Noi con l'Italia; Far right: Lega Nord|Fratelii d'Italia")
-  
-  } else if (country == "PL") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("Robert Biedroń", "Waldemar Witkowski")) -0*(e$vote %in% c("Szymon Hołownia", "Władysław Kosiniak-Kamysz")) + 1*(e$vote %in% c("Rafał Trzaskowski", "Stanisław Żółtek", "Marek Jakubiak", "Paweł Tanajno", "Mirosław Piotrowski")) + 2*(e$vote %in% c("Andrzej Duda", "Krzysztof Bosak")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Robert Biedroń|Waldemar Witkowski; Center: Szymon Hołownia|Władysław Kosiniak-Kamysz; Right: Rafał Trzaskowski|Stanisław Żółtek|Marek Jakubiak|Paweł Tanajno|Mirosław Piotrowski; Far right: Andrzej Duda|Krzysztof Bosak")
-  
+  if ("vote" %in% names(e)) {
+    e$vote_agg <- as.character(e$vote)
+    if (country == "US") { # Automatic classification yields Trump: Very right and all others (incl. Biden, PNR): Center
+      temp <- -1*grepl("Biden", e$vote) + 2*grepl("Trump", e$vote) -0.1*(!(e$vote %in% c("Biden", "Trump")))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,2,-0.1), names = c("Biden","Trump","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Biden, Trump")
+      
+      # e$vote_agg[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
+      # if ("Other" %in% levels(as.factor(e$vote_agg))) e$vote_agg <- relevel(as.factor(e$vote_agg), "Other")
+      # # e$vote_agg[e$vote_participation != "Yes] <- "Other" # add non-voters as others
+      # # e$vote_agg <- as.factor(e$vote_agg)
+      # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
+    } else if (country == "FR") {  # Automatic classification is close but leads to an inversion Fillon (center) / Macron (right) + some minor discrepancies (Arthaud as Center, Dupont-Aignan as Right, Lassalle as Center, Cheminade as Very right)
+      temp <- -2*grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Hamon|Mélenchon|Arthaud|Poutou; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
+      # e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
+      # e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
+      # e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
+      # e$vote_agg[grepl("Le Pen|Dupont-Aignan", e$vote)] <- "Extrême-droite"
+      # e$vote_agg[grepl("Cheminade|Lassalle|PNR", e$vote)] <- "PNR ou autre"
+      e$vote_main <- case_when(e$vote == "Jean-Luc Mélenchon" ~ -2,
+                               e$vote == "Benoît Hamon" ~ -1,
+                               e$vote == "Emmanuel Macron" ~ 0,
+                               e$vote == "François Fillon" ~ 1,
+                               e$vote == "Marine Le Pen" ~ 2,
+                               TRUE ~ -0.1)
+      e$vote_main <- as.item(e$vote_main, labels = structure(c(-2:2,-0.1), names = c("Mélenchon","Hamon","Macron","Fillon","Le Pen","PNR or other")),
+                             missing.values=-0.1, annotation="vote_main: vote recoded as 5 main candidates + PNR or other.")
+    } else if (country == "DK") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <- -2*(e$vote %in% c("Alternativet", "Enhedslisten", "Socialistisk Folkeparti")) -1*(e$vote %in% c("Socialdemokratiet", "Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Social democrats & Center","Right","Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Alternativet|Enhedslisten|Socialistisk Folkeparti; Social democrats & center: Socialdemokratiet|Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")
+      
+      # e$vote_agg[grepl("Alternativet|Enhedslisten|Socialistisk Folkeparti", e$vote)] <- "Left"
+      # e$vote_agg[grepl("Socialdemokratiet|Radikale Venstre", e$vote)] <- "Social democrats & center"
+      # e$vote_agg[grepl("Det Konservative Folkeparti|Liberal Alliance|Venstre", e$vote)] <- "Right"
+      # e$vote_agg[grepl("Dansk Folkeparti|Nye Borgerlige", e$vote)] <- "Far right"
+      # e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
+    } else if (country == "IT") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <- -1*(e$vote %in% c("Partito Democratico", "Liberi e Uguali")) -0*(e$vote %in% c("Movimento 5 Stelle", "+Europa", "Civica Popolare", "Partito Autonomista Trentino Tirolese", "MAIE", "USEI")) + 1*(e$vote %in% c("Forza Italia", "Noi con l'Italia")) + 2*(e$vote %in% c("Lega", "Fratelii d'Italia")) -0.1*(e$vote %in% c("Other", "Altro", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Partito Democratico|Liberi e Uguali; Center: Movimento 5 Stelle|+Europa|Civica Popolare|Partito Autonomista Trentino Tirolese|MAIE|USEI; Right: Forza Italia|Noi con l'Italia; Far right: Lega Nord|Fratelii d'Italia")
+      
+    } else if (country == "PL") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <- -1*(e$vote %in% c("Robert Biedroń", "Waldemar Witkowski")) -0*(e$vote %in% c("Szymon Hołownia", "Władysław Kosiniak-Kamysz")) + 1*(e$vote %in% c("Rafał Trzaskowski", "Stanisław Żółtek", "Marek Jakubiak", "Paweł Tanajno", "Mirosław Piotrowski")) + 2*(e$vote %in% c("Andrzej Duda", "Krzysztof Bosak")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Robert Biedroń|Waldemar Witkowski; Center: Szymon Hołownia|Władysław Kosiniak-Kamysz; Right: Rafał Trzaskowski|Stanisław Żółtek|Marek Jakubiak|Paweł Tanajno|Mirosław Piotrowski; Far right: Andrzej Duda|Krzysztof Bosak")
+      
     } else if (country == "MX") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("PRD", "MORENA", "Movimiento Ciudadano", "PT", "VERDE")) -0*(e$vote %in% c("PRI")) + 1*(e$vote %in% c("PAN"))-0.1*(e$vote %in% c("Other", "Otro", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,-0.1), names = c("Left","Center","Right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: PRD|Morena|Movimiento Ciudadano|PT|Verde; Center: PRI; Right: PAN")
-  
+      temp <- -1*(e$vote %in% c("PRD", "MORENA", "Movimiento Ciudadano", "PT", "VERDE")) -0*(e$vote %in% c("PRI")) + 1*(e$vote %in% c("PAN"))-0.1*(e$vote %in% c("Other", "Otro", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,-0.1), names = c("Left","Center","Right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: PRD|Morena|Movimiento Ciudadano|PT|Verde; Center: PRI; Right: PAN")
+      
     } else if (country == "JP") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -2*(e$vote %in% c("Japanese Communist Party")) -1*(e$vote %in% c("Constitutional Democratic Party of Japan", "Social Democratic Party")) -0*(e$vote %in% c("Komeito", "Democratic Party For the People", "Japan Innovation Party")) + 1*(e$vote %in% c("Liberal Democratic Party"))-0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,-0.1), names = c("Far left", "Left","Center","Right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Far left: Japanese Communist Party; Left: Constitutional Democratic Party of Japan|Social Democratic Party; Center: Komeito|Democratic Party For the People|Japan Innovation Party; Right: Liberal Democratic Party")
-  
+      temp <- -2*(e$vote %in% c("Japanese Communist Party")) -1*(e$vote %in% c("Constitutional Democratic Party of Japan", "Social Democratic Party")) -0*(e$vote %in% c("Komeito", "Democratic Party For the People", "Japan Innovation Party")) + 1*(e$vote %in% c("Liberal Democratic Party"))-0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,-0.1), names = c("Far left", "Left","Center","Right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Far left: Japanese Communist Party; Left: Constitutional Democratic Party of Japan|Social Democratic Party; Center: Komeito|Democratic Party For the People|Japan Innovation Party; Right: Liberal Democratic Party")
+      
     } else if (country == "ES") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -2*(e$vote %in% c("Unidas Podemos")) -1*(e$vote %in% c("PSOE", "Esquerra Republicana")) -0*(e$vote %in% c("Ciudadanos")) + 1*(e$vote %in% c("PP")) + 2*(e$vote %in% c("VOX")) -0.1*(e$vote %in% c("Other", "Otro", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Unidas Podemos; Left: PSOE|Esquerra Republicana; Center: Ciudadanos; Right: PP; Far right: VOX")
-  
+      temp <- -2*(e$vote %in% c("Unidas Podemos")) -1*(e$vote %in% c("PSOE", "Esquerra Republicana")) -0*(e$vote %in% c("Ciudadanos")) + 1*(e$vote %in% c("PP")) + 2*(e$vote %in% c("VOX")) -0.1*(e$vote %in% c("Other", "Otro", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Unidas Podemos; Left: PSOE|Esquerra Republicana; Center: Ciudadanos; Right: PP; Far right: VOX")
+      
     } else if (country == "IA") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("Congress", "BSP", "TMC")) -0*(e$vote %in% c("AAP")) + 1*(e$vote %in% c("BJP", "Akaali Dal")) + 2*(e$vote %in% c("Shiv-Sena")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Congress|BSP|TMC; Center: AAP; Right: BJP|Akaali Dal; Far right: Shiv-Sena")
-  
+      temp <- -1*(e$vote %in% c("Congress", "BSP", "TMC")) -0*(e$vote %in% c("AAP")) + 1*(e$vote %in% c("BJP", "Akaali Dal")) + 2*(e$vote %in% c("Shiv-Sena")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Congress|BSP|TMC; Center: AAP; Right: BJP|Akaali Dal; Far right: Shiv-Sena")
+      
     } else if (country == "ID") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("PDI-P")) -0*(e$vote %in% c("PKB", "PAN")) + 1*(e$vote %in% c("Nasdem", "Demokrat", "PPP", "Golkar")) + 2*(e$vote %in% c("Gerindra", "PKS")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: PDI-P; Center: PKB|PAN; Right: Nasdem|Demokrat|PPP|Golkar; Far right: Gerindra|PKS")
-  
+      temp <- -1*(e$vote %in% c("PDI-P")) -0*(e$vote %in% c("PKB", "PAN")) + 1*(e$vote %in% c("Nasdem", "Demokrat", "PPP", "Golkar")) + 2*(e$vote %in% c("Gerindra", "PKS")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: PDI-P; Center: PKB|PAN; Right: Nasdem|Demokrat|PPP|Golkar; Far right: Gerindra|PKS")
+      
     } else if (country == "SA") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -2*(e$vote %in% c("Economic Freedom Fighters (EFF)")) -1*(e$vote %in% c("African National Congress (ANC)")) -0*(e$vote %in% c("Democratic Alliance (DA)")) + 1*(e$vote %in% c("Inkatha Freedom Party (IFP)")) + 2*(e$vote %in% c("Freedom Front Plus (FF Plus)")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Economic Freedom Fighters (EFF); Left: African National Congress (ANC); Center: Democratic Alliance (DA); Right: Inkatha Freedom Party (IFP); Far right: Freedom Front Plus (FF Plus)")
-  
+      temp <- -2*(e$vote %in% c("Economic Freedom Fighters (EFF)")) -1*(e$vote %in% c("African National Congress (ANC)")) -0*(e$vote %in% c("Democratic Alliance (DA)")) + 1*(e$vote %in% c("Inkatha Freedom Party (IFP)")) + 2*(e$vote %in% c("Freedom Front Plus (FF Plus)")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Economic Freedom Fighters (EFF); Left: African National Congress (ANC); Center: Democratic Alliance (DA); Right: Inkatha Freedom Party (IFP); Far right: Freedom Front Plus (FF Plus)")
+      
     } else if (country == "DE") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -2*(e$vote %in% c("Die Linke")) -1*(e$vote %in% c("SPD", "Bündnis 90/ Die Grünen")) -0*(e$vote %in% c("FDP")) + 1*(e$vote %in% c("CDU/CSU")) + 2*(e$vote %in% c("AfD")) -0.1*(e$vote %in% c("Other", "Sonstige","PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Die Linke; Left: SPD|Bündnis 90/ Die Grünen; Center: FDP; Right: CDU/CSU; Far right: AfD")
-  
+      temp <- -2*(e$vote %in% c("Die Linke")) -1*(e$vote %in% c("SPD", "Bündnis 90/ Die Grünen")) -0*(e$vote %in% c("FDP")) + 1*(e$vote %in% c("CDU/CSU")) + 2*(e$vote %in% c("AfD")) -0.1*(e$vote %in% c("Other", "Sonstige","PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Die Linke; Left: SPD|Bündnis 90/ Die Grünen; Center: FDP; Right: CDU/CSU; Far right: AfD")
+      
     } else if (country == "CA") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("Liberal", "Bloc québécois", "New Democratic", "Green")) + 1*(e$vote %in% c("Conservative")) +2*(e$vote %in% c("People's Party")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,1,2,-0.1), names = c("Left","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: Liberal|Bloc québécois|New Democratic|Green; Right: Conservative; Far right: People's Party")
-  
+      temp <- -1*(e$vote %in% c("Liberal", "Bloc québécois", "New Democratic", "Green")) + 1*(e$vote %in% c("Conservative")) +2*(e$vote %in% c("People's Party")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,1,2,-0.1), names = c("Left","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: Liberal|Bloc québécois|New Democratic|Green; Right: Conservative; Far right: People's Party")
+      
     } else if (country == "AU") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("Labor", "Greens")) + 1*(e$vote %in% c("Liberal/National coalition")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,1,-0.1), names = c("Left","Right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Left: Labor|Greens; Right: Liberal/National coalition")
-  
-      } else if (country == "UA") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <-  -1*(e$vote %in% c("Petro Poroshenko")) -0*(e$vote %in% c("Volodymyr Zelensky", "Ioulia Tymochenko", "Iouri Boïko", "Anatoliy Hrytsenko", "Oleksandr Vilkul")) + 1*(e$vote %in% c("Ihor Smeshko", "Oleh Lyashko")) + 2*(e$vote %in% c("Ruslan Koshulynskyi")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Petro Poroshenko; Center: Volodymyr Zelensky|Ioulia Tymochenko|Iouri Boïko|Anatoliy Hrytsenko|Oleksandr Vilkul; Right: Ihor Smeshko|Oleh Lyashko; Far right: Ruslan Koshulynskyi")
-  
-      } else if (country == "SK") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -1*(e$vote %in% c("Moon Jae-in", "Sim Sang-jung")) -0*(e$vote %in% c("Ahn Cheol-soo")) + 1*(e$vote %in% c("Yoo Seong-min")) + 2*(e$vote %in% c("Hong Joon-pyo")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Moon Jae-in|Sim Sang-jung; Center: Ahn Cheol-soo; Right: Yoo Seong-min; Far right: Hong Joon-pyo")
-  
-      } else if (country == "TR") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -2*(e$vote %in% c("Vatan Partisi")) -1*(e$vote %in% c("Cumhuriyet Halk Partisi", "Halkların Demokratik Partisi")) -0*(e$vote %in% c("İYİ Parti")) + 1*(e$vote %in% c("Adalet ve Kalkınma Partisi")) + 2*(e$vote %in% c("Milliyetçi Hareket Partisi", "Saadet Partisi", "Hür Dava Partisi")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Vatan Partisi; Left: Cumhuriyet Halk Partisi|Halkların Demokratik Partisi; Center: İYİ Parti; Right: Adalet ve Kalkınma Partisi; Far right: Milliyetçi Hareket Partisi|Saadet Partisi|Hür Dava Partisi")
-  
-   } else if (country == "BR") { # Automatic classification is the same except that Far right parties are then considered Right
-    temp <- -2*(e$vote %in% c("Guilherme Boulos")) -1*(e$vote %in% c("Fernando Haddad", "Marina Silva")) -0*(e$vote %in% c("Ciro Gomes", "Geraldo Alckmin", "Henrique Meirelles", "Alvaro Dias")) + 1*(e$vote %in% c("João Amoêdo")) + 2*(e$vote %in% c("Jair Bolsonaro", "Cabo Daciolo")) -0.1*(e$vote %in% c("Other", "PNR"))
-    e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
-                          missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Guilherme Boulos; Left: Fernando Haddad|Marina Silva; Center: Ciro Gomes|Geraldo Alckmin|Henrique Meirelles|Alvaro Dias; Right: João Amoêdo; Far right: Jair Bolsonaro|Cabo Daciolo")
-  
-  } 
-
-
-  e$vote_agg_number <- as.numeric(e$vote_agg)
-  label(e$vote_agg_number) <- "vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other"
-  
-  if (country == "US") {
-    e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
-    e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
-    e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
-    e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
-    e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
-    missing.values(e$vote_2020) <- "PNR/no right"
-    # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
-    e$vote3 <- e$vote_2020
-    e$vote3[e$vote_2020 %in% c("PNR/no right", "Other/Non-voter")] <- "other"
+      temp <- -1*(e$vote %in% c("Labor", "Greens")) + 1*(e$vote %in% c("Liberal/National coalition")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,1,-0.1), names = c("Left","Right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Left: Labor|Greens; Right: Liberal/National coalition")
+      
+    } else if (country == "UA") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <-  -1*(e$vote %in% c("Petro Poroshenko")) -0*(e$vote %in% c("Volodymyr Zelensky", "Ioulia Tymochenko", "Iouri Boïko", "Anatoliy Hrytsenko", "Oleksandr Vilkul")) + 1*(e$vote %in% c("Ihor Smeshko", "Oleh Lyashko")) + 2*(e$vote %in% c("Ruslan Koshulynskyi")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Petro Poroshenko; Center: Volodymyr Zelensky|Ioulia Tymochenko|Iouri Boïko|Anatoliy Hrytsenko|Oleksandr Vilkul; Right: Ihor Smeshko|Oleh Lyashko; Far right: Ruslan Koshulynskyi")
+      
+    } else if (country == "SK") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <- -1*(e$vote %in% c("Moon Jae-in", "Sim Sang-jung")) -0*(e$vote %in% c("Ahn Cheol-soo")) + 1*(e$vote %in% c("Yoo Seong-min")) + 2*(e$vote %in% c("Hong Joon-pyo")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Moon Jae-in|Sim Sang-jung; Center: Ahn Cheol-soo; Right: Yoo Seong-min; Far right: Hong Joon-pyo")
+      
+    } else if (country == "TR") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <- -2*(e$vote %in% c("Vatan Partisi")) -1*(e$vote %in% c("Cumhuriyet Halk Partisi", "Halkların Demokratik Partisi")) -0*(e$vote %in% c("İYİ Parti")) + 1*(e$vote %in% c("Adalet ve Kalkınma Partisi")) + 2*(e$vote %in% c("Milliyetçi Hareket Partisi", "Saadet Partisi", "Hür Dava Partisi")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Vatan Partisi; Left: Cumhuriyet Halk Partisi|Halkların Demokratik Partisi; Center: İYİ Parti; Right: Adalet ve Kalkınma Partisi; Far right: Milliyetçi Hareket Partisi|Saadet Partisi|Hür Dava Partisi")
+      
+    } else if (country == "BR") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <- -2*(e$vote %in% c("Guilherme Boulos")) -1*(e$vote %in% c("Fernando Haddad", "Marina Silva")) -0*(e$vote %in% c("Ciro Gomes", "Geraldo Alckmin", "Henrique Meirelles", "Alvaro Dias")) + 1*(e$vote %in% c("João Amoêdo")) + 2*(e$vote %in% c("Jair Bolsonaro", "Cabo Daciolo")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Guilherme Boulos; Left: Fernando Haddad|Marina Silva; Center: Ciro Gomes|Geraldo Alckmin|Henrique Meirelles|Alvaro Dias; Right: João Amoêdo; Far right: Jair Bolsonaro|Cabo Daciolo")
+      
+    } 
+    
+    
+    e$vote_agg_number <- as.numeric(e$vote_agg)
+    label(e$vote_agg_number) <- "vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other"
+    
+    if (country == "US") {
+      e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
+      e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
+      e$vote_2020[e$vote_voters == "Biden"] <- "Biden"
+      e$vote_2020[e$vote_voters == "Trump"] <- "Trump"
+      e$vote_2020 <- as.item(e$vote_2020, annotation = "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
+      missing.values(e$vote_2020) <- "PNR/no right"
+      # label(e$vote_2020) <- "vote_2020: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0"
+      e$vote3 <- e$vote_2020
+      e$vote3[e$vote_2020 %in% c("PNR/no right", "Other/Non-voter")] <- "other"
+    }
   }
  
   if (country == "FR") {
@@ -2193,8 +2197,9 @@ e <- ia <- prepare(country = "IA", duration_min = 686, weighting = F)
 e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
 e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
 e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
+e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
 current_countries <- c("DK", "US", "FR", "DE")
-ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX")
+ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN")
 All <- list()
 for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
