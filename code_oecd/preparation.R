@@ -460,6 +460,107 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   variables_global_policies <<- c("global_assembly_support", "global_tax_support", "tax_1p_support")
   variables_gilets_jaunes <<- c("gilets_jaunes_dedans", "gilets_jaunes_soutien", "gilets_jaunes_compris", "gilets_jaunes_oppose", "gilets_jaunes_NSP") # , "gilets_jaunes"
   
+  variables_index_concerned_about_CC <<- c("CC_talks", "CC_problem", "should_fight_CC", "member_environmental_orga")
+  negatives_index_concerned_about_CC <<- rep(F, 4)
+  conditions_index_concerned_about_CC <<- rep("> 0", 4)
+  before_treatment_index_concerned_about_CC <<- c(F, F, F, F)
+  
+  variables_index_progressist <<- c("left_right", "vote_agg", "view_govt")
+  negatives_index_progressist <<- c(T, T, F)
+  conditions_index_progressist <<- c(rep(" > 0.1", 2), " > 0")
+  before_treatment_index_progressist <<- c(T, T, F)
+  
+  variables_index_worried <<- c("CC_impacts_more_migration", "CC_impacts_more_wars", "CC_impacts_extinction", "CC_impacts_drop_conso", "CC_will_end", "net_zero_feasible", "future_richness")
+  negatives_index_worried <<- c(F, F, F, F, T, T, T)
+  conditions_index_worried <<- c(rep(" > 0", 4), rep(" > 0.1", 3))
+  before_treatment_index_worried <<- rep(F, 7)
+  
+  e$investments_economic_effect <- -as.numeric(e$investments_negative_effect)
+  e$investments_economic_effect[e$positive_treatment == 1] <- -e$investments_economic_effect[e$positive_treatment == 1]
+  e$tax_transfers_economic_effect <- -as.numeric(e$tax_transfers_negative_effect)
+  e$tax_transfers_economic_effect[e$positive_treatment == 1] <- -e$tax_transfers_economic_effect[e$positive_treatment == 1]
+  e$standard_economic_effect <- -as.numeric(e$standard_negative_effect)
+  e$standard_economic_effect[e$positive_treatment == 1] <- -e$standard_economic_effect[e$positive_treatment == 1]
+  
+  variables_index_positive_economy <<- c("effect_halt_CC_economy", "investments_economic_effect", "tax_transfers_economic_effect", "standard_economic_effect")
+  negatives_index_positive_economy <<- rep(F, 4)
+  conditions_index_positive_economy <<- rep(" > 0", 4)
+  before_treatment_index_positive_economy <<- rep(F, 4)
+  
+  variables_index_constrained <<- c("condition_financial_aid", "income", "wealth")
+  negatives_index_constrained <<- c(F, T, T)
+  conditions_index_constrained <<- c(" > 0", " > -3", " > -3")
+  before_treatment_index_constrained <<- c(F, T, T)
+  
+  variables_index_policies_efficient <<- c("investments_effect_elec_greener", "investments_effect_public_transport", "investments_effect_less_pollution", "tax_transfers_effect_driving", "tax_transfers_effect_insulation", "tax_transfers_effect_less_emission", "tax_transfers_effect_less_pollution", "standard_effect_less_emission", "standard_effect_less_pollution")
+  negatives_index_policies_efficient <<- rep(F, 9)
+  conditions_index_policies_efficient <<- rep(" > 0", 9)
+  before_treatment_index_policies_efficient <<- rep(F, 9)
+  
+  variables_index_care_poverty <<- c("tax_transfer_poor", "tax_transfer_constrained_hh", "problem_inequality")
+  negatives_index_care_poverty <<- rep(F, 3)
+  conditions_index_care_poverty <<- rep(" > 0", 3)
+  before_treatment_index_care_poverty <<- rep(F, 3)
+  
+  variables_index_altruism <<- c("wtp", "donation")
+  negatives_index_altruism <<- c(F, F)
+  conditions_index_altruism <<- c(" == 1", "> median(df$donation)")
+  before_treatment_index_altruism <<- c(F, F)
+  
+  variables_index_affected_subjective <<- c("CC_affects_self", "investments_win_lose_self", "tax_transfers_win_lose_self", "standard_win_lose_self")
+  negatives_index_affected_subjective <<- c(F, rep(T, 3))
+  conditions_index_affected_subjective <<- c(" > 0", rep(" > 0.1", 3))
+  before_treatment_index_affected_subjective <<- rep(F, 4)
+  
+  variables_index_willing_change <<- c("willing_electric_car", "willing_limit_driving", "willing_limit_flying", "willing_limit_beef", "willing_limit_heating")
+  negatives_index_willing_change <<- rep(F, 5)
+  conditions_index_willing_change <<- rep(" > 0", 5)
+  before_treatment_index_willing_change <<- rep(F, 5)
+  
+  variables_index_standard_policy <<- c("standard_support", "standard_fair", "standard_public_transport_support")
+  negatives_index_standard_policy <<- rep(F, 3)
+  conditions_index_standard_policy <<- rep(" > 0", 3)
+  before_treatment_index_standard_policy <<- rep(F, 3)
+  
+  #TODO bug with tax_transfers_progressive_fair and tax_transfers_progressive_support (not present in all countries)
+  # variables_index_tax_transfers_policy <<- c("tax_transfers_fair", "tax_transfers_progressive_fair", "tax_transfers_support", "tax_transfers_progressive_support")
+  variables_index_tax_transfers_policy <<- c("tax_transfers_fair", "tax_transfers_support")
+  negatives_index_tax_transfers_policy <<- rep(F, 2)
+  conditions_index_tax_transfers_policy <<- rep(" > 0", 2)
+  before_treatment_index_tax_transfers_policy <<- rep(F, 2)
+  
+  variables_index_investments_policy <<- c("investments_fair", "investments_support")
+  negatives_index_investments_policy <<- rep(F, 2)
+  conditions_index_investments_policy <<- rep(" > 0", 2)
+  before_treatment_index_investments_policy <<- rep(F, 2)
+  
+  variables_index_main_policies <<- c(variables_index_investments_policy, variables_index_tax_transfers_policy, variables_index_standard_policy)
+  negatives_index_main_policies <<- c(negatives_index_investments_policy, negatives_index_tax_transfers_policy, negatives_index_standard_policy)
+  conditions_index_main_policies <<- c(conditions_index_investments_policy, conditions_index_tax_transfers_policy, conditions_index_standard_policy)
+  before_treatment_index_main_policies <<- c(before_treatment_index_investments_policy, before_treatment_index_tax_transfers_policy, before_treatment_index_standard_policy)
+
+  variables_index_beef_policies <<- c("beef_tax_support", "beef_subsidies_vegetables_support", "beef_subsidies_removal_support", "beef_ban_intensive_support")
+  negatives_index_beef_policies <<- rep(F, 4)
+  conditions_index_beef_policies <<- rep(" > 0", 4)
+  before_treatment_index_beef_policies <<- rep(F, 4)
+  
+  variables_index_international_policies <<- c("global_tax_support", "global_assembly_support", "tax_1p_support")
+  negatives_index_international_policies <<- rep(F, 3)
+  conditions_index_international_policies <<- rep(" > 0", 3)
+  before_treatment_index_international_policies <<- rep(F, 3)
+  
+  #TODO: same as above policy_ban_coal not present in all countries (temporary fix : removed)
+  variables_index_other_policies <<- c("insulation_support", "policy_tax_flying", "policy_ban_city_centers", "policy_subsidies", "policy_climate_fund")
+  negatives_index_other_policies <<- rep(F, 5)
+  conditions_index_other_policies <<- rep(" > 0", 5)
+  before_treatment_index_other_policies <<- rep(F, 5)
+  
+  variables_index_all_policies <<- c(variables_index_main_policies, variables_index_beef_policies, variables_index_international_policies, variables_index_other_policies)
+  negatives_index_all_policies <<- c(negatives_index_main_policies, negatives_index_beef_policies, negatives_index_international_policies, negatives_index_other_policies)
+  conditions_index_all_policies <<- c(conditions_index_main_policies, conditions_index_beef_policies, conditions_index_international_policies, conditions_index_other_policies)
+  before_treatment_index_all_policies <<- c(before_treatment_index_main_policies, before_treatment_index_beef_policies, before_treatment_index_international_policies, before_treatment_index_other_policies)
+  
+  
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
   text_neutral <- c( "US" = "Neither agree or disagree",  "US" = "Neither agree nor disagree",  "US" = "I neither agree nor disagree")
@@ -1796,9 +1897,21 @@ convert <- function(e, country, wave = NULL, weighting = T) {
 
     return(rowMeans(zscores))
   }
+
+  cronbach_index_zscore <<- function(variables, negatives, conditions = rep("", max(seq_along(variables))), before_treatment = rep(F, max(seq_along(variables))), df=e, weight=T) {
+    groups <- list()
+    for (i in seq_along(variables)) groups <- c(groups, list(c(variables[i], negatives[i], conditions[i], before_treatment[i])))
+    zscores <- as.data.frame(lapply(groups, z_score_computation, df=df, weight=weight))
+    #zscore_names<- as.vector(sapply(variables_list,function(x) paste(x,"zscore", sep = "_")))
+    #colnames(zscore) <- zscore_names
+    
+    return(unlist(cronbach(zscores)))
+  }
   
   if (all(variables_knowledge_index %in% names(e))) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
+    # If want Cronbach's alpha : 
+    # cronbach_index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = T)
     # If need double standardization :
     # e$index_knowledge2SD <- (e$index_knowledge - wtd.mean(e$index_knowledge, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_knowledge, w = e$weight, na.rm=T))
     label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is standardized with survey weights and impute mean of treatment group to missing values." }
@@ -1816,7 +1929,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # negatives_knowledge_efa <- c(negatives_knowledge, F)
     variables_knowledge_efa <<- variables_knowledge
     negatives_knowledge_efa <- negatives_knowledge
-    for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(pair = c(variables_knowledge_efa[i], negatives_knowledge_efa[i]), df = temp, weight = T) # impute mean of same treatment group to missings
+    for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", F), df = temp, weight = T) # impute mean of same treatment group to missings
     # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
     try({loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
     names(loadings) <- variables_knowledge_efa
@@ -1844,9 +1957,153 @@ if (all(variables_affected_index %in% names(e))) {
     e$index_affected_dummies <- index_zscore(variables_affected_index, negatives_affected_index, conditions = c(rep("> 0", 5), "> -2", " > -1"), before_treatment = rep(T,7), df = e, weight = weighting)
     # Double standardization
     e$index_affected_dummies2SD <- (e$index_affected_dummies - wtd.mean(e$index_affected_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_dummies, w = e$weight, na.rm=T))
+    label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values."
+}
+    e$index_progressist <- index_zscore(variables_index_progressist, negatives_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
+    e$index_progressist_dummies <- index_zscore(variables_index_progressist, negatives_index_progressist, conditions = conditions_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
+    # Double standardization
+    e$index_progressist_dummies2SD <- (e$index_progressist_dummies - wtd.mean(e$index_progressist_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_progressist_dummies, w = e$weight, na.rm=T))
     
-    label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values." }
+    e$index_concerned_about_CC <- index_zscore(variables_index_concerned_about_CC, negatives_index_concerned_about_CC, before_treatment = before_treatment_index_concerned_about_CC, df = e, weight = weighting)
+    e$index_concerned_about_CC_dummies <- index_zscore(variables_index_concerned_about_CC, negatives_index_concerned_about_CC, conditions = conditions_index_concerned_about_CC, before_treatment = before_treatment_index_concerned_about_CC, df = e, weight = weighting)
+    # Double standardization
+    e$index_concerned_about_CC_dummies2SD <- (e$index_concerned_about_CC_dummies - wtd.mean(e$index_concerned_about_CC_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_concerned_about_CC_dummies, w = e$weight, na.rm=T))
+    
+    e$index_worried <- index_zscore(variables_index_worried, negatives_index_worried, before_treatment = before_treatment_index_worried, df = e, weight = weighting)
+    e$index_worried_dummies <- index_zscore(variables_index_worried, negatives_index_worried, conditions = conditions_index_worried, before_treatment = before_treatment_index_worried, df = e, weight = weighting)
+    # Double standardization
+    e$index_worried_dummies2SD <- (e$index_worried_dummies - wtd.mean(e$index_worried_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_worried_dummies, w = e$weight, na.rm=T))
+    
+    e$index_positive_economy <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
+    e$index_positive_economy_dummies <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, conditions = conditions_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
+    # Double standardization
+    e$index_positive_economy_dummies2SD <- (e$index_positive_economy_dummies - wtd.mean(e$index_positive_economy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_positive_economy_dummies, w = e$weight, na.rm=T))
+    
+    e$index_constrained <- index_zscore(variables_index_constrained, negatives_index_constrained, before_treatment = before_treatment_index_constrained, df = e, weight = weighting)
+    e$index_constrained_dummies <- index_zscore(variables_index_constrained, negatives_index_constrained, conditions = conditions_index_constrained, before_treatment = before_treatment_index_constrained, df = e, weight = weighting)
+    # Double standardization
+    e$index_constrained_dummies2SD <- (e$index_constrained_dummies - wtd.mean(e$index_constrained_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_constrained_dummies, w = e$weight, na.rm=T))
+    
+    e$index_policies_efficient <- index_zscore(variables_index_policies_efficient, negatives_index_policies_efficient, before_treatment = before_treatment_index_policies_efficient, df = e, weight = weighting)
+    e$index_policies_efficient_dummies <- index_zscore(variables_index_policies_efficient, negatives_index_policies_efficient, conditions = conditions_index_policies_efficient, before_treatment = before_treatment_index_policies_efficient, df = e, weight = weighting)
+    # Double standardization
+    e$index_policies_efficient_dummies2SD <- (e$index_policies_efficient_dummies - wtd.mean(e$index_policies_efficient_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_policies_efficient_dummies, w = e$weight, na.rm=T))
+    
+    e$index_care_poverty <- index_zscore(variables_index_care_poverty, negatives_index_care_poverty, before_treatment = before_treatment_index_care_poverty, df = e, weight = weighting)
+    e$index_care_poverty_dummies <- index_zscore(variables_index_care_poverty, negatives_index_care_poverty, conditions = conditions_index_care_poverty, before_treatment = before_treatment_index_care_poverty, df = e, weight = weighting)
+    # Double standardization
+    e$index_care_poverty_dummies2SD <- (e$index_care_poverty_dummies - wtd.mean(e$index_care_poverty_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_care_poverty_dummies, w = e$weight, na.rm=T))
+    
+    e$index_altruism <- index_zscore(variables_index_altruism, negatives_index_altruism, before_treatment = before_treatment_index_altruism, df = e, weight = weighting)
+    e$index_altruism_dummies <- index_zscore(variables_index_altruism, negatives_index_altruism, conditions = conditions_index_altruism, before_treatment = before_treatment_index_altruism, df = e, weight = weighting)
+    # Double standardization
+    e$index_altruism_dummies2SD <- (e$index_altruism_dummies - wtd.mean(e$index_altruism_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_altruism_dummies, w = e$weight, na.rm=T))
+    
+    e$index_affected_subjective <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
+    e$index_affected_subjective_dummies <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, conditions = conditions_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
+    # Double standardization
+    e$index_affected_subjective_dummies2SD <- (e$index_affected_subjective_dummies - wtd.mean(e$index_affected_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_subjective_dummies, w = e$weight, na.rm=T))
+    
+    e$index_willing_change <- index_zscore(variables_index_willing_change, negatives_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
+    e$index_willing_change_dummies <- index_zscore(variables_index_willing_change, negatives_index_willing_change, conditions = conditions_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
+    # Double standardization
+    e$index_willing_change_dummies2SD <- (e$index_willing_change_dummies - wtd.mean(e$index_willing_change_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_willing_change_dummies, w = e$weight, na.rm=T))
+    
+    e$index_standard_policy <- index_zscore(variables_index_standard_policy, negatives_index_standard_policy, before_treatment = before_treatment_index_standard_policy, df = e, weight = weighting)
+    e$index_standard_policy_dummies <- index_zscore(variables_index_standard_policy, negatives_index_standard_policy, conditions = conditions_index_standard_policy, before_treatment = before_treatment_index_standard_policy, df = e, weight = weighting)
+    # Double standardization
+    e$index_standard_policy_dummies2SD <- (e$index_standard_policy_dummies - wtd.mean(e$index_standard_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_standard_policy_dummies, w = e$weight, na.rm=T))
+    
+    e$index_tax_transfers_policy <- index_zscore(variables_index_tax_transfers_policy, negatives_index_tax_transfers_policy, before_treatment = before_treatment_index_tax_transfers_policy, df = e, weight = weighting)
+    e$index_tax_transfers_policy_dummies <- index_zscore(variables_index_tax_transfers_policy, negatives_index_tax_transfers_policy, conditions = conditions_index_tax_transfers_policy, before_treatment = before_treatment_index_tax_transfers_policy, df = e, weight = weighting)
+    # Double standardization
+    e$index_tax_transfers_policy_dummies2SD <- (e$index_tax_transfers_policy_dummies - wtd.mean(e$index_tax_transfers_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_tax_transfers_policy_dummies, w = e$weight, na.rm=T))
+    
+    e$index_investments_policy <- index_zscore(variables_index_investments_policy, negatives_index_investments_policy, before_treatment = before_treatment_index_investments_policy, df = e, weight = weighting)
+    e$index_investments_policy_dummies <- index_zscore(variables_index_investments_policy, negatives_index_investments_policy, conditions = conditions_index_investments_policy, before_treatment = before_treatment_index_investments_policy, df = e, weight = weighting)
+    # Double standardization
+    e$index_investments_policy_dummies2SD <- (e$index_investments_policy_dummies - wtd.mean(e$index_investments_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_investments_policy_dummies, w = e$weight, na.rm=T))
+    
+    e$index_main_policies <- index_zscore(variables_index_main_policies, negatives_index_main_policies, before_treatment = before_treatment_index_main_policies, df = e, weight = weighting)
+    e$index_main_policies_dummies <- index_zscore(variables_index_main_policies, negatives_index_main_policies, conditions = conditions_index_main_policies, before_treatment = before_treatment_index_main_policies, df = e, weight = weighting)
+    # Double standardization
+    e$index_main_policies_dummies2SD <- (e$index_main_policies_dummies - wtd.mean(e$index_main_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_main_policies_dummies, w = e$weight, na.rm=T))
+    
+    e$index_beef_policies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
+    e$index_beef_policies_dummies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, conditions = conditions_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
+    # Double standardization
+    e$index_beef_policies_dummies2SD <- (e$index_beef_policies_dummies - wtd.mean(e$index_beef_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_beef_policies_dummies, w = e$weight, na.rm=T))
+    
+    e$index_international_policies <- index_zscore(variables_index_international_policies, negatives_index_international_policies, before_treatment = before_treatment_index_international_policies, df = e, weight = weighting)
+    e$index_international_policies_dummies <- index_zscore(variables_index_international_policies, negatives_index_international_policies, conditions = conditions_index_international_policies, before_treatment = before_treatment_index_international_policies, df = e, weight = weighting)
+    # Double standardization
+    e$index_international_policies_dummies2SD <- (e$index_international_policies_dummies - wtd.mean(e$index_international_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_international_policies_dummies, w = e$weight, na.rm=T))
+    
+    e$index_other_policies <- index_zscore(variables_index_other_policies, negatives_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = weighting)
+    e$index_other_policies_dummies <- index_zscore(variables_index_other_policies, negatives_index_other_policies, conditions = conditions_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = weighting)
+    # Double standardization
+    e$index_other_policies_dummies2SD <- (e$index_other_policies_dummies - wtd.mean(e$index_other_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_other_policies_dummies, w = e$weight, na.rm=T))
+    
+    e$index_all_policies <- index_zscore(variables_index_all_policies, negatives_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = weighting)
+    e$index_all_policies_dummies <- index_zscore(variables_index_all_policies, negatives_index_all_policies, conditions = conditions_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = weighting)
+    # Double standardization
+    e$index_all_policies_dummies2SD <- (e$index_all_policies_dummies - wtd.mean(e$index_all_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_all_policies_dummies, w = e$weight, na.rm=T))
+    
+    label(e$index_concerned_about_CC) <- "index_concerned_about_CC: Non-weighted average of z-scores of variables in variables_concerned_about_CC_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_progressist) <- "index_progressist: Non-weighted average of z-scores of variables in variables_index_progressist. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_worried) <- "index_worried: Non-weighted average of z-scores of variables in variables_index_worried. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_positive_economy) <- "index_positive_economy: Non-weighted average of z-scores of variables in variables_index_positive_economy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_constrained) <- "index_constrained: Non-weighted average of z-scores of variables in variables_index_constrained. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_policies_efficient) <- "index_policies_efficient: Non-weighted average of z-scores of variables in variables_index_policies_efficient. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_care_poverty) <- "index_care_poverty: Non-weighted average of z-scores of variables in variables_index_care_poverty. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_altruism) <- "index_altruism: Non-weighted average of z-scores of variables in variables_index_altruism. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_affected_subjective) <- "index_affected_subjective: Non-weighted average of z-scores of variables in variables_index_affected_subjective. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_willing_change) <- "index_willing_change: Non-weighted average of z-scores of variables in variables_index_willing_change. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_standard_policy) <- "index_standard_policy: Non-weighted average of z-scores of variables in variables_index_standard_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_tax_transfers_policy) <- "index_tax_transfers_policy: Non-weighted average of z-scores of variables in variables_index_tax_transfers_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_investments_policy) <- "index_investments_policy: Non-weighted average of z-scores of variables in variables_index_investments_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_main_policies) <- "index_main_policies: Non-weighted average of z-scores of variables in variables_index_main_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_beef_policies) <- "index_beef_policies: Non-weighted average of z-scores of variables in variables_index_beef_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_international_policies) <- "index_international_policies: Non-weighted average of z-scores of variables in variables_index_international_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_other_policies) <- "index_other_policies: Non-weighted average of z-scores of variables in variables_index_other_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    label(e$index_all_policies) <- "index_all_policies: Non-weighted average of z-scores of variables in variables_index_all_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 
+    # cronbach_index_zscore(before_treatment, negatives_index_progressist, conditions_index_progressist, before_treatment_index_progressist,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_concerned_about_CC, conditions_index_concerned_about_CC, before_treatment_index_concerned_about_CC,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_concerned_about_CC, before_treatment = before_treatment_index_concerned_about_CC, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_worried, conditions_index_worried, before_treatment_index_worried,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_worried, before_treatment = before_treatment_index_worried, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_positive_economy, conditions_index_positive_economy, before_treatment_index_positive_economy,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_constrained, conditions_index_constrained, before_treatment_index_constrained,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_constrained, before_treatment = before_treatment_index_constrained, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_policies_efficient, conditions_index_policies_efficient, before_treatment_index_policies_efficient,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_policies_efficient, before_treatment = before_treatment_index_policies_efficient, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_care_poverty, conditions_index_care_poverty, before_treatment_index_care_poverty,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_care_poverty, before_treatment = before_treatment_index_care_poverty, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_altruism, conditions_index_altruism, before_treatment_index_altruism,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_altruism, before_treatment = before_treatment_index_altruism, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_affected_subjective, conditions_index_affected_subjective, before_treatment_index_affected_subjective,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_willing_change, conditions_index_willing_change, before_treatment_index_willing_change,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_standard_policy, conditions_index_standard_policy, before_treatment_index_standard_policy,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_standard_policy, before_treatment = before_treatment_index_standard_policy, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_tax_transfers_policy, conditions_index_tax_transfers_policy, before_treatment_index_tax_transfers_policy,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_tax_transfers_policy, before_treatment = before_treatment_index_tax_transfers_policy, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_investments_policy, conditions_index_investments_policy, before_treatment_index_investments_policy,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_investments_policy, before_treatment = before_treatment_index_investments_policy, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_main_policies, conditions_index_main_policies, before_treatment_index_main_policies,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_main_policies, before_treatment = before_treatment_index_main_policies, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_beef_policies, conditions_index_beef_policies, before_treatment_index_beef_policies,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_international_policies, conditions_index_international_policies, before_treatment_index_international_policies,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_international_policies, before_treatment = before_treatment_index_international_policies, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_other_policies, conditions_index_other_policies, before_treatment_index_other_policies,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_all_policies, conditions_index_all_policies, before_treatment_index_all_policies,df = e, weight = T)
+    # cronbach_index_zscore(before_treatment, negatives_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = T)
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
     e$left_click_petition <- e$clicked_petition == 1
@@ -2232,7 +2489,7 @@ negatives_knowledge_efa <- negatives_knowledge
 # variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
 # negatives_knowledge_efa <- c(negatives_knowledge, F)
 temp <- all[,c("weight", "treatment", variables_knowledge_efa)] 
-for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(pair = c(variables_knowledge_efa[i], negatives_knowledge_efa[i]), df = temp, weight = T) # impute mean of same treatment group to missings
+for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
 # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
 loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
 names(loadings) <- variables_knowledge_efa
