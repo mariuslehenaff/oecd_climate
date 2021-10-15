@@ -472,7 +472,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   variables_index_worried <<- c("CC_impacts_more_migration", "CC_impacts_more_wars", "CC_impacts_extinction", "CC_impacts_drop_conso", "CC_will_end", "net_zero_feasible", "future_richness")
   negatives_index_worried <<- c(F, F, F, F, T, T, T)
-  conditions_index_worried <<- c(rep(" > 0", 4), rep(" > 0.1", 3))
+  # Temporary fix, since Germany left_right all center instead of "> 0" I use %in% c(0, 1, 2)
+  conditions_index_worried <<- c(rep(" %in% c(0, 1, 2)", 4), rep(" > 0.1", 3))
   before_treatment_index_worried <<- rep(F, 7)
   
   e$investments_economic_effect <- -as.numeric(e$investments_negative_effect)
