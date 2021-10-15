@@ -67,3 +67,5 @@ y <- gelbach_decomposition(var_to_decompose = indexes_policies[1], group_of_inte
 # Gelbach decomposition of the partisan gap in the policy view index for a ban on combustion_engine
 # i.e. which factor better explain the share of partisan gap
 y[,1] <- indexes_non_left_right
+
+barres(data = t(matrix(y$shareExplained/100)), labels = y$n,legend = "% Partisan gap explained", rev = F)
