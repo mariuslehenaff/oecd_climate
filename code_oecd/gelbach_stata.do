@@ -1,15 +1,26 @@
+global controls_factor_vlist ""
+foreach var in $controls_factor{
+	tab `var', gen(`var'_factor)
+	levelsof `var'
+	local distinct `r(r)'
+	di "`distinct'"
+	forvalues j = 2/`distinct'{
+		global controls_factor_vlist "$controls_factor_vlist `var'_factor`j'"
+	}
+}
+
 foreach var in $var_to_decompose{
 	reg ${var_to_decompose} $group_of_interest $controls
 	local b_`group_of_interest'_part_`var_to_decompose': display %4.2f _b[${group_of_interest}]
 	local se_`group_of_interest'_`var_to_decompose': display %4.2f _se[${group_of_interest}]
 
 
-	reg ${var_to_decompose} $group_of_interest $controls $indices
+	reg ${var_to_decompose} $group_of_interest $controls $controls_factor_vlist $indices
 	local b_`group_of_interest'_full_`var_to_decompose': display %4.2f _b[${group_of_interest}]
 	local se_`group_of_interest'_full_`var_to_decompose': display %4.2f _se[${group_of_interest}]
 
 
-	b1x2 ${var_to_decompose}, x1all($group_of_interest ${controls}) x2all(${indices}) x1only(${group_of_interest}) x2delta(${option_b1x2})
+	b1x2 ${var_to_decompose}, x1all($group_of_interest ${controls} ${controls_factor_vlist}) x2all(${indices}) x1only(${group_of_interest}) x2delta(${option_b1x2})
 
 	forvalues i=1/$nbr_plus_one_indices{
 		mat b = e(Delta)
@@ -37,4 +48,3 @@ forvalues i=1/$nbr_indices {
 local unexplained `b_`group_of_interest'_full_`var_to_decompose''/`b_`group_of_interest'_part_`var_to_decompose''
 
 di "The unexplained share is " `unexplained'
-
