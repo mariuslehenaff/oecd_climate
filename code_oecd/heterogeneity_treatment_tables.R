@@ -15,7 +15,7 @@ e$left_right_factor[e$left_right >= 1] <- "Right"
 e$left_right_factor[e$left_right == -0.1] <- "PNR"
 e$left_right_factor <- e$left_right_factor %>%
   as.factor() %>%
-  relevel(, ref = "PNR")
+  relevel( ref = "PNR")
 
 #control_variables<- c(control_variables[1:7], "left_right_factor")
 
