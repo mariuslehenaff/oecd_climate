@@ -11,7 +11,7 @@ source(".Rprofile")
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
-control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right < 0", "left_right > 0", "left_right == 0", "treatment")
+control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
 cov_lab_w_treatment <- c("race: White only", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center", "Climate treatment only", "Policy treatment only", "Both treatments")
 
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
@@ -1240,7 +1240,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     e$left_right_pnr <- as.factor(e$left_right_pnr)
     e$left_right_pnr <- relevel(relevel(e$left_right_pnr, "Left or center-left"), "Far left")
     label(e$left_right) <- "left_right: How would you define yourself? Far Left/Left or center-left/Center/Right or center-right/Far right"
-  }
+  
+    e$right_pol <- e$left_right > 0
+    label(e$right_pol) <- "right_pol: Dummy equal to one if the person define herself as Right or Far right"
+    }
   
   if ("gilets_jaunes_dedans" %in% names(e)) {
     e$gilets_jaunes[e$gilets_jaunes_NSP==T] <- -0.1

@@ -70,7 +70,7 @@ paste(indexes_non_left_right, "_dummies2SD", sep = "")
 
 # Create dummy for left_right
 e$right_pol <- e$left_right > 0
-
+#TODO replace right_pol with left_right >=1 and add left_right == 0 in the control
 # Creation of Graphs
 
 # Gelbach decomposition of the partisan gap in the policy view index for a ban on combustion_engine

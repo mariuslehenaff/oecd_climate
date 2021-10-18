@@ -860,6 +860,64 @@ support_by_govtrust_DE
 ggarrange(support_by_govtrust_FR, support_by_govtrust_US, support_by_govtrust_DE, support_by_govtrust_DK,
           nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
 
+## Education
+
+# FR
+mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "college", df=fr, weights = "weight")))
+mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
+
+support_by_college_FR <- ggplot(mean_sd_FR) +
+  geom_pointrange( aes(x = V1, y = policy, color = college, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'France', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("College Degree", "No College Degree"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(25, 72.5)
+support_by_college_FR
+
+# US
+mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "college", df=us, weights = "weight")))
+mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
+
+support_by_college_US <- ggplot(mean_sd_US) +
+  geom_pointrange( aes(x = V1, y = policy, color = college, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = '', y = 'U.S.', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("College Degree", "No College Degree"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(25, 72.5)
+support_by_college_US
+
+# DK
+mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "college", df=dk, weights = "weight")))
+mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
+
+support_by_college_DK <- ggplot(mean_sd_DK) +
+  geom_pointrange( aes(x = V1, y = policy, color = college, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Support', y = 'Denmark', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("College Degree", "No College Degree"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(25, 72.5)
+support_by_college_DK
+
+# DE
+mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
+                                heterogeneity_group = "college", df=de, weights = "weight")))
+mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
+
+support_by_college_DE <- ggplot(mean_sd_DE) +
+  geom_pointrange( aes(x = V1, y = policy, color = college, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+  labs(x = 'Support', y = 'Germany', color="") + 
+  theme_minimal() + theme(legend.title = element_blank(), legend.position = "top", axis.title.y = element_text(angle=0, vjust = 0.5)) +
+  scale_color_manual(labels = c("College Degree", "No College Degree"), values = c("#ABD9E9", "#FDAE61")) +
+  xlim(25, 72.5)
+support_by_college_DE
+
+## All Countries
+ggarrange(support_by_college_FR, support_by_college_US, support_by_college_DE, support_by_college_DK,
+          nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
+
 ## Attitudes positives
 variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
 policies_label <- c("CC is an important problem", "CC exists, is anthropogenic", "Cutting GHG emisions by half \n sufficient to stop rise in temperatures", "Likely to halt CC by the end of the century",
