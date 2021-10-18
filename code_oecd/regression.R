@@ -460,6 +460,57 @@ coef_Right_FR <- modelplot(models, coef_map = cov_lab_mod,
                              background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Right-Wing Affiliation')
 save_plotly(coef_Right_FR, width= 736, height=719)
 
+
+# Decomposing Tax Policy
+# Do not use index_progressist
+indexes_list <- c("index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
+                  "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change")
+
+
+end_formula_treatment <- paste(c(control_variables_w_treatment[c(1:5,7:11)]), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment <- paste(c("(", end_formula_treatment), collapse = "")
+end_formula_treatment <- paste(c(end_formula_treatment, ")"), collapse = "")
+
+end_formula_treatment_indexes <- paste(c(control_variables_w_treatment[c(1:5,7:11)], indexes_list), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment_indexes <- paste(c("(", end_formula_treatment_indexes), collapse = "")
+end_formula_treatment_indexes <- paste(c(end_formula_treatment_indexes, ")"), collapse = "")
+
+
+cov_lab_treatment_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
+                 "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
+                 "as.factor(employment_agg)Working" = "status: Working", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
+                 "age65+" = "age: 65+", "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center",
+                 "treatmentClimate" = "treatment: Climate", "treatmentPolicy" = "treatment: Policy", "treatmentBoth" = "treatment: Both")
+
+cov_lab_treatment_indexes_mod <- c("index_knowledge" = "Has a good knowledge of climate change", "index_affected" = "Is affected by climate change",
+                                   "index_concerned_about_CC" = "Is concerned about climate change", "index_worried" = "Is worried about the future",
+                                   "index_positive_economy" = "Climate policies have a positive effect on the economy",
+                                   "index_constrained" = "Is financially constrained","index_policies_efficient" = "Climate policies are efficient",
+                                   "index_care_poverty" = "Care about poverty and inequalities", "index_altruism" = "Is altruist",
+                                   "index_affected_subjective" = "Think will suffer of climate change", "index_willing_change" = "Is willing to adapt to climate change",
+                                   "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center")
+
+models <- list()
+models[["Ban on combustion-engine cars Index"]] <- lm(as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
+models[["Carbon tax with cash transfers Index"]] <- lm(as.formula(paste("index_tax_transfers_policy_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
+models[["Green investment program Index"]] <- lm(as.formula(paste("index_investments_policy_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
+models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
+models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
+
+coef_policy_views_all <- modelplot(models, coef_map = cov_lab_treatment_mod, 
+                             background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
+
+
+models <- list()
+models[["Ban on combustion-engine cars Index"]] <- lm(as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
+models[["Carbon tax with cash transfers Index"]] <- lm(as.formula(paste("index_tax_transfers_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
+models[["Green investment program Index"]] <- lm(as.formula(paste("index_investments_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
+models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
+models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
+
+coef_policy_views_indexes_all <- modelplot(models, coef_map = cov_lab_treatment_indexes_mod, 
+                                   background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Views', title = 'Indexes')
+
 # 
 # 
 # ## Plot heterogeneity [DEPRECATED SEE heterogeneity_graph.R]

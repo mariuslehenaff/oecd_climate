@@ -17,15 +17,14 @@ e$left_right_factor <- e$left_right_factor %>%
   as.factor() %>%
   relevel( ref = "PNR")
 
-#control_variables<- c(control_variables[1:7], "left_right_factor")
 
 
 # Global view
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_female_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*female"), 
@@ -35,14 +34,16 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Left_right
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+control_variables_left_right <- c(control_variables[1:7], "left_right_factor")
+
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_left_right_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
-           dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*left_right_factor"), 
+           dep.var.caption = c(""), data = e, indep_vars = c(control_variables_left_right, "as.factor(country)", "index_affected", "urban", "treatment*left_right_factor"), 
            keep = c("treatment", "left_right_factor"), indep_labels = c("Center", "Left", "Right", "Treatment Climate", "Treatment Policy", "Treatment Both",
                                                                         "Center $\\times$ Treatment Climate", "Left $\\times$ Treatment Climate", "Right $\\times$ Treatment Climate", 
                                                                         "Center $\\times$ Treatment Policy", "Left $\\times$ Treatment Policy","Right $\\times$ Treatment Policy", 
@@ -50,11 +51,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Dominant origin
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_origin_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*dominant_origin"), 
@@ -64,11 +65,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Children
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_children_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*children"), 
@@ -78,11 +79,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # College
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_college_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*college"), 
@@ -92,11 +93,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Employment
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_employment_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*as.factor(employment_agg)"), 
@@ -107,11 +108,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Income
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_income_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*income_factor"), 
@@ -122,11 +123,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Age
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_age_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*age"), 
@@ -137,11 +138,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Index Affected
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_index_affected_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*index_affected"), 
@@ -152,11 +153,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Index Knowledge
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_index_knowledge_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*index_knowledge"), 
@@ -167,11 +168,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Urban
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_urban_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*urban"), 
@@ -182,11 +183,11 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 )
 
 # Country
-desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_policies_support > 0", 
-                        "willing_avg > 0", "global_avg > 0", "can_trust_govt > 0",  "responsible_CC_companies > 0",
+desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD", 
+                        "index_willing_change_dummies2SD", "index_international_policies_dummies2SD", "can_trust_govt > 0",  "responsible_CC_companies > 0",
                         "responsible_CC_rich > 0"), filename = "Heterogeneity/main_results_het_countries_all",
-           dep.var.labels = c("Knowledge Index", "Support policies", "Support other policies", 
-                              "Avg willing to change", "Support global policies", "Trust government", "Companies Responsible",
+           dep.var.labels = c("Knowledge Index", "Index main policies", "Index all policies", 
+                              "Index willing to change", "Index global policies", "Trust government", "Companies Responsible",
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*as.factor(country)"), 
@@ -199,8 +200,8 @@ desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "other_polici
 
 
 # # Global view
-# desc_table(dep_vars = c("index_knowledge", "policies_support > 0", "policies_fair > 0", "standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"), filename = "Heterogeneity/policies_het_female_all",
-#            dep.var.labels = c("Knowledge Index", "Support policies", "Policies are fair", "Support \n ban on combustion engine", "Support \n ban on combustion engine with alternative", "Support \n Green infrastructure program", "Support \n Carbon tax with cash transfers"),
+# desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "policies_fair > 0", "standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"), filename = "Heterogeneity/policies_het_female_all",
+#            dep.var.labels = c("Knowledge Index", "Index main policies", "Policies are fair", "Support \n ban on combustion engine", "Support \n ban on combustion engine with alternative", "Support \n Green infrastructure program", "Support \n Carbon tax with cash transfers"),
 #            nolabel = F,
 #            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "urban", "treatment*female"), keep = c("treatment", "female"), indep_labels = c("Female", "Treatment Climate", "Treatment Policy", "Treatment Both", "Female $\\times$ Treatment Climate", "Female $\\times$ Treatment Policy", "Female $\\times$ Treatment Both"), mean_control = T
 # )
