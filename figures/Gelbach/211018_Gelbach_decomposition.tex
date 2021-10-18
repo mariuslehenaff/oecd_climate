@@ -1,0 +1,94 @@
+\documentclass{article}
+\input{draft_preamble.tex}
+\usepackage{amsmath}
+
+
+
+\begin{document}
+
+
+\begin{LARGE}
+	\begin{center}
+		Preliminary Results – OECD Climate surveys	
+	\end{center}
+	
+\end{LARGE}
+	\tableofcontents
+	\listoffigures
+
+\clearpage
+
+\begin{figure}[h!]
+\begin{center}
+	\caption{Explaining the Partisan Gap}
+	\caption*{Gelbach decomposition of the partisan gap in support for:}
+	\setlength\extrarowheight{-1pt}
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.5\textwidth}
+		\caption{Ban on combustion-engine cars}
+			\includegraphics[width=\textwidth]{gelbach_right_standard_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.5\textwidth}
+		\caption{Carbon tax with cash transfers}
+			\includegraphics[width=\textwidth]{gelbach_right_tax_transfers_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.5\textwidth}
+		\caption{Green investment program}
+			\includegraphics[width=\textwidth]{gelbach_right_investments_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.5\textwidth}
+		\caption{All 3 policies}
+			\includegraphics[width=\textwidth]{gelbach_right_main_policies_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+		\end{center}
+
+\end{figure}
+
+
+\begin{figure}[h!]
+	\caption{Gelbach decomposition of the partisan gap in support for all climate policies}	
+		\includegraphics[width=\textwidth]{gelbach_right_all_policies_D2SD}
+\end{figure}
+
+
+\begin{figure}[h!]
+\begin{center}
+	\caption{Explaining the Geographical Gap}
+	\caption*{Gelbach decomposition of the geographical gap (urban vs. rural) in support for:}
+	\setlength\extrarowheight{-1pt}
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.5\textwidth}
+		\caption{Ban on combustion-engine cars}
+			\includegraphics[width=\textwidth]{gelbach_urban_standard_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.5\textwidth}
+		\caption{Carbon tax with cash transfers}
+			\includegraphics[width=\textwidth]{gelbach_urban_tax_transfers_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.5\textwidth}
+		\caption{Green investment program}
+			\includegraphics[width=\textwidth]{gelbach_urban_investments_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.5\textwidth}
+		\caption{All 3 policies}
+			\includegraphics[width=\textwidth]{gelbach_urban_main_policies_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+		\end{center}
+
+\end{figure}
+
+
+\begin{figure}[h!]
+	\caption{Gelbach decomposition of the geographical gap (urban vs. rural) in support for all climate policies}	
+		\includegraphics[width=\textwidth]{gelbach_urban_all_policies_D2SD}
+\end{figure}
+
+\end{document}

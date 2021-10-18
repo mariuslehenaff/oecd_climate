@@ -1905,6 +1905,9 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   if (all(variables_knowledge_index %in% names(e))) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
+    e$index_knowledge_dummies <- index_zscore(variables_knowledge_index, negatives_knowledge_index, conditions = c(rep(" > -1", 6), rep(" > 0", 2), rep(" > 2",2) ), before_treatment = rep(F,10), df = e, weight = weighting)
+    e$index_knowledge_dummies2SD <- (e$index_knowledge_dummies - wtd.mean(e$index_knowledge_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_knowledge_dummies, w = e$weight, na.rm=T))
+
     # If want Cronbach's alpha : 
     # cronbach_index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = T)
     # If need double standardization :
