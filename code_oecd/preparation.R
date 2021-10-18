@@ -496,11 +496,16 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   negatives_index_care_poverty <<- rep(F, 3)
   conditions_index_care_poverty <<- rep(" > 0", 3)
   before_treatment_index_care_poverty <<- rep(F, 3)
+
+  variables_index_altruism <<- c("donation")
+  negatives_index_altruism <<- c(F)
+  conditions_index_altruism <<- c("> median(df$donation)")
+  before_treatment_index_altruism <<- c(F)  
   
-  variables_index_altruism <<- c("wtp", "donation")
-  negatives_index_altruism <<- c(F, F)
-  conditions_index_altruism <<- c(" == 1", "> median(df$donation)")
-  before_treatment_index_altruism <<- c(F, F)
+  # variables_index_altruism <<- c("wtp", "donation")
+  # negatives_index_altruism <<- c(F, F)
+  # conditions_index_altruism <<- c(" == 1", "> median(df$donation)")
+  # before_treatment_index_altruism <<- c(F, F)
   
   variables_index_affected_subjective <<- c("CC_affects_self", "investments_win_lose_self", "tax_transfers_win_lose_self", "standard_win_lose_self")
   negatives_index_affected_subjective <<- c(F, rep(T, 3))
