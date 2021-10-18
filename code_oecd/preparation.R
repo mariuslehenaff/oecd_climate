@@ -2468,42 +2468,42 @@ e <- dk <- prepare(country = "DK", duration_min = 686)
 e <- fr <- prepare(country = "FR", duration_min = 686)
 e <- de <- prepare(country = "DE", duration_min = 686)
 
-# e <- it <- prepare(country = "IT", duration_min = 686, weighting = F)
-# e <- pl <- prepare(country = "PL", duration_min = 686, weighting = F)
-# e <- jp <- prepare(country = "JP", duration_min = 686, weighting = F)
-# e <- sp <- prepare(country = "SP", duration_min = 686, weighting = F)
-# e <- au <- prepare(country = "AU", duration_min = 686, weighting = F)
-# e <- sa <- prepare(country = "SA", duration_min = 686, weighting = F)
-# e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IA
-# e <- ca <- prepare(country = "CA", duration_min = 686, weighting = F)
-# e <- uk <- prepare(country = "UK", duration_min = 686, weighting = F)
-# e <- ia <- prepare(country = "IA", duration_min = 686, weighting = F)
-# e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
-# e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
-# e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
-# e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
+e <- it <- prepare(country = "IT", duration_min = 686, weighting = F)
+e <- pl <- prepare(country = "PL", duration_min = 686, weighting = F)
+e <- jp <- prepare(country = "JP", duration_min = 686, weighting = F)
+e <- sp <- prepare(country = "SP", duration_min = 686, weighting = F)
+e <- au <- prepare(country = "AU", duration_min = 686, weighting = F)
+e <- sa <- prepare(country = "SA", duration_min = 686, weighting = F)
+e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IA
+e <- ca <- prepare(country = "CA", duration_min = 686, weighting = F)
+e <- uk <- prepare(country = "UK", duration_min = 686, weighting = F)
+e <- ia <- prepare(country = "IA", duration_min = 686, weighting = F)
+e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
+e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
+e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
+e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
 current_countries <- c("DK", "US", "FR", "DE")
-# ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN")
-# All <- list()
-# for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
+ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN")
+All <- list()
+for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-# 
-# all$knows_anthropogenic <- all$CC_anthropogenic == 2
-# variables_knowledge_efa <- variables_knowledge
-# negatives_knowledge_efa <- negatives_knowledge
-# # variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
-# # negatives_knowledge_efa <- c(negatives_knowledge, F)
-# temp <- all[,c("weight", "treatment", variables_knowledge_efa)] 
-# for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
-# # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
-# loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
-# names(loadings) <- variables_knowledge_efa
-# loadings_efa[["all"]] <- loadings
-# # print(loadings_z)
-# all$index_knowledge_efa_global <- 0
-# for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
-# all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weights, na.rm = T))
-# label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+
+all$knows_anthropogenic <- all$CC_anthropogenic == 2
+variables_knowledge_efa <- variables_knowledge
+negatives_knowledge_efa <- negatives_knowledge
+# variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
+# negatives_knowledge_efa <- c(negatives_knowledge, F)
+temp <- all[,c("weight", "treatment", variables_knowledge_efa)]
+for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
+# for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
+loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
+names(loadings) <- variables_knowledge_efa
+loadings_efa[["all"]] <- loadings
+# print(loadings_z)
+all$index_knowledge_efa_global <- 0
+for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
+all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weights, na.rm = T))
+label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
 # all_bis <- janitor::clean_names(all)
 # df = as.data.frame(apply(all_bis, 2, function(x){
