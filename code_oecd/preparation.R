@@ -467,7 +467,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   variables_index_progressist <<- c("left_right", "vote_agg", "view_govt")
   negatives_index_progressist <<- c(T, T, F)
-  conditions_index_progressist <<- c(rep(" > 0.1", 2), " > 0")
+  conditions_index_progressist <<- c(rep(" > 0.1", 2), " > 0") #TODO problem with left_right DE
+  #  conditions_index_progressist <<- c(rep(" > 0.1", 2), " > 0")
   before_treatment_index_progressist <<- c(T, T, F)
   
   variables_index_worried <<- c("CC_impacts_more_migration", "CC_impacts_more_wars", "CC_impacts_extinction", "CC_impacts_drop_conso", "CC_will_end", "net_zero_feasible", "future_richness")
@@ -475,13 +476,6 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # Temporary fix, since Germany left_right all center instead of "> 0" I use %in% c(0, 1, 2)
   conditions_index_worried <<- c(rep(" %in% c(0, 1, 2)", 4), rep(" > 0.1", 3))
   before_treatment_index_worried <<- rep(F, 7)
-  
-  e$investments_economic_effect <- -as.numeric(e$investments_negative_effect)
-  e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
-  e$tax_transfers_economic_effect <- -as.numeric(e$tax_transfers_negative_effect)
-  e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
-  e$standard_economic_effect <- -as.numeric(e$standard_negative_effect)
-  e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
   
   variables_index_positive_economy <<- c("effect_halt_CC_economy", "investments_economic_effect", "tax_transfers_economic_effect", "standard_economic_effect")
   negatives_index_positive_economy <<- rep(F, 4)
@@ -1975,6 +1969,16 @@ if (all(variables_affected_index %in% names(e))) {
     # Double standardization
     e$index_worried_dummies2SD <- (e$index_worried_dummies - wtd.mean(e$index_worried_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_worried_dummies, w = e$weight, na.rm=T))
     
+    # Prepare variables for Index Positive Economy
+    e$investments_economic_effect <- -as.numeric(e$investments_negative_effect)
+    e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
+    e$tax_transfers_economic_effect <- -as.numeric(e$tax_transfers_negative_effect)
+    e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
+    e$standard_economic_effect <- -as.numeric(e$standard_negative_effect)
+    e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
+    
+    
+    
     e$index_positive_economy <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
     e$index_positive_economy_dummies <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, conditions = conditions_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
     # Double standardization
@@ -2464,42 +2468,42 @@ e <- dk <- prepare(country = "DK", duration_min = 686)
 e <- fr <- prepare(country = "FR", duration_min = 686)
 e <- de <- prepare(country = "DE", duration_min = 686)
 
-e <- it <- prepare(country = "IT", duration_min = 686, weighting = F)
-e <- pl <- prepare(country = "PL", duration_min = 686, weighting = F)
-e <- jp <- prepare(country = "JP", duration_min = 686, weighting = F)
-e <- sp <- prepare(country = "SP", duration_min = 686, weighting = F)
-e <- au <- prepare(country = "AU", duration_min = 686, weighting = F)
-e <- sa <- prepare(country = "SA", duration_min = 686, weighting = F)
-e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IA
-e <- ca <- prepare(country = "CA", duration_min = 686, weighting = F)
-e <- uk <- prepare(country = "UK", duration_min = 686, weighting = F)
-e <- ia <- prepare(country = "IA", duration_min = 686, weighting = F)
-e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
-e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
-e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
-e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
+# e <- it <- prepare(country = "IT", duration_min = 686, weighting = F)
+# e <- pl <- prepare(country = "PL", duration_min = 686, weighting = F)
+# e <- jp <- prepare(country = "JP", duration_min = 686, weighting = F)
+# e <- sp <- prepare(country = "SP", duration_min = 686, weighting = F)
+# e <- au <- prepare(country = "AU", duration_min = 686, weighting = F)
+# e <- sa <- prepare(country = "SA", duration_min = 686, weighting = F)
+# e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IA
+# e <- ca <- prepare(country = "CA", duration_min = 686, weighting = F)
+# e <- uk <- prepare(country = "UK", duration_min = 686, weighting = F)
+# e <- ia <- prepare(country = "IA", duration_min = 686, weighting = F)
+# e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
+# e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
+# e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
+# e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
 current_countries <- c("DK", "US", "FR", "DE")
-ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN")
-All <- list()
-for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
+# ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN")
+# All <- list()
+# for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-
-all$knows_anthropogenic <- all$CC_anthropogenic == 2
-variables_knowledge_efa <- variables_knowledge
-negatives_knowledge_efa <- negatives_knowledge
-# variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
-# negatives_knowledge_efa <- c(negatives_knowledge, F)
-temp <- all[,c("weight", "treatment", variables_knowledge_efa)] 
-for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
-# for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
-loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
-names(loadings) <- variables_knowledge_efa
-loadings_efa[["all"]] <- loadings
-# print(loadings_z)
-all$index_knowledge_efa_global <- 0
-for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
-all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weights, na.rm = T))
-label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+# 
+# all$knows_anthropogenic <- all$CC_anthropogenic == 2
+# variables_knowledge_efa <- variables_knowledge
+# negatives_knowledge_efa <- negatives_knowledge
+# # variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
+# # negatives_knowledge_efa <- c(negatives_knowledge, F)
+# temp <- all[,c("weight", "treatment", variables_knowledge_efa)] 
+# for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
+# # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
+# loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
+# names(loadings) <- variables_knowledge_efa
+# loadings_efa[["all"]] <- loadings
+# # print(loadings_z)
+# all$index_knowledge_efa_global <- 0
+# for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
+# all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weights, na.rm = T))
+# label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
 # all_bis <- janitor::clean_names(all)
 # df = as.data.frame(apply(all_bis, 2, function(x){
