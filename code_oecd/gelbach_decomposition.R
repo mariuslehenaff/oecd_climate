@@ -60,7 +60,7 @@ gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls,
 indexes_list <- c("index_progressist", "index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
                   "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change")
 indexes_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is affected by climate change", "Is concerned about climate change", "Is worried about the future", "Climate policies have a positive effect on the economy",
-                 "Is financially constrained","Climate policies are efficient", "Care about poverty and inequalities", "Is altruist", "Think will suffer of climate change", "Is willing to adapt to climate change")
+                 "Is financially constrained","Climate policies are efficient", "Care about poverty and inequalities", "Is willing to donate to reforestation project", "Think will suffer of climate change", "Is willing to adopt climate friendly behavior")
 indexes_non_left_right <- indexes_list[2:length(indexes_list)]
 indexes_policies <- c("index_standard_policy", "index_tax_transfers_policy", "index_investments_policy","index_main_policies",
                       "index_beef_policies","index_international_policies","index_other_policies","index_all_policies")
@@ -79,11 +79,11 @@ e$right_pol <- e$left_right > 0
 
 # Other specifications possible (not used)
 # gelbach_right_standard_noD <- gelbach_decomposition(var_to_decompose = indexes_policies[1], group_of_interest = "right_pol",
-#                                                     controls = control_variables[1:4], controls_factor = c("age", "employment_agg"),
+#                                                     controls = control_variables[1:4], controls_factor = c("age", "employment_agg", "country"),
 #                                                     indices = indexes_non_left_right)
 # gelbach_right_standard_noD[,1] <- indexes_lab[2:length(indexes_lab)]
 # gelbach_right_standard_D <- gelbach_decomposition(var_to_decompose = indexes_policies[1], group_of_interest = "right_pol",
-#                                                   controls = control_variables[1:4], controls_factor = c("age", "employment_agg"),
+#                                                   controls = control_variables[1:4], controls_factor = c("age", "employment_agg", "country"),
 #                                                   indices = paste(indexes_non_left_right, "_dummies", sep = ""))
 # gelbach_right_standard_D[,1] <- indexes_lab[2:length(indexes_lab)]
 # barres(data = t(matrix(gelbach_right_standard_noD$shareExplained/100)), labels = gelbach_right_standard_noD$n,legend = "% Partisan gap explained", rev = F)
@@ -91,23 +91,23 @@ e$right_pol <- e$left_right > 0
 
 
 gelbach_right_standard_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[1], group_of_interest = "right_pol",
-                                                     controls = control_variables[1:4], controls_factor = c("age", "employment_agg"),
+                                                     controls = control_variables[1:4], controls_factor = c("age", "employment_agg", "country"),
                                                      indices = paste(indexes_non_left_right, "_dummies2SD", sep = ""))
 gelbach_right_standard_D2SD[,1] <- indexes_lab[2:length(indexes_lab)]
 gelbach_right_tax_transfers_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[2], group_of_interest = "right_pol",
-                                                          controls = control_variables[1:4], controls_factor = c("age", "employment_agg"),
+                                                          controls = control_variables[1:4], controls_factor = c("age", "employment_agg", "country"),
                                                           indices = paste(indexes_non_left_right, "_dummies2SD", sep = ""))
 gelbach_right_tax_transfers_D2SD[,1] <- indexes_lab[2:length(indexes_lab)]
 gelbach_right_investments_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[3], group_of_interest = "right_pol",
-                                                        controls = control_variables[1:4], controls_factor = c("age", "employment_agg"),
+                                                        controls = control_variables[1:4], controls_factor = c("age", "employment_agg", "country"),
                                                         indices = paste(indexes_non_left_right, "_dummies2SD", sep = ""))
 gelbach_right_investments_D2SD[,1] <- indexes_lab[2:length(indexes_lab)]
 gelbach_right_main_policies_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[4], group_of_interest = "right_pol",
-                                                          controls = control_variables[1:4], controls_factor = c("age", "employment_agg"),
+                                                          controls = control_variables[1:4], controls_factor = c("age", "employment_agg", "country"),
                                                           indices = paste(indexes_non_left_right, "_dummies2SD", sep = ""))
 gelbach_right_main_policies_D2SD[,1] <- indexes_lab[2:length(indexes_lab)]
 gelbach_right_all_policies_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[8], group_of_interest = "right_pol",
-                                                         controls = control_variables[1:4], controls_factor = c("age", "employment_agg"),
+                                                         controls = control_variables[1:4], controls_factor = c("age", "employment_agg", "country"),
                                                          indices = paste(indexes_non_left_right, "_dummies2SD", sep = ""))
 gelbach_right_all_policies_D2SD[,1] <- indexes_lab[2:length(indexes_lab)]
 
@@ -119,23 +119,23 @@ barres(data = t(matrix(gelbach_right_all_policies_D2SD$shareExplained/100)), lab
 
 # Urban 
 gelbach_urban_standard_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[1], group_of_interest = "urban",
-                                                     controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg"),
+                                                     controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg", "country"),
                                                      indices = paste(indexes_non_left_right[c(1,3:11)], "_dummies2SD", sep = ""))
 gelbach_urban_standard_D2SD[,1] <- indexes_lab[c(2,4:12)]
 gelbach_urban_tax_transfers_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[2], group_of_interest = "urban",
-                                                          controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg"),
+                                                          controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg", "country"),
                                                           indices = paste(indexes_non_left_right[c(1,3:11)], "_dummies2SD", sep = ""))
 gelbach_urban_tax_transfers_D2SD[,1] <- indexes_lab[c(2,4:12)]
 gelbach_urban_investments_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[3], group_of_interest = "urban",
-                                                        controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg"),
+                                                        controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg", "country"),
                                                         indices = paste(indexes_non_left_right[c(1,3:11)], "_dummies2SD", sep = ""))
 gelbach_urban_investments_D2SD[,1] <- indexes_lab[c(2,4:12)]
 gelbach_urban_main_policies_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[4], group_of_interest = "urban",
-                                                          controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg"),
+                                                          controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg", "country"),
                                                           indices = paste(indexes_non_left_right[c(1,3:11)], "_dummies2SD", sep = ""))
 gelbach_urban_main_policies_D2SD[,1] <- indexes_lab[c(2,4:12)]
 gelbach_urban_all_policies_D2SD <- gelbach_decomposition(var_to_decompose = paste(indexes_policies, "_dummies2SD", sep = "")[8], group_of_interest = "urban",
-                                                         controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg"),
+                                                         controls = c(control_variables[1:4], "right_pol"), controls_factor = c("age", "employment_agg", "country"),
                                                          indices = paste(indexes_non_left_right[c(1,3:11)], "_dummies2SD", sep = ""))
 gelbach_urban_all_policies_D2SD[,1] <- indexes_lab[c(2,4:12)]
 
