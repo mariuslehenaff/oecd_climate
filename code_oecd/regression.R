@@ -467,11 +467,11 @@ indexes_list <- c("index_knowledge", "index_affected", "index_concerned_about_CC
                   "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change")
 
 
-end_formula_treatment <- paste(c(control_variables_w_treatment[c(1:5,7:11)]), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment <- paste(c(control_variables_w_treatment[c(1:5,7:11)], "as.factor(country)"), collapse = ') + (') #  Do not take left and income 
 end_formula_treatment <- paste(c("(", end_formula_treatment), collapse = "")
 end_formula_treatment <- paste(c(end_formula_treatment, ")"), collapse = "")
 
-end_formula_treatment_indexes <- paste(c(control_variables_w_treatment[c(1:5,7:11)], indexes_list), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment_indexes <- paste(c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)", indexes_list), collapse = ') + (') #  Do not take left and income 
 end_formula_treatment_indexes <- paste(c("(", end_formula_treatment_indexes), collapse = "")
 end_formula_treatment_indexes <- paste(c(end_formula_treatment_indexes, ")"), collapse = "")
 
@@ -486,8 +486,8 @@ cov_lab_treatment_indexes_mod <- c("index_knowledge" = "Has a good knowledge of 
                                    "index_concerned_about_CC" = "Is concerned about climate change", "index_worried" = "Is worried about the future",
                                    "index_positive_economy" = "Climate policies have a positive effect on the economy",
                                    "index_constrained" = "Is financially constrained","index_policies_efficient" = "Climate policies are efficient",
-                                   "index_care_poverty" = "Care about poverty and inequalities", "index_altruism" = "Is altruist",
-                                   "index_affected_subjective" = "Think will suffer of climate change", "index_willing_change" = "Is willing to adapt to climate change",
+                                   "index_care_poverty" = "Care about poverty and inequalities", "index_altruism" = "Is willing to donate to reforestation project",
+                                   "index_affected_subjective" = "Think will suffer of climate change", "index_willing_change" = "Is willing to adopt climate friendly behavior",
                                    "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center")
 
 models <- list()

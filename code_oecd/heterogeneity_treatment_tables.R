@@ -1,4 +1,4 @@
-e <- all
+#e <- all
 e$other_policies_support <- (e$policy_tax_flying + e$policy_tax_fuels + e$policy_ban_city_centers + e$policy_subsidies + e$policy_climate_fund) / 5
 label(e$other_policies_support) <- "other_policies_support: Average of responses in [-2;+2] to Do you support or oppose a tax on flying, a national tax on fossil fuels, a ban of polluting vehicles in dense areas, subsidies for low-carbon technologies, a contribution to a global climate fund?"
 
