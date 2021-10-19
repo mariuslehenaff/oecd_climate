@@ -87,9 +87,9 @@ desc_table(dep_vars = c("index_knowledge", "index_main_policies_dummies2SD", "in
                               "Rich responsible"),
            nolabel = F,
            dep.var.caption = c(""), data = e, indep_vars = c(control_variables, "as.factor(country)", "index_affected", "urban", "treatment*college"), 
-           keep = c("treatment", "college"), indep_labels = c("College", "Treatment Climate", "Treatment Policy", 
-                                                              "Treatment Both", "College $\\times$ Treatment Climate", "College $\\times$ Treatment Policy", 
-                                                              "College $\\times$ Treatment Both"), mean_control = T
+           keep = c("treatment", "college"), indep_labels = c("No College", "Treatment Climate", "Treatment Policy", 
+                                                              "Treatment Both", "No College $\\times$ Treatment Climate", "No College $\\times$ Treatment Policy", 
+                                                              "No College $\\times$ Treatment Both"), mean_control = T
 )
 
 # Employment

@@ -1,0 +1,229 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Import preamble
+\input{../preamble_slides.tex}
+\input{../abbreviations.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define title
+
+
+%\title{Climate survey - France}
+%\author[OECD]{ \\  Antoine Dechezleprêtre, Adrien Fabre, Bluebery Planterose, Stefanie Stantcheva \\ (OECD) }
+%
+%              \date{}
+              
+\begin{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Begin of the document
+% TITLE PAGE
+
+\begin{frame}
+\thispagestyle{empty}
+\begin{center}
+\begin{LARGE}
+\textcolor{blue}{Heterogenous Treatment Effects \& Policy Views Decomposition}
+\end{LARGE}
+
+\vspace{1cm}
+
+Countries: US, France, Denmark, Germany
+% Laurence Boone, Antoine Dechezleprêtre, Adrien Fabre, Tobias Kruse, Bluebery Planterose, Ana Sanchez-Chico, Stefanie Stantcheva \\
+
+%\vspace{-0.3cm}
+
+\DTMlangsetup{showdayofmonth=false}
+\textit{\today} 
+
+\end{center}
+
+\bigskip
+
+\end{frame}
+
+\section{Heterogenous Treatment Effects}
+
+\begin{frame}{Main Results}
+\begin{itemize}
+	\item Negative effect of Climate Treatment on right-wing respondents for support on policies, but policy treatment has positive effect on willingness to adopt climate friendly behavior
+	\item Both treatment have a negative effects on left-leaning persons
+	\item Policy treatment has a negative effect on both right- and left-leaning persons on thinking that rich people are responsible for CC \newline
+	\item Climate treatment has strong effects on the main origin/race of the country \newline
+	\item Also strong effects of both treatments on retired people and older people
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+\begin{table}[h!]
+\caption{Heterogenous Treatment Effects -- Political}
+\begin{center}
+\scalebox{.3}{\input{../../tables/heterogeneity/main_results_het_left_right_all.tex}}
+\end{center}
+	{\fontsize{4}{6}\selectfont Note: Controls include categorical variables for having dominant origin in the country, gender, having children, college education,
+income quartiles, employment tatus, age, political affiliation, living in an urban area, and the country is which the survey occured.}
+\end{table}
+\end{frame}
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+\begin{table}[h!]
+\caption{Heterogenous Treatment Effects -- Origin}
+\begin{center}
+\scalebox{.4}{\input{../../tables/heterogeneity/main_results_het_origin_all.tex}}
+\end{center}
+\end{table}
+\end{frame}
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+\begin{table}[h!]
+\caption{Heterogenous Treatment Effects -- Employment}
+\begin{center}
+\scalebox{.3}{\input{../../tables/heterogeneity/main_results_het_employment_all.tex}}
+\end{center}
+\end{table}
+\end{frame}
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+\begin{table}[h!]
+\caption{Heterogenous Treatment Effects -- Age}
+\begin{center}
+\scalebox{.25}{\input{../../tables/heterogeneity/main_results_het_age_all.tex}}
+\end{center}
+\end{table}
+\end{frame}
+
+\section{Decomposition of Policy Views}
+
+
+\begin{frame}{Main Results}
+\begin{itemize}
+	\item Importance of political-leaning and age on support \newline
+	\item Believing that policies are efficient is a key determinant of the support for all policies
+	\item Thinking that climate change will/is affect(ing) oneself way more important than being actually vulnerable to climate change \newline
+	\item Partisan gap is also explained by different views on the efficiency of climate policies, as well as the importance of addressing poverty and inequalities, and not so much by objective characteristics (e.g., being vulnerable to CC or financially constrained)
+	\item For the geographical gap, believing that climate change will affect oneself is also an important determinant.
+	\item Being concerned about climate change only plays a role at the margins.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Decomposing Policy View -- Individual Characteristics}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\includegraphics[width=.56\textwidth]{../../figures/Gelbach/coef_policy_views_all} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} In this figure, the dependent variable are policy indices. Depicted are coefficients on different types of variables and from two different specifications. We show the coefficients from the regressions of each policy index on (only) treatment indicators and on the full set of individual covariates.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Decomposing Policy View -- Mechanisms}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\includegraphics[width=.56\textwidth]{../../figures/Gelbach/coef_policy_views_indexes_all} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} We show the coefficients on the different policy views from the regressions of each policy index on these factors, controlling for the full array of individual covariates and treatment indicators. We do not show the coefficients on all individual-level controls, except for the coefficient on the political indicators.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Gelbach decomposition of the partisan gap in support for…}%\addtocounter{framenumber}{-1}
+\vspace{-.2cm}
+\begin{figure}[h!]
+\caption{… all climate policies}
+\includegraphics[width=.55\textwidth]{../../figures/Gelbach/gelbach_right_all_policies_D2SD} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} Each bar indicates the share of the partisan gap explained by each of the factors.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Explaining the Partisan Gap}
+\begin{figure}[h!]
+	\caption{Gelbach decomposition of the partisan gap in support for:}
+	\setlength\extrarowheight{-1pt}
+\begin{center}
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.48\textwidth}
+		\caption{Ban on combustion-engine cars}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_right_standard_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.48\textwidth}
+		\caption{Carbon tax with cash transfers}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_right_tax_transfers_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Explaining the Partisan Gap}
+\begin{figure}[h!]
+	\caption{Gelbach decomposition of the partisan gap in support for:}
+	\setlength\extrarowheight{-1pt}
+\begin{center}
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.48\textwidth}
+		\caption{Green investment program}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_right_investments_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.48\textwidth}
+		\caption{All 3 policies}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_right_main_policies_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Gelbach decomposition of the geographical gap (urban vs. rural) in support for…}%\addtocounter{framenumber}{-1}
+\vspace{-.2cm}
+\begin{figure}[h!]
+\caption{… all climate policies}
+\includegraphics[width=.55\textwidth]{../../figures/Gelbach/gelbach_urban_all_policies_D2SD} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} Each bar indicates the share of the geographical gap explained by each of the factors.}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Explaining the Geographical Gap}
+\begin{figure}[h!]
+	\caption{Gelbach decomposition of the geographical gap (urban vs. rural) in support for:}
+	\setlength\extrarowheight{-1pt}
+\begin{center}
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.48\textwidth}
+		\caption{Ban on combustion-engine cars}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_urban_standard_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.48\textwidth}
+		\caption{Carbon tax with cash transfers}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Explaining the Geographical Gap}
+\begin{figure}[h!]
+	\caption{Gelbach decomposition of the geographical gap (urban vs. rural) in support for:}
+	\setlength\extrarowheight{-1pt}
+\begin{center}
+	\begin{tabular}{cc}
+		\begin{subfigure}{0.48\textwidth}
+		\caption{Green investment program}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_urban_investments_D2SD}
+		\end{subfigure}&
+		\begin{subfigure}{0.48\textwidth}
+		\caption{All 3 policies}
+			\includegraphics[width=\textwidth]{../../figures/Gelbach/gelbach_right_main_policies_D2SD}
+		\end{subfigure}\\
+	\end{tabular}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+\end{document}
