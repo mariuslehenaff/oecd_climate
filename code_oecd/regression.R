@@ -288,7 +288,25 @@ desc_table(dep_vars = c("survey_biased == 'No'", "survey_biased == 'Yes, right'"
            dep.var.caption = c("Biased"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
 )
 
+## Covid Regressions for Tobias
+control_variables_left_right <- c(control_variables[1:7], "left_right_factor")
 
+desc_table(dep_vars = c("standard_support", "investments_support", "tax_transfers_support", "policies_support", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD"), filename = "All/support_w_covid",
+           dep.var.labels = c("Support ban of combustion engine", "Support Green Investments", "Support Carbon tax \n with cash transfers", "Support 3 main policies", 
+                              "Index Main Policies", "Index All Policies"),
+           nolabel = F,
+           dep.var.caption = c(""), data = e, indep_vars = c(control_variables_left_right, "as.factor(country)", "urban", "as.factor(hit_by_covid)"),
+          indep_labels = c(cov_lab[1:14], "Center", "Left", "Right", "country: Denmark", "country: France", "country: US", "Urban","Hit by COVID"), mean_control = T
+)
+
+desc_table(dep_vars = c("standard_support", "investments_support", "tax_transfers_support", "policies_support", "index_main_policies_dummies2SD", "index_all_policies_dummies2SD"), filename = "All/support_w_covid_het_income",
+           dep.var.labels = c("Support ban of combustion engine", "Support Green Investments", "Support Carbon tax \n with cash transfers", "Support 3 main policies", 
+                              "Index Main Policies", "Index All Policies"),
+           nolabel = F,
+           dep.var.caption = c(""), data = e, indep_vars = c(control_variables_left_right, "as.factor(country)", "urban", "as.factor(hit_by_covid)", "as.factor(hit_by_covid)*income_factor"),
+           indep_labels = c(cov_lab[1:14], "Center", "Left", "Right", "country: Denmark", "country: France", "country: US", "Urban","Hit by COVID",
+                            "Income Q2 $\\times$ Hit by COVID", "Income Q3 $\\times$ Hit by COVID", "Income Q4 $\\times$ Hit by COVID"), mean_control = T
+)
 
 ##### Indexes ####
 
