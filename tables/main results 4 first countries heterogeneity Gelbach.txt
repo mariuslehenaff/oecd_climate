@@ -1,0 +1,4 @@
+Main Results:
+- Pour les décompositions: ce qui semble être majeur (et c'est plutôt en accord avec la littérature) c'est le fait de croire que les politiques vont être efficaces où que l'on va être personnellement affecté par le changement climatique (bien plus que le fait d'y être réellement vulnérable!)
+- Pour les effets de traitement hétérogènes: on trouve peu d'effets d'intéractions significants, là où ça semble être le plus significant c'est avec la variable d'origine ethnique et le statut d'emploi. L'âge semble aussi avoir pas mal d'effet.
+- Aussi de manière assez étonnante, le niveau d'éducatin (pas les effets de traitement hétérogènes) a un effet négatif sur le support.
