@@ -489,7 +489,7 @@ end_formula_treatment <- paste(c(control_variables_w_treatment[c(1:5,7:11)], "as
 end_formula_treatment <- paste(c("(", end_formula_treatment), collapse = "")
 end_formula_treatment <- paste(c(end_formula_treatment, ")"), collapse = "")
 
-end_formula_treatment_indexes <- paste(c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)", indexes_list), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment_indexes <- paste(c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)", indexes_list[2:length(indexes_list)]), collapse = ') + (') #  Do not take left and income 
 end_formula_treatment_indexes <- paste(c("(", end_formula_treatment_indexes), collapse = "")
 end_formula_treatment_indexes <- paste(c(end_formula_treatment_indexes, ")"), collapse = "")
 
@@ -516,7 +516,7 @@ models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dumm
 models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
 
 coef_policy_views_all <- modelplot(models, coef_map = cov_lab_treatment_mod, 
-                             background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
+                             background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indices')
 
 
 models <- list()
@@ -526,8 +526,8 @@ models[["Green investment program Index"]] <- lm(as.formula(paste("index_investm
 models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
 models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
 
-coef_policy_views_indexes_all <- modelplot(models, coef_map = cov_lab_treatment_indexes_mod, 
-                                   background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Views', title = 'Indexes')
+coef_policy_views_indices_all <- modelplot(models, coef_map = cov_lab_treatment_indexes_mod, 
+                                   background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Views', title = 'Indices')
 
 # 
 # 
