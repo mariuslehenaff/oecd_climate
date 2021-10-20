@@ -308,17 +308,17 @@ desc_table(dep_vars = c("standard_support", "investments_support", "tax_transfer
                             "Income Q2 $\\times$ Hit by COVID", "Income Q3 $\\times$ Hit by COVID", "Income Q4 $\\times$ Hit by COVID"), mean_control = T
 )
 
-##### Indexes ####
+##### indices ####
 
-## Indexes
-desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indexes",
+## indices
+desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), filename = "indices",
            dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)", "CO$_{2}$ emissions (t/year)"),
            nolabel = T,
            dep.var.caption = c(""), data = us, indep_vars = c(control_variables, "urban"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
 )
 
 ## TEMPORARY: for data w/o CO2
-desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa"), filename = "indexes_DK",
+desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_efa"), filename = "indices_DK",
            dep.var.labels = c("Affected Index", "Knowledge Index", "Knowledge Index (EFA)"),
            nolabel = F,
            dep.var.caption = c(""), data = dk, indep_vars = c(control_variables, "urban"), indep_labels = c(cov_lab, "Core metropolitan"), mean_control = T
@@ -327,16 +327,16 @@ desc_table(dep_vars = c("index_affected", "index_knowledge", "index_knowledge_ef
 ## SAME as above
 desc_table(dep_vars = "policies_support > 0", 
            dep.var.caption = c("Support"), data = fr, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa"), 
-           filename = "support_all_indexes",
+           filename = "support_all_indices",
            indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA"), mean_control = T,
            nolabel =F,
            indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F), c(rep(T, length(control_variables)), F, F, F), c(rep(T, length(control_variables)), T, F, F), c(rep(T, length(control_variables)), F, T, F), c(rep(T, length(control_variables)), F, F, T), c(rep(T, length(control_variables)), T, T, F), c(rep(T, length(control_variables)), T, F, T), c(rep(T, length(control_variables)), T, T, T))
 )
 
 
-# Support with indexes
+# Support with indices
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"), 
-           filename = "support_w_indexes",
+           filename = "support_w_indices",
            nolabel= F,
            dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge"), indep_labels = c(cov_lab, "Index affected", "Index knowledge"), mean_control = T
@@ -344,42 +344,42 @@ desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_suppo
 
 # EFA
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"), 
-           filename = "support_w_indexes_efa",
+           filename = "support_w_indices_efa",
            dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa"), indep_labels = c(cov_lab, "Index affected", "Index knowledge EFA"), mean_control = T
 )
 
 # Both
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
-           filename = "support_w_indexes_both",
+           filename = "support_w_indices_both",
            dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA"), mean_control = T
 )
 
 # CO2 emissions
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
-           filename = "support_w_indexes_CO2",
+           filename = "support_w_indices_CO2",
            dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "CO2_emission"), indep_labels = c(cov_lab, "Index affected", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # CO2 + index
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
-           filename = "support_w_indexes_bothCO2",
+           filename = "support_w_indices_bothCO2",
            dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # CO2 + EFA
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
-           filename = "support_w_indexes_CO2_efa",
+           filename = "support_w_indices_CO2_efa",
            dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
 
 # All 3
 desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_support > 0", "investments_support > 0", "tax_transfers_support > 0"),
-           filename = "support_w_indexes_all_three",
+           filename = "support_w_indices_all_three",
            dep.var.labels = c("Ban on combustion engine", "Ban on combustion engine with alternatives", "Green infrastructure program", "Carbon tax with cash transfers"),
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T
 )
@@ -387,7 +387,7 @@ desc_table(dep_vars = c("standard_support > 0", "standard_public_transport_suppo
 # Test new desc_table
 desc_table(dep_vars = "policies_support > 0", 
            dep.var.caption = c("Support"), data = us, indep_vars = c(control_variables, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), 
-           filename = "support_all_indexes",
+           filename = "support_all_indices",
            indep_labels = c(cov_lab, "Index affected","Index knowledge", "Index knowledge EFA", "CO$_{2}$ emissions (t/year)"), mean_control = T,
            nolabel =F,
            indep_vars_included = list(c(rep(T, length(control_variables)-1),F, F, F, F, F), c(rep(T, length(control_variables)), F, F, F, F), c(rep(T, length(control_variables)), T, F, F, F), c(rep(T, length(control_variables)), F, T, F, F), c(rep(T, length(control_variables)), F, F, T, F), c(rep(T, length(control_variables)), F, F, F, T), c(rep(T, length(control_variables)), T, T, F, F), c(rep(T, length(control_variables)), T, F, T, F), c(rep(T, length(control_variables)), T, T, T, T))
@@ -420,7 +420,7 @@ end_formula <- paste(c(control_variables), collapse = ') + (') #  treatment_clim
 end_formula <- paste(c("(", end_formula), collapse = "")
 end_formula <- paste(c(end_formula, ")"), collapse = "")
 
-# Policies support with indexes
+# Policies support with indices
 # end_formula3 <- paste(c(end_formula, "index_affected", "index_knowledge", "index_knowledge_efa", "CO2_emission"), collapse = ' + ') #  treatment_climate * treatment_policy
 
 
@@ -455,20 +455,20 @@ cov_lab_mod2 <- c("childrenTRUE" = "Child(ren) at home", "collegeNo college" = "
                 "index_affected" = "Index affected","index_knowledge" = "Index knowledge")
 # Run first w/o coef_map to check variables you want to include
 # Include in cov_lab_mod, only the variables you want to display. Order matter for order of appearance on the graph
-coef_support_indexes_US <- modelplot(models, conf_level = .95,
+coef_support_indices_US <- modelplot(models, conf_level = .95,
           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = '')
-save_plotly(coef_support_indexes_US, width= 736, height=719)
+save_plotly(coef_support_indices_US, width= 736, height=719)
 
-# Indexes
+# indices
 
 models <- list()
 models[["Affected Index"]] <- lm(as.formula(paste("index_affected ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Knowledge Index"]] <- lm(as.formula(paste("index_knowledge ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 models[["Knowledge Index (EFA)"]] <- lm(as.formula(paste("index_knowledge_efa ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
 # models[["CO2 emissions (t/year)"]] <- lm(as.formula(paste("CO2_emission ~ ", paste(c(end_formula, "urban"), collapse = ' + '))), data = e, weights = e$weight)
-coef_indexes_FR <- modelplot(models, coef_map = cov_lab_mod, 
-                                  background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'Indexes')
-save_plotly(coef_indexes_FR, width= 736, height=719)
+coef_indices_FR <- modelplot(models, coef_map = cov_lab_mod, 
+                                  background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Covariates', title = 'indices')
+save_plotly(coef_indices_FR, width= 736, height=719)
 
 # Right_wing affiliation
 
@@ -481,7 +481,7 @@ save_plotly(coef_Right_FR, width= 736, height=719)
 
 # Decomposing Tax Policy
 # Do not use index_progressist
-indexes_list <- c("index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
+indices_list <- c("index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
                   "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change")
 
 
@@ -489,9 +489,9 @@ end_formula_treatment <- paste(c(control_variables_w_treatment[c(1:5,7:11)], "as
 end_formula_treatment <- paste(c("(", end_formula_treatment), collapse = "")
 end_formula_treatment <- paste(c(end_formula_treatment, ")"), collapse = "")
 
-end_formula_treatment_indexes <- paste(c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)", indexes_list[2:length(indexes_list)]), collapse = ') + (') #  Do not take left and income 
-end_formula_treatment_indexes <- paste(c("(", end_formula_treatment_indexes), collapse = "")
-end_formula_treatment_indexes <- paste(c(end_formula_treatment_indexes, ")"), collapse = "")
+end_formula_treatment_indices <- paste(c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)", indices_list[2:length(indices_list)]), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment_indices <- paste(c("(", end_formula_treatment_indices), collapse = "")
+end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), collapse = "")
 
 
 cov_lab_treatment_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
@@ -500,7 +500,7 @@ cov_lab_treatment_mod <- c("dominant_originTRUE" = "race/origin: largest group",
                  "age65+" = "age: 65+", "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center",
                  "treatmentClimate" = "treatment: Climate", "treatmentPolicy" = "treatment: Policy", "treatmentBoth" = "treatment: Both")
 
-cov_lab_treatment_indexes_mod <- c("index_knowledge" = "Has a good knowledge of climate change", "index_affected" = "Is affected by climate change",
+cov_lab_treatment_indices_mod <- c("index_knowledge" = "Has a good knowledge of climate change", "index_affected" = "Is affected by climate change",
                                    "index_concerned_about_CC" = "Is concerned about climate change", "index_worried" = "Is worried about the future",
                                    "index_positive_economy" = "Climate policies have a positive effect on the economy",
                                    "index_constrained" = "Is financially constrained","index_policies_efficient" = "Climate policies are efficient",
@@ -520,13 +520,13 @@ coef_policy_views_all <- modelplot(models, coef_map = cov_lab_treatment_mod,
 
 
 models <- list()
-models[["Ban on combustion-engine cars Index"]] <- lm(as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
-models[["Carbon tax with cash transfers Index"]] <- lm(as.formula(paste("index_tax_transfers_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
-models[["Green investment program Index"]] <- lm(as.formula(paste("index_investments_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
-models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
-models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indexes), collapse = ' + '))), data = e, weights = e$weight)
+models[["Ban on combustion-engine cars Index"]] <- lm(as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
+models[["Carbon tax with cash transfers Index"]] <- lm(as.formula(paste("index_tax_transfers_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
+models[["Green investment program Index"]] <- lm(as.formula(paste("index_investments_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
+models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
+models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
 
-coef_policy_views_indices_all <- modelplot(models, coef_map = cov_lab_treatment_indexes_mod, 
+coef_policy_views_indices_all <- modelplot(models, coef_map = cov_lab_treatment_indices_mod, 
                                    background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Views', title = 'Indices')
 
 # 
