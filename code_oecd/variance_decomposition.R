@@ -1,7 +1,7 @@
 library(relaimpo)
 
 indices_list <- c("index_progressist", "index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
-                  "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change")
+                  "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt")
 
 
 controls_lmg <- c("dominant_origin == TRUE", "female == TRUE", "children == TRUE", "college == \"No college\"","employment_agg == \"Retired\"",
@@ -11,13 +11,16 @@ controls_lmg <- c("dominant_origin == TRUE", "female == TRUE", "children == TRUE
                   "treatment == \"Policy\"", "treatment == \"Both\"","country == \"DK\"",
                   "country == \"FR\"", "country == \"US\"")
 
-controls_lmg <- c(control_variables_w_treatment[c(1:5,7:10)],"treatment == \"Climate\"",
+controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "as.character(left_right)","treatment == \"Climate\"",
                   "treatment == \"Policy\"", "treatment == \"Both\"","as.factor(country)")
 
 end_formula_treatment_indices <- paste(c(controls_lmg, indices_list[2:length(indices_list)]), collapse = ') + (')
 end_formula_treatment_indices <- paste(c("(", end_formula_treatment_indices), collapse = "")
 end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), collapse = "")
 
+end_formula_treatment_indices_no_willingness <- paste(c(controls_lmg, indices_list[c(2:11,13:length(indices_list))]), collapse = ') + (')
+end_formula_treatment_indices_no_willingness <- paste(c("(", end_formula_treatment_indices_no_willingness), collapse = "")
+end_formula_treatment_indices_no_willingness <- paste(c(end_formula_treatment_indices_no_willingness, ")"), collapse = "")
 
 end_formula_treatment <- paste(controls_lmg, collapse = ') + (') #  Do not take left and income 
 end_formula_treatment <- paste(c("(", end_formula_treatment), collapse = "")
@@ -25,10 +28,11 @@ end_formula_treatment <- paste(c(end_formula_treatment, ")"), collapse = "")
 
 
 indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is affected by climate change", "Is concerned about climate change", "Is worried about the future", "Climate policies have a positive effect \n on the economy",
-                 "Is financially constrained","Climate policies are efficient", "Care about poverty and inequalities", "Is willing to donate to reforestation project", "Think will suffer of climate change", "Is willing to adopt climate friendly behavior")
+                 "Is financially constrained","Climate policies are efficient", "Cares about poverty and inequalities", "Is willing to donate to reforestation project",
+                 "Thinks will suffer of climate change", "Is willing to adopt climate friendly behavior", "Thinks will lose from main policies", "Thinks main policies are fair", "Trusts the governement")
 
 controls_labels_lm <- c("Employment Status", "Age", "Country", "Origin", "Gender", "Parenthood",
-                        "Education", "Left", "Right", "Center", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
+                        "Education", "Political Leaning", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
 
 models <- list()
 models[["Ban on combustion-engine cars Index"]] <- lm(as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
@@ -37,6 +41,8 @@ models[["Green investment program Index"]] <- lm(as.formula(paste("index_investm
 models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
 models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
 models[["All climate policies Index - no indices"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
+models[["Willing to change Index"]] <- lm(as.formula(paste("index_willing_change_dummies2SD ~ ", paste(c(end_formula_treatment_indices_no_willingness), collapse = ' + '))), data = e, weights = e$weight)
+models[["Willing to change Index - no indices"]] <- lm(as.formula(paste("index_willing_change_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
 
 #coef_non_significant <- controls_lmg[c(1,5,7:11,15:16,20)]
 
@@ -48,12 +54,20 @@ investments_var_standardized <- calc.relimp(models[[3]], type = c("lmg", "pmvd",
 investments_var_non_standardized <- calc.relimp(models[[3]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
 main_policies_var_standardized <- calc.relimp(models[[4]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
 main_policies_var_non_standardized <- calc.relimp(models[[4]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
+
 all_policies_var_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
 all_policies_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
 all_policies_w_controls_var_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = T, rank= F)
 all_policies_w_controls_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = F, rank= F)
 all_policies_no_indices_var_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = T, rank= F)
 all_policies_no_indices_var_non_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = F, rank= F)
+
+willing_change_var_standardized <- calc.relimp(models[[7]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
+willing_change_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
+willing_change_w_controls_var_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = T, rank= F)
+willing_change_w_controls_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = F, rank= F)
+willing_change_no_indices_var_standardized <- calc.relimp(models[[8]], type = c("lmg"), rela = T, rank= F)
+willing_change_no_indices_var_non_standardized <- calc.relimp(models[[8]], type = c("lmg"), rela = F, rank= F)
 
 
 lmg_standard_standardized <- barres(data = t(as.matrix(standard_var_standardized@lmg)), labels = indices_lab[c(2:length(indices_lab))],legend = "% of remaining R-squared", rev = F)
@@ -63,17 +77,30 @@ lmg_standard_non_standardized <- barres(data = t(as.matrix(standard_var_non_stan
 
 lmg_all_policies_standardized <- barres(data = t(as.matrix(all_policies_var_standardized@lmg)), labels = indices_lab[c(2:length(indices_lab))],legend = "% of remaining R-squared", rev = F)
 lmg_all_policies_non_standardized <- barres(data = t(as.matrix(all_policies_var_non_standardized@lmg)), labels = indices_lab[c(2:length(indices_lab))],legend = "% of response variances", rev = F)
-
 lmg_all_policies_w_controls_standardized <- barres(data = t(as.matrix(all_policies_w_controls_var_standardized@lmg)),
-                                                   labels = c(controls_labels_lm, indices_lab[c(2:length(indices_lab))]),
-                                                   legend = "% of remaining R-squared", rev = F)
+                                                  labels = c(controls_labels_lm, indices_lab[c(2:length(indices_lab))]),
+                                                  legend = "% of remaining R-squared", rev = F)
 lmg_all_policies_w_controls_non_standardized <- barres(data = t(as.matrix(all_policies_w_controls_var_non_standardized@lmg)),
-                                                       labels = c(controls_labels_lm, indices_lab[c(2:length(indices_lab))]),
-                                                       legend = "% of response variances", rev = F)
-
+                                                      labels = c(controls_labels_lm, indices_lab[c(2:length(indices_lab))]),
+                                                      legend = "% of response variances", rev = F)
 lmg_all_policies_no_indices_standardized <- barres(data = t(as.matrix(all_policies_no_indices_var_standardized@lmg)),
                                                    labels = controls_labels_lm,
                                                    legend = "% of remaining R-squared", rev = F)
 lmg_all_policies_no_indices_non_standardized <- barres(data = t(as.matrix(all_policies_no_indices_var_non_standardized@lmg)),
                                                        labels = controls_labels_lm,
                                                        legend = "% of response variances", rev = F)
+
+lmg_willing_change_standardized <- barres(data = t(as.matrix(willing_change_var_standardized@lmg)), labels = indices_lab[c(2:11,13:length(indices_lab))],legend = "% of remaining R-squared", rev = F)
+lmg_willing_change_non_standardized <- barres(data = t(as.matrix(willing_change_var_non_standardized@lmg)), labels = indices_lab[c(2:11,13:length(indices_lab))],legend = "% of response variances", rev = F)
+lmg_willing_change_w_controls_standardized <- barres(data = t(as.matrix(willing_change_w_controls_var_standardized@lmg)),
+                                                    labels = c(controls_labels_lm, indices_lab[c(2:11,13:length(indices_lab))]),
+                                                    legend = "% of remaining R-squared", rev = F)
+lmg_willing_change_w_controls_non_standardized <- barres(data = t(as.matrix(willing_change_w_controls_var_non_standardized@lmg)),
+                                                        labels = c(controls_labels_lm, indices_lab[c(2:11,13:length(indices_lab))]),
+                                                        legend = "% of response variances", rev = F)
+lmg_willing_change_no_indices_standardized <- barres(data = t(as.matrix(willing_change_no_indices_var_standardized@lmg)),
+                                                     labels = controls_labels_lm,
+                                                     legend = "% of remaining R-squared", rev = F)
+lmg_willing_change_no_indices_non_standardized <- barres(data = t(as.matrix(willing_change_no_indices_var_non_standardized@lmg)),
+                                                         labels = controls_labels_lm,
+                                                         legend = "% of response variances", rev = F)
