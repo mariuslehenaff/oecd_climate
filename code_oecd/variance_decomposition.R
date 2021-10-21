@@ -44,6 +44,7 @@ main_policies_var_standardized <- calc.relimp(models[[4]], type = c("lmg", "pmvd
 main_policies_var_non_standardized <- calc.relimp(models[[4]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)"))
 all_policies_var_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)"))
 all_policies_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)"))
+
 all_policies_w_controls_var_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = T, rank= F)
 all_policies_w_controls_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = F, rank= F)
 all_policies_no_indices_var_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = T, rank= F)
