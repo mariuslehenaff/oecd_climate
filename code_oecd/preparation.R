@@ -507,32 +507,47 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   # conditions_index_altruism <<- c(" == 1", "> median(df$donation)")
   # before_treatment_index_altruism <<- c(F, F)
   
-  variables_index_affected_subjective <<- c("CC_affects_self", "investments_win_lose_self", "tax_transfers_win_lose_self", "standard_win_lose_self")
-  negatives_index_affected_subjective <<- c(F, rep(T, 3))
-  conditions_index_affected_subjective <<- c(" > 0", rep(" > 0.1", 3))
-  before_treatment_index_affected_subjective <<- rep(F, 4)
+  variables_index_affected_subjective <<- c("CC_affects_self")
+  negatives_index_affected_subjective <<- c(F)
+  conditions_index_affected_subjective <<- c(" > 0")
+  before_treatment_index_affected_subjective <<- rep(F, 1)
+  
+  variables_index_lose_policies_subjective <<- c("investments_win_lose_self", "tax_transfers_win_lose_self", "standard_win_lose_self")
+  negatives_index_lose_policies_subjective <<- rep(T, 3)
+  conditions_index_lose_policies_subjective <<- rep(" > 0.1", 3)
+  before_treatment_index_lose_policies_subjective <<- rep(F, 3)
+  
+  variables_index_fairness <<- c("standard_fair", "tax_transfers_fair", "investments_fair")
+  negatives_index_fairness <<- rep(F, 3)
+  conditions_index_fairness <<- rep(" > 0", 3)
+  before_treatment_index_fairness <<- rep(F,3)
+  
+  variables_index_trust_govt <<- c("can_trust_govt")
+  negatives_index_trust_govt <<- rep(F, 1)
+  conditions_index_trust_govt <<- rep(" > 0", 1)
+  before_treatment_index_trust_govt <<- rep(F,1)
   
   variables_index_willing_change <<- c("willing_electric_car", "willing_limit_driving", "willing_limit_flying", "willing_limit_beef", "willing_limit_heating")
   negatives_index_willing_change <<- rep(F, 5)
   conditions_index_willing_change <<- rep(" > 0", 5)
   before_treatment_index_willing_change <<- rep(F, 5)
   
-  variables_index_standard_policy <<- c("standard_support", "standard_fair", "standard_public_transport_support")
-  negatives_index_standard_policy <<- rep(F, 3)
-  conditions_index_standard_policy <<- rep(" > 0", 3)
-  before_treatment_index_standard_policy <<- rep(F, 3)
+  variables_index_standard_policy <<- c("standard_support", "standard_public_transport_support")
+  negatives_index_standard_policy <<- rep(F, 2)
+  conditions_index_standard_policy <<- rep(" > 0", 2)
+  before_treatment_index_standard_policy <<- rep(F, 2)
   
   #TODO bug with tax_transfers_progressive_fair and tax_transfers_progressive_support (not present in all countries)
   # variables_index_tax_transfers_policy <<- c("tax_transfers_fair", "tax_transfers_progressive_fair", "tax_transfers_support", "tax_transfers_progressive_support")
-  variables_index_tax_transfers_policy <<- c("tax_transfers_fair", "tax_transfers_support")
-  negatives_index_tax_transfers_policy <<- rep(F, 2)
-  conditions_index_tax_transfers_policy <<- rep(" > 0", 2)
-  before_treatment_index_tax_transfers_policy <<- rep(F, 2)
+  variables_index_tax_transfers_policy <<- c("tax_transfers_support")
+  negatives_index_tax_transfers_policy <<- rep(F, 1)
+  conditions_index_tax_transfers_policy <<- rep(" > 0", 1)
+  before_treatment_index_tax_transfers_policy <<- rep(F, 1)
   
-  variables_index_investments_policy <<- c("investments_fair", "investments_support")
-  negatives_index_investments_policy <<- rep(F, 2)
-  conditions_index_investments_policy <<- rep(" > 0", 2)
-  before_treatment_index_investments_policy <<- rep(F, 2)
+  variables_index_investments_policy <<- c("investments_support")
+  negatives_index_investments_policy <<- rep(F, 1)
+  conditions_index_investments_policy <<- rep(" > 0", 1)
+  before_treatment_index_investments_policy <<- rep(F, 1)
   
   variables_index_main_policies <<- c(variables_index_investments_policy, variables_index_tax_transfers_policy, variables_index_standard_policy)
   negatives_index_main_policies <<- c(negatives_index_investments_policy, negatives_index_tax_transfers_policy, negatives_index_standard_policy)
@@ -2019,6 +2034,21 @@ if (all(variables_affected_index %in% names(e))) {
     e$index_affected_subjective_dummies <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, conditions = conditions_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
     # Double standardization
     e$index_affected_subjective_dummies2SD <- (e$index_affected_subjective_dummies - wtd.mean(e$index_affected_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_subjective_dummies, w = e$weight, na.rm=T))
+    
+    e$index_lose_policies_subjective <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
+    e$index_lose_policies_subjective_dummies <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, conditions = conditions_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
+    # Double standardization
+    e$index_lose_policies_subjective_dummies2SD <- (e$index_lose_policies_subjective_dummies - wtd.mean(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T))
+    
+    e$index_fairness <- index_zscore(variables_index_fairness, negatives_index_fairness, before_treatment = before_treatment_index_fairness, df = e, weight = weighting)
+    e$index_fairness_dummies <- index_zscore(variables_index_fairness, negatives_index_fairness, conditions = conditions_index_fairness, before_treatment = before_treatment_index_fairness, df = e, weight = weighting)
+    # Double standardization
+    e$index_fairness_dummies2SD <- (e$index_fairness_dummies - wtd.mean(e$index_fairness_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_fairness_dummies, w = e$weight, na.rm=T))
+    
+    e$index_trust_govt <- index_zscore(variables_index_trust_govt, negatives_index_trust_govt, before_treatment = before_treatment_index_trust_govt, df = e, weight = weighting)
+    e$index_trust_govt_dummies <- index_zscore(variables_index_trust_govt, negatives_index_trust_govt, conditions = conditions_index_trust_govt, before_treatment = before_treatment_index_trust_govt, df = e, weight = weighting)
+    # Double standardization
+    e$index_trust_govt_dummies2SD <- (e$index_trust_govt_dummies - wtd.mean(e$index_trust_govt_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_trust_govt_dummies, w = e$weight, na.rm=T))
     
     e$index_willing_change <- index_zscore(variables_index_willing_change, negatives_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
     e$index_willing_change_dummies <- index_zscore(variables_index_willing_change, negatives_index_willing_change, conditions = conditions_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
