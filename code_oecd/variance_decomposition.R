@@ -3,7 +3,7 @@ library(relaimpo)
 indices_list <- c("index_progressist", "index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
                   "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change")
 
-end_formula_treatment_indices <- paste(c(control_variables_w_treatment[1:4],"employment_agg == 'Retired'",
+end_formula_treatment_indices <- paste(c("dominant_origin == TRUE", "female == TRUE", "children == TRUE", "college == 'No college'","employment_agg == 'Retired'",
                                  "employment_agg == 'Student'","employment_agg == 'Working'",
                                  "age == '25-34'", "age == '35-49'", "age == '50-64'","age == '65+'",
                                  control_variables_w_treatment[8:10], "treatment == 'Climate'",
@@ -13,7 +13,7 @@ end_formula_treatment_indices <- paste(c("(", end_formula_treatment_indices), co
 end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), collapse = "")
 
 
-end_formula_treatment <- paste(c(control_variables_w_treatment[1:4],"employment_agg == 'Retired'",
+end_formula_treatment <- paste(c("dominant_origin == TRUE", "female == TRUE", "children == TRUE", "college == 'No college'","employment_agg == 'Retired'",
                                  "employment_agg == 'Student'","employment_agg == 'Working'",
                                  "age == '25-34'", "age == '35-49'", "age == '50-64'","age == '65+'",
                                  control_variables_w_treatment[8:10], "treatment == 'Climate'",
