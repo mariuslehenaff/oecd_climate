@@ -31,8 +31,8 @@ indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is
                  "Is financially constrained","Climate policies are efficient", "Cares about poverty and inequalities", "Is willing to donate to reforestation project",
                  "Thinks will suffer of climate change", "Is willing to adopt climate friendly behavior", "Thinks will lose from main policies", "Thinks main policies are fair", "Trusts the governement")
 
-controls_labels_lm <- c("Employment Status", "Age", "Country", "Origin", "Gender", "Parenthood",
-                        "Education", "Political Leaning", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
+controls_labels_lm <- c("Employment Status", "Age", "Political Leaning", "Country", "Origin", "Gender", "Parenthood",
+                        "Education", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
 
 models <- list()
 models[["Ban on combustion-engine cars Index"]] <- lm(as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
