@@ -109,6 +109,7 @@ package("dplR")
 package("ggpubr")
 package("RStata")
 package("relaimpo") # works well with 21 variables, not much more. install from: install.packages("https://prof.bht-berlin.de/fileadmin/prof/groemp/downloads/relaimpo_2.2-5.zip", repos = NULL)
+package("missMDA") # PCA
 
 # package("forcats")
 # package("quanteda")

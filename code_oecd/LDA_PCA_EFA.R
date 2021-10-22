@@ -1,4 +1,4 @@
-##### Functions #####
+##### Functions LDA #####
 # Function to scale-up probabilities from the beta vectors. Does not account for mutually exclusive answers.
 # beta_transformation <- function(beta, nbr_question=107) {
 #   prob <- 0
@@ -197,7 +197,7 @@ create_lda <- function(variables, data = e, nb_topic = NULL, compute_wtd_proba =
 }
 
 
-##### Treatment ####  
+##### Treatment LDA ####  
 variables_lda <- names(e)[11:308][!grepl("_field|^winner$|_first|_last|_click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[11:308])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 start <- Sys.time()
 lda <- create_lda(variables_lda, data = e)
@@ -242,3 +242,40 @@ write_clip(describe_profiles(lda, nb_terms = 6))
 desc_table(dep_vars = c("topic2_1", "topic2_2"), filename = "../LDA/topic2",
            dep.var.labels = c("Profile 1", "Profile 2"),
            dep.var.caption = c(""), data = e, indep_vars = control_variables, indep_labels = cov_lab)
+
+
+##### Data preparation for PCA, EFA #####
+variables_a <- variables_lda
+kept_vars <- non_numeric_vars <- constant_vars <- c()
+for (i in seq_along(variables_a)) {
+  n <- length(Levels(e[[variables_a[i]]]))
+  if (n > 7) { print(paste(n, variables_a[i]))
+  } else  kept_vars <- c(kept_vars, i) }
+e_a <- e[,variables_a[kept_vars]]
+for (i in 1:length(e_a)) if (!is.numeric(e_a[[i]])) {
+    non_numeric_vars <- c(non_numeric_vars, i)
+    for (j in Levels(e_a[[i]])) e_a[[paste0(names(e_a)[i], "_", gsub(" ", "_", substr(j, 1, 15)))]] <- 1*(e_a[[i]] == j)
+}
+for (i in 1:length(e_a)) if (length(Levels(e_a[[i]]))==1) constant_vars <- c(constant_vars, i)
+e_a <- e_a[,-union(non_numeric_vars, constant_vars)]
+e_am <- e_a # imputes mean to missings
+for (i in seq_along(names(e_am))) e_am[[i]] <- z_score_computation(group = c(names(e_am)[i], F, "", T), df = e_am, weight = T) 
+# for (i in 1:length(e_a)) if (!is.numeric(e_a[[i]])) print(names(e_a[i]))
+
+
+##### PCA #####
+# prcomp uses a Singular value decomposition which examines the covariances / correlations between individuals
+# princomp uses a Spectral decomposition which examines the covariances / correlations between variables
+# prcomp has better numerical accuracy hence should be preferred
+# http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/118-principal-component-analysis-in-r-prcomp-vs-princomp/#prcomp-and-princomp-functions
+pca_all_missing_mean <- prcomp(e_am, scale = T, rank = 5) # prcomp doesn't handle missing values
+pca_all <- prcomp(imputePCA(e_a, method = "EM", ncp = 5)$completeObs, scale = T, rank = 5) # 5 components
+
+
+#### EFA #####
+# The different between PCA and EFA is that PCA explains each observation as a combination of components, while EFA explains each variable as a combination of factors.
+#   PCA accounts for all the variance while EFA accounts just for the common variance between factors. 
+#   PCA is more appropriate when there is no structure behind the data while EFA is more appropriate when looking for underlying causal factors.
+efa_all <- as.numeric(factanal(e_am, 5)$loadings) # problem due to missing values
+# for (i in 1:length(e_a)) if (any(is.infinite(e_a[[i]]))) print(names(e_a)[i])
+# as.numeric(factanal(data.frame(c(NA, 1)), 5)$loadings)
