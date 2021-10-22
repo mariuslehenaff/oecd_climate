@@ -1,5 +1,9 @@
 library(relaimpo)
 
+# Variance is decomposed using relaimpo::lmg, which takes the average of ANOVAs of all permutations of regressors
+#   to neutralize the order in which regressors are removed in the different regressions. cf. Grömping (2007) for details.
+
+##### Specifications #####
 indices_list <- c("index_progressist", "index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
                   "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt")
 
@@ -34,18 +38,23 @@ indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is
 controls_labels_lm <- c("Employment Status", "Age", "Country", "Origin", "Gender", "Parenthood",
                         "Education", "Political Leaning", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
 
-models <- list()
-models[["Ban on combustion-engine cars Index"]] <- lm(as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
-models[["Carbon tax with cash transfers Index"]] <- lm(as.formula(paste("index_tax_transfers_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
-models[["Green investment program Index"]] <- lm(as.formula(paste("index_investments_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
-models[["Main policies Index"]] <- lm(as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
-models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + '))), data = e, weights = e$weight)
-models[["All climate policies Index - no indices"]] <- lm(as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
-models[["Willing to change Index"]] <- lm(as.formula(paste("index_willing_change_dummies2SD ~ ", paste(c(end_formula_treatment_indices_no_willingness), collapse = ' + '))), data = e, weights = e$weight)
-models[["Willing to change Index - no indices"]] <- lm(as.formula(paste("index_willing_change_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + '))), data = e, weights = e$weight)
+formulas <- models <- list()
+formulas[["Ban on combustion-engine cars Index"]] <- as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + ')))
+formulas[["Carbon tax with cash transfers Index"]] <- as.formula(paste("index_tax_transfers_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + ')))
+formulas[["Green investment program Index"]] <- as.formula(paste("index_investments_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + ')))
+formulas[["Main policies Index"]] <- as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + ')))
+formulas[["All climate policies Index"]] <- as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + ')))
+formulas[["All climate policies Index - no indices"]] <- as.formula(paste("index_all_policies_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + ')))
+formulas[["Willing to change Index"]] <- as.formula(paste("index_willing_change_dummies2SD ~ ", paste(c(end_formula_treatment_indices_no_willingness), collapse = ' + ')))
+formulas[["Willing to change Index - no indices"]] <- as.formula(paste("index_willing_change_dummies2SD ~ ", paste(c(end_formula_treatment), collapse = ' + ')))
+
+for (i in names(formulas)) models[[i]] <- lm(formulas[[i]], data = e, weights = e$weight)
 
 #coef_non_significant <- controls_lmg[c(1,5,7:11,15:16,20)]
 
+##### Computations #####
+# standardized: variance shares sum to 1
+# var: variance explained by opinions (with socio-demos always as regressors) / no_indices: ..by socio-demos / w_controls: ..by both opinions and socio-demos
 standard_var_standardized <- calc.relimp(models[[1]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
 standard_var_non_standardized <- calc.relimp(models[[1]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
 tax_transfers_var_standardized <- calc.relimp(models[[2]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
@@ -57,19 +66,22 @@ main_policies_var_non_standardized <- calc.relimp(models[[4]], type = c("lmg", "
 
 all_policies_var_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
 all_policies_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
-all_policies_w_controls_var_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = T, rank= F)
-all_policies_w_controls_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = F, rank= F)
+# each of the two below line take ~1h to compute
+# all_policies_w_controls_var_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = T, rank= F)
+# all_policies_w_controls_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = F, rank= F)
 all_policies_no_indices_var_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = T, rank= F)
 all_policies_no_indices_var_non_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = F, rank= F)
 
 willing_change_var_standardized <- calc.relimp(models[[7]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
 willing_change_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
-willing_change_w_controls_var_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = T, rank= F)
-willing_change_w_controls_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = F, rank= F)
+# each of the two below line take ~1h to compute
+# willing_change_w_controls_var_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = T, rank= F)
+# willing_change_w_controls_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = F, rank= F)
 willing_change_no_indices_var_standardized <- calc.relimp(models[[8]], type = c("lmg"), rela = T, rank= F)
 willing_change_no_indices_var_non_standardized <- calc.relimp(models[[8]], type = c("lmg"), rela = F, rank= F)
 
 
+##### Figures #####
 lmg_standard_standardized <- barres(data = t(as.matrix(standard_var_standardized@lmg)), labels = indices_lab[c(2:length(indices_lab))],legend = "% of remaining R-squared", rev = F)
 # Note R^2 = 43.34%, metrics are normalized to sum 100%. Analysis adjusted for 20 regressors that make up 6.35 pcts. pts of R^2
 lmg_standard_non_standardized <- barres(data = t(as.matrix(standard_var_non_standardized@lmg)), labels = indices_lab[c(2:length(indices_lab))],legend = "% of response variances", rev = F)
@@ -104,3 +116,9 @@ lmg_willing_change_no_indices_standardized <- barres(data = t(as.matrix(willing_
 lmg_willing_change_no_indices_non_standardized <- barres(data = t(as.matrix(willing_change_no_indices_var_non_standardized@lmg)),
                                                          labels = controls_labels_lm,
                                                          legend = "% of response variances", rev = F)
+
+
+##### Decision trees #####
+rpart.plot(tree_all_support <- rpart(formulas[["All climate policies Index"]], e))
+prp(tree_all_support, box.palette = "Blues", tweak = 1.2)
+
