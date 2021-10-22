@@ -1,0 +1,25 @@
+% latex table generated in R 4.1.1 by xtable 1.8-4 package
+% Fri Oct 22 16:10:05 2021
+\begin{table}[ht]
+  \caption{PCA (mean imputed for missing values)}
+\centering
+\scalebox{.75}{
+\begin{tabular}{llllllllll}
+  \hline
+  \multicolumn{2}{c}{Component 1} & \multicolumn{2}{c}{Component 2} & \multicolumn{2}{c}{Component 3} & \multicolumn{2}{c}{Component 4} & \multicolumn{2}{c}{Component 5} \\   \hline
+Proportion of variance & 0.11703 &  & 0.03541 &  & 0.03287 &  & 0.02532 &  & 0.02285 \\ 
+Cumulative proportion & 0.11703 &  & 0.15244 &  & 0.18531 &  & 0.21063 &  & 0.23348 \\  \hline
+investments\_support & -0.137 & inactive\_FALSE & -0.185 & home\_owner\_FALSE & -0.218 & affected\_transport & 0.24 & inactive\_FALSE & -0.248 \\ 
+ investments\_fair & -0.136 & inactive\_TRUE & 0.185 & home\_owner\_TRUE & 0.218 & transport\_shopping\_Car\_or\_Motorbik & 0.199 & inactive\_TRUE & 0.248 \\ 
+should\_fight\_CC & -0.133 & employment\_agg\_Retired & 0.184 & wealth & 0.216 & transport\_leisure\_Car\_or\_Motorbik & 0.184 & employment\_agg\_Working & -0.221 \\ 
+ tax\_transfers\_support & -0.126 & employment\_status\_Retired & 0.184 & home\_tenant\_TRUE & -0.189 & transport\_work\_Car\_or\_Motorbik & 0.18 & employment\_agg\_Retired & 0.209 \\ 
+standard\_fair & -0.126 & employment\_agg\_Working & -0.167 & home\_tenant\_FALSE & 0.189 & transport\_shopping\_Walking\_or\_Cycl & -0.168 & employment\_status\_Retired & 0.209 \\ 
+standard\_support & -0.125 & transport\_work\_Not\_Applicable & 0.164 & income & 0.178 & country\_DK & -0.163 & transport\_work\_Not\_Applicable & 0.191 \\ 
+ standard\_public\_transport\_support & -0.125 & age\_65+ & 0.154 & vote\_participation\_Yes & 0.175 & country\_name\_Denmark & -0.163 & employment\_status\_Full-time\_emplo & -0.164 \\ 
+condition\_ambitious\_policies & -0.125 & employment\_status\_Full-time\_emplo & -0.146 & voted\_FALSE & -0.175 & country\_FR & 0.126 & age\_65+ & 0.155 \\ 
+ tax\_transfers\_fair & -0.124 & standard\_win\_lose\_rural & -0.136 & voted\_TRUE & 0.175 & country\_name\_France & 0.126 & scale\_state\_FALSE & 0.121 \\ 
+ CC\_problem & -0.124 & standard\_win\_lose\_poor & -0.135 & marital\_status\_Married & 0.169 & problem\_inequality & 0.122 & scale\_state\_TRUE & -0.121 \\ 
+   \hline
+\end{tabular}
+}
+\end{table}
