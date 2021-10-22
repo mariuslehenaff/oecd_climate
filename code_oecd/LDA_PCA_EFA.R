@@ -268,15 +268,23 @@ for (i in seq_along(names(e_am))) e_am[[i]] <- z_score_computation(group = c(nam
 # princomp uses a Spectral decomposition which examines the covariances / correlations between variables
 # prcomp has better numerical accuracy hence should be preferred
 # http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/118-principal-component-analysis-in-r-prcomp-vs-princomp/#prcomp-and-princomp-functions
+# /!\ Multiple correspondence analysis is the counterpart of PCA for categorical data: https://en.wikipedia.org/wiki/Multiple_correspondence_analysis
 pca_all_missing_mean <- prcomp(e_am, scale = T, rank = 5) # prcomp doesn't handle missing values / alternative to rank = 5: tol = 0.03
 pca_all <- prcomp(imputePCA(e_a, method = "EM", ncp = 5)$completeObs, scale = T, rank = 5) # 5 components
 
 summary(pca_all)
 
 export_pca <- function(pca, nb_vars = 10, filename = deparse(substitute(pca))) {
-  n <- ncol(pca$rotation)
-  variance <- summary(pca)$importance[,1:n]
-  data <- pca$rotation
+  if (class(pca)=="loadings") { 
+    n <- ncol(pca)
+    data <- matrix(as.numeric(pca), ncol = n)
+    rownames(data) <- rownames(pca)
+    vx <- colSums(pca^2)
+    variance <- rbind(`SS loadings` = vx, `Proportion Var` = vx/nrow(pca), `Cumulative Var` = cumsum(vx/nrow(pca)))
+  } else { 
+    n <- ncol(pca$rotation)
+    variance <- summary(pca)$importance[,1:n]
+    data <- pca$rotation }
   tab <- matrix(NA, nrow = nb_vars+2, ncol = 2*n)
   for (j in 1:n) {
     order_j <- order(abs(data[, j]), decreasing = T)[1:nb_vars]
@@ -284,8 +292,8 @@ export_pca <- function(pca, nb_vars = 10, filename = deparse(substitute(pca))) {
       tab[i+2, 2*j-1] <- rownames(data)[order_j[i]]
       tab[i+2, 2*j] <- round(data[order_j[i], j], 3) # 3 digits
     }
-    tab[1, 2*j] <- variance[2, j]
-    tab[2, 2*j] <- variance[3, j]
+    tab[1, 2*j] <- round(variance[2, j], 3)
+    tab[2, 2*j] <- round(variance[3, j], 3)
     tab[1:2, 2*j-1] <- ""
   }
   tab[1, 1] <- "Proportion of variance"
@@ -302,6 +310,14 @@ export_pca(pca_all_missing_mean) # mean imputed for missing values
 # The different between PCA and EFA is that PCA explains each observation as a combination of components, while EFA explains each variable as a combination of factors.
 #   PCA accounts for all the variance while EFA accounts just for the common variance between factors. 
 #   PCA is more appropriate when there is no structure behind the data while EFA is more appropriate when looking for underlying causal factors.
-efa_all <- as.numeric(factanal(e_am, 5)$loadings) # problem due to missing values
+# First: remove multicolinear variables
+X <- as.matrix(e_am)
+qr.X <- qr(X, tol=1e-9, LAPACK = FALSE)
+(rnkX <- qr.X$rank)  
+(keep <- qr.X$pivot[seq_len(rnkX)])
+X <- X[,keep]
+
+efa_all <- factanal(X, 5, lower = 0.01)$loadings 
 # for (i in 1:length(e_a)) if (any(is.infinite(e_a[[i]]))) print(names(e_a)[i])
 # as.numeric(factanal(data.frame(c(NA, 1)), 5)$loadings)
+export_pca(efa_all)
