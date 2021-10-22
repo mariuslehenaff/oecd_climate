@@ -27,7 +27,7 @@ end_formula_treatment <- paste(c("(", end_formula_treatment), collapse = "")
 end_formula_treatment <- paste(c(end_formula_treatment, ")"), collapse = "")
 
 
-indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is affected by climate change", "Is concerned about climate change", "Is worried about the future", "Climate policies have a positive effect \n on the economy",
+indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is affected by climate change", "Is concerned about climate change", "Is worried about the future", "Climate policies have a positive effect on the economy",
                  "Is financially constrained","Climate policies are efficient", "Cares about poverty and inequalities", "Is willing to donate to reforestation project",
                  "Thinks will suffer of climate change", "Is willing to adopt climate friendly behavior", "Thinks will lose from main policies", "Thinks main policies are fair", "Trusts the governement")
 
