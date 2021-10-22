@@ -268,8 +268,34 @@ for (i in seq_along(names(e_am))) e_am[[i]] <- z_score_computation(group = c(nam
 # princomp uses a Spectral decomposition which examines the covariances / correlations between variables
 # prcomp has better numerical accuracy hence should be preferred
 # http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/118-principal-component-analysis-in-r-prcomp-vs-princomp/#prcomp-and-princomp-functions
-pca_all_missing_mean <- prcomp(e_am, scale = T, rank = 5) # prcomp doesn't handle missing values
+pca_all_missing_mean <- prcomp(e_am, scale = T, rank = 5) # prcomp doesn't handle missing values / alternative to rank = 5: tol = 0.03
 pca_all <- prcomp(imputePCA(e_a, method = "EM", ncp = 5)$completeObs, scale = T, rank = 5) # 5 components
+
+summary(pca_all)
+
+export_pca <- function(pca, nb_vars = 10, filename = deparse(substitute(pca))) {
+  n <- ncol(pca$rotation)
+  variance <- summary(pca)$importance[,1:n]
+  data <- pca$rotation
+  tab <- matrix(NA, nrow = nb_vars+2, ncol = 2*n)
+  for (j in 1:n) {
+    order_j <- order(abs(data[, j]), decreasing = T)[1:nb_vars]
+    for (i in 1:nb_vars) {
+      tab[i+2, 2*j-1] <- rownames(data)[order_j[i]]
+      tab[i+2, 2*j] <- round(data[order_j[i], j], 3) # 3 digits
+    }
+    tab[1, 2*j] <- variance[2, j]
+    tab[2, 2*j] <- variance[3, j]
+    tab[1:2, 2*j-1] <- ""
+  }
+  tab[1, 1] <- "Proportion of variance"
+  tab[2, 1] <- "Cumulative proportion"
+  # TODO: add caption, \scalebox{.6}{..} replace first line by  & \multicolumn{2}{c}{Component 1} & \multicolumn{2}{c}{Component 2} & \multicolumn{2}{c}{Component 3} & \multicolumn{2}{c}{Component 4} & \multicolumn{2}{c}{Component 5} \\ 
+  print(xtable(tab, type = "latex"), file = paste0("../tables/PCA/", filename, ".tex"))
+  return(tab)
+}
+export_pca(pca_all) # automatic handling of missing values
+export_pca(pca_all_missing_mean) # mean imputed for missing values
 
 
 #### EFA #####
