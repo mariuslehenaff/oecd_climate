@@ -55,25 +55,25 @@ for (i in names(formulas)) models[[i]] <- lm(formulas[[i]], data = e, weights = 
 ##### Computations #####
 # standardized: variance shares sum to 1
 # var: variance explained by opinions (with socio-demos always as regressors) / no_indices: ..by socio-demos / w_controls: ..by both opinions and socio-demos
-standard_var_standardized <- calc.relimp(models[[1]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
-standard_var_non_standardized <- calc.relimp(models[[1]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
-tax_transfers_var_standardized <- calc.relimp(models[[2]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
-tax_transfers_var_non_standardized <- calc.relimp(models[[2]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
-investments_var_standardized <- calc.relimp(models[[3]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
-investments_var_non_standardized <- calc.relimp(models[[3]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
-main_policies_var_standardized <- calc.relimp(models[[4]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
-main_policies_var_non_standardized <- calc.relimp(models[[4]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
+standard_var_standardized <- calc.relimp(formulas[[1]], type = c("lmg"), rela = T, rank= F, always = controls_lmg)
+standard_var_non_standardized <- calc.relimp(formulas[[1]], type = c("lmg"), rela = F, rank= F, always = controls_lmg)
+tax_transfers_var_standardized <- calc.relimp(formulas[[2]], type = c("lmg"), rela = T, rank= F, always = controls_lmg)
+tax_transfers_var_non_standardized <- calc.relimp(formulas[[2]], type = c("lmg"), rela = F, rank= F, always = controls_lmg)
+investments_var_standardized <- calc.relimp(formulas[[3]], type = c("lmg"), rela = T, rank= F, always = controls_lmg)
+investments_var_non_standardized <- calc.relimp(formulas[[3]], type = c("lmg"), rela = F, rank= F, always = controls_lmg)
+main_policies_var_standardized <- calc.relimp(formulas[[4]], type = c("lmg"), rela = T, rank= F, always = controls_lmg)
+main_policies_var_non_standardized <- calc.relimp(formulas[[4]], type = c("lmg"), rela = F, rank= F, always = controls_lmg)
 
-all_policies_var_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
-all_policies_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
+all_policies_var_standardized <- calc.relimp(models[[5]], type = c("lmg", "pratt"), rela = T, rank= F, always = controls_lmg)
+all_policies_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg", "pratt"), rela = F, rank= F, always = controls_lmg)
 # each of the two below line take ~1h to compute
 # all_policies_w_controls_var_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = T, rank= F)
 # all_policies_w_controls_var_non_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = F, rank= F)
 all_policies_no_indices_var_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = T, rank= F)
 all_policies_no_indices_var_non_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = F, rank= F)
 
-willing_change_var_standardized <- calc.relimp(models[[7]], type = c("lmg", "pmvd", "pratt"), rela = T, rank= F, always = controls_lmg)
-willing_change_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg", "pmvd", "pratt"), rela = F, rank= F, always = controls_lmg)
+willing_change_var_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = T, rank= F, always = controls_lmg)
+willing_change_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = F, rank= F, always = controls_lmg)
 # each of the two below line take ~1h to compute
 # willing_change_w_controls_var_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = T, rank= F)
 # willing_change_w_controls_var_non_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = F, rank= F)
