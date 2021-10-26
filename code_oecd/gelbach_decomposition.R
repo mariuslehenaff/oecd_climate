@@ -1,6 +1,17 @@
+Paths = c("/Users/Bluebii/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Google Drive/Economie/Travail/oecd_climate/code_oecd")
+names(Paths) = c("Bluebii", "afabre")
+setwd(Paths[Sys.info()[7]])
+
 # /!\ This need to be changed if you're note using STATA SE 17 or a Mac
-options("RStata.StataPath" = '/Applications/Stata/StataSE17.app/Contents/MacOS/stata-se')
-options("RStata.StataVersion" = 17)
+if (Sys.info()[7] == "Bluebii") {
+  options("RStata.StataPath" = '/Applications/Stata/StataSE17.app/Contents/MacOS/stata-se')
+  options("RStata.StataVersion" = 17)  
+}
+else if (Sys.info()[7] == "Ana") {
+  options("RStata.StataPath" = 'C:/Program Files/Stata/StataSE17')
+  options("RStata.StataVersion" = 17)  
+}
+
 
 # var_to_decompose and group_of_interest: you need to input only one variable as a character
 # controls and indices, can be a character vector
