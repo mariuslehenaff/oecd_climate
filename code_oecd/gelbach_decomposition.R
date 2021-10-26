@@ -2,8 +2,7 @@
 if (Sys.info()[7] == "Bluebii") {
   options("RStata.StataPath" = '/Applications/Stata/StataSE17.app/Contents/MacOS/stata-se')
   options("RStata.StataVersion" = 17)  
-}
-else if (Sys.info()[7] == "Ana") {
+} else if (Sys.info()[7] == "Ana") {
   options("RStata.StataPath" = 'C:/Program Files/Stata/StataSE17')
   options("RStata.StataVersion" = 17)  
 }
