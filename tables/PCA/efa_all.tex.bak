@@ -1,0 +1,24 @@
+% latex table generated in R 4.1.1 by xtable 1.8-4 package
+% Fri Oct 22 18:55:32 2021
+\begin{table}[ht]
+  \caption{Exploratory Factor Analysis (mean imputed for missing values)}
+\centering
+\begin{tabular}{rllllllllll}
+  \hline
+  \multicolumn{2}{c}{Component 1} & \multicolumn{2}{c}{Component 2} & \multicolumn{2}{c}{Component 3} & \multicolumn{2}{c}{Component 4} & \multicolumn{2}{c}{Component 5} \\ 
+  \hline
+ Proportion of variance & 0.131 &  & 0.0382 &  & 0.0250 &  & 0.0225 &  & 0.0112 \\ 
+Cumulative proportion & 0.131 &  & 0.169 &  & 0.194 &  & 0.216 &  & 0.227 \\ \hline 
+should\_fight\_CC & 0.79 & standard\_win\_lose\_poor & 0.653 & home\_owner\_FALSE & -0.689 & standard\_cost\_effective & 0.55 & gender\_Female & -0.984 \\ 
+ CC\_problem & 0.752 & standard\_win\_lose\_rural & 0.632 & wealth & 0.66 & standard\_negative\_effect & 0.542 & gender\_Male & 0.983 \\ 
+condition\_ambitious\_policies & 0.728 & tax\_transfers\_win\_lose\_rural & 0.612 & home\_tenant\_FALSE & 0.63 & investments\_cost\_effective & 0.539 & CC\_impacts\_volcanos & -0.217 \\ 
+investments\_support & 0.724 & investments\_win\_lose\_poor & 0.6 & marital\_status\_Married & 0.585 & tax\_transfers\_cost\_effective & 0.526 & interested\_politics & 0.205 \\ 
+ CC\_anthropogenic & 0.699 & standard\_win\_lose\_middle & 0.598 & income & 0.532 & investments\_negative\_effect & 0.521 & footprint\_el\_nuclear & 0.193 \\ 
+ investments\_effect\_less\_pollution & 0.697 & investments\_win\_lose\_rural & 0.591 & marital\_status\_Single & -0.519 & tax\_transfers\_negative\_effect & 0.512 & CC\_knowledgeable & 0.158 \\ 
+ investments\_fair & 0.697 & tax\_transfers\_win\_lose\_middle & 0.58 & couple & 0.511 & standard\_large\_effect & 0.398 & frequency\_beef & 0.148 \\ 
+policy\_subsidies & 0.692 & tax\_transfers\_win\_lose\_self & 0.58 & education & 0.421 & effect\_halt\_CC\_lifestyle & 0.371 & employment\_status\_Inactive & -0.126 \\ 
+tax\_investments & 0.685 & standard\_win\_lose\_self & 0.574 & diploma & 0.404 & tax\_transfers\_large\_effect & 0.369 & willing\_limit\_beef & -0.123 \\ 
+ tax\_subsidies & 0.678 & investments\_win\_lose\_middle & 0.57 & affected\_transport & 0.397 & investments\_large\_effect & 0.329 & income & 0.122 \\ 
+   \hline
+\end{tabular}
+\end{table}
