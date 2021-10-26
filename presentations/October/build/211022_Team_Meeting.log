@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.8.31)  19 OCT 2021 18:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.8.31)  22 OCT 2021 19:05
 entering extended mode
 **c:/Users/afabre/Documents/www/oecd_climate/presentations/October/211022_Team_Meeting.tex
 (c:/Users/afabre/Documents/www/oecd_climate/presentations/October/211022_Team_Meeting.tex
@@ -1084,163 +1084,259 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <6> not available
 (Font)              Font shape `T1/phv/m/sl' tried instead on input line 58.
  [3
 
-] (../../tables/heterogeneity/main_results_het_left_right_all.tex)
-Overfull \vbox (45.71194pt too high) detected at line 70
- []
+] (../../tables/heterogeneity/main_results_het_left_right_all_small.tex) [4
 
-[4
-
-] (../../tables/heterogeneity/main_results_het_origin_all.tex)
-Overfull \hbox (13.17293pt too wide) in paragraph at lines 79--79
+] (../../tables/heterogeneity/main_results_het_origin_all_small.tex)
+Overfull \hbox (2.9589pt too wide) in paragraph at lines 79--79
  [] 
  []
 
 [5
 
-] (../../tables/heterogeneity/main_results_het_employment_all.tex)
-Overfull \vbox (41.13402pt too high) detected at line 88
- []
+] (../../tables/heterogeneity/main_results_het_employment_all_small.tex) [6
 
-[6
-
-] (../../tables/heterogeneity/main_results_het_age_all.tex)
-Overfull \vbox (31.95757pt too high) detected at line 97
- []
-
-[7
+] (../../tables/heterogeneity/main_results_het_age_all_small.tex) [7
 
 ] [8
 
 ] [9
 
 ]
-<../../figures/Gelbach/coef_policy_views_all.png, id=74, 918.43124pt x 684.5575pt>
-File: ../../figures/Gelbach/coef_policy_views_all.png Graphic file (type png)
-<use ../../figures/Gelbach/coef_policy_views_all.png>
-Package pdftex.def Info: ../../figures/Gelbach/coef_policy_views_all.png  used on input line 119.
-(pdftex.def)             Requested size: 250.15549pt x 186.45204pt.
- [10
+LaTeX Font Info:    Font shape `U/msa/m/n' will be
+(Font)              scaled to size 9.37807pt on input line 123.
+LaTeX Font Info:    Font shape `U/msa/m/n' will be
+(Font)              scaled to size 7.29405pt on input line 123.
+LaTeX Font Info:    Font shape `U/msa/m/n' will be
+(Font)              scaled to size 5.21004pt on input line 123.
+LaTeX Font Info:    Font shape `U/msb/m/n' will be
+(Font)              scaled to size 9.37807pt on input line 123.
+LaTeX Font Info:    Font shape `U/msb/m/n' will be
+(Font)              scaled to size 7.29405pt on input line 123.
+LaTeX Font Info:    Font shape `U/msb/m/n' will be
+(Font)              scaled to size 5.21004pt on input line 123.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 123.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 123.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <5> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 123.
+<../../figures/Gelbach/lmg_all_policies_no_indices_non_standardized.png, id=74, 1076.02pt x 921.4425pt>
+File: ../../figures/Gelbach/lmg_all_policies_no_indices_non_standardized.png Graphic file (type png)
+<use ../../figures/Gelbach/lmg_all_policies_no_indices_non_standardized.png>
+Package pdftex.def Info: ../../figures/Gelbach/lmg_all_policies_no_indices_non_standardized.png  used on input line 123.
+(pdftex.def)             Requested size: 285.89296pt x 244.8138pt.
 
- <../../figures/Gelbach/coef_policy_views_all.png>]
-<../../figures/Gelbach/coef_policy_views_indexes_all.png, id=82, 918.43124pt x 684.5575pt>
-File: ../../figures/Gelbach/coef_policy_views_indexes_all.png Graphic file (type png)
-<use ../../figures/Gelbach/coef_policy_views_indexes_all.png>
-Package pdftex.def Info: ../../figures/Gelbach/coef_policy_views_indexes_all.png  used on input line 127.
-(pdftex.def)             Requested size: 250.15549pt x 186.45204pt.
- [11
+Overfull \vbox (36.27538pt too high) detected at line 123
+ []
 
- <../../figures/Gelbach/coef_policy_views_indexes_all.png>]
-<../../figures/Gelbach/gelbach_right_all_policies_D2SD.png, id=89, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_right_all_policies_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_right_all_policies_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_all_policies_D2SD.png  used on input line 137.
-(pdftex.def)             Requested size: 245.69086pt x 182.9891pt.
+[10
 
-Overfull \vbox (1.66014pt too high) detected at line 137
+ <../../figures/Gelbach/lmg_all_policies_no_indices_non_standardized.png>]
+<../../figures/Gelbach/lmg_all_policies_w_controls_non_standardized.png, id=84, 1768.6075pt x 921.4425pt>
+File: ../../figures/Gelbach/lmg_all_policies_w_controls_non_standardized.png Graphic file (type png)
+<use ../../figures/Gelbach/lmg_all_policies_w_controls_non_standardized.png>
+Package pdftex.def Info: ../../figures/Gelbach/lmg_all_policies_w_controls_non_standardized.png  used on input line 133.
+(pdftex.def)             Requested size: 446.70818pt x 232.72215pt.
+
+Overfull \vbox (22.76144pt too high) detected at line 133
+ []
+
+[11
+
+ <../../figures/Gelbach/lmg_all_policies_w_controls_non_standardized.png>]
+<../../figures/Gelbach/lmg_all_policies_non_standardized.png, id=91, 1768.6075pt x 921.4425pt>
+File: ../../figures/Gelbach/lmg_all_policies_non_standardized.png Graphic file (type png)
+<use ../../figures/Gelbach/lmg_all_policies_non_standardized.png>
+Package pdftex.def Info: ../../figures/Gelbach/lmg_all_policies_non_standardized.png  used on input line 143.
+(pdftex.def)             Requested size: 402.03462pt x 209.45274pt.
+
+Overfull \vbox (13.52782pt too high) detected at line 143
  []
 
 [12
 
- <../../figures/Gelbach/gelbach_right_all_policies_D2SD.png>]
-<../../figures/Gelbach/gelbach_right_standard_D2SD.png, id=96, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_right_standard_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_right_standard_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_standard_D2SD.png  used on input line 156.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
-<../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png, id=97, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png  used on input line 156.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
+ <../../figures/Gelbach/lmg_all_policies_non_standardized.png>]
+<../../figures/Gelbach/lmg_willing_change_no_indices_non_standardized.png, id=98, 1076.02pt x 921.4425pt>
+File: ../../figures/Gelbach/lmg_willing_change_no_indices_non_standardized.png Graphic file (type png)
+<use ../../figures/Gelbach/lmg_willing_change_no_indices_non_standardized.png>
+Package pdftex.def Info: ../../figures/Gelbach/lmg_willing_change_no_indices_non_standardized.png  used on input line 154.
+(pdftex.def)             Requested size: 285.89296pt x 244.8138pt.
 
-Overfull \hbox (6.12785pt too wide) in paragraph at lines 156--156
- [] 
- []
-
-
-Overfull \vbox (3.15356pt too high) detected at line 156
+Overfull \vbox (36.27538pt too high) detected at line 154
  []
 
 [13
 
- <../../figures/Gelbach/gelbach_right_standard_D2SD.png> <../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png>]
-<../../figures/Gelbach/gelbach_right_investments_D2SD.png, id=106, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_right_investments_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_right_investments_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_investments_D2SD.png  used on input line 175.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
-<../../figures/Gelbach/gelbach_right_main_policies_D2SD.png, id=107, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png  used on input line 175.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
+ <../../figures/Gelbach/lmg_willing_change_no_indices_non_standardized.png>]
+<../../figures/Gelbach/lmg_willing_change_w_controls_non_standardized.png, id=106, 1768.6075pt x 921.4425pt>
+File: ../../figures/Gelbach/lmg_willing_change_w_controls_non_standardized.png Graphic file (type png)
+<use ../../figures/Gelbach/lmg_willing_change_w_controls_non_standardized.png>
+Package pdftex.def Info: ../../figures/Gelbach/lmg_willing_change_w_controls_non_standardized.png  used on input line 164.
+(pdftex.def)             Requested size: 446.70818pt x 232.72215pt.
 
-Overfull \hbox (6.12785pt too wide) in paragraph at lines 175--175
- [] 
- []
-
-
-Overfull \vbox (3.15356pt too high) detected at line 175
+Overfull \vbox (21.4472pt too high) detected at line 164
  []
 
 [14
 
- <../../figures/Gelbach/gelbach_right_investments_D2SD.png> <../../figures/Gelbach/gelbach_right_main_policies_D2SD.png>]
-<../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png, id=115, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png  used on input line 186.
-(pdftex.def)             Requested size: 245.69086pt x 182.9891pt.
+ <../../figures/Gelbach/lmg_willing_change_w_controls_non_standardized.png>]
+<../../figures/Gelbach/lmg_willing_change_non_standardized.png, id=113, 1768.6075pt x 921.4425pt>
+File: ../../figures/Gelbach/lmg_willing_change_non_standardized.png Graphic file (type png)
+<use ../../figures/Gelbach/lmg_willing_change_non_standardized.png>
+Package pdftex.def Info: ../../figures/Gelbach/lmg_willing_change_non_standardized.png  used on input line 174.
+(pdftex.def)             Requested size: 402.03462pt x 209.45274pt.
 
-Overfull \vbox (1.66014pt too high) detected at line 186
+Overfull \vbox (16.37283pt too high) detected at line 174
  []
 
 [15
 
- <../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png>]
-<../../figures/Gelbach/gelbach_urban_standard_D2SD.png, id=122, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_urban_standard_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_urban_standard_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_standard_D2SD.png  used on input line 206.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
-<../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png, id=123, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png  used on input line 206.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
+ <../../figures/Gelbach/lmg_willing_change_non_standardized.png>]
+<../../figures/Gelbach/coef_policy_views_all.png, id=120, 620.3175pt x 433.62pt>
+File: ../../figures/Gelbach/coef_policy_views_all.png Graphic file (type png)
+<use ../../figures/Gelbach/coef_policy_views_all.png>
+Package pdftex.def Info: ../../figures/Gelbach/coef_policy_views_all.png  used on input line 184.
+(pdftex.def)             Requested size: 335.03113pt x 234.19763pt.
 
-Overfull \hbox (6.12785pt too wide) in paragraph at lines 206--206
- [] 
- []
-
-
-Overfull \vbox (3.15356pt too high) detected at line 206
+Overfull \vbox (46.15913pt too high) detected at line 184
  []
 
 [16
 
- <../../figures/Gelbach/gelbach_urban_standard_D2SD.png> <../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png>]
-<../../figures/Gelbach/gelbach_urban_investments_D2SD.png, id=131, 916.42375pt x 682.55pt>
-File: ../../figures/Gelbach/gelbach_urban_investments_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_urban_investments_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_investments_D2SD.png  used on input line 226.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
-File: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png Graphic file (type png)
-<use ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png>
-Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png  used on input line 226.
-(pdftex.def)             Requested size: 214.41801pt x 159.69106pt.
+ <../../figures/Gelbach/coef_policy_views_all.png>]
+<../../figures/Gelbach/coef_policy_views_indices_all.png, id=127, 747.79375pt x 433.62pt>
+File: ../../figures/Gelbach/coef_policy_views_indices_all.png Graphic file (type png)
+<use ../../figures/Gelbach/coef_policy_views_indices_all.png>
+Package pdftex.def Info: ../../figures/Gelbach/coef_policy_views_indices_all.png  used on input line 192.
+(pdftex.def)             Requested size: 402.03462pt x 233.12575pt.
 
-Overfull \hbox (6.12785pt too wide) in paragraph at lines 226--226
- [] 
- []
-
-
-Overfull \vbox (3.15356pt too high) detected at line 226
+Overfull \vbox (45.08725pt too high) detected at line 192
  []
 
 [17
 
- <../../figures/Gelbach/gelbach_urban_investments_D2SD.png>]
+ <../../figures/Gelbach/coef_policy_views_indices_all.png>]
+<../../figures/Gelbach/gelbach_right_all_policies_D2SD.png, id=134, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_right_all_policies_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_right_all_policies_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_all_policies_D2SD.png  used on input line 202.
+(pdftex.def)             Requested size: 335.03113pt x 193.12704pt.
+
+Overfull \vbox (11.79808pt too high) detected at line 202
+ []
+
+[18
+
+ <../../figures/Gelbach/gelbach_right_all_policies_D2SD.png>]
+<../../figures/Gelbach/gelbach_right_standard_D2SD.png, id=141, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_right_standard_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_right_standard_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_standard_D2SD.png  used on input line 221.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+<../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png, id=142, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png  used on input line 221.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+
+Overfull \hbox (6.12785pt too wide) in paragraph at lines 221--221
+ [] 
+ []
+
+[19
+
+ <../../figures/Gelbach/gelbach_right_standard_D2SD.png> <../../figures/Gelbach/gelbach_right_tax_transfers_D2SD.png>]
+<../../figures/Gelbach/gelbach_right_investments_D2SD.png, id=151, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_right_investments_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_right_investments_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_investments_D2SD.png  used on input line 240.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+<../../figures/Gelbach/gelbach_right_main_policies_D2SD.png, id=152, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png  used on input line 240.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+
+Overfull \hbox (6.12785pt too wide) in paragraph at lines 240--240
+ [] 
+ []
+
+[20
+
+ <../../figures/Gelbach/gelbach_right_investments_D2SD.png> <../../figures/Gelbach/gelbach_right_main_policies_D2SD.png>]
+<../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png, id=160, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png  used on input line 251.
+(pdftex.def)             Requested size: 335.03113pt x 193.12704pt.
+
+Overfull \vbox (11.79808pt too high) detected at line 251
+ []
+
+[21
+
+ <../../figures/Gelbach/gelbach_urban_all_policies_D2SD.png>]
+<../../figures/Gelbach/gelbach_urban_standard_D2SD.png, id=167, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_urban_standard_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_urban_standard_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_standard_D2SD.png  used on input line 271.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+<../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png, id=168, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png  used on input line 271.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+
+Overfull \hbox (6.12785pt too wide) in paragraph at lines 271--271
+ [] 
+ []
+
+[22
+
+ <../../figures/Gelbach/gelbach_urban_standard_D2SD.png> <../../figures/Gelbach/gelbach_urban_tax_transfers_D2SD.png>]
+<../../figures/Gelbach/gelbach_urban_investments_D2SD.png, id=176, 1601.985pt x 923.45pt>
+File: ../../figures/Gelbach/gelbach_urban_investments_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_urban_investments_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_urban_investments_D2SD.png  used on input line 291.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+File: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png Graphic file (type png)
+<use ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png>
+Package pdftex.def Info: ../../figures/Gelbach/gelbach_right_main_policies_D2SD.png  used on input line 291.
+(pdftex.def)             Requested size: 214.41801pt x 123.58948pt.
+
+Overfull \hbox (6.12785pt too wide) in paragraph at lines 291--291
+ [] 
+ []
+
+[23
+
+ <../../figures/Gelbach/gelbach_urban_investments_D2SD.png>] (../../tables/PCA/pca_all_missing_mean.tex
+Overfull \hbox (343.93391pt too wide) in paragraph at lines 24--25
+ [] 
+ []
+
+) [24
+
+] (../../tables/PCA/efa_all.tex
+Overfull \hbox (301.90544pt too wide) in paragraph at lines 25--26
+ [] 
+ []
+
+) [25
+
+]
+<../../figures/all/tree_main_policies.png, id=194, 770.12718pt x 456.20438pt>
+File: ../../figures/all/tree_main_policies.png Graphic file (type png)
+<use ../../figures/all/tree_main_policies.png>
+Package pdftex.def Info: ../../figures/all/tree_main_policies.png  used on input line 310.
+(pdftex.def)             Requested size: 351.46602pt x 208.20638pt.
+
+Overfull \vbox (17.66891pt too high) detected at line 310
+ []
+
+[26
+
+ <../../figures/all/tree_main_policies.png (PNG copy)>]
 \tf@nav=\write6
 \openout6 = `211022_Team_Meeting.nav'.
 
@@ -1255,17 +1351,17 @@ Package rerunfilecheck Info: File `211022_Team_Meeting.out' has not changed.
 (rerunfilecheck)             Checksum: A27AD27C0C3EB66C17C9896C209E6841;396.
  ) 
 Here is how much of TeX's memory you used:
- 33453 strings out of 478864
- 670935 string characters out of 2848186
- 1047063 words of memory out of 3000000
- 50536 multiletter control sequences out of 15000+600000
- 454971 words of font info for 84 fonts, out of 8000000 for 9000
+ 33668 strings out of 478864
+ 681594 string characters out of 2848186
+ 1011063 words of memory out of 3000000
+ 50714 multiletter control sequences out of 15000+600000
+ 474466 words of font info for 113 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  133i,14n,127p,631b,948s stack positions out of 5000i,500n,10000p,200000b,80000s
-{C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 211022_Team_Meeting.pdf (17 pages, 594575 bytes).
+{C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/afabre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on 211022_Team_Meeting.pdf (26 pages, 1863794 bytes).
 PDF statistics:
- 169 PDF objects out of 1000 (max. 8388607)
- 37 named destinations out of 1000 (max. 500000)
- 118 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 242 PDF objects out of 1000 (max. 8388607)
+ 55 named destinations out of 1000 (max. 500000)
+ 153 words of extra memory for PDF output out of 10000 (max. 10000000)
 
