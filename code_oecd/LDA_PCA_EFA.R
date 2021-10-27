@@ -128,13 +128,18 @@ cohesion <- function(dfm, nbr_profiles=2, nbr_topics=c(5)){
 #   return(polarisation)
 # }
 
-create_lda <- function(variables, data = e, nb_topic = NULL, compute_wtd_proba = F, convert_5_to_3 = T) {
+create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_proba = F, convert_5_to_3 = T) {
   # if nb_topic = NULL, the number of topics is optimized
   e$concat_response <- ""
-  for (v in variables_lda) e$concat_response <- ifelse(is.numeric(e[[v]]), case_when(e[[v]] == 2 ~ paste(e$concat_response, paste0(v, "__1")),
-                                                                e[[v]] == -2 ~ paste(e$concat_response, paste0(v, "__-1")),
-                                                                abs(e[[v]]) != 2 ~ paste(e$concat_response, paste(v, e[[v]]+0, sep="__"))), 
-                                  paste(e$concat_response, paste(v, gsub(" ", "_", gsub("[[:punct:]]", "", e[[v]])), sep="__")))
+  for (v in variables_lda) {
+    if (is.numeric(e[[v]])){
+      e$concat_response <- case_when(e[[v]] == 2 ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] == -2 ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     abs(e[[v]]) != 2 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
+    } else {
+      e$concat_response <- paste(e$concat_response, paste(v, gsub(" ", "_", gsub("[[:punct:]]", "", e[[v]])), sep="__"))
+    }
+  }
   e$concat_response <- tolower(e$concat_response)
   
   # e$WC_lda_var <- lengths(strsplit(e$concat_response, "\\W+")) # " "
@@ -198,7 +203,7 @@ create_lda <- function(variables, data = e, nb_topic = NULL, compute_wtd_proba =
 
 
 ##### Treatment LDA ####  
-variables_lda <- names(e)[11:308][!grepl("_field|^winner$|_first|_last|_click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[11:308])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+variables_lda <- names(e)[11:308][!grepl("_field|^winner$|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[11:308])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 start <- Sys.time()
 lda <- create_lda(variables_lda, data = e)
 (duration_lda <- Sys.time() - start) # 1min40 with optimization / 30 seconds without, all without weighted probas
