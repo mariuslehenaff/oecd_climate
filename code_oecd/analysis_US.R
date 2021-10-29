@@ -7,12 +7,14 @@ e <- mx
 e <- id
 e <- sp
 e <- au
-e <- In
+e <- ia
 e <- tr
 e <- br
 for (c in ongoing_countries) print(paste(c, round(median(All[[c]]$duration),1), nrow(All[[c]])))
 for (c in ongoing_countries) print(paste(c, round(mean(All[[c]]$duration),1)))
 for (c in current_countries) print(paste(c, round(median(All[[c]]$duration),1)))
+for (c in ongoing_countries) print(paste(c, All[[c]]$date[1]))
+for (c in ongoing_countries) print(paste(c, All[[c]]$date[7]))
 decrit("finished", data = e)
 decrit("excluded", data = e)
 sum(is.na(e$excluded) & e$finished == 1)
