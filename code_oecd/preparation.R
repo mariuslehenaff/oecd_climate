@@ -252,18 +252,24 @@ loadings_efa <- list()
 
 remove_id <- function(file, folder = "../data/") {
   filename <- paste(folder, file, ".csv", sep = "")
-  data <- read_csv(filename, lazy = FALSE) 
+  
+  filename_copy <- paste("./deprecated/", file, ".csv", sep = "")
+  file.copy(filename, "./deprecated/")
+  data <- read_csv(filename_copy) 
   data <- data[,which(!(names(data) %in% c("PSID", "ResponseId", "PID")))]
-  file.remove(filename)
   write_csv(data, filename, na = "")
+  file.remove(filename_copy)
+  # data <- read_csv(filename) # the three commented lines worked well for all .csv except SK, don't know why. Maybe retry later to put them back
+  # data <- data[,which(!(names(data) %in% c("PSID", "ResponseId", "PID")))]
+  # write_csv(data, filename, na = "")
 } # for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US", "DK", 'FR')) remove_id(file)
 
 relabel_and_rename <- function(e, country, wave = NULL) {
   # Notation: ~ means that it's a random variant / * that the question is only displayed under certain condition
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
-  # remove_id("CN")
-  # e <- read_csv("../data/UA.csv")
+  # remove_id("UA")
+  # e <- read_csv("../data/SK.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
