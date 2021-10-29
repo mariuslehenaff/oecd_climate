@@ -9,6 +9,7 @@ source(".Rprofile")
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
 # TODO: Create a set of weights for all such that we get the global average of variables (maybe, assuming that e.g. Brazil represents all Latin America, etc.)
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
+# TODO: DE urbanity
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
 control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
@@ -251,8 +252,9 @@ loadings_efa <- list()
 
 remove_id <- function(file, folder = "../data/") {
   filename <- paste(folder, file, ".csv", sep = "")
-  data <- read_csv(filename) 
+  data <- read_csv(filename, lazy = FALSE) 
   data <- data[,which(!(names(data) %in% c("PSID", "ResponseId", "PID")))]
+  file.remove(filename)
   write_csv(data, filename, na = "")
 } # for (file in c("US_pilot", "US_pilot2", "US_pilot3", "US", "DK", 'FR')) remove_id(file)
 
@@ -261,7 +263,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
   # remove_id("CN")
-  # e <- read_csv("../data/CN.csv")
+  # e <- read_csv("../data/UA.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -2523,8 +2525,9 @@ e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
 e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
 e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
 e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
+e <- sk <- prepare(country = "SK", duration_min = 686, weighting = F)
 current_countries <- c("DK", "US", "FR", "DE")
-ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN")
+ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
 All <- list()
 for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
