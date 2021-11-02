@@ -2555,6 +2555,24 @@ for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_k
 all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weights, na.rm = T))
 label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
+## PREPARE DATA FOR STATA
+write.csv(all,"../data/all_211102.csv", row.names=F)
+
+all_stata <- janitor::clean_names(all)
+names_stata <- c()
+for (i in seq_along(names(all_stata))){
+  # If more than 999 variables would need to change 29 to 28 and 28 to 27 in the line below
+  names_stata[i] <- ifelse(nchar(names(all_stata)[i]) < 29, names(all_stata)[i], paste(substr(names(all_stata)[i], 1, 28), i, sep = "_"))
+}
+names(all_stata) <- names_stata
+# Shorten string values
+all_stata = as.data.frame(apply(all_stata, 2, function(x){
+  if(class(x) == 'character') substr(x, 1, 128) else x}))
+
+haven::write_dta(all_stata, "../data/all.dta")
+dictionary_stata_R <- data.frame(names(all), names_stata)
+
+
 # all_bis <- janitor::clean_names(all)
 # df = as.data.frame(apply(all_bis, 2, function(x){
 #   if(class(x) == 'character') substr(x, 1, 128) else x}))
