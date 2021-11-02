@@ -493,6 +493,9 @@ end_formula_treatment_indices <- paste(c(control_variables_w_treatment[c(1:5,7:1
 end_formula_treatment_indices <- paste(c("(", end_formula_treatment_indices), collapse = "")
 end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), collapse = "")
 
+end_formula_treatment_for_fairness <- paste(c(control_variables_w_treatment[c(1:5,7:11)], "as.factor(country)", indices_list[c(8,16:17)]), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment_for_fairness <- paste(c("(", end_formula_treatment_for_fairness), collapse = "")
+end_formula_treatment_for_fairness <- paste(c(end_formula_treatment_for_fairness, ")"), collapse = "")
 
 cov_lab_treatment_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
@@ -506,7 +509,8 @@ cov_lab_treatment_indices_mod <- c("index_knowledge" = "Has a good knowledge of 
                                    "index_constrained" = "Is financially constrained","index_policies_efficient" = "Climate policies are effective",
                                    "index_care_poverty" = "Cares about poverty and inequalities", "index_altruism" = "Is willing to donate to reforestation project",
                                    "index_affected_subjective" = "Thinks will suffer of climate change", "index_willing_change" = "Is willing to adopt climate friendly behavior",
-                                   "index_lose_policies_subjective" = "Thinks will lose from main policies", "index_fairness" = "Thinks main policies are fair", "index_trust_govt" = "Trusts the governement",
+                                   "index_lose_policies_subjective" = "Thinks will lose from main policies", "index_lose_policies_poor" = "Thinks poor people will lose from main policies", "index_lose_policies_rich" = "Thinks rich people will lose from main policies",
+                                   "index_fairness" = "Thinks main policies are fair", "index_trust_govt" = "Trusts the governement",
                                    "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center")
 
 models <- list()
@@ -529,6 +533,21 @@ models[["All climate policies Index"]] <- lm(as.formula(paste("index_all_policie
 
 coef_policy_views_indices_all <- modelplot(models, coef_map = cov_lab_treatment_indices_mod, 
                                    background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Views', title = 'Indices')
+
+
+cov_lab_fairness_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
+                           "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
+                           "as.factor(employment_agg)Working" = "status: Working", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
+                           "age65+" = "age: 65+", "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center",
+                           "treatmentClimate" = "treatment: Climate", "treatmentPolicy" = "treatment: Policy", "treatmentBoth" = "treatment: Both",
+                          "index_lose_policies_poor" = "Thinks poor people will lose from main policies", "index_lose_policies_rich" = "Thinks rich people will lose from main policies",
+                          "index_policies_efficient" = "Climate policies are effective")
+
+models <- list()
+models[["Fairness Index"]] <- lm(as.formula(paste("index_fairness_dummies2SD ~ ", paste(c(end_formula_treatment_for_fairness), collapse = ' + '))), data = e, weights = e$weight)
+
+coef_fairness_alll <- modelplot(models, coef_map = cov_lab_fairness_mod, 
+                                           background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Views', title = 'Indices')
 
 # 
 # 
