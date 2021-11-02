@@ -70,7 +70,7 @@ indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is
                  "Is willing to adopt climate friendly behavior", "Thinks will lose from main policies", "Thinks main policies are fair", "Trusts the governement", "Thinks poor people will from main policies", "Thinks rich people will lose from main policies", "Support more pricing policies than norms")
 indices_non_left_right <- indices_list[2:length(indices_list)]
 indices_policies <- c("index_standard_policy", "index_tax_transfers_policy", "index_investments_policy","index_main_policies",
-                      "index_beef_policies","index_international_policies","index_other_policies","index_all_policies")
+                      "index_beef_policies","index_international_policies","index_other_policies","index_all_policies", "index_pricing_norm_main_policies_V1", "index_pricing_norm_main_policies_V2")
 
 paste(indices_non_left_right, "_dummies", sep = "")
 paste(indices_non_left_right, "_dummies2SD", sep = "")
