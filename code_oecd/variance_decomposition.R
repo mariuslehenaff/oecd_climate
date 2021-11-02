@@ -15,7 +15,7 @@ controls_lmg <- c("dominant_origin == TRUE", "female == TRUE", "children == TRUE
                   "treatment == \"Policy\"", "treatment == \"Both\"","country == \"DK\"",
                   "country == \"FR\"", "country == \"US\"")
 
-controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "as.character(left_right)","treatment == \"Climate\"",
+controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "urban", "as.character(left_right)","treatment == \"Climate\"",
                   "treatment == \"Policy\"", "treatment == \"Both\"","as.factor(country)")
 
 end_formula_treatment_socio_demographics <- paste(c(controls_lmg, "index_affected"), collapse = ') + (')
@@ -33,11 +33,12 @@ end_formula_treatment_indices_nofairness <- paste(c(end_formula_treatment_indice
 
 indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is affected by climate change", "Is concerned about climate change", "Is worried about the future", "Climate policies have a positive effect \n on the economy",
                  "Is financially constrained","Climate policies are effective", "Cares about poverty and inequalities", "Is willing to donate to reforestation project",
-                 "Thinks will suffer from climate change", "Is willing to adopt climate friendly behavior", "Thinks will lose from main policies", "Thinks main policies are fair", "Trusts the governement",
-                 "Thinks poor people will lose from main policies", "Thinks rich people will lose from main policies")
+                 "Believe will suffer from climate change", "Is willing to adopt climate friendly behavior", "Will personally lose from main policies", "Main policies are fair", "Trusts the governement",
+                 "Poor people will lose from main policies", "Rich people will lose from main policies")
 
+# Alphabetical order of variables matters here
 controls_labels_lm <- c("Employment Status", "Age", "Political Leaning", "Country", "Origin", "Gender", "Parenthood",
-                        "Education", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
+                        "Education", "Urban", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
 
 formulas <- models <- list()
 formulas[["Ban on combustion-engine cars Index - Socio-demographics"]] <- as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_socio_demographics), collapse = ' + ')))
@@ -60,6 +61,10 @@ formulas[["Index Preferences Pricing (difference w/ investments) - Socio-demogra
 formulas[["Index Preferences Pricing (difference w/ investments) - Indices"]] <- as.formula(paste("index_pricing_norm_main_policies_V2_dummies2SD ~ ", paste(c(end_formula_treatment_indices), collapse = ' + ')))
 formulas[["Index Fairness - Socio-demographics"]] <- as.formula(paste("index_fairness_dummies2SD ~ ", paste(c(end_formula_treatment_socio_demographics), collapse = ' + ')))
 formulas[["Index Fairness - Indices"]] <- as.formula(paste("index_fairness_dummies2SD ~ ", paste(c(end_formula_treatment_indices_nofairness), collapse = ' + ')))
+formulas[["Ban on combustion-engine cars Index - Indices (no fairness)"]] <- as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices_nofairness), collapse = ' + ')))
+formulas[["Carbon tax with cash transfers Index - Indices (no fairness)"]] <- as.formula(paste("index_tax_transfers_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices_nofairness), collapse = ' + ')))
+formulas[["Green investment program Index - Indices (no fairness)"]] <- as.formula(paste("index_investments_policy_dummies2SD ~ ", paste(c(end_formula_treatment_indices_nofairness), collapse = ' + ')))
+formulas[["Main policies Index - Indices (no fairness)"]] <- as.formula(paste("index_main_policies_dummies2SD ~ ", paste(c(end_formula_treatment_indices_nofairness), collapse = ' + ')))
 
 for (i in names(formulas)) models[[i]] <- lm(formulas[[i]], data = e, weights = e$weight)
 
@@ -70,12 +75,16 @@ for (i in names(formulas)) models[[i]] <- lm(formulas[[i]], data = e, weights = 
 # var: variance explained by opinions (with socio-demos always as regressors) / no_indices: ..by socio-demos / w_controls: ..by both opinions and socio-demos
 standard_socio_non_standardized <- calc.relimp(models[[1]], type = c("lmg"), rela = F, rank= F)
 standard_indices_non_standardized <- calc.relimp(models[[2]], type = c("lmg"), rela = F, rank= F)
+standard_indices_no_fairness_non_standardized <- calc.relimp(models[[21]], type = c("lmg"), rela = F, rank= F)
 tax_transfers_socio_non_standardized <- calc.relimp(models[[3]], type = c("lmg"), rela = F, rank= F)
 tax_transfers_indices_non_standardized <- calc.relimp(models[[4]], type = c("lmg"), rela = F, rank= F)
+tax_transfers_indices_no_fairness_non_standardized <- calc.relimp(models[[22]], type = c("lmg"), rela = F, rank= F)
 investments_socio_non_standardized <- calc.relimp(models[[5]], type = c("lmg"), rela = F, rank= F)
 investments_indices_non_standardized <- calc.relimp(models[[6]], type = c("lmg"), rela = F, rank= F)
+investments_indices_no_fairness_non_standardized <- calc.relimp(models[[23]], type = c("lmg"), rela = F, rank= F)
 main_policies_socio_non_standardized <- calc.relimp(models[[7]], type = c("lmg"), rela = F, rank= F)
 main_policies_indices_non_standardized <- calc.relimp(models[[8]], type = c("lmg"), rela = F, rank= F)
+main_policies_indices_no_fairness_non_standardized <- calc.relimp(models[[24]], type = c("lmg"), rela = F, rank= F)
 all_policies_socio_non_standardized <- calc.relimp(models[[9]], type = c("lmg"), rela = F, rank= F)
 all_policies_indices_non_standardized <- calc.relimp(models[[10]], type = c("lmg"), rela = F, rank= F)
 # each of the two below line take ~1h to compute
@@ -118,6 +127,10 @@ lmg_pref_pricing_norms_diff_V2_indices_non_standardized <- barres(data = t(as.ma
 lmg_fairness_socio_non_standardized <- barres(data = t(as.matrix(pref_pricing_norms_diff_V2_socio_non_standardized@lmg)), labels = c(controls_labels_lm, indices_lab[3]),legend = "% of response variances", rev = F)
 lmg_fairness_indices_non_standardized <- barres(data = t(as.matrix(pref_pricing_norms_diff_V2_indices_non_standardized@lmg)), labels = indices_lab[c(2,4:6,8,9,11,13,15:length(indices_lab))],legend = "% of response variances", rev = F)
 
+lmg_standard_indices_no_fairness_non_standardized <- barres(data = t(as.matrix(standard_indices_no_fairness_non_standardized@lmg)), labels = indices_lab[c(2,4:6,8,9,11,13,15:length(indices_lab))],legend = "% of response variances", rev = F)
+lmg_tax_transfers_indices_no_fairness_non_standardized <- barres(data = t(as.matrix(tax_transfers_indices_no_fairness_non_standardized@lmg)), labels = indices_lab[c(2,4:6,8,9,11,13,15:length(indices_lab))],legend = "% of response variances", rev = F)
+lmg_investments_indices_no_fairness_non_standardized <- barres(data = t(as.matrix(investments_indices_no_fairness_non_standardized@lmg)), labels = indices_lab[c(2,4:6,8,9,11,13,15:length(indices_lab))],legend = "% of response variances", rev = F)
+lmg_main_policies_indices_no_fairness_non_standardized <- barres(data = t(as.matrix(main_policies_indices_no_fairness_non_standardized@lmg)), labels = indices_lab[c(2,4:6,8,9,11,13,15:length(indices_lab))],legend = "% of response variances", rev = F)
 
 ##### Decision trees #####
 rpart.plot(tree_all_support <- rpart(formulas[["All climate policies Index"]], e))
