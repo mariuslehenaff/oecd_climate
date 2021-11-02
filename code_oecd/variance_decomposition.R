@@ -15,7 +15,7 @@ controls_lmg <- c("dominant_origin == TRUE", "female == TRUE", "children == TRUE
                   "treatment == \"Policy\"", "treatment == \"Both\"","country == \"DK\"",
                   "country == \"FR\"", "country == \"US\"")
 
-controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "urban", "as.character(left_right)","treatment == \"Climate\"",
+controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "urban", "urbanity", "as.character(left_right)","treatment == \"Climate\"",
                   "treatment == \"Policy\"", "treatment == \"Both\"","as.factor(country)")
 
 end_formula_treatment_socio_demographics <- paste(c(controls_lmg, "index_affected"), collapse = ') + (')
@@ -38,7 +38,7 @@ indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is
 
 # Alphabetical order of variables matters here
 controls_labels_lm <- c("Employment Status", "Age", "Political Leaning", "Country", "Origin", "Gender", "Parenthood",
-                        "Education", "Urban", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
+                        "Education", "Urban", "Size of agglomeration", "Treatment: Climate", "Treatment: Policy", "Treatment: Both")
 
 formulas <- models <- list()
 formulas[["Ban on combustion-engine cars Index - Socio-demographics"]] <- as.formula(paste("index_standard_policy_dummies2SD ~ ", paste(c(end_formula_treatment_socio_demographics), collapse = ' + ')))
