@@ -159,8 +159,9 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
     nb_profile <- 2
     
     lda_out <- LDA(dfm, method="Gibbs", k=nb_profile, control=list(seed=42))
-    
+    start <- Sys.time()
     cohesion_matrix <- sapply(profiles, cohesion, dfm = dfm, nbr_topics = topics)
+    (duration_cohesion <- Sys.time() - start) 
     # colnames(cohesion_matrix) <- paste("Profiles", profiles, sep="_")
     # rownames(cohesion_matrix) <- paste("Topics", topics, sep="_")
     cohesion_avg <- colSums(cohesion_matrix)/length(topics)
