@@ -2059,12 +2059,18 @@ if (all(variables_affected_index %in% names(e))) {
     # Double standardization
     e$index_preferences_pricing_norms_dummies2SD <- (e$index_preferences_pricing_norms_dummies - wtd.mean(e$index_preferences_pricing_norms_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_preferences_pricing_norms_dummies, w = e$weight, na.rm=T))
 
-    
+  
     e$index_affected_subjective <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
     e$index_affected_subjective_dummies <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, conditions = conditions_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
     # Double standardization
     e$index_affected_subjective_dummies2SD <- (e$index_affected_subjective_dummies - wtd.mean(e$index_affected_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_subjective_dummies, w = e$weight, na.rm=T))
+
+    e$index_lose_policies_subjective <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
+    e$index_lose_policies_subjective_dummies <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, conditions = conditions_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
+    # Double standardization
+    e$index_lose_policies_subjective_dummies2SD <- (e$index_lose_policies_subjective_dummies - wtd.mean(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T))
     
+        
     e$index_lose_policies_poor <- index_zscore(variables_index_lose_policies_poor, negatives_index_lose_policies_poor, before_treatment = before_treatment_index_lose_policies_poor, df = e, weight = weighting)
     e$index_lose_policies_poor_dummies <- index_zscore(variables_index_lose_policies_poor, negatives_index_lose_policies_poor, conditions = conditions_index_lose_policies_poor, before_treatment = before_treatment_index_lose_policies_poor, df = e, weight = weighting)
     # Double standardization

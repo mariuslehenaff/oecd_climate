@@ -481,15 +481,15 @@ save_plotly(coef_Right_FR, width= 736, height=719)
 
 # Decomposing Tax Policy
 # Do not use index_progressist
-indices_list <- c("index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
-                  "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt")
+indices_list <- c("index_progressist", "index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
+                  "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt", "index_lose_policies_poor", "index_lose_policies_rich")
 
 
 end_formula_treatment <- paste(c(control_variables_w_treatment[c(1:5,7:11)], "as.factor(country)"), collapse = ') + (') #  Do not take left and income 
 end_formula_treatment <- paste(c("(", end_formula_treatment), collapse = "")
 end_formula_treatment <- paste(c(end_formula_treatment, ")"), collapse = "")
 
-end_formula_treatment_indices <- paste(c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)", indices_list[2:length(indices_list)]), collapse = ') + (') #  Do not take left and income 
+end_formula_treatment_indices <- paste(c(control_variables_w_treatment[c(1:5,7:11)],"as.factor(country)", indices_list[c(2,4:6,8,9,11,13:length(indices_list))]), collapse = ') + (') #  Do not take left and income 
 end_formula_treatment_indices <- paste(c("(", end_formula_treatment_indices), collapse = "")
 end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), collapse = "")
 
@@ -503,7 +503,7 @@ cov_lab_treatment_mod <- c("dominant_originTRUE" = "race/origin: largest group",
 cov_lab_treatment_indices_mod <- c("index_knowledge" = "Has a good knowledge of climate change", "index_affected" = "Is affected by climate change",
                                    "index_concerned_about_CC" = "Is concerned about climate change", "index_worried" = "Is worried about the future",
                                    "index_positive_economy" = "Climate policies have a positive effect \n on the economy",
-                                   "index_constrained" = "Is financially constrained","index_policies_efficient" = "Climate policies are efficient",
+                                   "index_constrained" = "Is financially constrained","index_policies_efficient" = "Climate policies are effective",
                                    "index_care_poverty" = "Cares about poverty and inequalities", "index_altruism" = "Is willing to donate to reforestation project",
                                    "index_affected_subjective" = "Thinks will suffer of climate change", "index_willing_change" = "Is willing to adopt climate friendly behavior",
                                    "index_lose_policies_subjective" = "Thinks will lose from main policies", "index_fairness" = "Thinks main policies are fair", "index_trust_govt" = "Trusts the governement",
