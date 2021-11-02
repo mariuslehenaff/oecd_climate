@@ -2566,11 +2566,16 @@ for (i in seq_along(names(all_stata))){
 }
 names(all_stata) <- names_stata
 # Shorten string values
-all_stata = as.data.frame(apply(all_stata, 2, function(x){
-  if(class(x) == 'character') substr(x, 1, 128) else x}))
+for (i in c("comment_field", "comment_field_english", "cc_field", "cc_field_english")) {
+  all_stata[[i]] <- substr(all_stata[[i]], 1, 128)
+}
 
 haven::write_dta(all_stata, "../data/all.dta")
-dictionary_stata_R <- data.frame(names(all), names_stata)
+write.csv(all_stata, "../data/all_211102_stataNames.csv")
+
+dictionary_stata_R <- data.frame(names(all), names_stata, label(all))
+names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
+write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
 
 
 # all_bis <- janitor::clean_names(all)
