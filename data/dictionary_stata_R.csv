@@ -591,12 +591,15 @@ index_preferences_pricing_norms_dummies2SD,index_preferences_pricing_no_427,
 index_affected_subjective,index_affected_subjective,"index_affected_subjective: Non-weighted average of z-scores of variables in variables_index_affected_subjective. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_affected_subjective_dummies,index_affected_subjective_du_429,
 index_affected_subjective_dummies2SD,index_affected_subjective_du_430,
+index_lose_policies_subjective,index_lose_policies_subjecti_431,
+index_lose_policies_subjective_dummies,index_lose_policies_subjecti_432,
+index_lose_policies_subjective_dummies2SD,index_lose_policies_subjecti_433,
 index_lose_policies_poor,index_lose_policies_poor,
-index_lose_policies_poor_dummies,index_lose_policies_poor_dum_432,
-index_lose_policies_poor_dummies2SD,index_lose_policies_poor_dum_433,
+index_lose_policies_poor_dummies,index_lose_policies_poor_dum_435,
+index_lose_policies_poor_dummies2SD,index_lose_policies_poor_dum_436,
 index_lose_policies_rich,index_lose_policies_rich,
-index_lose_policies_rich_dummies,index_lose_policies_rich_dum_435,
-index_lose_policies_rich_dummies2SD,index_lose_policies_rich_dum_436,
+index_lose_policies_rich_dummies,index_lose_policies_rich_dum_438,
+index_lose_policies_rich_dummies2SD,index_lose_policies_rich_dum_439,
 index_fairness,index_fairness,
 index_fairness_dummies,index_fairness_dummies,
 index_fairness_dummies2SD,index_fairness_dummies2sd,
@@ -605,37 +608,37 @@ index_trust_govt_dummies,index_trust_govt_dummies,
 index_trust_govt_dummies2SD,index_trust_govt_dummies2sd,
 index_willing_change,index_willing_change,"index_willing_change: Non-weighted average of z-scores of variables in variables_index_willing_change. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_willing_change_dummies,index_willing_change_dummies,
-index_willing_change_dummies2SD,index_willing_change_dummies_445,
+index_willing_change_dummies2SD,index_willing_change_dummies_448,
 index_standard_policy,index_standard_policy,"index_standard_policy: Non-weighted average of z-scores of variables in variables_index_standard_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_standard_policy_dummies,index_standard_policy_dummie_447,
-index_standard_policy_dummies2SD,index_standard_policy_dummie_448,
+index_standard_policy_dummies,index_standard_policy_dummie_450,
+index_standard_policy_dummies2SD,index_standard_policy_dummie_451,
 index_tax_transfers_policy,index_tax_transfers_policy,"index_tax_transfers_policy: Non-weighted average of z-scores of variables in variables_index_tax_transfers_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_tax_transfers_policy_dummies,index_tax_transfers_policy_d_450,
-index_tax_transfers_policy_dummies2SD,index_tax_transfers_policy_d_451,
+index_tax_transfers_policy_dummies,index_tax_transfers_policy_d_453,
+index_tax_transfers_policy_dummies2SD,index_tax_transfers_policy_d_454,
 index_investments_policy,index_investments_policy,"index_investments_policy: Non-weighted average of z-scores of variables in variables_index_investments_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_investments_policy_dummies,index_investments_policy_dum_453,
-index_investments_policy_dummies2SD,index_investments_policy_dum_454,
+index_investments_policy_dummies,index_investments_policy_dum_456,
+index_investments_policy_dummies2SD,index_investments_policy_dum_457,
 index_main_policies,index_main_policies,"index_main_policies: Non-weighted average of z-scores of variables in variables_index_main_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_main_policies_dummies,index_main_policies_dummies,
-index_main_policies_dummies2SD,index_main_policies_dummies2_457,
-index_pricing_norm_main_policies_V1,index_pricing_norm_main_poli_458,
-index_pricing_norm_main_policies_V1_dummies,index_pricing_norm_main_poli_459,
-index_pricing_norm_main_policies_V1_dummies2SD,index_pricing_norm_main_poli_460,
-index_pricing_norm_main_policies_V2,index_pricing_norm_main_poli_461,
-index_pricing_norm_main_policies_V2_dummies,index_pricing_norm_main_poli_462,
-index_pricing_norm_main_policies_V2_dummies2SD,index_pricing_norm_main_poli_463,
+index_main_policies_dummies2SD,index_main_policies_dummies2_460,
+index_pricing_norm_main_policies_V1,index_pricing_norm_main_poli_461,
+index_pricing_norm_main_policies_V1_dummies,index_pricing_norm_main_poli_462,
+index_pricing_norm_main_policies_V1_dummies2SD,index_pricing_norm_main_poli_463,
+index_pricing_norm_main_policies_V2,index_pricing_norm_main_poli_464,
+index_pricing_norm_main_policies_V2_dummies,index_pricing_norm_main_poli_465,
+index_pricing_norm_main_policies_V2_dummies2SD,index_pricing_norm_main_poli_466,
 index_beef_policies,index_beef_policies,"index_beef_policies: Non-weighted average of z-scores of variables in variables_index_beef_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_beef_policies_dummies,index_beef_policies_dummies,
-index_beef_policies_dummies2SD,index_beef_policies_dummies2_466,
+index_beef_policies_dummies2SD,index_beef_policies_dummies2_469,
 index_international_policies,index_international_policies,"index_international_policies: Non-weighted average of z-scores of variables in variables_index_international_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_international_policies_dummies,index_international_policies_468,
-index_international_policies_dummies2SD,index_international_policies_469,
+index_international_policies_dummies,index_international_policies_471,
+index_international_policies_dummies2SD,index_international_policies_472,
 index_other_policies,index_other_policies,"index_other_policies: Non-weighted average of z-scores of variables in variables_index_other_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_other_policies_dummies,index_other_policies_dummies,
-index_other_policies_dummies2SD,index_other_policies_dummies_472,
+index_other_policies_dummies2SD,index_other_policies_dummies_475,
 index_all_policies,index_all_policies,"index_all_policies: Non-weighted average of z-scores of variables in variables_index_all_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_all_policies_dummies,index_all_policies_dummies,
-index_all_policies_dummies2SD,index_all_policies_dummies2s_475,
+index_all_policies_dummies2SD,index_all_policies_dummies2s_478,
 length_CC_field,length_cc_field,length_CC_field: Number of characters in CC_field
 length_comment_field,length_comment_field,length_comment_field: Number of characters in comment_field
 Nb_children__14,nb_children_14,Nb_children__14: How many children do you have?
@@ -652,8 +655,8 @@ pro_rich_pay,pro_rich_pay,pro_rich_pay: In favor of burden_sharing where rich co
 pro_grand_fathering,pro_grand_fathering,"pro_grand_fathering: In favor of burden_sharing akin to grand-fathering. Inferred as disagreement to _cumulative, _rich_pay and _poor_receive, i.e.: countries pay in proportion to cumulative emissions, and to options where poor and vulnerable countries don't pay. Results are in line with US pilot on 502 people, where the more explicit usp$equal_quota == grand-fathering gathered 6%."
 pro_polluter_and_rich_pay,pro_polluter_and_rich_pay,"pro_polluter_and_rich_pay: In favor of burden_sharing where polluters and only rich countries pay. Inferred as agreeing to at least one polluter-pay option and one option where rich countries pay it all: (_income, _emissions or _cumulative) and (_rich_pay or _poor_receive)."
 pro_global_tax_dividend,pro_global_tax_dividend,pro_global_tax_dividend: In favor of burden_sharing akin to global tax & dividend. Inferred as agreeing to paying in proportion to current emissions and one option where rich countries pay it all: _emissions and (_rich_pay or _poor_receive).
-pro_differentiated_responsibilities_strict,pro_differentiated_responsib_492,"pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
-pro_differentiated_responsibilities_large,pro_differentiated_responsib_493,"pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
+pro_differentiated_responsibilities_strict,pro_differentiated_responsib_495,"pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
+pro_differentiated_responsibilities_large,pro_differentiated_responsib_496,"pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
 right_click_petition,right_click_petition,
 left_click_petition,left_click_petition,
 variant_petition_real,variant_petition_real,"variant_petition_real: True iff the respondent faces the new version of the question, without link to petition but with a real stake, as they are informed that 'we will send the results to the President of the United States’ office, informing him what share of people who took this survey were willing to support the following petition'"
@@ -694,7 +697,7 @@ CC_field_contains_education,cc_field_contains_education,CC_field_contains_educat
 CC_field_contains_solar,cc_field_contains_solar,CC_field_contains_solar: T/F CC_field_english contains: solar
 CC_field_contains_coal,cc_field_contains_coal,CC_field_contains_coal: T/F CC_field_english contains: coal
 CC_field_contains_electric,cc_field_contains_electric,CC_field_contains_electric: T/F CC_field_english contains: electric
-CC_field_contains_electric_car,cc_field_contains_electric_c_534,CC_field_contains_electric_car: T/F CC_field_english contains: electric car
+CC_field_contains_electric_car,cc_field_contains_electric_c_537,CC_field_contains_electric_car: T/F CC_field_english contains: electric car
 CC_field_contains_nuclear,cc_field_contains_nuclear,CC_field_contains_nuclear: T/F CC_field_english contains: nuclear
 CC_field_contains_fossil,cc_field_contains_fossil,CC_field_contains_fossil: T/F CC_field_english contains: fossil|coal|oil|gas
 CC_field_contains_plastic,cc_field_contains_plastic,CC_field_contains_plastic: T/F CC_field_english contains: plastic
@@ -719,8 +722,8 @@ critic_comment_field,critic_comment_field,"critic_comment_field: T/F The answer 
 treated_comment_field,treated_comment_field,treated_comment_field: T/F comment_field has been treated/recoded. N
 comment_field_contains_long,comment_field_contains_long,comment_field_contains_long: T/F comment_field_english contains:  long
 comment_field_contains_good,comment_field_contains_good,comment_field_contains_good: T/F comment_field_english contains: good|Good|excellent|enjoy|interesting
-comment_field_contains_thanks,comment_field_contains_thank_559,comment_field_contains_thanks: T/F comment_field_english contains: thank|Thank
-comment_field_contains_learned,comment_field_contains_learn_560,comment_field_contains_learned: T/F comment_field_english contains: learnt|learn
+comment_field_contains_thanks,comment_field_contains_thank_562,comment_field_contains_thanks: T/F comment_field_english contains: thank|Thank
+comment_field_contains_learned,comment_field_contains_learn_563,comment_field_contains_learned: T/F comment_field_english contains: learnt|learn
 comment_field_contains_bias,comment_field_contains_bias,comment_field_contains_bias: T/F comment_field_english contains: bias
 non_empty_comment_field,non_empty_comment_field,"non_empty_comment_field: The respondent left a feedback comment, i.e. comment_field is not NA."
 origin_asia,origin_asia,origin_asia: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Asian
@@ -786,24 +789,24 @@ Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clic
 standard_prefer_order_ban,standard_prefer_order_ban,"standard_prefer_order_ban: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
 Which policy do you prefer?
 Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A strict ban"
-standard_prefer_order_10k_fine,standard_prefer_order_10k_fi_618,"standard_prefer_order_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+standard_prefer_order_10k_fine,standard_prefer_order_10k_fi_621,"standard_prefer_order_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
 Which policy do you prefer?
 Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 10,000€ fine"
-standard_prefer_order_100k_fine,standard_prefer_order_100k_f_619,"standard_prefer_order_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+standard_prefer_order_100k_fine,standard_prefer_order_100k_f_622,"standard_prefer_order_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
 Which policy do you prefer?
 Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 100,000€ fine"
 standard_10k_fine,standard_10k_fine,"standard_10k_fine: Imagine that, instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine of 10,000€.
 Would you support or oppose such policy?"
 standard_100k_fine,standard_100k_fine,"standard_100k_fine: Imagine that, instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine of 100,000€.
 Would you support or oppose such policy?"
-tax_transfers_progressive_fair,tax_transfers_progressive_fa_622,
-tax_transfers_progressive_support,tax_transfers_progressive_su_623,
+tax_transfers_progressive_fair,tax_transfers_progressive_fa_625,
+tax_transfers_progressive_support,tax_transfers_progressive_su_626,
 policy_ban_coal,policy_ban_coal,
 policy_order_ban_coal,policy_order_ban_coal,policy_order_ban_coal: Do you support or oppose the following climate policies? - Display Order - A ban on coal power in 2030
 tax_reduction_EEG_Umlage,tax_reduction_eeg_umlage,"tax_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - A reduction in the EEG-Umlage"
 tax_more_commuter_allowance,tax_more_commuter_allowance,"tax_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - An increase in commuter tax allowance"
-tax_order_reduction_EEG_Umlage,tax_order_reduction_eeg_umla_628,"tax_order_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in the EEG-Umlage"
-tax_order_more_commuter_allowance,tax_order_more_commuter_allo_629,"tax_order_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - An increase in commuter tax allowance"
+tax_order_reduction_EEG_Umlage,tax_order_reduction_eeg_umla_631,"tax_order_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in the EEG-Umlage"
+tax_order_more_commuter_allowance,tax_order_more_commuter_allo_632,"tax_order_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - An increase in commuter tax allowance"
 global_quota,global_quota,"global_quota: All countries have signed the Paris agreement that aims to contain global warming ""well below +2 °C"". To limit global warming to this level, there is a maximum amount of greenhouse gases we can emit globally, called the carbon budget. Each country could aim to emit less than a share of the carbon budget. To respect the global carbon budget, countries that emit more than their national share would pay a fee to countries that emit less than their share.
 Do you support such a policy?"
 burden_share_population,burden_share_population,"burden_share_population: Suppose the above policy is in place. How should the carbon budget be divided among countries? - The emission share of a country should be proportional to its population, so that each human has an equal right to emit."
