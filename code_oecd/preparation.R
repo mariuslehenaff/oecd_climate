@@ -2110,6 +2110,16 @@ if (all(variables_affected_index %in% names(e))) {
     # Double standardization
     e$index_main_policies_dummies2SD <- (e$index_main_policies_dummies - wtd.mean(e$index_main_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_main_policies_dummies, w = e$weight, na.rm=T))
     
+    e$index_pricing_norm_main_policies_V1 <- index_zscore(variables_index_main_policies[2:3], c(F,T), before_treatment = before_treatment_index_main_policies[2:3], df = e, weight = weighting)
+    e$index_pricing_norm_main_policies_V1_dummies <- index_zscore(variables_index_main_policies[2:3], c(F,T), conditions = conditions_index_main_policies[2:3], before_treatment = before_treatment_index_main_policies[2:3], df = e, weight = weighting)
+    # Double standardization
+    e$index_pricing_norm_main_policies_V1_dummies2SD <- (e$index_pricing_norm_main_policies_V1_dummies - wtd.mean(e$index_pricing_norm_main_policies_V1_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_pricing_norm_main_policies_V1_dummies, w = e$weight, na.rm=T))
+    
+    e$index_pricing_norm_main_policies_V2 <- index_zscore(variables_index_main_policies[1:3], c(T,F,T), before_treatment = before_treatment_index_main_policies[1:3], df = e, weight = weighting)
+    e$index_pricing_norm_main_policies_V2_dummies <- index_zscore(variables_index_main_policies[1:3], c(T,F,T), conditions = conditions_index_main_policies[1:3], before_treatment = before_treatment_index_main_policies[1:3], df = e, weight = weighting)
+    # Double standardization
+    e$index_pricing_norm_main_policies_V2_dummies2SD <- (e$index_pricing_norm_main_policies_V2_dummies - wtd.mean(e$index_pricing_norm_main_policies_V2_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_pricing_norm_main_policies_V2_dummies, w = e$weight, na.rm=T))
+    
     e$index_beef_policies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
     e$index_beef_policies_dummies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, conditions = conditions_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
     # Double standardization
