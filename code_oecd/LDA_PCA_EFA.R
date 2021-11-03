@@ -11,7 +11,13 @@
 # Normalized PMI (pairwise)
 NPMI <- function(NPMI_matrix){
   #NPMI_matrix needs to be a 2x2 matrix of joint distributions
-  ifelse(NPMI_matrix[1,2]==1, 1, log(NPMI_matrix[1,2]/(NPMI_matrix[1,1]*NPMI_matrix[2,2]))/(-log(NPMI_matrix[1,2])))
+  if (NPMI_matrix[1,2]==1){
+    return(1)
+  } else if (NPMI_matrix[1,2]==0) { #Case when two opposite answers appears as the top features
+    return(0)
+  } else {
+    return(log(NPMI_matrix[1,2]/(NPMI_matrix[1,1]*NPMI_matrix[2,2]))/(-log(NPMI_matrix[1,2])))
+  }
 }
 
 # Cohesion score based on Draca and Schwarz (2020)
@@ -204,10 +210,13 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
 
 
 ##### Treatment LDA ####  
-variables_lda <- names(e)[11:308][!grepl("_field|^winner$|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[11:308])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+# variables_lda <- names(e)[72:272][!grepl("_field|^winner$|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[72:272])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+variables_lda <- names(e)[45:272][!grepl("_field|^winner$|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[45:272])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+
+variables_lda <- c(variables_lda, "wtp", "country")
 start <- Sys.time()
-lda <- create_lda(variables_lda, data = e)
-(duration_lda <- Sys.time() - start) # 1min40 with optimization / 30 seconds without, all without weighted probas
+lda_no_knowledge <- create_lda(variables_lda, data = e)
+(duration_lda <- Sys.time() - start) # 42min for all with optimization / 30 seconds without, all without weighted probas
 (terms <- terms(lda[[1]], 20)) # terms(lda_out, 20) lda_out <- lda[[1]]
 (lda_topics <- lda[[2]]) # lda_topics <- lda[[2]] lda_gamma <- lda[[3]]
 e <- lda[[4]]
