@@ -687,10 +687,16 @@ labelsN <- function(labels, levels, parentheses = T) {
   # return(sapply(labels, function(l) {return(paste(l, levels, sep=": "))})) # version var: lev1 / var: lev2 / ...
 }
 barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), 
-                    rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F, error_margin = F) {
+                    rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F, error_margin = F, alphabetical = FALSE) {
   if (nolabel & length(labels)==1) labels <- "" 
   if (is.data.frame(df)) df <- list(df)
-  if (!missing(along)) levels <- sub("^\\*", "", rev(Levels(df[[1]][[along]])))
+  if (!missing(along)) {
+    if (along == "country_name" & !alphabetical & exists(countries_names)) {
+      levels <- c()
+      for (l in countries_names) if (l %in% Levels(df[[1]][[along]])) levels <- c(levels, l)
+    } else levels <- Levels(df[[1]][[along]])
+    levels <- sub("^\\*", "", rev(levels))
+  }
   if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
   if (!missing(along) & missing(labels)) labels <- paste(along, levels, sep=": ")
   if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels, parentheses = parentheses) 
@@ -963,7 +969,7 @@ heatmap_table <- function(vars, data = all, along = "country_name", conditions =
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
-  if (along == "country_name" & !alphabetical) {
+  if (along == "country_name" & !alphabetical & exists(countries_names)) {
     levels <- c()
     for (l in countries_names) if (l %in% Levels(e[[along]])) levels <- c(levels, l)
   } else levels <- Levels(e[[along]])
