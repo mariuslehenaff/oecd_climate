@@ -691,7 +691,7 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
   if (nolabel & length(labels)==1) labels <- "" 
   if (is.data.frame(df)) df <- list(df)
   if (!missing(along)) {
-    if (along == "country_name" & !alphabetical & exists(countries_names)) {
+    if (along == "country_name" & !alphabetical & exists("countries_names")) {
       levels <- c()
       for (l in countries_names) if (l %in% Levels(df[[1]][[along]])) levels <- c(levels, l)
     } else levels <- Levels(df[[1]][[along]])
@@ -969,7 +969,7 @@ heatmap_table <- function(vars, data = all, along = "country_name", conditions =
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
-  if (along == "country_name" & !alphabetical & exists(countries_names)) {
+  if (along == "country_name" & !alphabetical & exists("countries_names")) {
     levels <- c()
     for (l in countries_names) if (l %in% Levels(e[[along]])) levels <- c(levels, l)
   } else levels <- Levels(e[[along]])

@@ -876,10 +876,10 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
           save_plotly_new_filename(temp, filename = paste0("policies_win_lose_self", text_file), width= 870, height=fig_height(3*length(levels)))})
       
       try({(temp <- barresN(vars = paste(names_policies, "support", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = df, along = along, miss=F, labels=labels_policies))
-          save_plotly_new_filename(temp, filename = paste0("policies_support", text_file), width= 1020, height=fig_height(3*length(levels)))})
+          save_plotly_new_filename(temp, filename = paste0("policies_support", text_file), width= 1160, height=fig_height(3*length(levels)))})
       
       try({(temp <- barresN(vars = "donation_agg", export_xls = export_xls, df = df, along = along, miss=F, rev = F, rev_color = T, labels="Donation to climate charity<br>(in % of max ~ 100$)"))
-          save_plotly_new_filename(temp, filename = paste0("donation_agg", text_file), width= 600, height=fig_height(1*length(levels)))})
+          save_plotly_new_filename(temp, filename = paste0("donation_agg", text_file), width= 650, height=fig_height(1*length(levels)))})
       
       try({(temp <- barresN(vars = "global_assembly_support", rev = F, rev_color = T, export_xls = export_xls, df = df, along = along, miss=F, labels="Global democratic assembly<br>on climate change"))
           save_plotly_new_filename(temp, filename = paste0("global_assembly_support", text_file), width= 990, height=fig_height(1*length(levels)))})
@@ -946,7 +946,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     return(save_plotly(plot, filename = filename, folder = folder, width = width, height = height, method=method, trim = trim))
   }
   
-  if (figures) { # TODO! legend on one line
+  if (figures) { 
+    # To get legend on one line with Suuport...1-5 likert: 1160 / Agree...: 1300 (for Support: min 1070/1110/1160 for one line / wide bars / legend not exceeding the bars)
+    
     ##### Pre-treatment ## #####
     
     # ##### 1. Demographics ##### TODO: comp
@@ -960,7 +962,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     #   save_plotly_new_filename(region_US, width= 800, height=fig_height(1*nb_levels))})
     # 
     try({(urbanity_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "urbanity", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Size of town"))
-      save_plotly_new_filename(urbanity_US, width= 660, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(urbanity_US, width= 820, height=fig_height(1*nb_levels))})
     
     try({(urban_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "urban", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Urban"))
       save_plotly_new_filename(urban_US, width= 660, height=fig_height(1*nb_levels))})
@@ -978,10 +980,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(wealth_US, width= 480, height=fig_height(1*nb_levels))})
     
     try({(education_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "education", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Highest level of education"))
-      save_plotly_new_filename(education_US, width= 1080, height=fig_height(1*nb_levels)) })
+      save_plotly_new_filename(education_US, width= 1300, height=fig_height(1*nb_levels)) })
     
     try({(diploma_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "diploma", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Highest diploma"))
-      save_plotly_new_filename(diploma_US, width= 620, height=fig_height(1*nb_levels)) })
+      save_plotly_new_filename(diploma_US, width= 725, height=fig_height(1*nb_levels)) })
     
     try({(employment_status_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "employment_agg", export_xls = export_xls, df = e, miss=F, labels="What is your employment status?"))
       save_plotly_new_filename(employment_status_US, width= 630, height=fig_height(1*nb_levels))})
@@ -1013,7 +1015,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(nb_children_US, width= 470, height=fig_height(1*nb_levels))})
     
     try({(hh_size_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "HH_size", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F,labels="People in household"))
-      save_plotly_new_filename(hh_size_US, width= 470, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(hh_size_US, width= 500, height=fig_height(1*nb_levels))})
     
     ##### 2. HH composition and energy characteristics #####
     
@@ -1024,10 +1026,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(heating_expenses_US, width= 950, height=fig_height(1*nb_levels))})
     
     try({(insulation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation", export_xls = export_xls, df = e, miss=F, rev_color = T, labels="Quality of insulation", rev = F))
-      save_plotly_new_filename(insulation_US, width= 600, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(insulation_US, width= 690, height=fig_height(1*nb_levels))})
     
     try({(gas_expenses_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "gas_expenses", export_xls = export_xls, df = e, miss=F, labels="Monthly gas expenses", rev = F))
-      save_plotly_new_filename(gas_expenses_US, width= 800, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(gas_expenses_US, width= 900, height=fig_height(1*nb_levels))})
     
     try({(flights_3y_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "flights_3y", export_xls = export_xls, df = e, miss=F, rev = F, labels="Round-trip flights between 2017 and 2019"))
       save_plotly_new_filename(flights_3y_US, width= 800, height=fig_height(1*nb_levels))})
@@ -1094,7 +1096,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(CC_anthropogenic_non_deniers_US, width= 660, height=fig_height(1*nb_levels))})
     
     try({(CC_problem_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "CC_problem", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Climate change is an important problem."))
-      save_plotly_new_filename(CC_problem_US, width= 1125, height=fig_height(1*nb_levels)) })
+      save_plotly_new_filename(CC_problem_US, width= 1300, height=fig_height(1*nb_levels)) })
     
     try({(CC_knowledgeable_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "CC_knowledgeable", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="How knowledgeable about climate change"))
       save_plotly_new_filename(CC_knowledgeable_US, width= 800, height=fig_height(1*nb_levels))})
@@ -1109,55 +1111,55 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(score_GHG_US, width= 550, height=fig_height(1*nb_levels))}) 
     
     try({(footprint_elec_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$el[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$el[c(2,1,3)]))
-      save_plotly_new_filename(footprint_elec_US, width= 400, height=fig_height(3*nb_levels)) })
+      save_plotly_new_filename(footprint_elec_US, width= 400, height=fig_height(1*nb_levels)) })
     
     try({(footprint_transport_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$tr[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$tr[c(2,1,3)]))
-      save_plotly_new_filename(footprint_transport_US, width= 400, height=fig_height(3*nb_levels)) })
+      save_plotly_new_filename(footprint_transport_US, width= 400, height=fig_height(1*nb_levels)) })
     
     try({(footprint_food_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$fd[c(2,3,1)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$fd[c(2,3,1)]))
-      save_plotly_new_filename(footprint_food_US, width= 400, height=fig_height(3*nb_levels)) }) 
+      save_plotly_new_filename(footprint_food_US, width= 400, height=fig_height(1*nb_levels)) }) 
     
     try({(footprint_region_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(Variables_footprint$reg, "original", sep="_")[c(4,2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=T, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$reg[c(4,2,1,3)]))
-      save_plotly_new_filename(footprint_region_US, width= 400, height=fig_height(4*nb_levels)) })
+      save_plotly_new_filename(footprint_region_US, width= 640, height=fig_height(1*nb_levels)) })
     
     try({(footprint_region_no_miss_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$reg[c(4,2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$reg[c(4,2,1,3)]))
-      save_plotly_new_filename(footprint_region_no_miss_US, width= 400, height=fig_height(4*nb_levels)) })
+      save_plotly_new_filename(footprint_region_no_miss_US, width= 640, height=fig_height(1*nb_levels)) })
     
     try({(footprint_pc_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(Variables_footprint$pc, "original", sep="_")[4:1], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=T, legend = c("1 Most", "2", "3", "4 Least", "PNR"), labels=Labels_footprint$pc[4:1]))
-      save_plotly_new_filename(footprint_pc_US, width= 400, height=fig_height(4*nb_levels)) })
+      save_plotly_new_filename(footprint_pc_US, width= 640, height=fig_height(1*nb_levels)) })
 
     try({(footprint_pc_no_miss_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = Variables_footprint$pc[4:1], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, legend = c("1 Most", "2", "3", "4 Least"), labels=Labels_footprint$pc[4:1]))
-      save_plotly_new_filename(footprint_pc_no_miss_US, width= 400, height=fig_height(4*nb_levels)) })
+      save_plotly_new_filename(footprint_pc_no_miss_US, width= 640, height=fig_height(1*nb_levels)) })
     
     try({(footprint_elec_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_el", export_xls = export_xls, df = e, miss=F, labels="Smallest electricity footprint"))
-      save_plotly_new_filename(footprint_elec_US_least, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_elec_US_least, width= 470, height=fig_height(1*nb_levels)) })
     
     try({(footprint_transport_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_tr", export_xls = export_xls, df = e, miss=F, labels="Smallest transport footprint"))
-      save_plotly_new_filename(footprint_transport_US_least, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_transport_US_least, width= 470, height=fig_height(1*nb_levels)) })
     
     try({(footprint_food_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_fd", export_xls = export_xls, df = e, miss=F, labels="Smallest food footprint"))
-      save_plotly_new_filename(footprint_food_US_least, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_food_US_least, width= 470, height=fig_height(1*nb_levels)) })
     
     try({(footprint_region_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_reg", export_xls = export_xls, df = e, miss=T, labels="Smallest regional emissions"))
-      save_plotly_new_filename(footprint_region_US_least, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_region_US_least, width= 640, height=fig_height(1*nb_levels)) })
     
     try({(footprint_pc_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_pc", export_xls = export_xls, df = e, miss=T, labels="Smallest regional footprint per capita"))
-      save_plotly_new_filename(footprint_pc_US_least, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_pc_US_least, width= 1100, height=fig_height(1*nb_levels)) }) # 640
     
     try({(footprint_elec_US_most <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "most_footprint_el", export_xls = export_xls, df = e, miss=F, labels="Largest electricity footprint"))
-      save_plotly_new_filename(footprint_elec_US_most, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_elec_US_most, width= 470, height=fig_height(1*nb_levels)) })
     
     try({(footprint_transport_US_most <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "most_footprint_tr", export_xls = export_xls, df = e, miss=F, labels="Largest transport footprint"))
-      save_plotly_new_filename(footprint_transport_US_most, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_transport_US_most, width= 470, height=fig_height(1*nb_levels)) })
     
     try({(footprint_food_US_most <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "most_footprint_fd", export_xls = export_xls, df = e, miss=F, labels="Largest food footprint"))
-      save_plotly_new_filename(footprint_food_US_most, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_food_US_most, width= 640, height=fig_height(1*nb_levels)) })
     
     try({(footprint_region_US_most <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "most_footprint_reg", export_xls = export_xls, df = e, miss=T, labels="Largest regional emissions"))
-      save_plotly_new_filename(footprint_region_US_most, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_region_US_most, width= 640, height=fig_height(1*nb_levels)) })
     
     try({(footprint_pc_US_most <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "most_footprint_pc", export_xls = export_xls, df = e, miss=T, labels="Largest regional footprint per capita"))
-      save_plotly_new_filename(footprint_pc_US_most, width= 470, height=fig_height(2*nb_levels)) })
+      save_plotly_new_filename(footprint_pc_US_most, width= 640, height=fig_height(1*nb_levels)) })
     
     try({(score_footprint_transport_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "score_footprint_transport", rev = F, export_xls = export_xls, df = e, miss=F, labels="Distance true ranking<br>transport footprint"))
       save_plotly_new_filename(score_footprint_transport_US, width= 520, height=fig_height(1*nb_levels)) })
@@ -1192,7 +1194,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(CC_responsible_US, width= 720, height=fig_height(5*nb_levels)) })
     
     try({(net_zero_feasible_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "net_zero_feasible", export_xls = export_xls, df = e, miss=F, rev = F, rev_color=T, labels="Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in [Country]"))
-      save_plotly_new_filename(net_zero_feasible_US, width= 620, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(net_zero_feasible_US, width= 770, height=fig_height(1*nb_levels))})
     
     try({(CC_affects_self_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "CC_affects_self", export_xls = export_xls, df = e, rev = F, rev_color = T, miss = F, labels="Climate change negatively affects personal life"))
       save_plotly_new_filename(CC_affects_self_US, width= 800, height=fig_height(1*nb_levels)) })
@@ -1210,10 +1212,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(CC_will_end_US, width= 855, height=fig_height(1*nb_levels))})
     
     try({(effect_halt_CC_economy_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "effect_halt_CC_economy", export_xls = export_xls, df = e, rev = F, rev_color = T, miss = F, labels="Effects of ambitious policies <br> on the U.S economy and employment"))
-      save_plotly_new_filename(effect_halt_CC_economy_US, width= 820, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(effect_halt_CC_economy_US, width= 850, height=fig_height(1*nb_levels))})
     
     try({(effect_halt_CC_lifestyle_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "effect_halt_CC_lifestyle", export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels="Negative effects of ambitious policies on lifestyle"))
-      save_plotly_new_filename(effect_halt_CC_lifestyle_US, width= 680, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(effect_halt_CC_lifestyle_US, width= 770, height=fig_height(1*nb_levels))})
     
     labels_willing <- c()
     for (v in variables_willing) labels_willing <- c(labels_willing, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -1257,13 +1259,13 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # save_plot(filename = paste0(folder, "standard_lose", replacement_text), width = 800, height = 400)})
     
     try({(standard_fair_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "standard_fair", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Ban on combustion-engine cars fair"))
-      save_plotly_new_filename(standard_fair_US, width= 1100, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(standard_fair_US, width= 1300, height=fig_height(1*nb_levels))})
     
     try({(standard_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "standard_support", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Ban on combustion-engine cars"))
-      save_plotly_new_filename(standard_support_US, width= 980, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(standard_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     try({(standard_public_transport_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "standard_public_transport_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Ban on combustion-engine cars with<br>alternatives such as public transports available"))
-      save_plotly_new_filename(standard_public_transport_support_US, width= 950, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(standard_public_transport_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     ##### 8. Pref 2: Green investments #####
     # try({ temp <- heatmap_table(vars = variables_investments_effect, along = along, conditions = c("> 0"), on_control = T)
@@ -1297,10 +1299,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # save_plot(filename = paste0(folder, "investments_lose", replacement_text), width = 800, height = 400)})
     
     try({(investments_fair_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "investments_fair", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Green infrastructure program is fair"))
-      save_plotly_new_filename(investments_fair_US, width= 1120, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(investments_fair_US, width= 1300, height=fig_height(1*nb_levels))})
     
     try({(investments_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "investments_support", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Green infrastructure program"))
-      save_plotly_new_filename(investments_support_US, width= 980, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(investments_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     labels_investments_funding <- c()
     for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -1339,10 +1341,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # save_plot(filename = paste0(folder, "tax_transfers_lose", replacement_text), width = 800, height = 400)})
     
     try({(tax_transfers_fair_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_transfers_fair", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Tax with cash transfers is fair"))
-      save_plotly_new_filename(tax_transfers_fair_US, width= 1100, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(tax_transfers_fair_US, width= 1300, height=fig_height(1*nb_levels))})
     
     try({(tax_transfers_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_transfers_support", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="Tax with cash transfers"))
-      save_plotly_new_filename(tax_transfers_support_US, width= 980, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(tax_transfers_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     ##### 6-8. Specific policies #####
     labels_policies <- c("A ban on combustion-engine cars", "A green infrastructure program", "A carbon tax with cash transfers")
@@ -1356,7 +1358,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(policies_negative_effect_US, width= 1100, height=fig_height(3*nb_levels))})
     
     try({(policies_fair_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(names_policies, "fair", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=labels_policies))
-      save_plotly_new_filename(policies_fair_US, width= 1100, height=fig_height(3*nb_levels))})
+      save_plotly_new_filename(policies_fair_US, width= 1300, height=fig_height(3*nb_levels))})
     
     try({(policies_win_lose_poor_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(names_policies, "win_lose_poor", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=labels_policies))
       save_plotly_new_filename(policies_win_lose_poor_US, width= 870, height=fig_height(3*nb_levels))})
@@ -1497,7 +1499,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(scale_US, width= 460, height=fig_height(4*nb_levels)) })
     
     try({(should_fight_CC_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "should_fight_CC", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels="[Country] should fight CC"))
-      save_plotly_new_filename(should_fight_CC_US, width= 1075, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(should_fight_CC_US, width= 1160, height=fig_height(1*nb_levels))})
     
     labels_if_other_do <- c()
     for (v in variables_if_other_do) labels_if_other_do <- c(labels_if_other_do, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -1533,13 +1535,13 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     #   save_plot(filename = paste0(folder, "burden_sharing_strongly_disagree", replacement_text), width = 800, height = 400)})
     
     try({(global_assembly_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "global_assembly_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global democratic assembly<br>on climate change"))
-      save_plotly_new_filename(global_assembly_support_US, width= 990, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(global_assembly_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     try({(global_tax_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "global_tax_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on GHG<br> financing a global basic income"))
-      save_plotly_new_filename(global_tax_support_US, width= 930, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(global_tax_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     try({(tax_1p_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br>to finance low-income countries"))
-      save_plotly_new_filename(tax_1p_support_US, width= 930, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(tax_1p_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     labels_global_policies <<- c("Global democratic assembly<br> on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br>to finance low-income countries")
     try({(global_policies_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("global_assembly_support", "global_tax_support", "tax_1p_support"), export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
@@ -1548,10 +1550,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     ##### 13. Pref for bans vs. incentives #####
     
     try({(will_insulate_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "will_insulate", export_xls = export_xls, df = e, miss=F, labels="Insulate or replace heating<br>over the next 5 years"))
-      save_plotly_new_filename(will_insulate_US, width= 730, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(will_insulate_US, width= 900, height=fig_height(1*nb_levels))})
     
     try({(insulation_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation_support", export_xls = export_xls, df = e, miss=F, labels="Mandatory insulation with subsidies"))
-      save_plotly_new_filename(insulation_support_US, width= 1035, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(insulation_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     # try({(insulation_support_variant_US <- barres12(vars = "insulation_support", export_xls = export_xls, df = list(e[e$insulation_disruption_variant==T,], e[e$insulation_disruption_variant==F,]), orig="<br>Control", comp = "Priming: renovation cause disruption", miss=F, labels="Mandatory insulation with subsidies"))
     #   save_plotly_new_filename(insulation_support_variant_US, width= 1035, height=fig_height(3*nb_levels)) }) # TODO
@@ -1567,10 +1569,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     #   save_plotly_new_filename(insulation_subsidies_support_US, width= 1030, height=fig_height(1*nb_levels))})
     
     try({(insulation_mandatory_support_no_priming_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation_mandatory_support_no_priming", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Support for making insulation mandatory<br>if half the costs are subsidized by govt"))
-      save_plotly_new_filename(insulation_mandatory_support_no_priming_US, width= 1030, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(insulation_mandatory_support_no_priming_US, width= 1160, height=fig_height(1*nb_levels))})
     
     try({(insulation_mandatory_support_priming_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation_mandatory_support_priming", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Support for making insulation mandatory<br>if half the costs are subsidized by govt<br>With priming about the hurdles."))
-      save_plotly_new_filename(insulation_mandatory_support_priming_US, width= 1030, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(insulation_mandatory_support_priming_US, width= 1160, height=fig_height(1*nb_levels))}) # TODO
     
     # try({(insulation_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("insulation_subsidies_support", "insulation_mandatory_support"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=c("Insulation subsidized", "...and mandatory")))
     #   save_plotly_new_filename(insulation_support_US, width= 960, height=fig_height(2*nb_levels))})
@@ -1584,16 +1586,16 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     ##### 14. Trust, perceptions of institutions, etc. #####
     
     try({(can_trust_people_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "can_trust_people", export_xls = export_xls, df = e, miss=F, rev_color = T, rev=F, labels="Trust other people"))
-      save_plotly_new_filename(can_trust_people_US, width= 1060, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(can_trust_people_US, width= 1160, height=fig_height(1*nb_levels))})
     
     try({(can_trust_govt_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "can_trust_govt", export_xls = export_xls, df = e, miss=F, rev_color = T, rev=F, labels="Trust the [country] government <br> over the last decade to do what is right"))
-      save_plotly_new_filename(can_trust_govt_US, width= 875, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(can_trust_govt_US, width= 1160, height=fig_height(1*nb_levels))})
     
     try({(view_govt_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "view_govt", export_xls = export_xls, df = e, miss=F, rev_color = T, rev=F, labels="View on government intervention"))
       save_plotly_new_filename(view_govt_US, width= 700, height=fig_height(1*nb_levels))})
     
     try({(problem_inequality_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "problem_inequality", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Income inequality in [Country]"))
-      save_plotly_new_filename(problem_inequality_US, width= 950, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(problem_inequality_US, width= 1100, height=fig_height(1*nb_levels))})
     
     try({(future_richness_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "future_richness", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="In 100 years, people in the world will be..."))
       save_plotly_new_filename(future_richness_US, width= 850, height=fig_height(1*nb_levels))})
@@ -1601,7 +1603,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     ##### 15. Political views #####
     
     try({(interested_politics_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "interested_politics", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Interested in politics"))
-      save_plotly_new_filename(interested_politics_US, width= 700, height=fig_height(1*nb_levels))})
+      save_plotly_new_filename(interested_politics_US, width= 790, height=fig_height(1*nb_levels))})
     
     try({(member_environmental_orga_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "member_environmental_orga", export_xls = export_xls, df = e, miss=F, labels="Member of an<br> environmental organization"))
       save_plotly_new_filename(member_environmental_orga_US, width= 622, height=fig_height(1*nb_levels))})
@@ -1890,6 +1892,7 @@ render_figures_tables_country(dk, "DK", folder_country = T, tables = F, export_x
 render_figures_tables_country(fr, "FR", folder_country = T, tables = F, export_xls = T)
 render_figures_tables_country(us, "US", folder_country = T, tables = F, export_xls = T)
 
+# /!\ The size of plot window matters for proper save of figures: it should be at least 1770*400
 render_country_comparison(along = "country_name", parentheses = F, nolabel = T, folder_country = T, name_country = T, on_control = T, export_xls = F, figures = T, tables = T)
 
 update_constant(fr)
