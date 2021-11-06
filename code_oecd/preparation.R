@@ -27,11 +27,16 @@ for (c in euro_countries) {
   inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
   inc_quartiles[c,2] <- inc_deciles[c,5]
   inc_quartiles[c,3] <- round((inc_deciles[c,7]+inc_deciles[c,8])/2) }
-countries <- c("US", euro_countries, "JP", "CN", "IA", "ID", "SA")  # countries[sample(1:12, 1)]
-countries_names <- c("United States", euro_countries_names, "Japan", "China", "India", "Indonesia", "South Africa") # TODO? USA? UK?
-Country_names <- c("the U.S.", "Denmark", "France", "Germany", "Italy", "Poland", "Spain", "the U.K.", "Japan", "China", "India", "Indonesia", "South Africa")
-country_names <- c("American", "Danish", "French", "German", "Italian", "Polish", "Spanish", "British", "Japanese", "Chinese", "Indian", "Indonesian", "South African")
-tax_price_increase <- c("$0.40/gallon", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "0.40 zł/L", "0.10 €/L", "0.08 £/L", "¥12/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.6/L")
+# Two credible possibilities: OECD-alphabetical (adopted for now) or purely alphabetical
+# OECD-alphabetical ("AU", "CA", "DK", "FR", "DE", "IT", "JP", "MX", "PL", "SK", "SP", "TR", "UK", "US"), non-OECD ("BR", "CN", "IA", "ID", "SA", "UA") / nope: Oceania, Northern America, Europe, Latin America, Asia, Africa 
+# OECD-regional ("AU", "CA", "US", "JP", "SK", "DK", "FR", "DE", "IT", "PL", "SP", "UK", "TR", "MX")
+# alphabetical ("AU", "BR", "CA", "CN", "DK", "FR", "DE", "IA", "ID", "IT", "JP", "MX", "PL", "SA", "SK", "SP", "TR", "UA", "UK", "US")
+countries <- c("AU", "CA", "DK", "FR", "DE", "IT", "JP", "MX", "PL", "SK", "SP", "TR", "UK", "US", "BR", "CN", "IA", "ID", "SA", "UA")  # countries[sample(1:12, 1)]
+# countries <- c("US", "CA", "AU", euro_countries, "UA", "TR", "JP", "SK", "CN", "ID", "IA", "SA", "BR", "MX")  # countries[sample(1:12, 1)]
+countries_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "United Kingdom", "United States", "Brazil", "China", "India", "Indonesia", "South Africa", "Poland") # TODO? USA? UK?
+Country_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "the U.K.", "the U.S.", "Brazil", "China", "India", "Indonesia", "South Africa", "Poland")
+country_names <- c("Australian", "Canadian", "Danish", "French", "German", "Italian", "Japanese", "Mexican", "Polish", "South Korean", "Spanish", "Turkish", "British", "American", "Brazilian", "Chinese", "Indian", "Indonesian", "South African", "Ukrainian")
+tax_price_increase <- c("AU$0.15/L", "CA$0.14/L", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "¥12/L", "Mex$2.2/L", "0.40 zł/L", "₩125/L", "0.10 €/L", "₺1/L", "£0.08/L", "$0.40/gallon", "0.60 R$/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.60/L", "3₴/L")
 names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- countries
 parties_leaning <- list()
 loadings_efa <- list()
@@ -2575,6 +2580,7 @@ e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
 e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
 e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
 e <- sk <- prepare(country = "SK", duration_min = 686, weighting = F)
+ua <- pl
 current_countries <- c("DK", "US", "FR", "DE")
 ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
 All <- list()
