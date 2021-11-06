@@ -4351,8 +4351,8 @@ relabel_and_rename_SA <- function(e) {
     "gender",
     "age",
     "zipcode",
-    "area", # TODO
     "urbanity",
+    "area", # TODO
     "origin", # TODO
     "couple",
     "marital_status",
