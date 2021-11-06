@@ -2,6 +2,7 @@
 # setwd("C:/Users/afabre/Google Drive/Economie/Travail/oecd_climate/code_oecd")
 
 source(".Rprofile")
+source("relabel_rename.R")
 
 # TODO! DE: know_local_damage, left_right, vote, heating, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
 # TODO!!: affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; code CSP, cu, share of policies approved, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, index_pro_climate, vote, ranking vs. order of display
@@ -33,11 +34,14 @@ for (c in euro_countries) {
 # alphabetical ("AU", "BR", "CA", "CN", "DK", "FR", "DE", "IA", "ID", "IT", "JP", "MX", "PL", "SA", "SK", "SP", "TR", "UA", "UK", "US")
 countries <- c("AU", "CA", "DK", "FR", "DE", "IT", "JP", "MX", "PL", "SK", "SP", "TR", "UK", "US", "BR", "CN", "IA", "ID", "SA", "UA")  # countries[sample(1:12, 1)]
 # countries <- c("US", "CA", "AU", euro_countries, "UA", "TR", "JP", "SK", "CN", "ID", "IA", "SA", "BR", "MX")  # countries[sample(1:12, 1)]
-countries_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "United Kingdom", "United States", "Brazil", "China", "India", "Indonesia", "South Africa", "Poland") # TODO? USA? UK?
-Country_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "the U.K.", "the U.S.", "Brazil", "China", "India", "Indonesia", "South Africa", "Poland")
+countries_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "United Kingdom", "United States", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine") # TODO? USA? UK?
+Country_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "the U.K.", "the U.S.", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine")
 country_names <- c("Australian", "Canadian", "Danish", "French", "German", "Italian", "Japanese", "Mexican", "Polish", "South Korean", "Spanish", "Turkish", "British", "American", "Brazilian", "Chinese", "Indian", "Indonesian", "South African", "Ukrainian")
 tax_price_increase <- c("AU$0.15/L", "CA$0.14/L", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "¥12/L", "Mex$2.2/L", "0.40 zł/L", "₩125/L", "0.10 €/L", "₺1/L", "£0.08/L", "$0.40/gallon", "0.60 R$/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.60/L", "3₴/L")
-names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- countries
+max_donation_country <- c(100, 100, 600, 100, 100, 100, 10^4, 1000, 500, 10^5, 100, 1000, 100, 100, 500, 1000, 10^4, 10^6, 1000, 1000)
+duration_climate_video <- 120 + c(20, 20, 24, 18, 30, 20, 32, 7, 8, 10, 30, 7, 29, 61, 25, 17, 25, 40, 12, 31) # TODO! CA-FR, IA-HI, SA-ZU, UA-RU: c(16, 25, 26, 21)
+duration_policy_video <- 240 + c(6, 22, 38, 33, 73, 74, 66, 44, 63, 67, 94, 35, 59, 44, 42, 36, 38, 16, 10, 69) #  CA-FR, IA-HI, SA-ZU, UA-RU: c(23, 25, 61, 40)
+names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- names(max_donation_country) <- names(duration_climate_video) <- names(duration_policy_video) <- countries
 parties_leaning <- list()
 loadings_efa <- list()
 
@@ -61,12 +65,12 @@ loadings_efa <- list()
                  "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
                  "IA_region" = c("Northern", "Southern", "Central", "Eastern", "Western"),
                  #"IA_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
-                 "IT_region" = c("North-West", "North-East" ,"Centre", "South", "Islands"),
+                 "IT_region" = c("North-West", "North-East" ,"Center", "South", "Islands"),
                  "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
                  "UK_region" = c("London", "Southern England", "Central UK", "Northern England", "Northern UK"),
                  "UK_urban_category" = c("Rural", "City_Town", "Large_urban"),
                  "PL_region" = c("North", "Central", "South-West", "Central-East", "South-East"),
-                 "ES_region" = c("East", "Center",  "South North", "North-West"),
+                 "SP_region" = c("East", "Center",  "South", "North", "North-West"),
                  "DE_region" = c("Northern", "Western", "Central", "Eastern", "Southern"),
                  "DE_urban_category" = c("Rural", "Towns_and_Suburbs", "Cities"),
                  "JP_region" = c("Kanto", "Kansai", "North", "Chubu", "South"),
@@ -76,7 +80,7 @@ loadings_efa <- list()
                  "CN_urban_category" = c("Rural", "Small_Urban", "Urban"),
                  "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
                  "MX_region" = c("Central-Western", "Central-Eastern", "North-East", "North-West", "South"),
-                 "MX_urban_category" = c("Rural", "Semiurban", "Urban"),
+                 "MX_urban_category" = c("Rural", "Semiurbano", "Urbano"),
                  "SK_region" = c("Seoul", "North", "West", "East"),
                  "SK_urban_category" = c("District", "Town", "City"),
                  "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
@@ -84,183 +88,198 @@ loadings_efa <- list()
                  "TR_region" = c("Marmara", "West", "Central", "East"),
                  "UA_region" = c("Center", "East", "South", "West")
 
-
   )
   
   pop_freq <- list(
-  "US" = list(
-    "gender" = c(0.5074,0.000001,0.4974),
-    "income" = c(0.2034,0.239,0.2439,0.3137),
-    "age" = c(0.118,0.180,0.243,0.2467,0.2118),
-    "urban" = c(0.2676,0.7324),
-    "US_region" = c(0.171,0.208,0.383,0.239),
-    "US_core_metropolitan" = c(0.2676,0.7324),
-    "US_race" = c(.601, .185, .134, .080),
-    "US_vote_2020" = c(0.342171, 0.312823, 0.345006)
-  ),
-  "DK" = list(
-    "gender" = c(0.503, 0.000001, 0.497),
-    "income" = c(0.2634, 0.2334, 0.2782, 0.2249),
-    "age" = c(0.110, 0.165, 0.230, 0.245, 0.251),
-    "urban" = c(0.4703, 0.5297),
-    "DK_region" = c(0.3176, 0.2281, 0.1011, 0.1436, 0.2095) # TODO: add vote_agg / vote
-  ),
-  "FR" = list(
-    "gender" = c(0.516, 0.000001, 0.484),
-    "income" = rep(.25, 4),
-    "urban" = c(0.405, 0.595),
-    "age" = c(0.120,0.150,0.240,0.240,0.250),
-    "diploma" = c(0.290, 0.248, 0.169, 0.293),
-    "FR_region" = c(0.000001, 0.18920, 0.21968, 0.20041, 0.25097, 0.13980),
-    "FR_urban_category" = c(0.595, 0.184, 0.222),
-    "FR_diploma" = c(0.290, 0.248, 0.169, 0.293),
-    "FR_CSP" = c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008),
-    "FR_region9" = c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831),
-    "FR_taille_agglo" = c(0.2166,0.1710,0.1408,0.3083,0.1633)
-  ),
-  "IA" = list(
-    "gender" = c(0.486, 0.000001, 0.514),
-    "income" = rep(.25, 4),
-    "age" = c(),
-    "urban" = c(0.639, 0.361), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IA_urban_category (same for all countries)
-    "IA_region" = c(0.1317, 0.2015, 0.2654, 0,2635, 0.1380)
-    # "IA_urban_category" = c(0.4093,  0.2294,  0.1115,  0.1102,  0.1096,  0.02984315)
-  ),
-  "IT" = list(
-    "gender" = c(0.524, 0.000001, 0.476),
-    "income" = rep(.25, 4),
-    "urban" = c(0.4699139, 0.5300861), 
-    "IT_region" = c(0.2659,  0.1920,  0.1971,  0.2340,  0.1109),
-    "IT_urban_category" = c(0.349, 0.480, 0.170),
-    "age" = c(0.080, 0.122, 0.242, 0.271, 0.285)
-  ),
-  "UK" = list(
-    "gender" = c(0.504, 0.000001, 0.496),
-    "income" = rep(.25, 4),
-    "age" = c(0.102, 0.168, 0.244, 0.246, 0.241),
-    "urban" = c(FALSE, TRUE),
-    "UK_urban_category" = c(0.176, 0.423, 0.401),
-    "UK_region" = c(0.1297,  0.3122,  0.2095,  0.2365,  0.1121)
-  ),
-  "SA" = list(
-    "gender" = c(0.506, 0.000001, 0.494),
-    "income" = rep(.25, 4),
-    "age" = c(0.213, 0.285, 0.283, 0.161, 0.058),
-    "urban" = c(0.511, 0.489), 
-    "SA_region" = c(0.237050995, 0.13460536,  0.12083205,  0.182435864, 0.325075732)
-  ),
-  "ES" = list(
-    "gender" = c(0.506, 0.494),
-    "income" = rep(.25, 4),
-    "age" = c(0.079, 0.124, 0.285, 0.266, 0.246),
-    "urban" = c(0.3026822, 0.6973178), 
-    "ES_region" = c(0.295240048, 0.185984429, 0.28212128,  0.107772926, 0.128881318)
-  ),
-  "PL" = list(
-    "gender" = c(0.519, 0.000001, 0.481),
-    "income" = rep(.25, 4),
-    "age" = c(0.087, 0.170, 0.282, 0.236, 0.225),
-    "urban" = c(0.433, 0.567), 
-    "PL_region" = c(0.226997438, 0.117602275, 0.218682176, 0.144438833, 0.292279278)
-  ),
-  "JP" = list(
-    "gender" = c(0.519, 0.000001, 0.481),
-    "income" = rep(.25, 4),
-    "age" = c(0.078, 0.121, 0.244, 0.224, 0.334),
-    "urban" = c(0.304, 0.696), 
-    "JP_region" = c(0.345997408, 0.176839094, 0.109666596, 0.167605084, 0.199891819)
-  ),
-  "DE" = list(
-    "gender" = c(0.512, 0.000001, 0.488),
-    "income" = rep(.25, 4),
-    "age" = c(0.085, 0.150, 0.222, 0.280, 0.263),
-    "urban" = c(FALSE, TRUE), 
-    "DE_region" = c(0.1808, 0.2769, 0.1013, 0.1498, 0.2913),
-    "DE_urban_category" = c(0.2020653, 0.4032331, 0.395)
-  ),
-  "ID" = list(
-    "gender" = c(0.500, 0.000001, 0.500),
-    "income" = rep(.25, 4),
-    "age" = c(0.170, 0.228, 0.310, 0.208, 0.084),
-    "urban" = c(0.433, 0.567), 
-    "ID_region" = c(0.269977941, 0.299427716, 0.133590934, 0.082251799, 0.21475161)
-  ),
-  "CN" = list(
-    "gender" = c(0.492, 0.000001, 0.508),
-    "income" = rep(.25, 4),
-    "age" = c(0.099, 0.204, 0.279, 0.265, 0.154),
-    "urban" = c(FALSE, TRUE), 
-    "CN_urban_category" = c(0.369993069, 0.352742656, 0.277264275),
-    "CN_region" = c(0.123751183, 0.082229515, 0.28858566,  0.287981136, 0.217452506)
-  ),
-    "BR" = list(
-    "gender" = c(0.512, 0.000001, 0.488),
-    "income" = rep(.25, 4),
-    "age" = c(0.149, 0.215, 0.296, 0.212, 0.128),
-    "urban" = c(0.310, 0.690), 
-    "BR_region" = c(0.088179878, 0.270945458, 0.42035347,  0.14258089,  0.077940304)
-  ),
-    "MX" = list(
-    "gender" = c(0.518, 0.000001, 0.482),
-    "income" = rep(.25, 4),
-    "age" = c(0.176, 0.233, 0.300, 0.183, 0.109),
-    "urban" = c(FALSE, TRUE),
-    "MX_urban_category" = c(0.214, 0.149, 0.637),
-    "MX_region" = c(0.215061603, 0.329736673, 0.098869535, 0.127872823, 0.228459366)
-  ),
-    "SK" = list(
-    "gender" = c(0.498, 0.000001, 0.502),
-    "income" = rep(.25, 4),
-    "age" = c(0.098, 0.159, 0.274, 0.282, 0.187),
-    "urban" = c(FALSE, TRUE),
-    "SK_urban_category" = c(0.08407891, 0.4967454, 0.4191757),
-    "SK_region" = c(0.186166268, 0.343251015, 0.220256596, 0.25032612)
-  ),
     "AU" = list(
-    "gender" = c(0.506, 0.000001, 0.494),
-    "income" = rep(.25, 4),
-    "age" = c(0.112, 0.186, 0.262, 0.230, 0.210),
-    "urban" = c(0.284, 0.716), 
-    "AU_region" = c(0.113539668, 0.202217231, 0.334920221, 0.06893035,  0.280392531)
-  ),
+      "gender" = c(0.506, 0.000001, 0.494),
+      "income" = rep(.25, 4),
+      "age" = c(0.112, 0.186, 0.262, 0.230, 0.210),
+      "urban" = c(0.284, 0.716), 
+      "AU_region" = c(0.113539668, 0.202217231, 0.334920221, 0.06893035,  0.280392531)
+    ),
     "CA" = list(
-    "gender" = c(0.507, 0.000001, 0.493),
-    "income" = rep(.25, 4),
-    "age" = c(0.104, 0.175, 0.245, 0.253, 0.223),
-    "urban" = c(0.167, 0.833), 
-    "CA_region" = c(0.255595117, 0.067210485, 0.387866504, 0.225157997, 0.064169897)
-  ),
+      "gender" = c(0.507, 0.000001, 0.493),
+      "income" = rep(.25, 4),
+      "age" = c(0.104, 0.175, 0.245, 0.253, 0.223),
+      "urban" = c(0.167, 0.833), 
+      "CA_region" = c(0.255595117, 0.067210485, 0.387866504, 0.225157997, 0.064169897)
+    ),  
+    "DK" = list(
+      "gender" = c(0.503, 0.000001, 0.497),
+      "income" = c(0.2634, 0.2334, 0.2782, 0.2249),
+      "age" = c(0.110, 0.165, 0.230, 0.245, 0.251),
+      "urban" = c(0.4703, 0.5297),
+      "DK_region" = c(0.3176, 0.2281, 0.1011, 0.1436, 0.2095) # TODO: add vote_agg / vote
+    ),
+    "FR" = list(
+      "gender" = c(0.516, 0.000001, 0.484),
+      "income" = rep(.25, 4),
+      "urban" = c(0.405, 0.595),
+      "age" = c(0.120,0.150,0.240,0.240,0.250),
+      "diploma" = c(0.290, 0.248, 0.169, 0.293),
+      "FR_region" = c(0.000001, 0.18920, 0.21968, 0.20041, 0.25097, 0.13980),
+      "FR_urban_category" = c(0.595, 0.184, 0.222),
+      "FR_diploma" = c(0.290, 0.248, 0.169, 0.293),
+      "FR_CSP" = c(0.129,0.114,0.101,0.035,0.136,0.325,0.15,0.008),
+      "FR_region9" = c(0.0001,0.12446,0.12848,0.09237,0.1902,0.10294,0.09299,0.09178,0.09853,0.07831),
+      "FR_taille_agglo" = c(0.2166,0.1710,0.1408,0.3083,0.1633)
+    ),
+    "DE" = list(
+      "gender" = c(0.512, 0.000001, 0.488),
+      "income" = rep(.25, 4),
+      "age" = c(0.085, 0.150, 0.222, 0.280, 0.263),
+      "urban" = c(FALSE, TRUE), 
+      "DE_region" = c(0.1808, 0.2769, 0.1013, 0.1498, 0.2913),
+      "DE_urban_category" = c(0.2020653, 0.4032331, 0.395)
+    ),
+    "IT" = list(
+      "gender" = c(0.524, 0.000001, 0.476),
+      "income" = rep(.25, 4),
+      "urban" = c(0.4699139, 0.5300861), 
+      "IT_region" = c(0.2659,  0.1920,  0.1971,  0.2340,  0.1109),
+      "IT_urban_category" = c(0.349, 0.480, 0.170),
+      "age" = c(0.080, 0.122, 0.242, 0.271, 0.285)
+    ),
+    "JP" = list(
+      "gender" = c(0.519, 0.000001, 0.481),
+      "income" = rep(.25, 4),
+      "age" = c(0.078, 0.121, 0.244, 0.224, 0.334),
+      "urban" = c(0.304, 0.696), 
+      "JP_region" = c(0.345997408, 0.176839094, 0.109666596, 0.167605084, 0.199891819)
+    ),
+    "MX" = list(
+      "gender" = c(0.518, 0.000001, 0.482),
+      "income" = rep(.25, 4),
+      "age" = c(0.176, 0.233, 0.300, 0.183, 0.109),
+      "urban" = c(FALSE, TRUE),
+      "MX_urban_category" = c(0.214, 0.149, 0.637),
+      "MX_region" = c(0.215061603, 0.329736673, 0.098869535, 0.127872823, 0.228459366)
+    ),
+    "PL" = list(
+      "gender" = c(0.519, 0.000001, 0.481),
+      "income" = rep(.25, 4),
+      "age" = c(0.087, 0.170, 0.282, 0.236, 0.225),
+      "urban" = c(0.433, 0.567), 
+      "PL_region" = c(0.226997438, 0.117602275, 0.218682176, 0.144438833, 0.292279278)
+    ),
+    "SK" = list(
+      "gender" = c(0.498, 0.000001, 0.502),
+      "income" = rep(.25, 4),
+      "age" = c(0.098, 0.159, 0.274, 0.282, 0.187),
+      "urban" = c(FALSE, TRUE),
+      "SK_urban_category" = c(0.08407891, 0.4967454, 0.4191757),
+      "SK_region" = c(0.186166268, 0.343251015, 0.220256596, 0.25032612)
+    ),
+    "SP" = list(
+      "gender" = c(0.506, 0.000001, 0.494),
+      "income" = rep(.25, 4),
+      "age" = c(0.079, 0.124, 0.285, 0.266, 0.246),
+      "urban" = c(0.3026822, 0.6973178), 
+      "SP_region" = c(0.295240048, 0.185984429, 0.28212128,  0.107772926, 0.128881318)
+    ),
     "TR" = list(
-    "gender" = c(0.513, 0.000001, 0.487),
-    "income" = rep(.25, 4),
-    "age" = c(0.158, 0.213, 0.297, 0.206, 0.126),
-    "urban" = c(0.130, 0.870), 
-    "TR_region" = c(0.303696271, 0.259076086, 0.252983823, 0.18424382)
-  ),
+      "gender" = c(0.513, 0.000001, 0.487),
+      "income" = rep(.25, 4),
+      "age" = c(0.158, 0.213, 0.297, 0.206, 0.126),
+      "urban" = c(0.130, 0.870), 
+      "TR_region" = c(0.303696271, 0.259076086, 0.252983823, 0.18424382)
+    ),
+    "UK" = list(
+      "gender" = c(0.504, 0.000001, 0.496),
+      "income" = rep(.25, 4),
+      "age" = c(0.102, 0.168, 0.244, 0.246, 0.241),
+      "urban" = c(FALSE, TRUE),
+      "UK_urban_category" = c(0.176, 0.423, 0.401),
+      "UK_region" = c(0.1297,  0.3122,  0.2095,  0.2365,  0.1121)
+    ),
+    "US" = list(
+      "gender" = c(0.5074,0.000001,0.4974),
+      "income" = c(0.2034,0.239,0.2439,0.3137),
+      "age" = c(0.118,0.180,0.243,0.2467,0.2118),
+      "urban" = c(0.2676,0.7324),
+      "US_region" = c(0.171,0.208,0.383,0.239),
+      "US_core_metropolitan" = c(0.2676,0.7324),
+      "US_race" = c(.601, .185, .134, .080),
+      "US_vote_2020" = c(0.342171, 0.312823, 0.345006)
+    ),
+    "BR" = list(
+      "gender" = c(0.512, 0.000001, 0.488),
+      "income" = rep(.25, 4),
+      "age" = c(0.149, 0.215, 0.296, 0.212, 0.128),
+      "urban" = c(0.310, 0.690), 
+      "BR_region" = c(0.088179878, 0.270945458, 0.42035347,  0.14258089,  0.077940304)
+    ),
+    "CN" = list(
+      "gender" = c(0.492, 0.000001, 0.508),
+      "income" = rep(.25, 4),
+      "age" = c(0.099, 0.204, 0.279, 0.265, 0.154),
+      "urban" = c(FALSE, TRUE), 
+      "CN_urban_category" = c(0.369993069, 0.352742656, 0.277264275),
+      "CN_region" = c(0.123751183, 0.082229515, 0.28858566,  0.287981136, 0.217452506)
+    ),
+    "IA" = list(
+      "gender" = c(0.486, 0.000001, 0.514),
+      "income" = rep(.25, 4),
+      "age" = c(0.1835398, 0.24282507, 0.28895456, 0.18828387, 0.09639664),
+      "urban" = c(0.639, 0.361), # we should have either a binary or a multivalued variable for urbanity, if it is multivalued, call it IA_urban_category (same for all countries)
+      "IA_region" = c(0.1317, 0.2015, 0.2654, 0.2635, 0.1380)
+      # "IA_urban_category" = c(0.4093,  0.2294,  0.1115,  0.1102,  0.1096,  0.02984315)
+    ),
+    "ID" = list(
+      "gender" = c(0.500, 0.000001, 0.500),
+      "income" = rep(.25, 4),
+      "age" = c(0.170, 0.228, 0.310, 0.208, 0.084),
+      "urban" = c(0.433, 0.567), 
+      "ID_region" = c(0.269977941, 0.299427716, 0.133590934, 0.082251799, 0.21475161)
+    ),
+    "SA" = list(
+      "gender" = c(0.506, 0.000001, 0.494),
+      "income" = rep(.25, 4),
+      "age" = c(0.213, 0.285, 0.283, 0.161, 0.058),
+      "urban" = c(0.511, 0.489), 
+      "SA_region" = c(0.237050995, 0.13460536,  0.12083205,  0.182435864, 0.325075732)
+    ),
     "UA" = list(
-    "gender" = c(0.549, 0.000001, 0.451),
-    "income" = rep(.25, 4),
-    "age" = c(0.082, 0.178, 0.282, 0.249, 0.209),
-    "urban" = c(0.3046, 0.6954), 
-    "UA_region" = c(0.311308744, 0.213095418, 0.224565659, 0.251030179)
-  )    
+      "gender" = c(0.549, 0.000001, 0.451),
+      "income" = rep(.25, 4),
+      "age" = c(0.082, 0.178, 0.282, 0.249, 0.209),
+      "urban" = c(0.3046, 0.6954), 
+      "UA_region" = c(0.311308744, 0.213095418, 0.224565659, 0.251030179)
+    )    
   )
   
-  quotas <- list("US" = c("gender", "income", "age", "region", "urban", "race"), 
-            "US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
-                 "DK" = c("gender", "income", "age", "region", "urban"),
-                 "FR" = c("gender", "income", "age", "region", "diploma"), #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
-                 # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
-                 "DE" = c("gender", "income", "age", "region", "urban_category")
+  quotas <- list("US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
+            "AU" = c("gender", "income", "age", "region", "urban"),
+            "CA" = c("gender", "income", "age", "region", "urban"),
+            "DK" = c("gender", "income", "age", "region", "urban"),
+            "FR" = c("gender", "income", "age", "region", "diploma"), #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
+            # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
+            "DE" = c("gender", "income", "age", "region", "urban_category"),
+            "IT" = c("gender", "income", "age", "region", "urban_category"),
+            "JP" = c("gender", "income", "age", "region", "urban"),
+            "MX" = c("gender", "income", "age", "region", "urban_category"),
+            "PL" = c("gender", "income", "age", "region", "urban"),
+            "SK" = c("gender", "income", "age", "region", "urban_category"),
+            "SP" = c("gender", "income", "age", "region", "urban"),
+            "TR" = c("gender", "income", "age", "region", "urban"),
+            "UK" = c("gender", "income", "age", "region", "urban_category"),
+            "US" = c("gender", "income", "age", "region", "urban", "race"), 
+            "BR" = c("gender", "income", "age", "region", "urban"),
+            "CN" = c("gender", "income", "age", "region", "urban_category"),
+            "IA" = c("gender", "income", "age", "region", "urban"),
+            "ID" = c("gender", "income", "age", "region", "urban"),
+            "SA" = c("gender", "income", "age", "region", "urban"),
+            "UA" = c("gender", "income", "age", "region", "urban")
   )
 }
 
 remove_id <- function(file, folder = "../data/") {
   filename <- paste(folder, file, ".csv", sep = "")
   
-  filename_copy <- paste("./deprecated/", file, ".csv", sep = "")
+  filename_copy <- paste("./deprecated/", file, ".csv", sep = "") # in case the three last lines don't work
   file.copy(filename, "./deprecated/")
-  data <- read_csv(filename_copy) 
+  data <- read_csv(filename_copy)
   data <- data[,which(!(names(data) %in% c("PSID", "ResponseId", "PID")))]
   write_csv(data, filename, na = "")
   file.remove(filename_copy)
@@ -315,7 +334,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   return(e)
 }
 
-convert <- function(e, country, wave = NULL, weighting = T) {
+convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                  "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
                  "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas", "FR" = "Préfère ne pas le dire")
@@ -410,7 +429,8 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if (length(grep('kaya_', names(e)))>0) variables_kaya <<- names(e)[grepl('kaya_', names(e))]
   variables_scale <<- names(e)[grepl('scale_', names(e))]
   variables_beef <<- names(e)[grepl('beef_', names(e)) & !grepl("order_", names(e))]
-  variables_burden_sharing <<- names(e)[grepl('burden_sharing_', names(e))]
+  variables_burden_sharing <<- names(e)[grepl('burden_sharing_', names(e))] # TODO! manage four first
+  variables_burden_share <<- names(e)[grepl('burden_share_', names(e))]
   if ('standard_cost_effective' %in% names(e)) variables_standard_effect <<- names(e)[grepl('standard_', names(e)) & grepl('_effect', names(e))]
   if ('standard_cost_effective' %in% names(e)) variables_investments_effect <<- names(e)[grepl('investments_', names(e)) & grepl('_effect', names(e))]
   if ('standard_cost_effective' %in% names(e)) variables_tax_transfers_effect <<- names(e)[grepl('tax_transfers_', names(e)) & grepl('_effect', names(e))]
@@ -602,7 +622,6 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   negatives_index_all_policies <<- c(negatives_index_main_policies, negatives_index_beef_policies, negatives_index_international_policies, negatives_index_other_policies)
   conditions_index_all_policies <<- c(conditions_index_main_policies, conditions_index_beef_policies, conditions_index_international_policies, conditions_index_other_policies)
   before_treatment_index_all_policies <<- c(before_treatment_index_main_policies, before_treatment_index_beef_policies, before_treatment_index_international_policies, before_treatment_index_other_policies)
-  
   
   text_strongly_agree <- c( "US" = "Strongly agree",  "US" = "I fully agree")
   text_somewhat_agree <- c( "US" = "Somewhat agree",  "US" = "I somewhat agree")
@@ -886,7 +905,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% text_a_little
   
-  for (v in intersect(names(e), c(variables_burden_sharing, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
+  for (v in intersect(names(e), c(variables_burden_sharing, variables_burden_share, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
     temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                           names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
@@ -924,7 +943,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   
   if (country == "DK") temp <- (e$urbanity %in% text_large_town) + 2 * (e$urbanity %in% text_small_city) + 3 * (e$urbanity %in% text_medium_city) + 4 * (e$urbanity %in% text_large_city) + 5 * (e$urbanity == "Copenhagen")
   else temp <-  (e$urbanity %in% text_small_town) + 2 * (e$urbanity %in% text_large_town) + 3 * (e$urbanity %in% text_small_city) + 4 * (e$urbanity %in% text_medium_city) + 5 * (e$urbanity %in% c(text_large_city, text_megalopolis))
-  e$urbanity <- as.item(temp, labels = structure(c(0:5),
+  e$urbanity <- as.item(temp, labels = structure(c(0:5), # TODO!! make names/labels country-specific
                         # names = c("Rural","Small town","Large town","Small city","Medium-size city","Large city")),
                         names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")), 
                       annotation=paste(Label(e$urbanity), "(Beware, the bins are not defined the same way in each country: for DK, 5/20/50/250/3M are replaced by 1/10/20/100/1.2M)"))
@@ -1083,6 +1102,10 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     label(e$pro_differentiated_responsibilities_large) <- "pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
     # e$pro_other_burden_sharing <- e$pro_grand_fathering == F & e$pro_rich_pay == F & e$pro_polluter_pay == F # e$pro_global_tax_dividend_large == F & e$pro_differentiated_responsibilities_large == F
     variables_burden_sharing_inferred <<- c("pro_polluter_pay", "pro_rich_pay",  "pro_grand_fathering", "pro_polluter_and_rich_pay", "pro_global_tax_dividend", "pro_differentiated_responsibilities_large", "pro_differentiated_responsibilities_strict")
+  } else if ("burden_share_population" %in% names(e)) {
+    e$pro_rich_pay <- (e$burden_share_historical > 0 | e$burden_share_population > 0)
+    label(e$pro_rich_pay) <- "pro_rich_pay: In favor of burden_share where rich countries pay: agree to _population or _historical."
+    variables_burden_sharing_inferred <<- c("pro_rich_pay")
   }
   
   if (country=="US" & wave=="pilot2") e$equal_quota2 <- as.item(e$equal_quota, labels = structure(c(-2,-1,1,2,-0.1),
@@ -1365,18 +1388,24 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   if (country=="US") {
     e$urban <- e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
     label(e$core_metropolitan) <- "core_metropolitan: Live in a core metropolitan zip code. TRUE/FALSE"   
-  } else e$urban <- NA
-  e$urban <- case_when(e$country %in% c("US", "ES") ~ e$urban,
-                       e$country == "DK" ~ e$urbanity > 2,
-                       e$country == "FR" ~ e$urban_category == "GP", # TODO! other countries
-                       e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
-                       e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
-                       e$country == "DE" ~ e$urban_category %in% c("Towns_and_Suburbs", "Cities"),
-                      # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
-                       e$country == "MX" ~ e$urban_category %in% c("Urban"),
-                       e$country == "CN" ~ e$urban_category %in% c("Urban", "Small_Urban"),
-                       e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
-                       TRUE ~ NA)
+  } else if (country %in% c("ID", "SA")) e$urban <- e$area
+  else e$urban <- NA
+  temp <- case_when(e$country %in% c("US") ~ e$urban == T,
+                    e$country %in% c("AU", "CA", "JP", "MX", "TR", "UA") ~ e$urban_category %in% c("Urban"),
+                    e$country %in% c("DK") ~ e$urbanity > 2, # >20k
+                    e$country %in% c("PL", "SP", "IA") ~ e$urbanity > 1, # >20k
+                    e$country == "FR" ~ e$urban_category == "GP",
+                    e$country == "DE" ~ e$urban_category %in% c("Towns_and_Suburbs", "Cities"),
+                    e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
+                    e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
+                    e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
+                    e$country == "BR" ~ e$urbanity > 2,# >50k
+                    e$country == "CN" ~ e$urban_category %in% c("Urban", "Small_Urban"), # i.e. > 10k: probably better to define it using urbanity
+                    e$country == "ID" ~ e$urban %in% c("Kota", "Capital town of a Kabupaten"),
+                    e$country == "SA" ~ e$urban %in% c("In a capital of a District municipality", "In a metropolitan municipality"), # BUG TODO!
+                    # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
+                     TRUE ~ NA)
+  e$urban <- temp
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
 
   if ("CC_affected_2050" %in% names(e)) {
@@ -1419,8 +1448,6 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   }
   
   if ("donation" %in% names(e)) {
-    max_donation_country <<- c(100, 600, 100, 100, 100, 400, 100, 100, 10000, 600, 1000, 10^6, 1000)
-    names(max_donation_country) <<- countries
     max_e <- max_donation_country[country]
     e$donation_agg <- 0*(e$donation == 0) + 10*(e$donation %between% c(1, max_e/5)) + 30*(e$donation %between% c(max_e/5+1, max_e*2/5)) + 70*(e$donation %between% c(max_e*2/5+1, max_e-1)) + 100*(e$donation == max_e)
     e$donation_agg <- as.item(e$donation_agg, labels = structure(c(0,10,30,70,100), names = c("0", "1 to 20", "21 to 40", "41 to 99", "100")), annotation=attr(e$donation, "label"))
@@ -1451,9 +1478,6 @@ convert <- function(e, country, wave = NULL, weighting = T) {
   e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
   label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
 
-  duration_climate_video <<- 120 + c(61, 24, 18, NA, 20)
-  duration_policy_video <<- 240 + c(44, 38, 33, NA, 74)
-  names(duration_climate_video) <<- names(duration_policy_video) <<- countries[1:length(duration_policy_video)]
   e$rush_treatment <- e$duration_treatment_climate < duration_climate_video[country] | e$duration_treatment_policy < duration_policy_video[country]
   e$rush_treatment[is.na(e$rush_treatment)] <- F
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
@@ -1641,7 +1665,7 @@ convert <- function(e, country, wave = NULL, weighting = T) {
       e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,-0.1), names = c("Far left", "Left","Center","Right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Far left: Japanese Communist Party; Left: Constitutional Democratic Party of Japan|Social Democratic Party; Center: Komeito|Democratic Party For the People|Japan Innovation Party; Right: Liberal Democratic Party")
       
-    } else if (country == "ES") { # Automatic classification is the same except that Far right parties are then considered Right
+    } else if (country == "SP") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -2*(e$vote %in% c("Unidas Podemos")) -1*(e$vote %in% c("PSOE", "Esquerra Republicana")) -0*(e$vote %in% c("Ciudadanos")) + 1*(e$vote %in% c("PP")) + 2*(e$vote %in% c("VOX")) -0.1*(e$vote %in% c("Other", "Otro", "PNR"))
       e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Unidas Podemos; Left: PSOE|Esquerra Republicana; Center: Ciudadanos; Right: PP; Far right: VOX")
@@ -1835,11 +1859,11 @@ convert <- function(e, country, wave = NULL, weighting = T) {
       label(e$footprint_pc_country) <- "footprint_pc_country: In which region does the consumption of an average person contribute most to greenhouse gas emissions?\n\n\n\nPlease rank the regions from 1 (most) to 4 (least). - [region]"
     }
     e$correct_footprint_pc_compare_US <- e$footprint_pc_china > e$footprint_pc_US
-    e$correct_footprint_pc_compare_own <- case_when(country %in% c("US", euro_countries, "JP") ~ e$footprint_pc_china > e$footprint_pc_country,
-                                                country %in% c("ID") ~ e$footprint_pc_country > e$footprint_pc_china,
-                                                country %in% c("SA") ~ e$footprint_pc_country < e$footprint_pc_india,
-                                                country %in% c("CN", "IA") ~ e$footprint_pc_india > e$footprint_pc_china) 
-    label(e$correct_footprint_pc_compare_own) <- "correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA)"
+    e$correct_footprint_pc_compare_own <- case_when(country %in% c("US", "AU", "CA", euro_countries, "JP", "SK") ~ e$footprint_pc_china > e$footprint_pc_country, # pb: for SP (and to a lesser extent, FR), GHG footprint is no significantly higher than China's.
+                                                    country %in% c("ID", "BR", "MX") ~ e$footprint_pc_country > e$footprint_pc_china,
+                                                    country %in% c("TR", "SA", "UA") ~ e$footprint_pc_country < e$footprint_pc_india,
+                                                    country %in% c("CN", "IA") ~ e$footprint_pc_india > e$footprint_pc_china) 
+    label(e$correct_footprint_pc_compare_own) <- "correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA, TR, UA)"
     label(e$correct_footprint_pc_compare_US) <- "correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's"
   }
 
@@ -2000,14 +2024,15 @@ convert <- function(e, country, wave = NULL, weighting = T) {
     # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
   }
   
-
-if (all(variables_affected_index %in% names(e))) {
-    e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, before_treatment = rep(T,7), df = e, weight = weighting)
-    e$index_affected_dummies <- index_zscore(variables_affected_index, negatives_affected_index, conditions = c(rep("> 0", 5), "> -2", " > -1"), before_treatment = rep(T,7), df = e, weight = weighting)
-    # Double standardization
-    e$index_affected_dummies2SD <- (e$index_affected_dummies - wtd.mean(e$index_affected_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_dummies, w = e$weight, na.rm=T))
-    label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values."
-}
+  
+  if (zscores) {
+    if (all(variables_affected_index %in% names(e))) {
+        e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, before_treatment = rep(T,7), df = e, weight = weighting)
+        e$index_affected_dummies <- index_zscore(variables_affected_index, negatives_affected_index, conditions = c(rep("> 0", 5), "> -2", " > -1"), before_treatment = rep(T,7), df = e, weight = weighting)
+        # Double standardization
+        e$index_affected_dummies2SD <- (e$index_affected_dummies - wtd.mean(e$index_affected_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_dummies, w = e$weight, na.rm=T))
+        label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values."
+    }
     e$index_progressist <- index_zscore(variables_index_progressist, negatives_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
     e$index_progressist_dummies <- index_zscore(variables_index_progressist, negatives_index_progressist, conditions = conditions_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
     # Double standardization
@@ -2058,7 +2083,8 @@ if (all(variables_affected_index %in% names(e))) {
     # Double standardization
     e$index_altruism_dummies2SD <- (e$index_altruism_dummies - wtd.mean(e$index_altruism_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_altruism_dummies, w = e$weight, na.rm=T))
     
-    e$preferences_pricing_norms <- rowMeans(e[, c("tax_transfers_support", "beef_tax_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
+    if ("beef_tax_support" %in% names(e)) e$preferences_pricing_norms <- rowMeans(e[, c("tax_transfers_support", "beef_tax_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
+    else e$preferences_pricing_norms <- rowMeans(e[, c("tax_transfers_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
     e$index_preferences_pricing_norms <- index_zscore(variables_index_preferences_pricing_norms, negatives_index_preferences_pricing_norms, before_treatment = before_treatment_index_preferences_pricing_norms, df = e, weight = weighting)
     e$index_preferences_pricing_norms_dummies <- index_zscore(variables_index_preferences_pricing_norms, negatives_index_preferences_pricing_norms, conditions = conditions_index_preferences_pricing_norms, before_treatment = before_treatment_index_preferences_pricing_norms, df = e, weight = weighting)
     # Double standardization
@@ -2206,6 +2232,8 @@ if (all(variables_affected_index %in% names(e))) {
     # cronbach_index_zscore(variables_index_other_policies, negatives_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = T)
     # cronbach_index_zscore(variables_index_all_policies, negatives_index_all_policies, conditions_index_all_policies, before_treatment_index_all_policies,df = e, weight = T)
     # cronbach_index_zscore(variables_index_all_policies, negatives_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = T)
+  }
+    
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
     e$left_click_petition <- e$clicked_petition == 1
@@ -2416,10 +2444,11 @@ if (all(variables_affected_index %in% names(e))) {
       # US: "Hello! I’m a stats grad student and found this survey fascinating. I live in an area hit by two major hurricanes last year. My whole city got destroyed. It’s been over 6 months and I still have holes in my roof and other damage. I know people still living in tents and RV’s. 
       #      Living in a rural area affected by the consequences of climate change, some of these solutions are scary, and others are encouraging. I HAVE to drive to get anywhere. Easing gas prices won’t encourage me to use public transportation because that is not an option for me. I could ramble on, but thanks for this interesting survey!"
     })
-    print("success")
+    print("open fields: success")
   }
   
   # e <- e[, -c(9:17)] 
+  print("convert: success")
   return(e)
 }
 
@@ -2506,7 +2535,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   # 
 }
 
-prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = F) { #(country!="DK") # , exclude_quotas_full=TRUE
+prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = F, zscores = T) { #(country!="DK") # , exclude_quotas_full=TRUE
   # if (country == "US") {
   #   if (wave == "pilot1") e <- read_csv("../data/US_pilot.csv") 
   #   else if (wave == "pilot2") e <- read_csv("../data/US_pilot2.csv") 
@@ -2514,7 +2543,8 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   #   else if (wave == "full") e <- read_csv("../data/US.csv") 
   # } else if (country == "DK") e <- read_csv("../data/DK.csv") 
   filename <- paste0(c(country, wave), collapse="_")
-  if (filename != "SA") remove_id(filename)
+  # if (filename != "SA") remove_id(filename)
+  remove_id(filename)
   file <- paste0("../data/", filename, ".csv")
   if (replace_brackets) {
     data <- readLines(file)
@@ -2533,7 +2563,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   if (exclude_speeder) { e <- e[as.numeric(as.vector(e$duration)) > duration_min,] } 
   if (only_finished) { # TODO: le faire marcher même pour les autres
     e <- e[e$finished==1,] 
-    e <- convert(e, country = country, wave = wave, weighting = weighting)
+    e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores)
     e <- e[,!duplicated(names(e))]
     # if (weighting) {
     #   e$weight <- weighting(e)
@@ -2560,32 +2590,51 @@ usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_
 usp12 <- merge(usp1, usp2, all = T)
 usp <- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
 us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
-e <- us <- prepare(country = "US", duration_min = 686)
-e <- dk <- prepare(country = "DK", duration_min = 686)
-e <- fr <- prepare(country = "FR", duration_min = 686)
-e <- de <- prepare(country = "DE", duration_min = 686)
+e <- us <- prepare(country = "US", duration_min = 686)# .59
+e <- dk <- prepare(country = "DK", duration_min = 686)# .95
+e <- fr <- prepare(country = "FR", duration_min = 686)# .61
+e <- de <- prepare(country = "DE", duration_min = 686)# .96
 
-e <- it <- prepare(country = "IT", duration_min = 686, weighting = F)
-e <- pl <- prepare(country = "PL", duration_min = 686, weighting = F)
-e <- jp <- prepare(country = "JP", duration_min = 686, weighting = F)
-e <- sp <- prepare(country = "SP", duration_min = 686, weighting = F)
-e <- au <- prepare(country = "AU", duration_min = 686, weighting = F)
-e <- sa <- prepare(country = "SA", duration_min = 686, weighting = F)
-e <- id <- prepare(country = "ID", duration_min = 686, weighting = F) # TODO: pb check "cor(e$index_k": ID, IA
-e <- ca <- prepare(country = "CA", duration_min = 686, weighting = F)
-e <- uk <- prepare(country = "UK", duration_min = 686, weighting = F)
-e <- ia <- prepare(country = "IA", duration_min = 686, weighting = F)
-e <- tr <- prepare(country = "TR", duration_min = 686, weighting = F)
-e <- br <- prepare(country = "BR", duration_min = 686, weighting = F)
-e <- mx <- prepare(country = "MX", duration_min = 686, weighting = F)
-e <- cn <- prepare(country = "CN", duration_min = 686, weighting = F)
-e <- sk <- prepare(country = "SK", duration_min = 686, weighting = F)
+e <- au <- prepare(country = "AU", duration_min = 686)
+e <- ca <- prepare(country = "CA", duration_min = 686)
+e <- it <- prepare(country = "IT", duration_min = 686)
+e <- jp <- prepare(country = "JP", duration_min = 686)
+e <- mx <- prepare(country = "MX", duration_min = 686)
+e <- pl <- prepare(country = "PL", duration_min = 686)
+e <- sk <- prepare(country = "SK", duration_min = 686)
+e <- sp <- prepare(country = "SP", duration_min = 686)
+e <- tr <- prepare(country = "TR", duration_min = 686)
+e <- uk <- prepare(country = "UK", duration_min = 686)
+e <- br <- prepare(country = "BR", duration_min = 686)
+e <- cn <- prepare(country = "CN", duration_min = 686)
+e <- ia <- prepare(country = "IA", duration_min = 686)
+e <- id <- prepare(country = "ID", duration_min = 686)
+e <- sa <- prepare(country = "SA", duration_min = 686)
+ua <- pl # prepare(country = "UA", duration_min = 686, weighting = F, zscores = F)
+e <- it <- prepare(country = "IT", duration_min = 686, zscores = F)# .83
+e <- pl <- prepare(country = "PL", duration_min = 686, zscores = F)# .72
+e <- jp <- prepare(country = "JP", duration_min = 686, zscores = F)# .70
+e <- sp <- prepare(country = "SP", duration_min = 686, zscores = F)# .61
+e <- au <- prepare(country = "AU", duration_min = 686, zscores = F)# .56
+e <- sa <- prepare(country = "SA", duration_min = 686, zscores = F)# .77
+e <- id <- prepare(country = "ID", duration_min = 686, zscores = F)# .99
+e <- ca <- prepare(country = "CA", duration_min = 686, zscores = F)# .68 # TODO: pb check "cor(e$index_k": SK
+e <- uk <- prepare(country = "UK", duration_min = 686, zscores = F)# .63
+e <- ia <- prepare(country = "IA", duration_min = 686, zscores = F)# .13
+e <- tr <- prepare(country = "TR", duration_min = 686, zscores = F)# .14
+e <- br <- prepare(country = "BR", duration_min = 686, zscores = F)# .28
+e <- mx <- prepare(country = "MX", duration_min = 686, zscores = F)# .21
+e <- cn <- prepare(country = "CN", duration_min = 686, zscores = F)# .21
+e <- sk <- prepare(country = "SK", duration_min = 686, zscores = F)# .34
 ua <- pl
+ua$country <- "UA"
+ua$country_name <- "Ukraine"
 current_countries <- c("DK", "US", "FR", "DE")
 ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
 All <- list()
-for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
-e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
+for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
+# e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
+e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
 
 all$knows_anthropogenic <- all$CC_anthropogenic == 2
 variables_knowledge_efa <- variables_knowledge
@@ -2605,7 +2654,7 @@ all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all
 label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
 
 ## PREPARE DATA FOR STATA
-write.csv(all,"../data/all_211102.csv", row.names=F)
+# write.csv(all,"../data/all_211102.csv", row.names=F)
 
 all_stata <- janitor::clean_names(all)
 names_stata <- c()
@@ -2620,11 +2669,11 @@ for (i in c("comment_field", "comment_field_english", "cc_field", "cc_field_engl
 }
 
 haven::write_dta(all_stata, "../data/all.dta")
-write.csv(all_stata, "../data/all_211102_stataNames.csv")
+# write.csv(all_stata, "../data/all_211102_stataNames.csv")
 
 dictionary_stata_R <- data.frame(names(all), names_stata, label(all))
 names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
-write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
+# write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
 
 
 # all_bis <- janitor::clean_names(all)
