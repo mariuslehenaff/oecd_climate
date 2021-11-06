@@ -946,7 +946,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     return(save_plotly(plot, filename = filename, folder = folder, width = width, height = height, method=method, trim = trim))
   }
   
-  if (figures) {
+  if (figures) { # TODO! legend on one line
     ##### Pre-treatment ## #####
     
     # ##### 1. Demographics ##### TODO: comp
@@ -1675,7 +1675,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), df = all, width = 1770, height = 400) {
       # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
       # alternative solution to see Ukraine/labels: reduce height (e.g. width=100, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
-      # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_share_few). 
+      # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few). 
       for (cond in conditions) {
         filename <- paste(sub("variables_", "", name), 
                           case_when(cond == "" ~ "mean", 
