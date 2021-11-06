@@ -14,6 +14,12 @@ update_constant <- function(data = all) {
     folder <<- paste0('../figures/', country, '/')
     replacement_text <<- paste0("_", toupper(country))
   }
+  alphabetical <<- FALSE
+  heatmap_conditions <<- c("", "> 0")
+  along <<- "country_name"
+  parentheses <<- FALSE
+  nolabel <<- T
+  on_control <<- T
 }
 
 # /!\ open the Plots pane at its maximum before running the function
@@ -644,10 +650,10 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(global_tax_support_US <- barres(vars = "global_tax_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on GHG<br> financing a global basic income"))
       save_plotly_new_filename(global_tax_support_US, width= 780, height=140)})
     
-    try({(tax_1p_support_US <- barres(vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br> to finance low-income countries"))
+    try({(tax_1p_support_US <- barres(vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br>to finance low-income countries"))
       save_plotly_new_filename(tax_1p_support_US, width= 780, height=140)})
     
-    labels_global_policies <- c("Global democratic assembly<br>on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br> to finance low-income countries")
+    labels_global_policies <- c("Global democratic assembly<br>on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br>to finance low-income countries")
     try({(global_policies_US <- barres(vars = c("global_assembly_support", "global_tax_support", "tax_1p_support"), export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
       save_plotly_new_filename(global_policies_US, width= 800, height=250)})
     
@@ -923,7 +929,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
 }
 
 # /!\ open the Plots pane at its maximum before running the function
-render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", "> 0")) { # c("", "> 0", "< 0", ">= 0", "<= 0", "== 2", "== -2")
+render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", "> 0"), alphabetical = FALSE) { # c("", "> 0", "< 0", ">= 0", "<= 0", "== 2", "== -2")
   start <- Sys.time()
   
   e <- data
@@ -1532,10 +1538,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(global_tax_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "global_tax_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on GHG<br> financing a global basic income"))
       save_plotly_new_filename(global_tax_support_US, width= 930, height=fig_height(1*nb_levels))})
     
-    try({(tax_1p_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br> to finance low-income countries"))
+    try({(tax_1p_support_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "tax_1p_support", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="Global tax on millionaires <br>to finance low-income countries"))
       save_plotly_new_filename(tax_1p_support_US, width= 930, height=fig_height(1*nb_levels))})
     
-    labels_global_policies <- c("Global democratic assembly<br> on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br> to finance low-income countries")
+    labels_global_policies <<- c("Global democratic assembly<br> on climate change", "Global tax on GHG<br> financing a global basic income", "Global tax on millionaires <br>to finance low-income countries")
     try({(global_policies_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = c("global_assembly_support", "global_tax_support", "tax_1p_support"), export_xls = export_xls, df = e, miss = F, rev = F, rev_color = T, labels=labels_global_policies))
       save_plotly_new_filename(global_policies_US, width= 800, height=fig_height(3*nb_levels))})
     
@@ -1666,7 +1672,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     ##### Heatmaps #####
 
-    heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), df = all, width = 800, height = 400) {
+    heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), df = all, width = 1770, height = 400) {
+      # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
+      # alternative solution to see Ukraine/labels: reduce height (e.g. width=100, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
+      # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_share_few). 
       for (cond in conditions) {
         filename <- paste(sub("variables_", "", name), 
                           case_when(cond == "" ~ "mean", 
@@ -1677,7 +1686,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
                                     cond == "== 2" ~ "max", 
                                     cond == "== -2" ~ "min", 
                                     TRUE ~ "unknown"), sep = "_")
-        try({temp <- heatmap_table(vars = vars, data = df, along = along, conditions = cond, on_control = T)
+        try({temp <- heatmap_table(vars = vars, data = df, along = along, conditions = cond, on_control = T, alphabetical = alphabetical)
         row.names(temp) <- labels
         heatmap_plot(temp, proportion = (cond != ""))
         save_plot(filename = paste0(folder, filename, replacement_text), width = width, height = height)})
@@ -1711,7 +1720,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     main_variables_behavior <<- c("flights_agg", "flights_agg", "frequency_beef", "transport_work", "CC_talks", "member_environmental_orga")
     # future_richness: >= richer, net_zero_feasible, CC_affects_self, effect_halt_CC_lifestyle: >= A lot; effect_halt_CC..: >= positive; CC_will_end: >= somewhat likely
     labels_main_behavior <<- c("At least one flight between 2017 and 2019", "More than one flight per year on average", "Eats beef at least once a week", "Commutes by car/motorbike", "Talks or thinks of CC several times a month", "Is member of an environmental organisation")
-    try({temp <- heatmap_table(vars = main_variables_behavior, along = along, conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T) # TODO! change commutes by leisure
+    try({temp <- heatmap_table(vars = main_variables_behavior, along = along, conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T, alphabetical = alphabetical) # TODO! change commutes by leisure
     row.names(temp) <- labels_main_behavior
     heatmap_plot(temp, proportion = (cond != ""))
     save_plot(filename = paste0(folder, "behavior", replacement_text), width = 800, height = 400)})
@@ -1738,10 +1747,6 @@ render_country_comparison <- function(data = all, along = "country_name", parent
                     labels = c("CC exists, is anthropogenic", "Cutting GHG emissions by half\nsufficient to stop rise in temperatures", "CC is an important problem", "CC will negatively affect personal life", 
                                "Feasible to stop GHG emissions\nwhile sustaining satisfactory\nstandards of living in [Country]", "Likely to halt CC by the end of the century", "Positive effects of ambitious policies\non the [country] economy and employment", "Negative effects of ambitious policies on lifestyle"), conditions = heatmap_conditions, name = "CC_attitude")
     
-    labels_responsible_CC <<- c("Each of us", "The high income earners", "The government", "Companies", "Previous generations")
-    # paste("Responsible:", labels_responsible_CC) # T/F
-    heatmap_wrapper(vars = variables_CC_impacts, labels = labels_responsible_CC, conditions = "> 0")
-    
     heatmap_wrapper(vars = variables_CC_impacts, labels = labels_CC_impacts, conditions = heatmap_conditions) # >= somewhat likely
     
     variables_willingness_all <<- c(variables_willing, variables_condition, "will_insulate", "wtp", "donation_fraction", "petition") 
@@ -1757,21 +1762,21 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = c("insulation_mandatory_support_no_priming", "insulation_mandatory_support_priming"), labels = c("Support for mandatory insulation\nif govt subsidizes half the cost\nNo priming", "Support for mandatory insulation\nif govt subsidizes half the cost\nWith priming about the hurdles"), name = 'insulation_support', conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_obstacles_insulation[c(5,2,1,3,4)], labels = sub("<br>", "\n", labels_obstacles_insulation[c(5,2,1,3,4)]), name = 'obstacles_insulation', conditions = "> 0")
     
-    variables_burden_sharing_all <<- c(variables_scale, "if_other_do_more", "if_other_do_less", variables_burden_sharing, variables_global_policies)
-    variables_burden_sharing_main <<- c("scale_global", variables_burden_sharing, variables_global_policies)
-    variables_burden_sharing_few <<- variables_burden_sharing_all[c(1,8,11,12,14)]
-    # Levels: T/F; If...: >= More; burden_sharing: >= agree; Global..: >= somewhat support
+    variables_burden_share_all <<- c(variables_scale, "if_other_do_more", "if_other_do_less", variables_burden_share, variables_global_policies)
+    variables_burden_share_main <<- c("scale_global", variables_burden_share, variables_global_policies)
+    variables_burden_share_few <<- variables_burden_share_all[c(1,8,11,12,14)]
+    # Levels: T/F; If...: >= More; burden_share: >= agree; Global..: >= somewhat support
     labels_heatmap_scale <<- paste("Level of climate policies needed:", c("global", "federal/continental", "state/national", "local"))
-    labels_heatmap_burden_sharing <<- c("All countries should pay in proportion to income", "All countries should pay in proportion to current emissions", "All countries should pay in proportion to post-1990 emissions", "Richest should countries pay it all so poor ones don't pay", "Richest countries should pay even more to help vulnerable ones")
-    labels_burden_sharing_all <<- c(labels_heatmap_scale, "If other do more, [country] should do more", "If other do less, [country] should do more", labels_heatmap_burden_sharing, sub("<br>", "", labels_global_policies))
+    labels_heatmap_burden_share <<- c("All countries should pay in proportion to income", "All countries should pay in proportion to current emissions", "All countries should pay in proportion to post-1990 emissions", "Richest should countries pay it all so poor ones don't pay", "Richest countries should pay even more to help vulnerable ones")
+    labels_burden_share_all <<- c(labels_heatmap_scale, "If other do more, [country] should do more", "If other do less, [country] should do more", labels_heatmap_burden_share, sub("<br>", "", labels_global_policies))
     heatmap_wrapper(vars = variables_scale, labels = labels_heatmap_scale, conditions = "> 0")
-    heatmap_wrapper(vars = variables_burden_sharing, labels = labels_heatmap_burden_sharing, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_share, labels = labels_heatmap_burden_share, conditions = heatmap_conditions)
     heatmap_wrapper(vars = variables_global_policies, labels = sub("<br>", "", labels_global_policies), conditions = heatmap_conditions)
-    heatmap_wrapper(vars = variables_burden_sharing_all, labels = labels_burden_sharing_all, conditions = heatmap_conditions)
-    heatmap_wrapper(vars = variables_burden_sharing_main, labels = labels_burden_sharing_all[c(1,7:14)], conditions = heatmap_conditions)
-    heatmap_wrapper(vars = variables_burden_sharing_few, labels = labels_burden_sharing_all[c(1,8,11,12,14)], conditions = heatmap_conditions)
-    # labels_burden_sharing_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
-    # heatmap_wrapper(vars = variables_burden_sharing, labels = labels_burden_sharing_short, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_share_all, labels = labels_burden_share_all, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_share_main, labels = labels_burden_share_all[c(1,7:14)], conditions = heatmap_conditions)
+    heatmap_wrapper(vars = variables_burden_share_few, labels = labels_burden_share_all[c(1,8,11,12,14)], conditions = heatmap_conditions)
+    # labels_burden_share_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
+    # heatmap_wrapper(vars = variables_burden_share, labels = labels_burden_share_short, conditions = heatmap_conditions)
     # 
     main_variables_opinion <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", "willing_limit_driving", "standard_support", "investments_support", "tax_transfers_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "burden_sharing_emissions", "tax_1p_support")
     # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
@@ -1834,7 +1839,10 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # TODO: GHG_correct instead of GHG; 2 in subscript
     heatmap_wrapper(vars = c("GHG_CO2", "GHG_methane", "GHG_H2", "GHG_particulates"), name = "GHG", labels = c("CO2 (Yes)", "Methane (Yes)", "Hydrogen (No)", "Particulates (No)"), conditions = "> 0")
     heatmap_wrapper(vars = variables_home, name = "home", labels = labels_home, conditions = "> 0")
-    heatmap_wrapper(vars = variables_responsible_CC, name = "CC_responsible", labels = labels_responsible, conditions = heatmap_conditions)
+    
+    labels_responsible_CC <<- c("Each of us", "The high income earners", "The government", "Companies", "Previous generations")
+    # paste("Responsible:", labels_responsible_CC) # T/F
+    heatmap_wrapper(vars = variables_responsible_CC, name = "CC_responsible", labels = labels_responsible_CC, conditions = heatmap_conditions)
           
     ##### Print missing figures #####
     missing_figures <- setdiff(sub("_US", "", list.files("../figures/US")), c(sub(paste(paste0(c("_positive", "_mean", ""), replacement_text), collapse = "|"), "", list.files(folder))))
