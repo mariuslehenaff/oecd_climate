@@ -110,8 +110,9 @@ package("ggpubr")
 package("RStata")
 package("relaimpo") # works well with 21 variables, not much more. install from: install.packages("https://prof.bht-berlin.de/fileadmin/prof/groemp/downloads/relaimpo_2.2-5.zip", repos = NULL)
 package("missMDA") # PCA
+package("maps")
+package("forcats")
 
-# package("forcats")
 # package("quanteda")
 # package("haven")
 # package("dplyr")
@@ -731,6 +732,8 @@ color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, them
     else if (n == 6) cols <- rainbow(6)
     else if (n == 7) cols <- c("#000000", rainbow(7)[c(1:3,5:7)])
     else cols <- rainbow(n) # diverge_hcl green2red brewer.pal(n, Spectral/RdBu...)  https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
+  } else if (theme=='default') {
+    cols <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))(n)
   } else {
     cols <- rev(brewer.pal(max(n, 3), theme))
     if (n == 1) cols <- cols[1]
@@ -1458,3 +1461,31 @@ rquery.wordcloud <- function(x, type=c("text", "url", "file"), lang="english", e
   
   invisible(list(tdm=tdm, freqTable = d))
 }
+
+plot_world_map <- function(var, condition = "> 0", df = all, on_control = T, save = T, width = dev.size('px')[1], height = dev.size('px')[2]) {
+  table <- heatmap_table(vars = var, data = df, along = "country", conditions = c(condition), on_control = T)
+  df <- data.frame(country = Country_Names[colnames(table)], mean = as.vector(table))
+  
+  if (condition != "") {
+    breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
+    labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
+  } else {
+    breaks <- c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf) # c(-Inf, -1, -.5, -.25, 0, .25, .5, 1, Inf)
+    labels <- c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2")
+  }
+  
+  df$group <- cut(df$mean, breaks = breaks, labels = labels)
+  
+  world_map <- map_data(map = "world")
+  world_map <- world_map[world_map$region != "Antarctica",]
+  # world_map$region <- iso.alpha(world_map$region)
+
+  plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+    geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'black', fill = NA) +
+    expand_limits(x = world_map$long, y = world_map$lat) +
+    scale_fill_manual(name = "Mean", values = color(length(breaks)-1, theme='default')) + theme_void() + coord_fixed() # +proj=eck4 +proj=wintri
+  
+  if (save) save_plot(plot, filename = var, folder = '../figures/maps/', width = width, height = height)
+  return(plot)
+}
+
