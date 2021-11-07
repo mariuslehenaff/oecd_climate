@@ -2590,58 +2590,58 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
 }
 
 countries_field_treated <- c("DK", "US", "FR")
-usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
-usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
-usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
-usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
-usp12 <- merge(usp1, usp2, all = T)
-usp <- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
-us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
-e <- us <- prepare(country = "US", duration_min = 686)# .59
-e <- dk <- prepare(country = "DK", duration_min = 686)# .95
-e <- fr <- prepare(country = "FR", duration_min = 686)# .61
-e <- de <- prepare(country = "DE", duration_min = 686)# .96
-
-e <- au <- prepare(country = "AU", duration_min = 686)
-e <- ca <- prepare(country = "CA", duration_min = 686)
-e <- it <- prepare(country = "IT", duration_min = 686)
-e <- jp <- prepare(country = "JP", duration_min = 686)
-e <- mx <- prepare(country = "MX", duration_min = 686)
-e <- pl <- prepare(country = "PL", duration_min = 686)
-e <- sk <- prepare(country = "SK", duration_min = 686)
-e <- sp <- prepare(country = "SP", duration_min = 686)
-e <- tr <- prepare(country = "TR", duration_min = 686)
-e <- uk <- prepare(country = "UK", duration_min = 686)
-e <- br <- prepare(country = "BR", duration_min = 686)
-e <- cn <- prepare(country = "CN", duration_min = 686)
-e <- ia <- prepare(country = "IA", duration_min = 686)
-e <- id <- prepare(country = "ID", duration_min = 686)
-e <- sa <- prepare(country = "SA", duration_min = 686)
-ua <- pl # prepare(country = "UA", duration_min = 686, weighting = F, zscores = F)
-e <- it <- prepare(country = "IT", duration_min = 686, zscores = F)# .83
-e <- pl <- prepare(country = "PL", duration_min = 686, zscores = F)# .72
-e <- jp <- prepare(country = "JP", duration_min = 686, zscores = F)# .70
-e <- sp <- prepare(country = "SP", duration_min = 686, zscores = F)# .61
-e <- au <- prepare(country = "AU", duration_min = 686, zscores = F)# .56
-e <- sa <- prepare(country = "SA", duration_min = 686, zscores = F)# .77
-e <- id <- prepare(country = "ID", duration_min = 686, zscores = F)# .99
-e <- ca <- prepare(country = "CA", duration_min = 686, zscores = F)# .68 # TODO: pb check "cor(e$index_k": SK
-e <- uk <- prepare(country = "UK", duration_min = 686, zscores = F)# .63
-e <- ia <- prepare(country = "IA", duration_min = 686, zscores = F)# .13
-e <- tr <- prepare(country = "TR", duration_min = 686, zscores = F)# .14
-e <- br <- prepare(country = "BR", duration_min = 686, zscores = F)# .28
-e <- mx <- prepare(country = "MX", duration_min = 686, zscores = F)# .21
-e <- cn <- prepare(country = "CN", duration_min = 686, zscores = F)# .21
-e <- sk <- prepare(country = "SK", duration_min = 686, zscores = F)# .34
-ua <- pl
-ua$country <- "UA"
-ua$country_name <- "Ukraine"
+# usp1 <- prepare(country = "US", wave = "pilot1", duration_min = 0)
+# usp2 <- prepare(country = "US", wave = "pilot2", duration_min = 686)
+# usp3 <- prepare(country = "US", wave = "pilot3", duration_min = 686)
+# usp3all <- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
+# usp12 <- merge(usp1, usp2, all = T)
+# usp <- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
+# us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
+# e <- us <- prepare(country = "US", duration_min = 686)# .59
+# e <- dk <- prepare(country = "DK", duration_min = 686)# .95
+# e <- fr <- prepare(country = "FR", duration_min = 686)# .61
+# e <- de <- prepare(country = "DE", duration_min = 686)# .96
+# 
+# e <- au <- prepare(country = "AU", duration_min = 686)
+# e <- ca <- prepare(country = "CA", duration_min = 686)
+# e <- it <- prepare(country = "IT", duration_min = 686)
+# e <- jp <- prepare(country = "JP", duration_min = 686)
+# e <- mx <- prepare(country = "MX", duration_min = 686)
+# e <- pl <- prepare(country = "PL", duration_min = 686)
+# e <- sk <- prepare(country = "SK", duration_min = 686)
+# e <- sp <- prepare(country = "SP", duration_min = 686)
+# e <- tr <- prepare(country = "TR", duration_min = 686)
+# e <- uk <- prepare(country = "UK", duration_min = 686)
+# e <- br <- prepare(country = "BR", duration_min = 686)
+# e <- cn <- prepare(country = "CN", duration_min = 686)
+# e <- ia <- prepare(country = "IA", duration_min = 686)
+# e <- id <- prepare(country = "ID", duration_min = 686)
+# e <- sa <- prepare(country = "SA", duration_min = 686)
+# ua <- pl # prepare(country = "UA", duration_min = 686, weighting = F, zscores = F)
+# e <- it <- prepare(country = "IT", duration_min = 686, zscores = F)# .83
+# e <- pl <- prepare(country = "PL", duration_min = 686, zscores = F)# .72
+# e <- jp <- prepare(country = "JP", duration_min = 686, zscores = F)# .70
+# e <- sp <- prepare(country = "SP", duration_min = 686, zscores = F)# .61
+# e <- au <- prepare(country = "AU", duration_min = 686, zscores = F)# .56
+# e <- sa <- prepare(country = "SA", duration_min = 686, zscores = F)# .77
+# e <- id <- prepare(country = "ID", duration_min = 686, zscores = F)# .99
+# e <- ca <- prepare(country = "CA", duration_min = 686, zscores = F)# .68 # TODO: pb check "cor(e$index_k": SK
+# e <- uk <- prepare(country = "UK", duration_min = 686, zscores = F)# .63
+# e <- ia <- prepare(country = "IA", duration_min = 686, zscores = F)# .13
+# e <- tr <- prepare(country = "TR", duration_min = 686, zscores = F)# .14
+# e <- br <- prepare(country = "BR", duration_min = 686, zscores = F)# .28
+# e <- mx <- prepare(country = "MX", duration_min = 686, zscores = F)# .21
+# e <- cn <- prepare(country = "CN", duration_min = 686, zscores = F)# .21
+# e <- sk <- prepare(country = "SK", duration_min = 686, zscores = F)# .34
+# ua <- pl
+# ua$country <- "UA"
+# ua$country_name <- "Ukraine"
 current_countries <- c("DK", "US", "FR", "DE")
 ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
-All <- list()
-for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
-# e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-e <- all <- merge_all_countries()
+# All <- list()
+# for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
+# # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
+# e <- all <- merge_all_countries()
 
 merge_all_countries <- function(countries = countries, weight_adult = T, weight_oecd = F) {
   all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
@@ -2683,6 +2683,48 @@ merge_all_countries <- function(countries = countries, weight_adult = T, weight_
 
 ## PREPARE DATA FOR STATA
 # write.csv(all,"../data/all_211102.csv", row.names=F)
+prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
+  if (pilots) {
+    usp1 <<- prepare(country = "US", wave = "pilot1", duration_min = 0)
+    usp2 <<- prepare(country = "US", wave = "pilot2", duration_min = 686)
+    usp3 <<- prepare(country = "US", wave = "pilot3", duration_min = 686)
+    usp3all <<- prepare(country = "US", wave = "pilot3", duration_min = 686, exclude_screened = F, exclude_speeder = F)
+    usp12 <<- merge(usp1, usp2, all = T)
+    usp <<- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
+    us_all <<- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
+  }
+  us <<- prepare(country = "US", duration_min = 686, weighting = weighting, zscores = zscores)
+  dk <<- prepare(country = "DK", duration_min = 686, weighting = weighting, zscores = zscores)
+  fr <<- prepare(country = "FR", duration_min = 686, weighting = weighting, zscores = zscores)
+  de <<- prepare(country = "DE", duration_min = 686, weighting = weighting, zscores = zscores)
+  it <<- prepare(country = "IT", duration_min = 686, weighting = weighting, zscores = zscores)
+  pl <<- prepare(country = "PL", duration_min = 686, weighting = weighting, zscores = zscores)
+  jp <<- prepare(country = "JP", duration_min = 686, weighting = weighting, zscores = zscores)
+  sp <<- prepare(country = "SP", duration_min = 686, weighting = weighting, zscores = zscores)
+  au <<- prepare(country = "AU", duration_min = 686, weighting = weighting, zscores = zscores)
+  sa <<- prepare(country = "SA", duration_min = 686, weighting = weighting, zscores = zscores)
+  id <<- prepare(country = "ID", duration_min = 686, weighting = weighting, zscores = zscores)
+  ca <<- prepare(country = "CA", duration_min = 686, weighting = weighting, zscores = zscores)
+  uk <<- prepare(country = "UK", duration_min = 686, weighting = weighting, zscores = zscores)
+  ia <<- prepare(country = "IA", duration_min = 686, weighting = weighting, zscores = zscores)
+  tr <<- prepare(country = "TR", duration_min = 686, weighting = weighting, zscores = zscores)
+  br <<- prepare(country = "BR", duration_min = 686, weighting = weighting, zscores = zscores)
+  mx <<- prepare(country = "MX", duration_min = 686, weighting = weighting, zscores = zscores)
+  cn <<- prepare(country = "CN", duration_min = 686, weighting = weighting, zscores = zscores)
+  sk <<- prepare(country = "SK", duration_min = 686, weighting = weighting, zscores = zscores)
+  ua <- pl
+  ua$country <- "UA"
+  ua$country_name <- "Ukraine"
+  current_countries <- c("DK", "US", "FR", "DE")
+  ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
+  All <<- list()
+  for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <<- eval(parse(text = tolower(c)))
+  # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
+  all <<- merge_all_countries()
+  e <<- all
+}
+
+prepare_all()
 
 all_stata <- janitor::clean_names(all)
 names_stata <- c()
