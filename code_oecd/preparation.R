@@ -2647,8 +2647,8 @@ merge_all_countries <- function(countries = countries, weight_adult = T, weight_
   all$weight_country <- all$weight
   all$weight_pop <- all$weight * population[all$country]
   all$weight_adult <- all$weight * adult_pop[all$country]
-  all$weight_pop_oecd <- all$weight * oecd * population[all$country]
-  all$weight_adult_oecd <- all$weight * oecd * adult_pop[all$country]
+  all$weight_pop_oecd <- all$weight * oecd[all$country] * population[all$country]
+  all$weight_adult_oecd <- all$weight * oecd[all$country] * adult_pop[all$country]
   for (w in c("weight_pop", "weight_adult", "weight_pop_oecd", "weight_adult_oecd")) all[[w]] <- as.numeric(all[[w]] / sum(all[[w]]))
     
   if (weight_adult) {
