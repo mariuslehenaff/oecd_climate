@@ -2,6 +2,7 @@
 
 # TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 # TODO! vote, comparison heterogeneity, function coef along, quality (know_treatment_climate, watched_climate)
+# TODO!! add column World, bigger heatmaps
 
 export_xls <- F
 update_constant <- function(data = all) {
@@ -325,7 +326,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
       save_plotly_new_filename(footprint_elec_US, width= 400, height=220) })
     
     try({(footprint_transport_US <- barres(vars = Variables_footprint$tr[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$tr[c(2,1,3)]))
-      save_plotly_new_filename(footprint_transport_US, width= 400, height=220) }) # TODO: train for some countries
+      save_plotly_new_filename(footprint_transport_US, width= 400, height=220) }) # TODO: train for some countries, including barresN
     
     try({(footprint_food_US <- barres(vars = Variables_footprint$fd[c(2,3,1)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$fd[c(2,3,1)]))
       save_plotly_new_filename(footprint_food_US, width= 400, height=220) }) # TODO India no beef
@@ -1140,11 +1141,17 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(footprint_food_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_fd", export_xls = export_xls, df = e, miss=F, labels="Smallest food footprint"))
       save_plotly_new_filename(footprint_food_US_least, width= 470, height=fig_height(1*nb_levels)) })
     
-    try({(footprint_region_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_reg", export_xls = export_xls, df = e, miss=T, labels="Smallest regional emissions"))
+    try({(footprint_region_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_no_pnr_reg", export_xls = export_xls, df = e, miss=T, labels="Smallest regional emissions"))
       save_plotly_new_filename(footprint_region_US_least, width= 640, height=fig_height(1*nb_levels)) })
     
-    try({(footprint_pc_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_pc", export_xls = export_xls, df = e, miss=T, labels="Smallest regional footprint per capita"))
+    # try({(footprint_region_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_reg", export_xls = export_xls, df = e, miss=T, labels="Smallest regional emissions"))
+    #   save_plotly_new_filename(footprint_region_US_least, width= 640, height=fig_height(1*nb_levels)) })
+    
+    try({(footprint_pc_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_no_pnr_pc", export_xls = export_xls, df = e, miss=T, labels="Smallest regional footprint per capita"))
       save_plotly_new_filename(footprint_pc_US_least, width= 1100, height=fig_height(1*nb_levels)) }) # 640
+    
+    # try({(footprint_pc_US_least <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "least_footprint_pc", export_xls = export_xls, df = e, miss=T, labels="Smallest regional footprint per capita"))
+    #   save_plotly_new_filename(footprint_pc_US_least, width= 1100, height=fig_height(1*nb_levels)) }) # 640
     
     try({(footprint_elec_US_most <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "most_footprint_el", export_xls = export_xls, df = e, miss=F, labels="Largest electricity footprint"))
       save_plotly_new_filename(footprint_elec_US_most, width= 470, height=fig_height(1*nb_levels)) })
@@ -1347,7 +1354,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       save_plotly_new_filename(tax_transfers_support_US, width= 1160, height=fig_height(1*nb_levels))})
     
     ##### 6-8. Specific policies #####
-    labels_policies <- c("A ban on combustion-engine cars", "A green infrastructure program", "A carbon tax with cash transfers")
+    labels_policies <<- c("A ban on combustion-engine cars", "A green infrastructure program", "A carbon tax with cash transfers")
     try({(policies_cost_effective_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = paste(names_policies, "cost_effective", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=labels_policies))
       save_plotly_new_filename(policies_cost_effective_US, width= 1100, height=fig_height(3*nb_levels))})
     
@@ -1674,10 +1681,13 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     
     ##### Heatmaps #####
 
-    heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), df = all, width = 1770, height = 400) {
+    heatmap_wrapper <<- function(vars, labels = vars, name = deparse(substitute(vars)), conditions = c("> 0"), df = all, width = NULL, height = NULL) {
       # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
-      # alternative solution to see Ukraine/labels: reduce height (e.g. width=100, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
+      # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
       # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few). 
+      if (is.missing(width)) width <- ifelse(length(labels) <= 3, 1000, 1770) # TODO! more precise than <= 3 vs. > 3
+      if (is.missing(height)) height <- ifelse(length(labels) <= 3, 163, 400)
+      
       for (cond in conditions) {
         filename <- paste(sub("variables_", "", name), 
                           case_when(cond == "" ~ "mean", 
@@ -1909,5 +1919,9 @@ update_constant(de)
 # # save_plot(filename = "test", width = 400, height = 250)V
 
 # TODO: map graphs
+# TODO! correct problem colors in corrplot https://github.com/taiyun/corrplot/issues/228 https://github.com/taiyun/corrplot/blob/master/R/corrplot.R
 plot_world_map("net_zero_feasible", continuous = FALSE, width = 900, height = 400)
 
+# temp <- heatmap_table(vars = main_variables_behavior, data = all[all$country %in% c("FR", "DK", "US"),], along = along, conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T, alphabetical = alphabetical) # TODO! change commutes by leisure
+# row.names(temp) <- labels_main_behavior
+# heatmap_plot(temp, proportion = T)

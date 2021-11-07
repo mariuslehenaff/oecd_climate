@@ -1,0 +1,443 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Import preamble
+\input{preamble_slides.tex}
+\input{abbreviations.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define title
+
+
+%\title{Climate survey - France}
+%\author[OECD]{ \\  Antoine Dechezleprêtre, Adrien Fabre, Bluebery Planterose, Stefanie Stantcheva \\ (OECD) }
+%
+%              \date{}
+              
+\begin{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Begin of the document
+% TITLE PAGE
+
+\begin{frame}
+\thispagestyle{empty}
+\begin{center}
+\begin{LARGE}
+\textcolor{blue}{Climate survey - France}
+\end{LARGE}
+
+\vspace{1cm}
+
+
+Laurence Boone, Antoine Dechezleprêtre, Adrien Fabre, Tobias Kruse, Bluebery Planterose, Ana Sanchez-Chico, Stefanie Stantcheva \\
+
+%\vspace{-0.3cm}
+OECD/CAE \\
+
+\DTMlangsetup{showdayofmonth=false}
+\textit{\today} 
+
+\end{center}
+
+\bigskip
+
+\end{frame}
+
+% 1) Can you start by showing that people have misperceptions about the causes of CC and the impacts of their actions?
+% 2) Can you show lack of understanding of policies?
+% 3) Can we expand Adrien’s earlier result in his AEJ paper that people over estimate to what extent they will lose?
+% 4) Can we show aversion to changing one’s own life style? Or lack of understanding of the magnitudes of what has to be done?
+% 5) Can we try and make some clear statements about what info treatments work? We dont need heterogeneity here, let’s stay simple and try to make the point of what works?
+% 6) Determinants of support
+
+% 1) 
+% 2) 
+% 3) 
+% 4) 
+% 5) 
+% 6) 
+	
+\section{(Mis)perceptions of causes and impacts \\of climate change}
+
+\begin{frame}{Limited understanding of climate science}%\addtocounter{framenumber}{-1}
+	\begin{figure}%[h!]
+	\centering
+	\caption{What part of climate change do you think is due to human activity? \footnotesize{\textit{Right answer: Most}}}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/CC_anthropogenic_FR.png} 
+	\\
+	%\centering
+	%\centering
+	\caption{Do you think that cutting global greenhouse gas emissions by half would be sufficient to eventually stop temperatures from rising? \footnotesize{\textit{Right answer: No}}}
+	\includegraphics[width=.6\paperwidth]{../figures/FR/CC_dynamic_FR.png}
+	
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Some mistakes on the factors of climate change}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{Which of the following elements contribute to climate change? (Multiple answers are possible) \newline \footnotesize{\textit{Right answer: CO$_\text{2}$; Methane}}}
+	\centering
+	\includegraphics[width=.30\paperwidth]{../figures/FR/GHG_FR.png}
+	\vspace{.2cm} \\
+	\includegraphics[width=.61\paperwidth]{../figures/FR/score_GHG_FR.png}
+	
+	\textit{Score on GHG = CO$_\text{2}$ + methane + }not\textit{ hydrogen + }not\textit{ particulates}
+	%\caption{Which of the following elements contribute to climate change? (Multiple answers are possible))}
+	\end{figure}
+\end{frame}
+	
+	% out
+	% \begin{frame}{Climate change knowledge: GHG footprints}%\addtocounter{framenumber}{-1}
+	% \begin{figure}[h!]
+	% \centering
+	% % \caption{Number of errors when ranking 3 items in terms of GHG emissions for three sectors}
+	% \caption{Kendall tau distance to correct ranking of GHG footprints for three sectors ($\sim$ number of mistakes)}
+	% \includegraphics[width=.43\paperwidth]{../figures/FR/scores_footprint_FR.png} \\
+	% \centering
+	% \caption{Rank the French/China/Western Europe/India in terms of GHG footprint}
+	% \includegraphics[width=.52\paperwidth]{../figures/FR/score_footprint_regions_FR.png}
+	% \vspace{.2cm}
+	% % \\
+	% % \small{Correct ranking: plane>car>coach, beef>chicken>pasta, coal>gas>wind/ US>Western Europe>China>India} \\
+	% \end{figure}
+	% \end{frame}
+	
+\begin{frame}{}%Climate change knowledge: Know relative emissions}
+	\begin{columns}
+	\begin{column}{0.5\textwidth}
+	\begin{figure}
+	\caption{Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
+	Please rank the items from 1 (most) to 3 (least).
+	\newline \footnotesize{\textit{Right answer: Beef (1), Chicken (2), Pasta (3)}}}
+	\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_food_FR.png}
+	\end{figure}
+	\end{column}
+	\begin{column}{0.5\textwidth}
+	\begin{figure}
+	\caption{If a family of 4 travels 800 km from Bordeaux to Nice, with which mode of transportation do they emit the most greenhouse gases? 
+	Please rank the items from 1 (most) to 3 (least).
+	\newline \footnotesize{\textit{Right answer: Plane (1), Car (2), Train (3)}}} % TODO:other_countries Coach, towns
+	\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_transport_FR.png}
+	\end{figure}
+	\end{column}
+	\end{columns}
+\end{frame}
+	
+\begin{frame}{}%Climate change knowledge: Understand role of coal but misinformed about nuclear}%\addtocounter{framenumber}{-1}
+	\begin{figure}
+	\caption{Which source of electric energy emits the most greenhouse gases to provide power for a house?
+	\newline \footnotesize{\textit{Right answer: Coal (1), Gas (2), Nuclear (3)}}}
+	\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_elec_FR.png}
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{Underestimation of EU emissions}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[b]{0.425\paperwidth}
+	\centering
+	\caption{Which region contributes most to global greenhouse gas emissions?
+	\newline \footnotesize{\textit{Right answer: China (1), US (2), EU (3), India (4)}}} % True ranking: China>US>EU>India. 
+	\includegraphics[width=.425\paperwidth]{../figures/FR/footprint_region_no_miss_FR.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.425\paperwidth}
+	\centering
+	\caption{In which region does the consumption of an average person contribute most to climate change?
+	\newline \footnotesize{\textit{Right answer: US (1), EU (2), China (3), India (4)}}} % True ranking: US>EU>China>India. 
+	\includegraphics[width=.425\paperwidth]{../figures/FR/footprint_pc_no_miss_FR.png}
+	\end{subfigure}
+	\end{figure}
+\end{frame}
+	
+\begin{frame}{Impacts of climate change: Credit a lot of effects}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	%\caption{Impacts of climate change}
+	%\vspace{2mm}
+	\caption{If nothing is done to limit climate change, how likely do you think it is that climate change will lead to the following events?
+	\newline\footnotesize{\textit{Right answer: Very likely: Severe droughts and heatwaves; Rising sea levels \\ \quad \quad \quad \quad \quad \quad Very unlikely: More frequent volcanic eruptions (No scientific certainty on the other items)}}}
+	\includegraphics[width=.74\paperwidth]{../figures/FR/CC_impacts_FR.png} \\
+	%\caption{}
+	\end{figure}
+\end{frame}
+	% CC_dynamic
+
+\section{(Mis)perceptions of climate policies}
+
+\begin{frame}{Policies precisely described}%\addtocounter{framenumber}{-1}
+	\begin{itemize}
+	\ip \textcolor{blue}{Ban on Combustion Engine Cars}: To fight climate change, car producers can be required by law to produce cars that emit less CO$_\text{2}$ per km of the cars they sell. The emission limit is lowered every year so that only electric or hydrogen vehicles can be sold after 2030. This policy is called a \textit{ban on combustion-engine cars}.
+	\ip \textcolor{blue}{Green Infrastructure Program}: A green infrastructure program is a large public investment program, which would be financed by additional public debt, to accomplish the transition needed to cut greenhouse gases emissions. Investments would concern renewable power plants, public transportation, thermal renovation of building, and sustainable agriculture.
+	\ip \textcolor{blue}{Carbon Tax with Cash Transfers}: To fight climate change, the French government can make greenhouse gas emissions costly, to make people and firms change their equipment and reduce their emissions. The government could do this through a policy called a carbon tax with cash transfers. Under such a policy, the government would tax all products that emit greenhouse gas. For example, the price of gasoline would increase by 10 cents per liter. To compensate households for the price increases, the revenues from the carbon tax would be redistributed to all households, regardless of their income. Each adult would thus receive 160\euro{} per year.
+	\end{itemize}
+\end{frame}
+	
+
+\begin{frame}{Many think they would lose out}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} Do you think that \textcolor{blue}{financially your household} would win or lose from \textit{the policy}?}
+	\includegraphics[width=.61\paperwidth]{../figures/FR/policies_win_lose_self_FR.png}
+	\vspace{-.1cm}
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} In your view, would those living in \textcolor{blue}{rural areas} win or lose from \textit{the following policy}?}
+	\includegraphics[width=.61\paperwidth]{../figures/FR/policies_win_lose_rural_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+	
+\begin{frame}{Most view rich winning and poor losing}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} In your view, would \textcolor{blue}{high-income} earners win or lose from \textit{the following policy}?}
+	\includegraphics[width=.61\paperwidth]{../figures/FR/policies_win_lose_rich_FR.png}
+	\vspace{-.1cm}
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} In your view, would \textcolor{blue}{low-income} earners win or lose from \textit{the following policy}?}
+	\includegraphics[width=.61\paperwidth]{../figures/FR/policies_win_lose_poor_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+	
+\begin{frame}{See the middle class gains close to the poor's}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} In your view, would the \textcolor{blue}{middle-class} win or lose from \textit{the following policy}?}
+	\includegraphics[width=.61\paperwidth]{../figures/FR/policies_win_lose_middle_FR.png}
+	%\caption{}
+	\vspace{-.1cm}
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} In your view, would \textcolor{blue}{low-income} earners win or lose from \textit{the following policy}?}
+	\includegraphics[width=.61\paperwidth]{../figures/FR/policies_win_lose_poor_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+	
+\begin{frame}{Only investments gather more positive than negative views}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} Do you agree or disagree with the following statement? \textit{The policy} would have a \textcolor{blue}{\textbf{large} effect on the French economy and employment}.}
+	\includegraphics[width=.78\paperwidth]{../figures/FR/policies_large_effect_FR.png}
+	\vspace{-.1cm}
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} Do you agree or disagree with the following statement? \textit{The policy} would have a \textcolor{blue}{\textbf{negative} effect on the French economy and employment}.}
+	\includegraphics[width=.78\paperwidth]{../figures/FR/policies_negative_effect_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+	
+\begin{frame}{Policies seen as costly but effective}%
+	%\addtocounter{framenumber}{-1}
+	
+	%\textbf{Problem:} strong acquiescence bias. In the pilot, 53-59\% agreed that it was ``cost-effective''. Formulation changed to ``costly'' and 56-57\% agree.
+	\begin{figure}[h!]
+	\vspace{-.1cm}
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} Do you agree or disagree with the following statement? \textit{The policy} would be \textcolor{blue}{costly to fight climate change}}
+	\includegraphics[width=.87\paperwidth]{../figures/FR/policies_cost_effective_FR.png}
+	\caption{ \textcolor{blue}{would reduce air pollution}}
+	\includegraphics[width=.87\paperwidth]{../figures/FR/policies_less_pollution_FR.png}
+	%\caption{}
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{Incentives are acknowledged}
+	\begin{figure}[h!]
+	\vspace{-.1cm}
+	\centering
+	\caption{\textit{Comparison of responses to each policy question:} Do you agree or disagree with the following statement? \textit{The policy} would ...}
+	\includegraphics[width=.87\paperwidth]{../figures/FR/policies_effects_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+	
+	
+	% \begin{frame}{Fairness as main motive for support}%\addtocounter{framenumber}{-1}
+	% \begin{figure}[h!]
+	% \vspace{-.1cm}
+	% \centering
+	% \caption{\textit{Comparison of responses to each policy question:} Do you agree or disagree with the following statement:"The \textit{policy} is \textcolor{blue}{fair}."}
+	% \includegraphics[width=.7\paperwidth]{../figures/FR/policies_fair_FR.png}
+	% \vspace{-.1cm}
+	% \centering
+	% \caption{\textit{Comparison of responses to each policy question:} Do you \textcolor{blue}{support or oppose} \textit{the following policy}?}
+	% \includegraphics[width=.7\paperwidth]{../figures/FR/policies_support_FR.png}
+	% %\caption{}
+	% \end{figure}
+
+\begin{frame}{Carbon tax support higher when benefits are made salient}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 10 centimes par litre, if the government used this revenue to finance...}
+	\vspace{2mm}
+	\includegraphics[width=.87\paperwidth]{../figures/FR/tax_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+		
+			
+
+
+\section{(Un)willingness to change behavior}
+% 4) Can we show aversion to changing one’s own life style? Or lack of understanding of the magnitudes of what has to be done?
+\begin{frame}{Willing to adopt the less restrictive behaviors}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{Here are possible habits that experts say would help reduce greenhouse gas emissions.
+	To what extent would you be willing to adopt the following behaviors?}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/willing_FR.png} \\
+	\end{figure}
+\end{frame}
+	
+\begin{frame}{Main factor needed to change lifestyle: fairness}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{How important are the factors below in order for you to adopt a sustainable lifestyle (i.e. limit driving, flying, and consumption, cycle more, etc.)?}
+	\includegraphics[width=.87\paperwidth]{../figures/FR/condition_FR.png}
+	\end{figure}
+\end{frame}
+	
+
+\section{Effects of informational video treatments}
+% TODO!
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{table}[h!]
+	\caption{Attitudes towards Climate Change}
+	\begin{center}
+	\scalebox{.7}{\input{../tables/FR_1.tex}}
+	\end{center} % TODO: why not 2006 obs.?
+		{\tiny Note: The \textit{CC caused by humans} indicator variable equals one if the respondent thinks a lot or most of climate change is due to human actions. The \textit{CC likely to cause extinction} indicator variable equals one if the respondent thinks climate change is somewhat likely or very likely to cause the extinction of humankind if nothing is done to limit it. The \textit{Donation} variable is a continuous variable equal to the amount the respondent is willing to give to a charity. The \textit{should fight CC} indicator variable equals one if the respondent strongly agrees that their country ``should take measures to fight climate change''. The \textit{Willing to limit driving} indicator variable equals one if the respondent is willing a lot or a great deal to limit driving. The three \textit{treatment} indicator variables indicate difference in mean compared to the control group (people who did not see any video). Controls include socio-demographic, left-right leaning, last vote and whether the respondent's household was hit by the COVID-19 pandemic. Standard errors are in parentheses.  *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+	\end{table}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{table}[h!]
+	\caption{Support for policies}
+	\begin{center}
+	\scalebox{.7}{\input{../tables/FR_2.tex}}
+	\end{center}
+		{\footnotesize Note: The dependent variables are indicator variables equal to one if the respondent `Strongly supports'' or ``Somewhat supports'' the policy. The \textit{Average over 3 policies} takes the average of the respondent's answers for the three policies. It equals one if the respondent supports all three policies, 2/3 if she supports two, 1/3 if she supports only one, and 0 if she supports none. %See notes under previous Table for a description of the covariates.
+		\newline Controls include socio-demographic, left-right leaning, last vote and whether the respondent's household was hit by the COVID-19 pandemic. Standard errors are in parentheses. *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+	\end{table}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{table}[h!]
+	\caption{Attitudes towards policies}
+	\begin{center}
+	\scalebox{.7}{\input{../tables/FR_3.tex}}
+	\end{center}
+		{\scriptsize Note: The dependent variables are discrete variables equal either to 0, 1/3, 2/3, or 1. They are equal to the average over the three policies mentioned in Table ``Support policies''. The \textit{Fair} variable equals one if the respondent strongly agrees or somewhat agrees that each of the three policies are fair. The \textit{HH/Poor would win} variables equal one if the respondent thinks her househould/the poorest would win a lot or mostly win from the three policies. The \textit{Large/Negative economic effect} variables equal one if the respondent strongly agrees or somewhat agrees that the three policies would have a large/negative impact on the French economy and employment. 
+		\newline Controls include socio-demographic, left-right leaning, last vote and whether the respondent's household was hit by the COVID-19 pandemic. Standard errors are in parentheses. *p$<$0.1; **p$<$0.05; ***p$<$0.01}
+	\end{table}
+	\end{frame}
+
+	
+\section{Determinants of policy support}
+
+\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by beliefs about climate change} % TODO! put CI on same line as they don't cross
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_CC_anthropogenic_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by trust in government}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_trust_govt_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by living with child(ren) below 14}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_children_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by age}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_age_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by diploma}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_diploma_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by working sector}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_polluting_sector_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by avalaibility of public transport}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_availability_transport_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by urban category}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_urban_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by income}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_income_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by support for the Yellow Vests}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_yellow_vests_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by vote}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_vote_agg_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	\begin{frame}{}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\caption{\% of positive responses by gas expenses}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_gas_expenses_FR.png} \\
+	\end{figure}
+	\end{frame}
+	
+	% \begin{frame}{}%\addtocounter{framenumber}{-1}
+	% \begin{figure}[h!]
+	% \caption{\% of positive responses by heating expenses}
+	% \includegraphics[width=.7\paperwidth]{../figures/FR/positive_all_by_heating_expenses_FR.png} \\
+	% \end{figure}
+	% \end{frame}
+	
+	% \begin{frame}{}%\addtocounter{framenumber}{-1}
+	% \begin{figure}[h!]
+	% \caption{Support for all policies -- Regression results}
+	% \includegraphics[width=.45\paperwidth]{../figures/FR/coef_support_indices_FR.png} \\
+	% \tiny{Note: Variables used in the analysis but not displayed:  origin, gender, and income. The policy support for all variable is an indicator variable equal to one if on average among the three policies the respondent somewhat or strongly support the policies (i.e., it is a dummy that the average support across policies is positive).}
+	% \end{figure}
+	% \end{frame}
+
+\end{document}

@@ -75,7 +75,7 @@ package("emmeans")
 package("ggeffects")
 package("snakecase")
 package("rdd")
-package("corrplot")
+package("corrplot")#, version = "0.87")
 package("psy")
 package("lavaan")
 package("StatMatch")
@@ -962,8 +962,8 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # 
   color_lims <- if(proportion) c(0,1) else { if (min(data)>=2 & max(data)<= 2) c(-2,2) else c(min(0, data), max(data)) }
   # color_lims <- if(proportion) c(0,1) else { if (min(data, na.rm=T)>=2 & max(data, na.rm=T)<= 2) c(-2,2) else c(min(0, data, na.rm=T), max(data, na.rm=T)) }
   nb_digits <- if(proportion) 0 else 1
-  col2 <- c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")
-  col <- colorRampPalette(col2)(200)
+  color2 <- c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")
+  col <- colorRampPalette(color2)(200)
   # if (proportion) col <- colorRampPalette(c(rep("#67001F", 10), col2))(200)
   par(xpd=TRUE)
   return(corrplot(data, method='color', col = col,  mar = c(0,0, 1.3,0), cl.pos = 'n', cl.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale
