@@ -1899,18 +1899,20 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$know_footprint_pc) <- "know_footprint_pc: Correct answer to the ranking of per capita footprints (when there is a tie in the respondent's ranking, we solve it to their advantage)"
     if ("footprint_reg_US" %in% names(e)) label(e$know_footprint_region) <- "know_footprint_region: Correct answer to the ranking of region footprints (when there is a tie in the respondent's ranking, we solve it to their advantage)"
     e$most_footprint_el <- e$most_footprint_fd <- e$most_footprint_tr <- e$most_footprint_reg <- e$most_footprint_pc <- e$least_footprint_pc <- e$least_footprint_el <- e$least_footprint_fd <- e$least_footprint_tr <- e$least_footprint_reg <- e$least_footprint_no_pnr_reg <- e$least_footprint_no_pnr_pc <- "PNR"
+    for (v in c("reg", "pc")) {
+      for (i in Variables_footprint[[v]]) if (i %in% names(e)) e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+      for (i in Variables_footprint[[v]]) if (i %in% names(e)) e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==2] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+      for (i in Variables_footprint[[v]]) if (i %in% names(e)) e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==3] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+      for (i in Variables_footprint[[v]]) if (i %in% names(e)) e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==4] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+      for (i in Variables_footprint[[v]]) if (length(Variables_footprint[[v]])==5 & i %in% names(e)) e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==5] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
+    }
     for (v in c("el", "fd", "tr", "reg", "pc")) {
       for (i in Variables_footprint[[v]]) {
         if (i %in% names(e)) {
           if (v %in% c("el", "fd", "tr")) e[[paste("most_footprint", v, sep="_")]][e[[i]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
           if (v %in% c("el", "fd", "tr")) e[[paste("least_footprint", v, sep="_")]][e[[i]]==3] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i)) # +1*(v %in% c("reg", "pc"))
           if (v %in% c("reg", "pc")) e[[paste("most_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
-          if (v %in% c("reg", "pc")) {
-            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
-            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==2] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
-            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==3] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
-            e[[paste("least_footprint_no_pnr", v, sep="_")]][e[[paste(i, "original", sep="_")]]==4] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
-            e[[paste("least_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==4] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i)) }
+          if (v %in% c("reg", "pc")) e[[paste("least_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==length(Variables_footprint[[v]])] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
       } }
       e[[paste("most_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("most_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("most_footprint_", v, ": Largest footprint of type ", v, " according to the respondent", sep=""))
       e[[paste("least_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_", v, ": Smallest footprint of type ", v, " according to the respondent", sep=""))
@@ -2649,7 +2651,7 @@ merge_all_countries <- function(countries = countries, weight_adult = T, weight_
   all$weight_adult <- all$weight * adult_pop[all$country]
   all$weight_pop_oecd <- all$weight * oecd[all$country] * population[all$country]
   all$weight_adult_oecd <- all$weight * oecd[all$country] * adult_pop[all$country]
-  for (w in c("weight_pop", "weight_adult", "weight_pop_oecd", "weight_adult_oecd")) all[[w]] <- as.numeric(all[[w]] / sum(all[[w]]))
+  for (w in c("weight_pop", "weight_adult", "weight_pop_oecd", "weight_adult_oecd")) all[[w]] <- 100 * as.numeric(all[[w]] / sum(all[[w]]))
     
   if (weight_adult) {
     if (weight_oecd) all$weight <- all$weight_adult_oecd
