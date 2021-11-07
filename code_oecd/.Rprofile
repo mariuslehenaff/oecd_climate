@@ -1462,30 +1462,42 @@ rquery.wordcloud <- function(x, type=c("text", "url", "file"), lang="english", e
   invisible(list(tdm=tdm, freqTable = d))
 }
 
-plot_world_map <- function(var, condition = "> 0", df = all, on_control = T, save = T, width = dev.size('px')[1], height = dev.size('px')[2]) {
+plot_world_map <- function(var, condition = "> 0", df = all, on_control = T, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2]) {
   table <- heatmap_table(vars = var, data = df, along = "country", conditions = c(condition), on_control = T)
-  df <- data.frame(country = Country_Names[colnames(table)], mean = as.vector(table))
+  df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
+  df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2)))
   
   if (condition != "") {
     breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
     labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
+    legend <- paste("Share", condition)
+    limits <- c(0, 1)
   } else {
     breaks <- c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf) # c(-Inf, -1, -.5, -.25, 0, .25, .5, 1, Inf)
     labels <- c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2")
+    legend <- "Mean"
+    limits <- c(-2, 2)
   }
-  
-  df$group <- cut(df$mean, breaks = breaks, labels = labels)
   
   world_map <- map_data(map = "world")
   world_map <- world_map[world_map$region != "Antarctica",]
   # world_map$region <- iso.alpha(world_map$region)
-
-  plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
-    geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'black', fill = NA) +
-    expand_limits(x = world_map$long, y = world_map$lat) +
-    scale_fill_manual(name = "Mean", values = color(length(breaks)-1, theme='default')) + theme_void() + coord_fixed() # +proj=eck4 +proj=wintri
   
-  if (save) save_plot(plot, filename = var, folder = '../figures/maps/', width = width, height = height)
-  return(plot)
+  df_na <- data.frame(country = setdiff(world_map$region, df_countries), mean = NA)
+  df <- merge(df, df_na, all = T)
+  
+  df$group <- cut(df$mean, breaks = breaks, labels = labels)
+  
+  if (!continuous) {
+    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+    geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
+    scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 +proj=wintri
+  } else {
+    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
+        scale_fill_distiller(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
+  }
+  
+  if (save) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height)
+  # return(plot)
 }
-
