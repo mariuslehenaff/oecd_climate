@@ -1907,3 +1907,7 @@ update_constant(de)
 # # heatmap_table(vars = c("CC_anthropogenic", "standard_support"), along = "country_name", conditions = c("> 0"), on_control = T)
 # # heatmap_plot(heatmap_table(vars = c("CC_anthropogenic", "standard_support"), along = "country_name", conditions = c(""), on_control = T), percent = F)
 # # save_plot(filename = "test", width = 400, height = 250)V
+
+# TODO: map graphs + save, e.g.
+plot_world_map("tax_transfers_support", save = T, width = dev.size('px')[1], height = dev.size('px')[2])
+
