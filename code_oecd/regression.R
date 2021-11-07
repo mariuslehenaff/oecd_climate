@@ -117,8 +117,8 @@ desc_table(dep_vars = c("condition_ambitious_policies >= 1", "condition_financia
 
 
 ## Block Pref 1: emission standards
-desc_table(dep_vars = c("standard_effect_less_emission >= 1", "standard_effect_less_pollution >= 1", "standard_negative_effect >= 1", "standard_large_effect >= 1", "standard_cost_effective >= 1"), filename = "standard_opinion",
-           dep.var.labels = c("Reduce car emissions", "Reduce pollution", "Negative effect", "Large effect", "Costly"),
+desc_table(dep_vars = c("standard_effect_less_emission >= 1", "standard_effect_less_pollution >= 1", "standard_positive_negative >= 1", "standard_large_effect >= 1", "standard_costless_costly >= 1"), filename = "standard_opinion",
+           dep.var.labels = c("Reduce car emissions", "Reduce pollution", "Positive effect", "Large effect", "Costly"),
            dep.var.caption = c("Effects of ban on combustion engine"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
 )
 #would win
@@ -142,8 +142,8 @@ desc_table(dep_vars = c("standard_fair >= 1", "standard_support >= 1", "standard
 )
 
 ## Block Pref 2: green investments
-desc_table(dep_vars = c("investments_effect_elec_greener >= 1","investments_effect_public_transport >= 1" , "investments_effect_less_pollution >= 1", "investments_negative_effect >= 1", "investments_large_effect >= 1", "investments_cost_effective >= 1"), filename = "investments_opinion",
-           dep.var.labels = c("Greener electricity", "More use of public transport","Reduce pollution", "Negative effect", "Large effect", "Costly"),
+desc_table(dep_vars = c("investments_effect_elec_greener >= 1","investments_effect_public_transport >= 1" , "investments_effect_less_pollution >= 1", "investments_positive_negative >= 1", "investments_large_effect >= 1", "investments_costless_costly >= 1"), filename = "investments_opinion",
+           dep.var.labels = c("Greener electricity", "More use of public transport","Reduce pollution", "Positive effect", "Large effect", "Costly"),
            dep.var.caption = c("Effects of green infrastructure program"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
 )
 #would win
@@ -173,8 +173,8 @@ desc_table(dep_vars = c("investments_funding_debt == 1", "investments_funding_sa
 )
 
 ## Block Pref 3: tax and dividend
-desc_table(dep_vars = c("tax_transfers_effect_driving >= 1","tax_transfers_effect_insulation >= 1","tax_transfers_effect_less_emission >= 1", "tax_transfers_effect_less_pollution >= 1", "tax_transfers_negative_effect >= 1", "tax_transfers_large_effect >= 1", "tax_transfers_cost_effective >= 1"), filename = "tax_transfer_opinion",
-           dep.var.labels = c("Drive less", "Insulate more", "Reduce fossil fuels","Reduce pollution", "Negative effect", "Large effect", "Costly"),
+desc_table(dep_vars = c("tax_transfers_effect_driving >= 1","tax_transfers_effect_insulation >= 1","tax_transfers_effect_less_emission >= 1", "tax_transfers_effect_less_pollution >= 1", "tax_transfers_positive_negative >= 1", "tax_transfers_large_effect >= 1", "tax_transfers_costless_costly >= 1"), filename = "tax_transfer_opinion",
+           dep.var.labels = c("Drive less", "Insulate more", "Reduce fossil fuels","Reduce pollution", "Positive effect", "Large effect", "Costless"),
            dep.var.caption = c("Effects of carbon tax with cash transfers"), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment, mean_control = T
 )
 #would win
@@ -587,9 +587,9 @@ summary(lm(as.formula(paste("CC_problem == 2 ~ ", paste(c("Gilets_jaunes", all_c
 decrit(fr$effect_halt_CC_economy)
 # Insulation support ~ tenant
 summary(lm(insulation_support > 0 ~ home_tenant, data = fr, weights = fr$weight))
-summary(lm(policies_support > 0 ~ policies_negative_effect > 0, data = fr, weights = fr$weight))
+summary(lm(policies_support > 0 ~ policies_positive_negative > 0, data = fr, weights = fr$weight))
 summary(lm(policies_support > 0 ~ effect_halt_CC_economy > 0, data = fr, weights = fr$weight))
-summary(lm(policies_support ~ policies_negative_effect, data = fr, weights = fr$weight))
+summary(lm(policies_support ~ policies_positive_negative, data = fr, weights = fr$weight))
 summary(lm(policies_support ~ effect_halt_CC_economy, data = fr, weights = fr$weight))
 end_formula
 summary(lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "polluting_sector", "can_trust_govt_dummy", "availability_transport_dummy", "index_affected", "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight))
