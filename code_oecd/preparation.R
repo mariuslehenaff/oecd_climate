@@ -36,12 +36,17 @@ countries <- c("AU", "CA", "DK", "FR", "DE", "IT", "JP", "MX", "PL", "SK", "SP",
 # countries <- c("US", "CA", "AU", euro_countries, "UA", "TR", "JP", "SK", "CN", "ID", "IA", "SA", "BR", "MX")  # countries[sample(1:12, 1)]
 countries_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "United Kingdom", "United States", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine") # TODO? USA? UK?
 Country_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "the U.K.", "the U.S.", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine")
+Country_Names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "UK", "USA", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine")
 country_names <- c("Australian", "Canadian", "Danish", "French", "German", "Italian", "Japanese", "Mexican", "Polish", "South Korean", "Spanish", "Turkish", "British", "American", "Brazilian", "Chinese", "Indian", "Indonesian", "South African", "Ukrainian")
 tax_price_increase <- c("AU$0.15/L", "CA$0.14/L", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "¥12/L", "Mex$2.2/L", "0.40 zł/L", "₩125/L", "0.10 €/L", "₺1/L", "£0.08/L", "$0.40/gallon", "0.60 R$/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.60/L", "3₴/L")
+adult_pop <- c(19.6, 30.3, 4.5, 50.4, 68.5, 49.7, 108, 92.8, 31.4, 43.2, 38.2, 59.8, 51.6, 246, 160, 1130, 860, 173, 36.0, 35.4)
+population <- c(26, 38, 6, 65, 84, 60, 127, 129, 38, 51, 47, 84, 68, 331, 213, 1439, 1380, 274, 59, 44) # World: 4560/7800, Asia: 3350/4600, Europe: 412/750 (UE: 300/448, euro: 256/342), Africa: 59/1300, North America: 498/580, South America: 213/420 (Northern America: 369/369, Latin America: 306/631), Oceania: 26/42 (OECD: 1154/1371). 
+# Under-sampled: Africa, ex-URSS, Middle East. Slightly over-sampled: North America. Slightly under-sampled: South America. Not worth it to correct the small under/over-sampling (by increasing weights of BR, MX and reducing weight of US, CA) as the total weights would be changed by only 5%. The big problem is the lack of coverage of Africa, Russia, Middle East.
+oecd <- c(rep(T, 14), rep(FALSE, 6))
 max_donation_country <- c(100, 100, 600, 100, 100, 100, 10^4, 1000, 500, 10^5, 100, 1000, 100, 100, 500, 1000, 10^4, 10^6, 1000, 1000)
 duration_climate_video <- 120 + c(20, 20, 24, 18, 30, 20, 32, 7, 8, 10, 30, 7, 29, 61, 25, 17, 25, 40, 12, 31) # TODO! CA-FR, IA-HI, SA-ZU, UA-RU: c(16, 25, 26, 21)
 duration_policy_video <- 240 + c(6, 22, 38, 33, 73, 74, 66, 44, 63, 67, 94, 35, 59, 44, 42, 36, 38, 16, 10, 69) #  CA-FR, IA-HI, SA-ZU, UA-RU: c(23, 25, 61, 40)
-names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- names(max_donation_country) <- names(duration_climate_video) <- names(duration_policy_video) <- countries
+names(oecd) <- names(population) <- names(adult_pop) <- names(tax_price_increase) <- names(countries_names) <- names(country_names) <- names(Country_names) <- names(Country_Names) <- names(max_donation_country) <- names(duration_climate_video) <- names(duration_policy_video) <- countries
 parties_leaning <- list()
 loadings_efa <- list()
 
@@ -2634,24 +2639,45 @@ ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA
 All <- list()
 for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
 # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-e <- all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+e <- all <- merge_all_countries()
 
-all$knows_anthropogenic <- all$CC_anthropogenic == 2
-variables_knowledge_efa <- variables_knowledge
-negatives_knowledge_efa <- negatives_knowledge
-# variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
-# negatives_knowledge_efa <- c(negatives_knowledge, F)
-temp <- all[,c("weight", "treatment", variables_knowledge_efa)]
-for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
-# for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
-loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
-names(loadings) <- variables_knowledge_efa
-loadings_efa[["all"]] <- loadings
-# print(loadings_z)
-all$index_knowledge_efa_global <- 0
-for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
-all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weights, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weights, na.rm = T))
-label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+merge_all_countries <- function(countries = countries, weight_adult = T, weight_oecd = F) {
+  all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+  
+  all$weight_country <- all$weight
+  all$weight_pop <- all$weight * population[all$country]
+  all$weight_adult <- all$weight * adult_pop[all$country]
+  all$weight_pop_oecd <- all$weight * oecd * population[all$country]
+  all$weight_adult_oecd <- all$weight * oecd * adult_pop[all$country]
+  for (w in c("weight_pop", "weight_adult", "weight_pop_oecd", "weight_adult_oecd")) all[[w]] <- as.numeric(all[[w]] / sum(all[[w]]))
+    
+  if (weight_adult) {
+    if (weight_oecd) all$weight <- all$weight_adult_oecd
+    else all$weight <- all$weight_adult
+  } else {
+    if (weight_oecd) all$weight <- all$weight_pop_oecd
+    else all$weight <- all$weight_pop    
+  }
+  
+  all$knows_anthropogenic <- all$CC_anthropogenic == 2
+  variables_knowledge_efa <- variables_knowledge
+  negatives_knowledge_efa <- negatives_knowledge
+  # variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
+  # negatives_knowledge_efa <- c(negatives_knowledge, F)
+  temp <- all[,c("weight", "treatment", variables_knowledge_efa)]
+  for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
+  # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
+  loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
+  names(loadings) <- variables_knowledge_efa
+  loadings_efa[["all"]] <- loadings
+  # print(loadings_z)
+  all$index_knowledge_efa_global <- 0
+  for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
+  all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weight, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weight, na.rm = T))
+  label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+  
+  return(all)
+}
 
 ## PREPARE DATA FOR STATA
 # write.csv(all,"../data/all_211102.csv", row.names=F)
