@@ -20,7 +20,7 @@ if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.1.1/library",
 
 chooseCRANmirror(ind = 1)
 package("plyr")
-package("tm")
+package("tm") 
 package("memisc", version = "0.99.22") 
 package('tidyverse')
 package("xtable")
