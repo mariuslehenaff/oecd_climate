@@ -718,7 +718,7 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
                      miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls, error_margin = error_margin))
 }
 color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
-color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') {
+color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') { # TODO! whitout white
   if (is.matrix(v)) n <- nrow(v)
   else if (length(v) > 1) n <- length(v)
   else n <- v # cf. http://research.stowers.org/mcm/efg/R/Color/Chart/ColorChart.pdf
@@ -739,6 +739,7 @@ color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, them
     if (n == 1) cols <- cols[1]
     # if (n == 2) cols <- cols[c(1,3)]
     else if (n %% 2 == 0) cols <- rev(brewer.pal(n+2, theme))[c(1:(n/2),(n/2+2):(n+1))] }
+  if (n > 10) cols <- colorRampPalette(cols)(n)
   if (rev_color) cols <- rev(cols)
   if (grey & n > 1) return(c(cols, "#D3D3D3")) # lightgrey
   else return(cols)
