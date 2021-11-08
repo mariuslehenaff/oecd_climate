@@ -112,6 +112,7 @@ package("relaimpo") # works well with 21 variables, not much more. install from:
 package("missMDA") # PCA
 package("maps")
 package("forcats")
+package("modi")
 
 # package("quanteda")
 # package("haven")
