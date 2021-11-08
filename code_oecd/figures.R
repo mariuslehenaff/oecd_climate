@@ -387,14 +387,14 @@ plot(jitter(e$tax_transfers_support, 1) ~ jitter(e$standard_support, 1), pch = '
 save_plot(filename = paste0(folder, "plot_standard_tax_support"), height = 400, width = 400)
 
 labels_policies <- c("A ban on combustion-engine cars", "A green infrastructure program", "A carbon tax with cash transfers")
-(policies_cost_effective_US <- barres(vars = paste(names_policies, "cost_effective", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_policies))
-save_plotly(policies_cost_effective_US, width= 1100, height=240)
+(policies_costless_costly_US <- barres(vars = paste(names_policies, "costless_costly", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_policies))
+save_plotly(policies_costless_costly_US, width= 1100, height=240)
 
 (policies_large_effect_US <- barres(vars = paste(names_policies, "large_effect", sep="_"), export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, sort = F, labels=labels_policies))
 save_plotly(policies_large_effect_US, width= 1100, height=240)
 
-(policies_negative_effect_US <- barres(vars = paste(names_policies, "negative_effect", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_policies))
-save_plotly(policies_negative_effect_US, width= 1100, height=240)
+(policies_positive_negative_US <- barres(vars = paste(names_policies, "positive_negative", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_policies))
+save_plotly(policies_positive_negative_US, width= 1100, height=240)
 
 (policies_fair_US <- barres(vars = paste(names_policies, "fair", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, sort = F, labels=labels_policies))
 save_plotly(policies_fair_US, width= 1100, height=240)
@@ -424,24 +424,24 @@ save_plotly(policies_all_support_US, width= 790, height=270)
                                export_xls = export_xls, df = e, miss=F, labels=c("Reduce air pollution", "Reduce CO2 emissions from cars")))
 save_plotly(standard_effects_US, width= 1100, height=200)
 
-(standard_all_US <- barres(vars = c("standard_fair", "standard_cost_effective", "standard_negative_effect", "standard_large_effect", "standard_effect_less_pollution", "standard_effect_less_emission"), sort = F,rev = F, rev_color = T, 
-                           export_xls = export_xls, df = e, miss=F, labels=c("Be fair", "Costly way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce CO2 emissions from cars")))
+(standard_all_US <- barres(vars = c("standard_fair", "standard_costless_costly", "standard_positive_negative", "standard_large_effect", "standard_effect_less_pollution", "standard_effect_less_emission"), sort = F,rev = F, rev_color = T, 
+                           export_xls = export_xls, df = e, miss=F, labels=c("Be fair", "Costless way<br>to fight climate change", "Positive effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce CO2 emissions from cars")))
 save_plotly(standard_all_US, width= 1100, height=380)
 
 (investments_effects_US <- barres(vars = c("investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), sort = F,rev = F, rev_color = T, 
                                   export_xls = export_xls, df = e, miss=F, labels=c("Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
 save_plotly(investments_effects_US, width= 1150, height=240)
 
-(investments_all_US <- barres(vars = c("investments_cost_effective", "investments_negative_effect", "investments_large_effect", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), sort = F, rev = F, rev_color = T, 
-                              export_xls = export_xls, df = e, miss=F, labels=c("Costly way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
+(investments_all_US <- barres(vars = c("investments_costless_costly", "investments_positive_negative", "investments_large_effect", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), sort = F, rev = F, rev_color = T, 
+                              export_xls = export_xls, df = e, miss=F, labels=c("Costless way<br>to fight climate change", "Positive effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")))
 save_plotly(investments_all_US, width= 1150, height=400)
 
 (tax_transfers_effects_US <- barres(vars = c("tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F,rev = F, rev_color = T, 
                                     export_xls = export_xls, df = e, miss=F, labels=c("Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
 save_plotly(tax_transfers_effects_US, width= 1100, height=280)
 
-(tax_transfers_all_US <- barres(vars = c("tax_transfers_cost_effective", "tax_transfers_negative_effect", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F, rev = F, rev_color = T, 
-                                export_xls = export_xls, df = e, miss=F, labels=c("Costly way<br>to fight climate change", "Negative effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
+(tax_transfers_all_US <- barres(vars = c("tax_transfers_costless_costly", "tax_transfers_positive_negative", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), sort = F, rev = F, rev_color = T, 
+                                export_xls = export_xls, df = e, miss=F, labels=c("Costless way<br>to fight climate change", "Positive effect on US<br>economy and employment", "Large effect on US<br>economy and employment", "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")))
 save_plotly(tax_transfers_all_US, width= 1150, height=430)
 
 
@@ -670,8 +670,8 @@ plot_heterogeneity12 <- function(dfs = list(e[e$income %in% c("Q1", "Q2"),], e[e
   (temp <- barres12(vars = "willing_limit_flying", rev = F, rev_color = T, export_xls = export_xls, df = dfs, comp = comp, orig = orig, miss = F, labels="Willing to limit flying"))
   save_plotly(temp, filename = paste0("willing_limit_flying", text_file), width= 680, height=220)
   
-  (temp <- barres12(vars = paste(names_policies, "negative_effect", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = dfs, comp = comp, orig = orig, miss=F, sort = F, labels=labels_policies))
-  save_plotly(temp, filename = paste0("policies_negative_effect", text_file), width= 1100, height=380)
+  (temp <- barres12(vars = paste(names_policies, "positive_negative", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = dfs, comp = comp, orig = orig, miss=F, sort = F, labels=labels_policies))
+  save_plotly(temp, filename = paste0("policies_positive_negative", text_file), width= 1100, height=380)
   
   (temp <- barres12(vars = paste(names_policies, "win_lose_self", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = dfs, comp = comp, orig = orig, miss=F, sort = F, labels=labels_policies))
   save_plotly(temp, filename = paste0("policies_win_lose_self", text_file), width= 870, height=380)
@@ -721,8 +721,8 @@ plot_heterogeneityN <- function(df = us, along = "vote", text_file = "_US_vote",
   try({(temp <- barresN(vars = "willing_limit_flying", rev = F, rev_color = T, export_xls = export_xls, df = df, along = along, miss = F, labels="Willing to limit flying"))
     save_plotly(temp, filename = paste0("willing_limit_flying", text_file), width= 680, height=fig_height(1*length(levels)))})
 
-  try({(temp <- barresN(vars = paste(names_policies, "negative_effect", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = df, along = along, miss=F, labels=labels_policies))
-    save_plotly(temp, filename = paste0("policies_negative_effect", text_file), width= 1100, height=fig_height(3*length(levels)))})
+  try({(temp <- barresN(vars = paste(names_policies, "positive_negative", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = df, along = along, miss=F, labels=labels_policies))
+    save_plotly(temp, filename = paste0("policies_positive_negative", text_file), width= 1100, height=fig_height(3*length(levels)))})
 
   try({(temp <- barresN(vars = paste(names_policies, "win_lose_self", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = df, along = along, miss=F, labels=labels_policies))
     save_plotly(temp, filename = paste0("policies_win_lose_self", text_file), width= 870, height=fig_height(3*length(levels)))})
@@ -790,8 +790,8 @@ save_plotly(wtp_US_anthropogenic, width= 830, height=220)
 # (willing_limit_flying_US_inc <- barres12(vars = "willing_limit_flying", rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", miss = F, labels="Willing to limit flying"))
 # save_plotly(willing_limit_flying_US_inc, width= 680, height=220)
 # 
-# (policies_negative_effect_US_inc <- barres12(vars = paste(names_policies, "negative_effect", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", miss=F, sort = F, labels=labels_policies))
-# save_plotly(policies_negative_effect_US_inc, width= 1100, height=380)
+# (policies_positive_negative_US_inc <- barres12(vars = paste(names_policies, "positive_negative", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", miss=F, sort = F, labels=labels_policies))
+# save_plotly(policies_positive_negative_US_inc, width= 1100, height=380)
 # 
 # (policies_win_lose_self_US_inc <- barres12(vars = paste(names_policies, "win_lose_self", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$income %in% c("Q1", "Q2"),], e[e$income %in% c("Q3", "Q4"),]), comp = "(Top 50%)", orig="<br>(Bottom 50%)", miss=F, sort = F, labels=labels_policies))
 # save_plotly(policies_win_lose_self_US_inc, width= 870, height=380)
@@ -840,8 +840,8 @@ save_plotly(wtp_US_anthropogenic, width= 830, height=220)
 # (willing_limit_flying_US_pol <- barres12(vars = "willing_limit_flying", rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss = F, labels="Willing to limit flying"))
 # save_plotly(willing_limit_flying_US_pol, width= 680, height=220)
 # 
-# (policies_negative_effect_US_pol <- barres12(vars = paste(names_policies, "negative_effect", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss=F, sort = F, labels=labels_policies))
-# save_plotly(policies_negative_effect_US_pol, width= 1100, height=380)
+# (policies_positive_negative_US_pol <- barres12(vars = paste(names_policies, "positive_negative", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss=F, sort = F, labels=labels_policies))
+# save_plotly(policies_positive_negative_US_pol, width= 1100, height=380)
 # 
 # (policies_win_lose_self_US_pol <- barres12(vars = paste(names_policies, "win_lose_self", sep="_"), rev = F, rev_color = T, export_xls = export_xls, df = list(e[e$vote == "Trump",], e[e$vote == "Biden",]), comp = "(Biden voter)", orig="<br>(Trump voter)", miss=F, sort = F, labels=labels_policies))
 # save_plotly(policies_win_lose_self_US_pol, width= 870, height=380)
@@ -870,7 +870,7 @@ save_plotly(wtp_US_anthropogenic, width= 830, height=220)
 
 ##### Correlograms #####
 correlogram("_fair")
-correlogram("_cost_effective")
+correlogram("_costless_costly")
 correlogram(vars = c(paste(names_policies, "support", sep="_"), "policies_support"))
 correlogram("_win_lose_self")
 correlogram("_win_lose_poor")
@@ -878,7 +878,7 @@ correlogram("_win_lose_rich")
 correlogram("_win_lose_middle")
 correlogram("_win_lose_rural")
 correlogram("_large_effect")
-correlogram("_negative_effect")
+correlogram("_positive_negative")
 correlogram("standard_")
 correlogram("investments_")
 correlogram("tax_transfers_")
@@ -900,7 +900,7 @@ desc_table(dep_vars = c("tax_transfers_support > 0", "investments_support > 0", 
            dep.var.caption = c("Support"), data = us, keep = c("treatment"), indep_vars = control_variables_w_treatment, indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
-desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_negative_effect > 0"), filename = "US_3",
+desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_positive_negative > 0"), filename = "US_3",
            dep.var.labels =  c("Fair", "HH would win", "Poor would win", "Large economic effect", "Negative economic effect"),
            data = us, keep = c("treatment"), control_variables_w_treatment, indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
