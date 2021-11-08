@@ -6,7 +6,7 @@
 
 export_xls <- F
 update_constant <- function(data = all) {
-  e <<- data
+  df <<-e <<- data
   country <- deparse(substitute(data))
   if (country == "all") {
     folder <<- paste0('../figures/country_comparison/')
@@ -1836,16 +1836,22 @@ render_country_comparison <- function(data = all, along = "country_name", parent
                     labels = rev(c("Support", "Be fair", "Costless way to fight climate change", "Positive effect on [country]\neconomy and employment", "Large effect on [country]\neconomy and employment", "Reduce air pollution", "Reduce CO2 emissions from cars")), conditions = heatmap_conditions)
     heatmap_wrapper(vars = rev(c("tax_transfers_support", "tax_transfers_fair", "tax_transfers_costless_costly", "tax_transfers_positive_negative", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving")), name = "tax_transfers_all", 
                     labels = rev(c("Support", "Be fair", "Costless way to fight climate change", "Positive effect on [country]\neconomy and employment", "Large effect on [country]\neconomy and employment", "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")), conditions = heatmap_conditions)
-    heatmap_wrapper(vars = paste(names_policies, "costless_costly", sep="_"), name = "policies_costless", labels = labels_policies, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = paste(names_policies, "costless_costly", sep="_"), name = "policies_costless_costly", labels = labels_policies, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = paste(names_policies, "costless", sep="_"), name = "policies_costless", labels = labels_policies, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = paste(names_policies, "cost_effective", sep="_"), name = "policies_costly", labels = labels_policies, conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "fair", sep="_"), name = "policies_fair", labels = labels_policies, conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "large_effect", sep="_"), name = "policies_large_effect", labels = labels_policies, conditions = heatmap_conditions)
-    heatmap_wrapper(vars = paste(names_policies, "positive_negative", sep="_"), name = "policies_positive_effect", labels = labels_policies, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = paste(names_policies, "positive_negative", sep="_"), name = "policies_positive_negative", labels = labels_policies, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = paste(names_policies, "positive_effect", sep="_"), name = "policies_positive_effect", labels = labels_policies, conditions = heatmap_conditions)
+    heatmap_wrapper(vars = paste(names_policies, "negative_effect", sep="_"), name = "policies_negative_effect", labels = labels_policies, conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "win_lose_middle", sep="_"), name = "policies_win_lose_middle", labels = labels_policies, conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "win_lose_poor", sep="_"), name = "policies_win_lose_poor", labels = labels_policies, conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "win_lose_rich", sep="_"), name = "policies_win_lose_rich", labels = labels_policies, conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "win_lose_rural", sep="_"), name = "policies_win_lose_rural", labels = labels_policies, conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "win_lose_self", sep="_"), name = "policies_win_lose_self", labels = labels_policies, conditions = heatmap_conditions)
-    
+    heatmap_wrapper(vars = c("standard_effect_less_emission", "investments_effect_public_transport", "investments_effect_elec_greener", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), 
+                    name = "policies_effects", labels = c("A ban on combustion-engine cars<br>Reduce CO2 emissions from cars", "A green infrastructure program<br>Increase the use of public transport", "A green infrastructure program<br>Make electricity production greener", "A carbon tax with cash transfers<br>Reduce GHG emissions", "A carbon tax with cash transfers<br>Encourage insulation of buildings", "A carbon tax with cash transfers<br>Encourage people to drive less"), conditions = heatmap_conditions)
+
     # TODO: GHG_correct instead of GHG; 2 in subscript
     heatmap_wrapper(vars = c("GHG_CO2", "GHG_methane", "GHG_H2", "GHG_particulates"), name = "GHG", labels = c("CO2 (Yes)", "Methane (Yes)", "Hydrogen (No)", "Particulates (No)"), conditions = "> 0")
     heatmap_wrapper(vars = variables_home, name = "home", labels = labels_home, conditions = "> 0")
@@ -1923,3 +1929,7 @@ plot_world_map("net_zero_feasible", continuous = FALSE, width = 900, height = 40
 # temp <- heatmap_table(vars = main_variables_behavior, data = all[all$country %in% c("FR", "DK", "US"),], along = along, conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T, alphabetical = alphabetical) # TODO! change commutes by leisure
 # row.names(temp) <- labels_main_behavior
 # heatmap_plot(temp, proportion = T)
+# corrplot(temp, method='color', col.lim = c(0, 1), addCoef.col = 'black', addCoefasPercent = T, type='full', is.corr = F)
+corrplot(matrix(c(0.8, 0.5, 0.6, 0.7), ncol=2), method='color', col.lim = c(0, 1), addCoef.col = 'black', addCoefasPercent = T, type="full", is.corr = F)
+corrplot(matrix(c(0.8, 0.5, 0.6, 0.4), ncol=2), method='color', col.lim = c(0, 1), addCoef.col = 'black', addCoefasPercent = T, type="full", is.corr = F)
+corrplot(matrix(c(0.8, 0.5, 0.2, 0.4), ncol=2), method='color', col.lim = c(0, 1), addCoef.col = 'black', addCoefasPercent = T, type="full", is.corr = F)
