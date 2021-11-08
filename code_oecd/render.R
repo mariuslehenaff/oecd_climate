@@ -1759,6 +1759,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
                     labels = c("CC exists, is anthropogenic", "Cutting GHG emissions by half\nsufficient to stop rise in temperatures", "CC is an important problem", "CC will negatively affect personal life", 
                                "Feasible to stop GHG emissions\nwhile sustaining satisfactory\nstandards of living in [Country]", "Likely to halt CC by the end of the century", "Positive effects of ambitious policies\non the [country] economy and employment", "Negative effects of ambitious policies on lifestyle"), conditions = heatmap_conditions, name = "CC_attitude")
     
+    heatmap_wrapper(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness") , 
+                    labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"), conditions = heatmap_conditions, name = "future")
+    
     heatmap_wrapper(vars = variables_CC_impacts, labels = labels_CC_impacts, conditions = heatmap_conditions) # >= somewhat likely
     
     variables_willingness_all <<- c(variables_willing, variables_condition, "will_insulate", "wtp", "donation_fraction", "petition") 
