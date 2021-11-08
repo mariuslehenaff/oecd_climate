@@ -7,11 +7,13 @@
 # by default there is no condition.
 heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", df=e, weights = "weight", condition = "> 0", CI = 1-0.05/2){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
-  mean_sd <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(wtd.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]]))*100"))))))
+  mean_sd <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(wtd.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]], na.rm = T))*100"))))))
   # Get low and high bounds of CI. For the moment only 90% CI
   mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
   mean_sd <- tibble::rownames_to_column(mean_sd, heterogeneity_group)
   mean_sd$policy <- variable_name
+  mean_sd[,"V2"] <- mean_sd[,"V1"]-2
+  mean_sd[,"V3"] <- mean_sd[,"V1"]+2
   
   return(mean_sd)
 }
@@ -21,7 +23,7 @@ variables_list <- variables_all_policies_support <- c("standard_public_transport
 policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
 plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
-  levels_along <- Levels(df[[along]])
+  levels_along <- Levels(df[[along]]) # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
   mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
@@ -36,6 +38,7 @@ plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', l
   return(plot)
 }
 # example :
+plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"))
 plot_along(vars = variables_all_policies_support, along = "urban_category", name = "policies_support_by_urban_category", labels = labels_all_policies_support)
 
 
