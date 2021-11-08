@@ -27,21 +27,20 @@ plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', l
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
 
   if (invert_point_y_axis){
-    plot <- ggplot(mean_sd) +
-      geom_pointrange( aes(x = V1, y = factor(.data[[along]], levels = rev(levels(factor(.data[[along]])))), color = policy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
-      labs(x = legend_x, y = legend_y, color="") + 
-      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
-      scale_color_manual(labels = labels, values = color(length(labels), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
-    
-  } else{
-    plot <- ggplot(mean_sd) +
-      geom_pointrange( aes(x = V1, y = policy, color = .data[[along]], xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
-      labs(x = legend_x, y = legend_y, color="") + 
-      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
-      scale_color_manual(labels = levels_along, values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
-    
+    y <- factor(.data[[along]], levels = rev(levels(factor(.data[[along]]))))
+    categories <- policy
+    labels_plot <- labels
+  } else {
+    y <- policy
+    categories <- .data[[along]]
+    labels_plot <- levels_along
   }
- plot
+  plot <- ggplot(mean_sd) +
+    geom_pointrange( aes(x = V1, y = y, color = categories, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+    labs(x = legend_x, y = legend_y, color="") + 
+    theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+    scale_color_manual(labels = labels_plot, values = color(length(labels_plot), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+  plot
   # save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
   return(plot)
 }
