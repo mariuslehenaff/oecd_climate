@@ -2724,7 +2724,7 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   e <<- all
 }
 
-prepare_all()
+prepare_all(zscores = FALSE)
 
 all_stata <- janitor::clean_names(all)
 names_stata <- c()
