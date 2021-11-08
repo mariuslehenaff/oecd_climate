@@ -20,22 +20,26 @@ variables_list <- variables_all_policies_support <- c("standard_public_transport
 #variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
 policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
-plot_along <- function(vars, along, name = NULL, labels = vars, df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
+plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
   levels_along <- Levels(df[[along]])
   if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
   mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
-  mean_sd[[along]] <- factor(mean_sd[[along]], levels = levels_along)
-  
-  (plot <- ggplot(mean_sd) +
-      geom_pointrange( aes(x = V1, y = policy, color = along, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
-      labs(x = 'Support', y = '', color="") + 
-      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
-      scale_color_manual(labels = levels_along, values = c(brewer.pal(length(levels_along), "RdBu"))))
-  save_plot(plot, filename = name, folder = folder, width = width, height = height, method='dev', trim = T)
-}
-plot_along(vars = variables_policies_support, along = "urban_category", name = "policies_support_by_urban_category", labels = labels_all_policies_support) 
 
+  plot <- ggplot(mean_sd) +
+      geom_pointrange( aes(x = V1, y = policy, color = .data[[along]], xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+      labs(x = legend_x, y = legend_y, color="") + 
+      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+      scale_color_manual(labels = levels_along, values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+  plot
+  save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
+  return(plot)
+}
+# example :
+plot_along(vars = variables_all_policies_support, along = "urban_category", name = "policies_support_by_urban_category", labels = labels_all_policies_support)
+
+
+# eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along)
 # e <- us
 e <- fr
 # e <- dk
