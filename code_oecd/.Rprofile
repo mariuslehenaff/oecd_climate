@@ -21,7 +21,7 @@ if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.1.1/library",
 chooseCRANmirror(ind = 1)
 package("plyr")
 package("tm") 
-package("memisc", version = "0.99.22") 
+package("memisc", version = "0.99.22") # in case of bug (endless loop), copy/paste folder /memisc in library and: install.packages("memisc", method = "win.binary")
 package('tidyverse')
 package("xtable")
 package("rms")
