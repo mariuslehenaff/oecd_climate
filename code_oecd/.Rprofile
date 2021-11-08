@@ -969,7 +969,7 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # 
   par(xpd=TRUE)
   return(corrplot(data, method='color', col = col,  mar = c(0,0, 1.3,0), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale
 }
-heatmap_table <- function(vars, data = all, along = "country_name", conditions = c("> 0"), on_control = T, alphabetical = FALSE) {
+heatmap_table <- function(vars, labels = vars, data = all, along = "country_name", special = c(), conditions = c("> 0"), on_control = T, alphabetical = FALSE) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
@@ -980,16 +980,46 @@ heatmap_table <- function(vars, data = all, along = "country_name", conditions =
   nb_vars <- length(vars)
   
   if (length(conditions)==1) conditions <- rep(conditions[1], nb_vars)
-  table <- array(NA, dim = c(nb_vars, length(levels)), dimnames = list(vars, levels))
-  for (c in levels) {
-    df_c <- e[e[[along]]==c,]
+  table <- array(NA, dim = c(nb_vars, length(c(special, levels))), dimnames = list(vars, c(special, levels)))
+  for (c in c(special, levels)) {
+    if (c %in% levels) { df_c <- e[e[[along]]==c,]
+    } else if (c %in% c('World', 'world', 'total', 'all')) { df_c <- e 
+    } else if (c %in% c('OECD', 'oecd')) { df_c <- e[which(oecd[e$country]),]
+    } else if (c %in% countries) { df_c <- e[e$country == c,] 
+    } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {
       var_c <- df_c[[vars[v]]]
       table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight)"))) 
     }
   }
+  row.names(table) <- labels
   return(table)
 }
+heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", special = c(), conditions = c("> 0"), df = all, width = NULL, height = NULL, alphabetical = T) {
+  # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
+  # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
+  # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few). 
+  if (is.null(width)) width <- ifelse(length(labels) <= 3, 1000, 1770) # TODO! more precise than <= 3 vs. > 3
+  if (is.null(height)) height <- ifelse(length(labels) <= 3, 163, 400)
+  
+  for (cond in conditions) {
+    filename <- paste(sub("variables_", "", name), 
+                      case_when(cond == "" ~ "mean", 
+                                cond == "> 0" ~ "positive", 
+                                cond == "< 0" ~ "negative", 
+                                cond == ">= 0" ~ "non-negative", 
+                                cond == "<= 0" ~ "non-positive", 
+                                cond == "== 2" ~ "max", 
+                                cond == "== -2" ~ "min", 
+                                TRUE ~ "unknown"), sep = "_")
+    try({
+      temp <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = cond, on_control = T, alphabetical = alphabetical)
+      heatmap_plot(temp, proportion = (cond != ""))
+      save_plot(filename = paste0(folder, filename, replacement_text), width = width, height = height)
+    })
+  }
+}
+
 ##### Other #####
 CImedian <- function(vec) { # 95% confidence interval
   res <- tryCatch(unlist(ci.median(vec[!is.na(vec) & vec!=-1])), error=function(e) {print('NA')})
@@ -1502,7 +1532,3 @@ plot_world_map <- function(var, condition = "> 0", df = all, on_control = T, sav
   if (save) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height)
   # return(plot)
 }
-
-# packages_to_install <- rownames(installed.packages())[which(installed.packages()[,"LibPath"]=="\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")]
-# remove.packages(packages_to_install, "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0")
-# for (p in setdiff(rownames(installed.packages()), packages_to_install)) install.packages(p)
