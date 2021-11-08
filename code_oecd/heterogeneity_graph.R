@@ -16,6 +16,18 @@ heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogene
   return(mean_sd)
 }
 
+plot_along <- function(vars, along, df = e, weights = "weight") {
+  mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
+  mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = policies_label)
+  mean_sd$urban_category <- factor(mean_sd$urban_category, levels = c("Other", "Couronne_GP", "GP"))
+  
+  support_by_urban_FR <- ggplot(mean_sd) +
+    geom_pointrange( aes(x = V1, y = policy, color = urban_category, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+    labs(x = 'Support', y = '', color="") + 
+    theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+    scale_color_manual(labels = c("Rural", "Couronne Grand Pôle", "Grand Pôle"), values = c("#FDAE61", "#FFED6F", "#ABD9E9"))
+  support_by_urban_FR
+}
 
 # e <- us
 e <- fr
@@ -78,6 +90,7 @@ support_by_urban_FR <- ggplot(mean_sd) +
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
   scale_color_manual(labels = c("Rural", "Couronne Grand Pôle", "Grand Pôle"), values = c("#FDAE61", "#FFED6F", "#ABD9E9"))
 support_by_urban_FR
+
 
 # Polluting_sector
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
@@ -921,7 +934,8 @@ ggarrange(support_by_college_FR, support_by_college_US, support_by_college_DE, s
 ## Attitudes positives
 variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
 policies_label <- c("CC is an important problem", "CC exists, is anthropogenic", "Cutting GHG emisions by half \n sufficient to stop rise in temperatures", "Likely to halt CC by the end of the century",
-                    "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "CC will negatively affect personal lifestyle", "Negative effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
+                    "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "CC will negatively affect personal lifestyle", "Negative 
+                    effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
 
 mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                                  heterogeneity_group = "country", df=all, weights = "weight")))
