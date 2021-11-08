@@ -21,8 +21,8 @@ variables_list <- variables_all_policies_support <- c("standard_public_transport
 policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
 plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_point_y_axis = F, df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
-  levels_along <- Levels(df[[along]]) # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
-  if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
+  # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
+  if (is.null(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
   mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
 
@@ -33,7 +33,7 @@ plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', l
   } else {
     y <- policy
     categories <- .data[[along]]
-    labels_plot <- levels_along
+    labels_plot <- Levels(df[[along]])
   }
   plot <- ggplot(mean_sd) +
     geom_pointrange( aes(x = V1, y = y, color = categories, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
