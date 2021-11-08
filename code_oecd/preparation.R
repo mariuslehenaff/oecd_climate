@@ -442,7 +442,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
   if ("standard_fair" %in% names(e)) variables_policies_fair  <<- names(e)[grepl('_fair', names(e))]
   variables_policies_support <<- c("standard_support", "investments_support", "tax_transfers_support")
-  variables_policies_attitudes <<- paste0("policies_", c("negative_effect", "large_effect", "cost_effective", "poor", "middle", "rich", "rural", "self", "fair"))
+  # variables_policies_attitudes <<- paste0("policies_", c("negative_effect", "large_effect", "cost_effective", "poor", "middle", "rich", "rural", "self", "fair"))
+  variables_policies_attitudes <<- paste0("policies_", c("positive_negative", "large_effect", "costless_costly", "poor", "middle", "rich", "rural", "self", "fair"))
   variables_support <<- names(e)[grepl('_support', names(e)) & !grepl('order_', names(e))]
   variables_incidence <<- names(e)[grepl('incidence_', names(e))]
   variables_standard_incidence <<- names(e)[grepl('standard_incidence_', names(e))]
@@ -515,7 +516,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   conditions_index_worried <<- c(rep(" %in% c(0, 1, 2)", 4), rep(" > 0.1", 3))
   before_treatment_index_worried <<- rep(F, 7)
   
-  variables_index_positive_economy <<- c("effect_halt_CC_economy", "investments_economic_effect", "tax_transfers_economic_effect", "standard_economic_effect")
+  variables_index_positive_economy <<- c("effect_halt_CC_economy", "investments_positive_negative", "tax_transfers_positive_negative", "standard_positive_negative")
+  # variables_index_positive_economy <<- c("effect_halt_CC_economy", "investments_economic_effect", "tax_transfers_economic_effect", "standard_economic_effect")
   negatives_index_positive_economy <<- rep(F, 4)
   conditions_index_positive_economy <<- rep(" > 0", 4)
   before_treatment_index_positive_economy <<- rep(F, 4)
@@ -1348,7 +1350,36 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   e$country_name <- countries_names[country]
   label(e$country) <- "country: Country of the survey."
   e$wave <- wave
-  label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"
+  label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"  
+  
+  for (p in names_policies) {
+    e[[paste0(p, "_costless_costly")]] <- e[[paste0(p, "_costless")]] <- -e[[paste0(p, "_cost_effective")]]
+    e[[paste0(p, "_positive_negative")]] <- e[[paste0(p, "_positive_effect")]] <- -e[[paste0(p, "_negative_effect")]]
+    if ("positive_treatment" %in% names(e)) {
+      # for (v in names(e)[grepl('_cost_effective|_negative_effect', names(e))]) 
+      e[[paste0(p, "_costless_costly")]][e$positive_treatment==0] <- e[[paste0(p, "_cost_effective")]][e$positive_treatment==0]
+      e[[paste0(p, "_positive_negative")]][e$positive_treatment==0] <- e[[paste0(p, "_negative_effect")]][e$positive_treatment==0]
+      e[[paste0(p, "_cost_effective")]][e$positive_treatment==1] <- NA # TODO: rename into _costly
+      e[[paste0(p, "_negative_effect")]][e$positive_treatment==1] <- NA
+      e[[paste0(p, "_positive_effect")]][e$positive_treatment==0] <- NA
+      e[[paste0(p, "_costless")]][e$positive_treatment==0] <- NA
+      e$positive_treatment_present <- T
+    } else {
+      e[[paste0(p, "_positive_effect")]] <- NA
+      e[[paste0(p, "_costless")]] <- NA
+      e$positive_treatment <- 0
+      e$positive_treatment_present <- FALSE }
+    annotation(e[[paste0(p, "_positive_effect")]]) <- sub("negative", "positive", Label(e[[paste0(p, "_positive_effect")]]))
+    annotation(e[[paste0(p, "_costless")]]) <- sub("costly|cost_effective", "costless", Label(e[[paste0(p, "_costless")]]))
+    annotation(e[[paste0(p, "_positive_negative")]]) <- paste(sub("_negative_effect:", "_positive_negative:", sub("negative ", "positive [or negative] ", Label(e[[paste0(p, "_positive_negative")]]))), "[depending on positive_treatment = 0/1, all recoded as positive]")
+    annotation(e[[paste0(p, "_costless_costly")]]) <-  paste(sub("_cost_effective:", "_costless_costly:", sub("costly ", "costless [or costly] ", Label(e[[paste0(p, "_costless_costly")]]))), "[depending on positive_treatment = 0/1, all recoded as costless]")
+    # for (v in c("_positive_effect", "_costless", "_cost_effective", "_negative_effect")) annotation(e[[paste0(p, v)]]) <- paste(e[[paste0(p, v)]], "[formulation depends on positive_treatment if positive_treatment_present==T]")
+    label(e$positive_treatment) <- "positive_treatment: 0/1 If =1, questions on economic effect and cost-effectiveness of main policies asked in a positive way: positive/costless, if =0: negative/costly. Always =0 for US, DK, FR."
+  }
+  if ('standard_cost_effective' %in% names(e)) variables_standard_effect <<- sub("negative", "positive_negative", sub("cost_effective", "costless_costly", variables_standard_effect))
+  if ('standard_cost_effective' %in% names(e)) variables_investments_effect <<- sub("negative", "positive_negative", sub("cost_effective", "costless_costly", variables_investments_effect))
+  if ('standard_cost_effective' %in% names(e)) variables_tax_transfers_effect <<- sub("negative", "positive_negative", sub("cost_effective", "costless_costly", variables_tax_transfers_effect))
+  if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
 
   if ("standard_trust" %in% names(e)) e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
   if ("standard_trust" %in% names(e)) label(e$policies_trust) <- "policies_trust: Could [Country] government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
@@ -1360,12 +1391,16 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   if ("standard_side_effects" %in% names(e)) label(e$policies_side_effects) <- "policies_side_effects: Would an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers have positive or negative side effects overall? Positive impacts/No notable impact/Negative impacts/PNR"
   if ("standard_large_effect" %in% names(e)) e$policies_large_effect <- (e$standard_large_effect + e$investments_large_effect + e$tax_transfers_large_effect)/3
   if ("standard_large_effect" %in% names(e)) label(e$policies_large_effect) <- "policies_large_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have large effect on the economy and employment? Strongly disagree-agree"
-  if ("standard_negative_effect" %in% names(e)) e$policies_negative_effect <- (e$standard_negative_effect + e$investments_negative_effect + e$tax_transfers_negative_effect)/3
-  if ("standard_negative_effect" %in% names(e)) label(e$policies_negative_effect) <- "policies_negative_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have negative effect on the economy and employment? Strongly disagree-agree"
+  if ("standard_positive_negative" %in% names(e)) e$policies_positive_negative <- (e$standard_positive_negative + e$investments_positive_negative + e$tax_transfers_positive_negative)/3
+  if ("standard_positive_negative" %in% names(e)) label(e$policies_positive_negative) <- "policies_positive_negative: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have negative effect on the economy and employment? Strongly disagree-agree"
+  # if ("standard_negative_effect" %in% names(e)) e$policies_negative_effect <- (e$standard_negative_effect + e$investments_negative_effect + e$tax_transfers_negative_effect)/3
+  # if ("standard_negative_effect" %in% names(e)) label(e$policies_negative_effect) <- "policies_negative_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have negative effect on the economy and employment? Strongly disagree-agree"
   if ("standard_fair" %in% names(e)) e$policies_fair <- (e$standard_fair + e$investments_fair + e$tax_transfers_fair)/3
   if ("standard_fair" %in% names(e)) label(e$policies_fair) <- "policies_fair: An emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers is fair? Strongly disagree - strongly agree"
-  if ("standard_cost_effective" %in% names(e)) e$policies_cost_effective <- (e$standard_cost_effective + e$investments_cost_effective + e$tax_transfers_cost_effective)/3
-  if ("standard_cost_effective" %in% names(e)) label(e$policies_cost_effective) <- "policies_cost_effective: An emission limit for cars, a green infrastrcuture program and a carbon tax would be cost-effective to fight climate change. Strongly disagree - strongly sagree"
+  if ("standard_costless_costly" %in% names(e)) e$policies_costless_costly <- (e$standard_costless_costly + e$investments_costless_costly + e$tax_transfers_costless_costly)/3
+  if ("standard_costless_costly" %in% names(e)) label(e$policies_costless_costly) <- "policies_costless_costly: An emission limit for cars, a green infrastrcuture program and a carbon tax would be cost-effective to fight climate change. Strongly disagree - strongly sagree"
+  # if ("standard_cost_effective" %in% names(e)) e$policies_cost_effective <- (e$standard_cost_effective + e$investments_cost_effective + e$tax_transfers_cost_effective)/3
+  # if ("standard_cost_effective" %in% names(e)) label(e$policies_cost_effective) <- "policies_cost_effective: An emission limit for cars, a green infrastrcuture program and a carbon tax would be cost-effective to fight climate change. Strongly disagree - strongly sagree"
   # e$policies_support <- ((e$standard_support=="Yes") + (e$investments_support=="Yes") + (e$tax_transfers_support=="Yes") - (e$standard_support=="No") - (e$investments_support=="No") - (e$tax_transfers_support=="No"))/3
   # label(e$policies_support) <- "policies_support: Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR" # TODO compatibility pilots 1, 2
   e$policies_support <- (e$standard_support + e$investments_support + e$tax_transfers_support) / 3
@@ -2055,16 +2090,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     # Double standardization
     e$index_worried_dummies2SD <- (e$index_worried_dummies - wtd.mean(e$index_worried_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_worried_dummies, w = e$weight, na.rm=T))
     
-    # Prepare variables for Index Positive Economy
-    e$investments_economic_effect <- -as.numeric(e$investments_negative_effect)
-    e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
-    e$tax_transfers_economic_effect <- -as.numeric(e$tax_transfers_negative_effect)
-    e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
-    e$standard_economic_effect <- -as.numeric(e$standard_negative_effect)
-    e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
-    
-    
-    
+    # Prepare variables for Index Positive Economy: superseded by 'positive_negative'
+    # e$investments_economic_effect <- -as.numeric(e$investments_negative_effect)
+    # e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
+    # e$tax_transfers_economic_effect <- -as.numeric(e$tax_transfers_negative_effect)
+    # e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
+    # e$standard_economic_effect <- -as.numeric(e$standard_negative_effect)
+    # e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
+
     e$index_positive_economy <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
     e$index_positive_economy_dummies <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, conditions = conditions_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
     # Double standardization
@@ -2599,9 +2632,9 @@ countries_field_treated <- c("DK", "US", "FR")
 # us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
 # e <- us <- prepare(country = "US", duration_min = 686)# .59
 # e <- dk <- prepare(country = "DK", duration_min = 686)# .95
-# e <- fr <- prepare(country = "FR", duration_min = 686)# .61
-# e <- de <- prepare(country = "DE", duration_min = 686)# .96
-# 
+# e <- fr <- prepare(country = "FR", duration_min = 686, zscores = F)# .61
+# e <- de <- prepare(country = "DE", duration_min = 686, zscores = F)# .96
+
 # e <- au <- prepare(country = "AU", duration_min = 686)
 # e <- ca <- prepare(country = "CA", duration_min = 686)
 # e <- it <- prepare(country = "IT", duration_min = 686)
@@ -2618,33 +2651,34 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- id <- prepare(country = "ID", duration_min = 686)
 # e <- sa <- prepare(country = "SA", duration_min = 686)
 # ua <- pl # prepare(country = "UA", duration_min = 686, weighting = F, zscores = F)
-# e <- it <- prepare(country = "IT", duration_min = 686, zscores = F)# .83
-# e <- pl <- prepare(country = "PL", duration_min = 686, zscores = F)# .72
-# e <- jp <- prepare(country = "JP", duration_min = 686, zscores = F)# .70
-# e <- sp <- prepare(country = "SP", duration_min = 686, zscores = F)# .61
-# e <- au <- prepare(country = "AU", duration_min = 686, zscores = F)# .56
-# e <- sa <- prepare(country = "SA", duration_min = 686, zscores = F)# .77
-# e <- id <- prepare(country = "ID", duration_min = 686, zscores = F)# .99
-# e <- ca <- prepare(country = "CA", duration_min = 686, zscores = F)# .68 # TODO: pb check "cor(e$index_k": SK
-# e <- uk <- prepare(country = "UK", duration_min = 686, zscores = F)# .63
-# e <- ia <- prepare(country = "IA", duration_min = 686, zscores = F)# .13
-# e <- tr <- prepare(country = "TR", duration_min = 686, zscores = F)# .14
-# e <- br <- prepare(country = "BR", duration_min = 686, zscores = F)# .28
-# e <- mx <- prepare(country = "MX", duration_min = 686, zscores = F)# .21
-# e <- cn <- prepare(country = "CN", duration_min = 686, zscores = F)# .21
-# e <- sk <- prepare(country = "SK", duration_min = 686, zscores = F)# .34
-# ua <- pl
-# ua$country <- "UA"
-# ua$country_name <- "Ukraine"
+e <- it <- prepare(country = "IT", duration_min = 686, zscores = F)# .83
+e <- pl <- prepare(country = "PL", duration_min = 686, zscores = F)# .72
+e <- jp <- prepare(country = "JP", duration_min = 686, zscores = F)# .70
+e <- sp <- prepare(country = "SP", duration_min = 686, zscores = F)# .61
+e <- au <- prepare(country = "AU", duration_min = 686, zscores = F)# .56
+e <- sa <- prepare(country = "SA", duration_min = 686, zscores = F)# .77
+e <- id <- prepare(country = "ID", duration_min = 686, zscores = F)# .99
+e <- ca <- prepare(country = "CA", duration_min = 686, zscores = F)# .68 # TODO: pb check "cor(e$index_k": SK
+e <- uk <- prepare(country = "UK", duration_min = 686, zscores = F)# .63
+e <- ia <- prepare(country = "IA", duration_min = 686, zscores = F)# .13
+e <- tr <- prepare(country = "TR", duration_min = 686, zscores = F)# .14
+e <- br <- prepare(country = "BR", duration_min = 686, zscores = F)# .28
+e <- mx <- prepare(country = "MX", duration_min = 686, zscores = F)# .21
+e <- cn <- prepare(country = "CN", duration_min = 686, zscores = F)# .21
+e <- sk <- prepare(country = "SK", duration_min = 686, zscores = F)# .34
+ua <- pl
+ua$country <- "UA"
+ua$country_name <- "Ukraine"
 current_countries <- c("DK", "US", "FR", "DE")
 ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
-# All <- list()
-# for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
+All <- list()
+for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
 # # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-# e <- all <- merge_all_countries()
+e <- all <- merge_all_countries()
 
 merge_all_countries <- function(countries = countries, weight_adult = T, weight_oecd = F) {
-  all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+  temp <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+  all <- temp
   
   all$weight_country <- all$weight
   all$weight_pop <- all$weight * population[all$country]

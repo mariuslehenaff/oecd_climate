@@ -16,12 +16,29 @@ heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogene
   return(mean_sd)
 }
 
+variables_list <- variables_all_policies_support <- c("standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
+#variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
+policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
+
+plot_along <- function(vars, along, name = NULL, labels = vars, df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
+  levels_along <- Levels(df[[along]])
+  if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
+  mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
+  mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
+  mean_sd[[along]] <- factor(mean_sd[[along]], levels = levels_along)
+  
+  (plot <- ggplot(mean_sd) +
+      geom_pointrange( aes(x = V1, y = policy, color = along, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+      labs(x = 'Support', y = '', color="") + 
+      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+      scale_color_manual(labels = levels_along, values = c(brewer.pal(length(levels_along), "RdBu"))))
+  save_plot(plot, filename = name, folder = folder, width = width, height = height, method='dev', trim = T)
+}
+plot_along(vars = variables_policies_support, along = "urban_category", name = "policies_support_by_urban_category", labels = labels_all_policies_support) 
 
 # e <- us
 e <- fr
 # e <- dk
-variables_list <- c("standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
-#variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
 
 # Apply to get df with info on each variable
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
@@ -29,7 +46,6 @@ mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI,
 
 ## Plot creation
 #mean_sd <- subset(mean_sd, political_affiliation %in% c("Democrat", "Republican"))
-policies_label <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
 mean_sd$left_right <- factor(mean_sd$left_right, levels = c("Very left", "Left", "Center", "Right", "Very right", "PNR"))
@@ -78,6 +94,7 @@ support_by_urban_FR <- ggplot(mean_sd) +
   theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
   scale_color_manual(labels = c("Rural", "Couronne Grand Pôle", "Grand Pôle"), values = c("#FDAE61", "#FFED6F", "#ABD9E9"))
 support_by_urban_FR
+
 
 # Polluting_sector
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
@@ -283,7 +300,7 @@ policies_label <- c("Climate change is anthropogenic", "Willing to limit driving
                     "Support green investments program", "Support carbon tax with cash transfer",
                     "Support ban on intensive cattle farming", "Support mandatory insulation",
                     "Support global wealth tax to fund LDCs")
-  
+
 # Graphs
 mean_sd <- bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
                              heterogeneity_group = "left_right", df=e, weights = "weight")))
@@ -523,14 +540,14 @@ mean_sd <- mean_sd %>%
   rename(responsible_CC_each_dummy_2 = responsible_CC_companies_dummy_2)
 
 mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                             heterogeneity_group = "responsible_CC_each_dummy_2", df=e, weights = "weight"))))
+                                            heterogeneity_group = "responsible_CC_each_dummy_2", df=e, weights = "weight"))))
 mean_sd$responsible_CC_each_dummy_2[mean_sd$responsible_CC_each_dummy_2 == "TRUE"] <- "T_each" 
 mean_sd$responsible_CC_each_dummy_2[mean_sd$responsible_CC_each_dummy_2 == "FALSE"] <- "F_each" 
 mean_sd <- mean_sd %>%
   rename(responsible_CC_govt_dummy_2 = responsible_CC_each_dummy_2)
 
 mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                                           heterogeneity_group = "responsible_CC_govt_dummy_2", df=e, weights = "weight"))))
+                                            heterogeneity_group = "responsible_CC_govt_dummy_2", df=e, weights = "weight"))))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -606,7 +623,7 @@ policies_label <- c("Ban of combustion engine \n (public transport made availabl
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "urban", df=fr, weights = "weight")))
+                                heterogeneity_group = "urban", df=fr, weights = "weight")))
 mean_sd_FR <- mean_sd_FR %>%
   subset(urban != "0") # 1 obs is 0
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
@@ -621,7 +638,7 @@ support_by_urban_FR
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "urban", df = us, weights = "weight")))
+                                heterogeneity_group = "urban", df = us, weights = "weight")))
 
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 mean_sd_US$urban_category <- factor(mean_sd_US$urban, levels = c("Rural", "Urban"))
@@ -636,7 +653,7 @@ support_by_urban_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "urban", df=dk, weights = "weight")))
+                                heterogeneity_group = "urban", df=dk, weights = "weight")))
 
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 mean_sd_DK$urban_category <- factor(mean_sd_DK$urban, levels = c("Rural", "Urban"))
@@ -651,7 +668,7 @@ support_by_urban_DK
 
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "urban", df=de, weights = "weight")))
+                                heterogeneity_group = "urban", df=de, weights = "weight")))
 mean_sd_DE <- mean_sd_DE %>%
   subset(urban != "0") # 1 obs is 0
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
@@ -921,7 +938,8 @@ ggarrange(support_by_college_FR, support_by_college_US, support_by_college_DE, s
 ## Attitudes positives
 variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
 policies_label <- c("CC is an important problem", "CC exists, is anthropogenic", "Cutting GHG emisions by half \n sufficient to stop rise in temperatures", "Likely to halt CC by the end of the century",
-                    "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "CC will negatively affect personal lifestyle", "Negative effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
+                    "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "CC will negatively affect personal lifestyle", "Negative 
+                    effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
 
 mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
                                  heterogeneity_group = "country", df=all, weights = "weight")))
