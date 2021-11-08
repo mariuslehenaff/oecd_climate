@@ -5,7 +5,7 @@
 # was made for support variables
 # heterogeneity_condition: corresponds to condition we want to apply to a subgroup. For instance, focus on people who don't trust
 # by default there is no condition.
-heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", country_heterogeneity = FALSE, df=e, weights = "weight", condition = "> 0", confidence = 0.95){
+heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", country_heterogeneity = FALSE, along_labels = "", df=e, weights = "weight", condition = "> 0", confidence = 0.95){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
   CI <- 1-(1-confidence)/2
   if (country_heterogeneity){
@@ -23,6 +23,7 @@ heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogene
    mean_ci <- tibble::rownames_to_column(mean_ci, "combined_name")
    mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
    names(mean_ci) <- c("combined_name", "mean", "CI_low", "CI_high", "country", "along", "variable") # this line is new
+   mean_ci$along <- factor(mean_ci$along, labels = along_labels)
    
   } else {
     mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition, ", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
@@ -64,7 +65,7 @@ plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '
 }
 
 plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_variable_along = FALSE, df = e, 
-                       confidence = 0.95, heterogeneity_condition = "", condition = "> 0", country_heterogeneity = FALSE, 
+                       confidence = 0.95, heterogeneity_condition = "", condition = "> 0", country_heterogeneity = FALSE, along_labels,
                        folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   if (missing(name)) { 
@@ -75,7 +76,7 @@ plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', l
   }
   if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
     
-  mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+  mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
   mean_ci$variable <- factor(mean_ci$variable, levels = vars, labels = labels)
   
   if (invert_variable_along & country_heterogeneity == F) {
@@ -106,6 +107,8 @@ plot_along(vars = variables_all_policies_support, along = "urban_category", df =
 plot_along(vars = c("CC_affects_self"), along = "country_name", name = "CC_affects_self_by_country", labels = c("Feels affected by climate change"))
 # Beware, only use one variable at a time with country_heterogeneity = T
 plot_along(vars = "policies_support", along = "urban", country_heterogeneity = T)
+# For labels, check the output of heterogeneity_mean_CI (first column)
+plot_along(vars = "policies_support", along = "treatment", country_heterogeneity = T, along_labels = c("None", "Climate", "Policy", "Both"))
 mean_sd <- bind_rows((lapply(variables_all_policies_support, heterogeneity_mean_CI, heterogeneity_group = "country", df=all)))
 mean_sd$variable <- factor(mean_sd$variable, levels = variables_all_policies_support, labels = variables_all_policies_support)
 
