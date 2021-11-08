@@ -1076,3 +1076,49 @@ ggarrange(tax_positive_by_inequality_CI95_FR, tax_positive_by_inequality_CI95_US
           nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
 
 
+
+# Heterogeneity Graphs
+variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
+policies_label <- c("WTP", "Limit flying", "Limit driving", "Have electric car", "Limit heating or cooling home", "Limit beef consumption")
+
+plot_along(vars = variables_list, along = "country_name", name = "willingness_by_country", labels = policies_label)
+
+
+variables_list <- c("CC_anthropogenic","willing_limit_driving","wtp",
+                    "standard_support","standard_public_transport_support",
+                    "investments_support","tax_transfers_support",
+                    "beef_ban_intensive_support","insulation_support",
+                    "tax_1p_support")
+policies_label <- c("Climate change is anthropogenic", "Willing to limit driving",
+                    "Willing to Pay for climate action", "Support ban on combustion engine",
+                    "Support ban on combustion engine \n (public transport made available)",
+                    "Support green investments program", "Support carbon tax with cash transfer",
+                    "Support ban on intensive cattle farming", "Support mandatory insulation",
+                    "Support global wealth tax to fund LDCs")
+plot_along(vars = variables_list, along = "country_name", name = "main_var_by_country", labels = policies_label)
+
+
+variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
+policies_label <- c("CC is an important problem", "CC exists, is anthropogenic", "Cutting GHG emisions by half \n sufficient to stop rise in temperatures", "Likely to halt CC by the end of the century",
+                    "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "CC will negatively affect personal lifestyle", "Negative 
+                    effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
+plot_along(vars = variables_list, along = "country_name", name = "attitudes_by_country", labels = policies_label)
+
+variables_list <- c("tax_transfer_constrained_hh", "tax_transfer_poor", "tax_transfer_all", "tax_reduction_personal_tax", "tax_reduction_corporate_tax", "tax_rebates_affected_firms", "tax_investments", "tax_subsidies", "tax_reduction_deficit")
+policies_label <- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructures", "Subsidies to low-carbon technologies", "Reduction in the deficit")
+plot_along(vars = variables_list, along = "country_name", name = "views_by_country", labels = policies_label)
+
+variables_list <- c("policies_support","standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
+policies_label <- c("Main Policies", "Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with \n cash transfer")
+plot_along(vars = variables_list, along = "country_name", name = "support_var_by_country", labels = policies_label)
+plot_along(vars = variables_list, along = "country_name", invert_point_y_axis = T, name = "support_var_by_country", labels = policies_label)
+plot_along(vars = variables_list, along = "treatment", name = "support_var_by_treatment", labels = policies_label)
+plot_along(vars = "policies_support", along = "treatment", invert_point_y_axis = T, name = "main_support_var_by_treatment", labels = "Main Policies")
+
+variables_list <- c("CC_anthropogenic", "CC_impacts_extinction", "donation", "should_fight_CC", "willing_limit_driving")
+policies_label <- c("CC caused by humans", "CC likely to cause extinction", "Donation", "[country] should fight CC", "Willing to limit driving")
+plot_along(vars = variables_list, along = "treatment", name = "attitudes_CC_by_country", labels = policies_label)
+
+variables_list <- c("policies_fair", "policies_self", "policies_poor", "policies_rich", "policies_large_effect", "policies_positive_negative")
+policies_label <- c("Fair", "HH would win", "Poor would win", "Rich would win", "Large economic effects", "Negative economic effects")
+plot_along(vars = variables_list, along = "treatment", name = "attitudes_pol_by_country", labels = policies_label)
