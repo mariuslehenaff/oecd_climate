@@ -67,21 +67,20 @@ plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', l
     names(mean_ci)[which(names(mean_ci) == "temp")] <- "variable" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
   } 
   
-  # levels_along <- Levels(df[[along]]) 
   if (missing(labels)) labels <- vars
   
   plot <- ggplot(mean_ci) +
     geom_pointrange( aes(x = mean, y = variable, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
-    labs(x = legend_x, y = legend_y, color="") +
-    theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") #+ # BUG in custom colors: the legend does not correspond to the colors
-    # scale_color_manual(labels = levels_along, values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+    labs(x = legend_x, y = legend_y, color="") + theme(legend.title = element_blank(), legend.position = "top") +
+    theme_minimal() # + scale_color_manual(values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+    # scale_color_manual(labels = Levels(df[[along]]), values = color(length(Levels(df[[along]])), theme='rainbow'))# BUG when we specify labels: the legend does not correspond to the colors
   plot
   save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
   return(plot)
 }
 # example :
 plot_along(vars = "tax_transfers_support", along = "treatment")
-plot_along(vars = variables_all_policies_support, along = "treatment")
+plot_along(vars = rev(variables_all_policies_support), along = "treatment")
 plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"))
 plot_along(vars = variables_all_policies_support, along = "urban_category", df = fr, name = "policies_support_by_urban_category", labels = labels_all_policies_support)
 plot_along(vars = c("CC_affects_self"), along = "country_name", name = "CC_affects_self_by_country", labels = c("Feels affected by climate change"))
