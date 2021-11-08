@@ -7,7 +7,7 @@
 # by default there is no condition.
 heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", df=e, weights = "weight", condition = "> 0", CI = 1-0.05/2){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
-  mean_sd <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(wtd.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]], na.rm = T))*100"))))))
+  mean_sd <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
   # Get low and high bounds of CI. For the moment only 90% CI
   mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
   mean_sd <- tibble::rownames_to_column(mean_sd, heterogeneity_group)
