@@ -5,52 +5,91 @@
 # was made for support variables
 # heterogeneity_condition: corresponds to condition we want to apply to a subgroup. For instance, focus on people who don't trust
 # by default there is no condition.
-heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", df=e, weights = "weight", condition = "> 0", CI = 1-0.05/2){
+heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", df=e, weights = "weight", condition = "> 0", confidence = 0.95){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
-  mean_sd <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
+  CI <- 1-(1-confidence)/2
+  mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition, ", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
   # Get low and high bounds of CI. For the moment only 90% CI
-  mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
-  mean_sd <- tibble::rownames_to_column(mean_sd, heterogeneity_group)
-  mean_sd$policy <- variable_name
-
-  return(mean_sd)
+  mean_ci <- as.data.frame(t(apply(mean_ci,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
+  mean_ci <- tibble::rownames_to_column(mean_ci, heterogeneity_group)
+  mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
+  names(mean_ci) <- c("along", "mean", "CI_low", "CI_high", "variable") # this line is new
+  return(mean_ci)
 }
 
 variables_list <- variables_all_policies_support <- c("standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
 #variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
 policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
-plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_point_y_axis = F, df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
-  # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
-  if (is.null(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
+plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_point_y_axis = FALSE, df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
+  levels_along <- Levels(df[[along]]) # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
+  if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
   mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
 
   if (invert_point_y_axis){
-    y <- factor(.data[[along]], levels = rev(levels(factor(.data[[along]]))))
-    categories <- policy
-    labels_plot <- labels
-  } else {
-    y <- policy
-    categories <- .data[[along]]
-    labels_plot <- Levels(df[[along]])
+    plot <- ggplot(mean_sd) +
+      geom_pointrange( aes(x = V1, y = factor(.data[[along]], levels = rev(levels(factor(.data[[along]])))), color = policy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+      labs(x = legend_x, y = legend_y, color="") + 
+      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+      scale_color_manual(labels = labels, values = color(length(labels), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+    
+  } else{
+    plot <- ggplot(mean_sd) +
+      geom_pointrange( aes(x = V1, y = policy, color = .data[[along]], xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+      labs(x = legend_x, y = legend_y, color="") + 
+      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+      scale_color_manual(labels = levels_along, values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
   }
-  plot <- ggplot(mean_sd) +
-    geom_pointrange( aes(x = V1, y = y, color = categories, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
-    labs(x = legend_x, y = legend_y, color="") + 
-    theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
-    scale_color_manual(labels = labels_plot, values = color(length(labels_plot), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
-  plot
+ plot
   # save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
   return(plot)
 }
+
+plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_variable_along = FALSE, df = e, 
+                       confidence = 0.95, heterogeneity_condition = "", condition = "> 0", 
+                       folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
+  # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
+  if (missing(name)) { 
+    if (grepl('["\']', deparse(substitute(vars)))) {
+      name <- ifelse(invert_variable_along, paste0(along, "_by_", vars[1], "_"), paste0(vars[1], "_by_", along, "_"))
+      warning("The filename is formed with the first variable name, given that the argument 'name' is missing.")
+    } else name <- ifelse(invert_variable_along, name <- paste0(along, "_by_", deparse(substitute(vars)), "_"), paste0(deparse(substitute(vars)), "_by_", along, "_"))
+  }
+  if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
+    
+  mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+  mean_ci$variable <- factor(mean_ci$variable, levels = vars, labels = labels)
+  
+  if (invert_variable_along) {
+    names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
+    names(mean_ci)[which(names(mean_ci) == "variable")] <- "along"
+    names(mean_ci)[which(names(mean_ci) == "temp")] <- "variable" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
+  } 
+  
+  # levels_along <- Levels(df[[along]]) 
+  if (missing(labels)) labels <- vars
+  
+  plot <- ggplot(mean_ci) +
+    geom_pointrange( aes(x = mean, y = variable, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
+    labs(x = legend_x, y = legend_y, color="") +
+    theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") #+ # BUG in custom colors: the legend does not correspond to the colors
+    # scale_color_manual(labels = levels_along, values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+  plot
+  save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
+  return(plot)
+}
 # example :
+plot_along(vars = "tax_transfers_support", along = "treatment")
+plot_along(vars = variables_all_policies_support, along = "treatment")
 plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"))
-plot_along(vars = variables_all_policies_support, along = "urban_category", name = "policies_support_by_urban_category", labels = labels_all_policies_support)
+plot_along(vars = variables_all_policies_support, along = "urban_category", df = fr, name = "policies_support_by_urban_category", labels = labels_all_policies_support)
+plot_along(vars = c("CC_affects_self"), along = "country_name", name = "CC_affects_self_by_country", labels = c("Feels affected by climate change"))
 
-plot_along(vars = c("CC_affects_self"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change"))
+mean_sd <- bind_rows((lapply(variables_all_policies_support, heterogeneity_mean_CI, heterogeneity_group = "country", df=all)))
+mean_sd$variable <- factor(mean_sd$variable, levels = variables_all_policies_support, labels = variables_all_policies_support)
 
-# eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along)
+# eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along) substitute(temp) deparse(substitute(temp))
 # e <- us
 e <- fr
 # e <- dk
