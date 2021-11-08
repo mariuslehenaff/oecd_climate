@@ -1353,8 +1353,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"  
   
   for (p in names_policies) {
-    e[[paste0(p, "_costless_costly")]] <- e[[paste0(p, "_positive_effect")]] <- -e[[paste0(p, "_cost_effective")]]
-    e[[paste0(p, "_positive_negative")]] <- e[[paste0(p, "_costless")]] <- -e[[paste0(p, "_negative_effect")]]
+    e[[paste0(p, "_costless_costly")]] <- e[[paste0(p, "_costless")]] <- -e[[paste0(p, "_cost_effective")]]
+    e[[paste0(p, "_positive_negative")]] <- e[[paste0(p, "_positive_effect")]] <- -e[[paste0(p, "_negative_effect")]]
     if ("positive_treatment" %in% names(e)) {
       # for (v in names(e)[grepl('_cost_effective|_negative_effect', names(e))]) 
       e[[paste0(p, "_costless_costly")]][e$positive_treatment==0] <- e[[paste0(p, "_cost_effective")]][e$positive_treatment==0]
@@ -1380,7 +1380,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   if ('standard_cost_effective' %in% names(e)) variables_investments_effect <<- sub("negative", "positive_negative", sub("cost_effective", "costless_costly", variables_investments_effect))
   if ('standard_cost_effective' %in% names(e)) variables_tax_transfers_effect <<- sub("negative", "positive_negative", sub("cost_effective", "costless_costly", variables_tax_transfers_effect))
   if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
-  
 
   if ("standard_trust" %in% names(e)) e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
   if ("standard_trust" %in% names(e)) label(e$policies_trust) <- "policies_trust: Could [Country] government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
