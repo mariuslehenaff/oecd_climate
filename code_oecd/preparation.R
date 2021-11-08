@@ -1370,7 +1370,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       e$positive_treatment <- 0
       e$positive_treatment_present <- FALSE }
     annotation(e[[paste0(p, "_positive_effect")]]) <- sub("negative", "positive", Label(e[[paste0(p, "_positive_effect")]]))
-    annotation(e[[paste0(p, "_costless")]]) <- sub("costly|cost_effective", "costless", Label(e[[paste0(p, "_costless")]]))
+    annotation(e[[paste0(p, "_costless")]]) <- sub("costly|cost_effective", "costless", Label(e[[paste0(p, "_costless")]])) # _positive_negative and _costless_costly are the variables containing all obs. (the other contain only respective half)
     annotation(e[[paste0(p, "_positive_negative")]]) <- paste(sub("_negative_effect:", "_positive_negative:", sub("negative ", "positive [or negative] ", Label(e[[paste0(p, "_positive_negative")]]))), "[depending on positive_treatment = 0/1, all recoded as positive]")
     annotation(e[[paste0(p, "_costless_costly")]]) <-  paste(sub("_cost_effective:", "_costless_costly:", sub("costly ", "costless [or costly] ", Label(e[[paste0(p, "_costless_costly")]]))), "[depending on positive_treatment = 0/1, all recoded as costless]")
     # for (v in c("_positive_effect", "_costless", "_cost_effective", "_negative_effect")) annotation(e[[paste0(p, v)]]) <- paste(e[[paste0(p, v)]], "[formulation depends on positive_treatment if positive_treatment_present==T]")
