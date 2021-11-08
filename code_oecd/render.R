@@ -1685,8 +1685,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
       # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
       # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
       # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few). 
-      if (is.missing(width)) width <- ifelse(length(labels) <= 3, 1000, 1770) # TODO! more precise than <= 3 vs. > 3
-      if (is.missing(height)) height <- ifelse(length(labels) <= 3, 163, 400)
+      if (is.null(width)) width <- ifelse(length(labels) <= 3, 1000, 1770) # TODO! more precise than <= 3 vs. > 3
+      if (is.null(height)) height <- ifelse(length(labels) <= 3, 163, 400)
       
       for (cond in conditions) {
         filename <- paste(sub("variables_", "", name), 
