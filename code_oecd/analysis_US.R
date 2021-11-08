@@ -371,9 +371,9 @@ summary(lm(as.formula(paste("policies_fair>0 ~", end_formula3)), data = e, weigh
 summary(lm(as.formula(paste("policies_self>0 ~", end_formula3)), data = e, weights = e$weight)) # effect of interaction
 summary(lm(as.formula(paste("policies_poor>0 ~", end_formula3)), data = e, weights = e$weight)) 
 summary(lm(as.formula(paste("policies_large_effect>0 ~", end_formula3)), data = e, weights = e$weight))
-summary(lm(as.formula(paste("policies_negative_effect>0 ~", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_positive_negative>0 ~", end_formula3)), data = e, weights = e$weight))
 
-summary(lm(as.formula(paste("policies_cost_effective>0 ~", end_formula3)), data = e, weights = e$weight))
+summary(lm(as.formula(paste("policies_costless_costly>0 ~", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("tax_transfers_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("investments_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
 summary(lm(as.formula(paste("standard_win_lose_poor>0 ~", end_formula3)), data = e, weights = e$weight))
@@ -393,7 +393,7 @@ desc_table(dep_vars = c("tax_transfers_support > 0", "investments_support > 0", 
            dep.var.caption = c("Support"), data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_new, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
 
-desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_negative_effect > 0"), # filename = "US_3",
+desc_table(dep_vars = c("policies_fair > 0", "policies_self > 0", "policies_poor > 0", "policies_large_effect > 0", "policies_positive_negative > 0"), # filename = "US_3",
            dep.var.labels =  c("Fair", "HH would win", "Poor would win", "Large economic effect", "Negative economic effect"),
            data = e, keep = c("treatment"), indep_vars = c(variables_main_controls_new, "treatment"), indep_labels = c("Treatment: Climate", "Treatment: Policy", "Treatment: Both"), mean_control = T
 )
@@ -540,14 +540,14 @@ prp(tree_support, box.palette = "Blues", tweak = 1.2)
 
 
 ##### Acquiescence ####
-decrit(usp3$investments_cost_effective)
-decrit(us$investments_cost_effective)
-decrit(usp3$standard_cost_effective)
-decrit(us$standard_cost_effective)
-decrit(usp3$tax_transfers_cost_effective)
-decrit(us$tax_transfers_cost_effective)
-decrit(usp3$policies_cost_effective)
-decrit(us$policies_cost_effective)
+decrit(usp3$investments_costless_costly)
+decrit(us$investments_costless_costly)
+decrit(usp3$standard_costless_costly)
+decrit(us$standard_costless_costly)
+decrit(usp3$tax_transfers_costless_costly)
+decrit(us$tax_transfers_costless_costly)
+decrit(usp3$policies_costless_costly)
+decrit(us$policies_costless_costly)
 
 
 ##### Survey biased #####
