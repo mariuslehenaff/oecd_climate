@@ -5,44 +5,242 @@
 # was made for support variables
 # heterogeneity_condition: corresponds to condition we want to apply to a subgroup. For instance, focus on people who don't trust
 # by default there is no condition.
-heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", df=e, weights = "weight", condition = "> 0", CI = 1-0.05/2){
+heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", country_heterogeneity = FALSE, along_labels = "", df=e, weights = "weight", condition = "> 0", confidence = 0.95){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
-  mean_sd <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(wtd.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]], na.rm = T))*100"))))))
-  # Get low and high bounds of CI. For the moment only 90% CI
-  mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
-  mean_sd <- tibble::rownames_to_column(mean_sd, heterogeneity_group)
-  mean_sd$policy <- variable_name
-  mean_sd[,"V2"] <- mean_sd[,"V1"]-2
-  mean_sd[,"V3"] <- mean_sd[,"V1"]+2
-  
-  return(mean_sd)
+  # TODO: on_control = T
+  CI <- 1-(1-confidence)/2
+  if (country_heterogeneity){
+   mean_ci <- as.data.frame(sapply(split(df, list(df$country_name, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), drop = F), function(x) c(unique(x$country_name), unique(x[[heterogeneity_group]]), eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
+   # Get name of the country of group of heterogeneity into 1 df
+   categories <- mean_ci[c(1:2),]
+   # Take the mean and SD to compute CI
+   mean_ci <- mean_ci[c(3:4),]
+   # Get low and high bounds of CI. For the moment only 90% CI
+   mean_ci <- as.data.frame(t(apply(mean_ci, 2, function(x) c(as.numeric(x[1]),as.numeric(x[1])-qnorm(CI)*as.numeric(x[2]), as.numeric(x[1])+qnorm(CI)*as.numeric(x[2])))))
+   mean_ci$country <- t(categories[1,])
+   # Prepare countries' names to be alphabetically order in geom_pointranger
+   mean_ci$country <- factor(mean_ci$country, levels = rev(levels(factor(mean_ci$country))))
+   mean_ci[[heterogeneity_group]] <- t(categories[2,])
+   mean_ci <- tibble::rownames_to_column(mean_ci, "combined_name")
+   mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
+   names(mean_ci) <- c("combined_name", "mean", "CI_low", "CI_high", "country", "along", "variable") # this line is new
+   mean_ci$along <- factor(mean_ci$along, labels = along_labels)
+   
+  } else {
+    mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition, ", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
+    mean_ci <- as.data.frame(t(apply(mean_ci,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
+    mean_ci <- tibble::rownames_to_column(mean_ci, heterogeneity_group)
+    mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
+    names(mean_ci) <- c("along", "mean", "CI_low", "CI_high", "variable") # this line is new
+  }
+  return(mean_ci)
 }
 
 variables_list <- variables_all_policies_support <- c("standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
 #variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
 policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
-plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
+plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_point_y_axis = FALSE, df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
   levels_along <- Levels(df[[along]]) # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
   mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
 
-  plot <- ggplot(mean_sd) +
+  if (invert_point_y_axis){
+    plot <- ggplot(mean_sd) +
+      geom_pointrange( aes(x = V1, y = factor(.data[[along]], levels = rev(levels(factor(.data[[along]])))), color = policy, xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
+      labs(x = legend_x, y = legend_y, color="") + 
+      theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
+      scale_color_manual(labels = labels, values = color(length(labels), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+    
+  } else{
+    plot <- ggplot(mean_sd) +
       geom_pointrange( aes(x = V1, y = policy, color = .data[[along]], xmin = V2, xmax = V3), position = position_dodge(width = .5)) +
       labs(x = legend_x, y = legend_y, color="") + 
       theme_minimal() + theme(legend.title = element_blank(), legend.position = "top") +
       scale_color_manual(labels = levels_along, values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+  }
+ plot
+  # save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
+  return(plot)
+}
+
+# Given a set of regressions with one common variable (along), gives the coefs and CI of the levels of that variable.
+mean_ci_along_regressions <- function(regs, along, labels, data = e, origin = 0, logit = c(FALSE), confidence = 0.95,
+                                      names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]])) { # to handle numeric variables: levels_along = ifelse(is.numeric(data[[along]]), c(), Levels(data[[along]]))
+  # names_levels[1] should correspond to the control group (concatenation of along and the omitted level)
+  # origin can be 0, the intercept, the true (or predicted) mean of the control group, or all variables at their mean except along (at 0 i.e. the control group)
+  # TODO: logit, origin
+  k <- length(names_levels)
+  if (k < 2) warning("along must have several levels.")
+  if (length(levels_along)!=length(names_levels)) warning("levels_along and names_levels must have same length.")
+  mean_ci <- data.frame()
+  i <- 0
+  if (class(regs) != "list") regs <- list(regs)
+  if (length(logit)==1) logit <- rep(logit, length(regs)) # TODO determine automatically whether logit through class(regs)
+  for (reg in regs) {
+    i <- i+1
+    label <- rep(labels[i], length(levels_along))
+    if (logit[i]) {
+      if ("lm" %in% class(reg)) warning("Logit margins should be provided: logitmfx(..)$mfxest")
+      coefs <- c(0, reg[names_levels[2:k],1])
+      sd <- c(0, reg[names_levels[2:k],2])
+      z <- qnorm(1-(1-confidence)/2)
+      CI <- cbind(coefs - z*sd, coefs + z*sd)
+    } else {
+      coefs <- origin + c(0, reg$coefficient[names_levels[2:k]])
+      CI <- rbind(c(0, 0), confint(reg, names_levels[2:k], confidence)) 
+    }
+    mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
+    mean_ci <- rbind(mean_ci, mean_ci_reg)    
+  }
+  row.names(mean_ci) <- NULL
+  return(mean_ci)
+}
+
+# gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
+# outcomes, covariates: string vectors / subsamples: variable name
+# /!\ when logit_margin = T, we don't take weights into account (haven't found an R function that gives the marginal logit effects with weights)
+regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, summary = FALSE) {
+  if (length(logit)==1) logit <- rep(logit, length(outcomes)*max(1, length(subsamples)))
+  regs <- list()
+  i <- 0
+  if (!is.null(subsamples)) for (s in Levels(df[[subsamples]])) {
+    regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, df = df[df[[subsamples]]==s,], logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
+    i <- i + 1
+  } else for (y in outcomes) {
+    formula <- as.formula(paste(y, " ~ ", paste(covariates, collapse = ' + ')))
+    i <- i + 1
+    if (logit[i]) { 
+      if (logit_margin) {
+        reg <- logitmfx(formula, data = df, atmean = atmean)$mfxest 
+      } else reg <- glm(formula, family = binomial(link='logit'), data = df, weights = df[[weight]])
+    } else reg <- lm(formula, data = df, weight = df[[weight]])
+    if (summary) reg <- summary(reg)
+    regs <- c(regs, reg)
+  }
+  return(regs)
+}
+  
+# default marginal effects represent the partial effects for the average observation. If atmean = FALSE the function calculates average partial effects.
+# formula <- as.formula("policies_support>0 ~ gender + age + income + education + hit_by_covid + employment_agg + treatment")
+# formula2 <- as.formula("tax_transfers_support>0 ~ gender + age + income + education + hit_by_covid + employment_agg + treatment")
+# reg <- lm(formula, data=e, weights=e$weight)
+# reg2 <- lm(formula, data=e, weights=e$weight)
+# (foo <- mean_ci_along_regressions(list(reg, logit_margins), "treatment", c("main policies", "tax and transfers"), logit = c(F, T)))
+# plot_along(foo, save = FALSE)
+# summary(reg)
+# 
+# confint(reg)
+# logit <- glm(formula, family = binomial(link='logit'), data=e)
+# summary(logit)
+# logit_margins <- logitmfx(formula, e, atmean=T)$mfxest
+# logit_margins
+
+# Two cases: with covariates (coefficients or marginal effects are shown, depending on origin = 0 or not) or without covariates (i.e. unconditional means of subgroups)
+# Three configurations: a. one outcomes, two heterogeneities / b. and c. different outcomes, one heterogeneity (c. is invert_y_along = T)
+# a. one outcome, y: subsamples (e.g. countries), along: heterogeneity; b. y: outcomes, along; c. y: heterogeneity, along: outcomes
+mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = outcome_vars,
+                    origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
+                    names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), heterogeneity_condition = "") {
+  z <- qnorm(1-(1-confidence)/2)
+  if (!is.null(covariates)) {
+    regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
+    mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, data = df, origin = origin, logit = logit, confidence = confidence, names_levels = names_levels, levels_along = levels_along)
+  } else {
+    if (!is.null(subsamples)) { # Configuration a.
+      if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
+      outcome <- outcomes[1]
+      y_loop <- Levels(df[[subsamples]])
+      configurations <- paste0("(x$", outcome, ")[", subsamples, "==", y_loop, "]")
+    } else { # Configuration b.
+      y_loop <- outcomes
+      configurations <- paste0("x$", y_loop)
+    }
+    i <- 0
+    mean_ci <- data.frame()
+    for (configuration in configurations) {
+      i <- i + 1
+      mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[along]]", heterogeneity_condition, sep = "")))), 
+                                      function(x) c(eval(str2expression(paste("wtd.mean(", configuration, ", w = x[[weight]], na.rm=T)"))), 
+                                                    eval(str2expression(paste("sqrt(modi::weighted.var(", configuration," , w = x[[weight]], na.rm=T))/sqrt(NROW(x))"))))))
+      mean_ci <- as.data.frame(t(apply(mean_ci, 2, function(x) c(x[1],x[1]-z*x[2], x[1]+z*x[2]))))
+      mean_ci <- tibble::rownames_to_column(mean_ci, along) # TODO remove this line?
+      mean_ci$y <- y_loop[i]
+      names(mean_ci) <- c("along", "mean", "CI_low", "CI_high", "y")
+    }
+    mean_ci <- rbind(mean_ci, mean_ci_reg) 
+  }
+  if (invert_y_along) names(mean_ci) <- c("y", "mean", "CI_low", "CI_high", "along")
+  # if (invert_y_along) {
+  #   names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
+  #   names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
+  #   names(mean_ci)[which(names(mean_ci) == "temp")] <- "y"  }
+  return(mean_ci)
+}
+
+
+
+plot_along <- function(mean_ci, along, vars = outcomes, outcomes = paste(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = vars,
+                       origin = 0, logit = c(FALSE), atmean = T, logit_margin = T, names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), 
+                       confidence = 0.95, weights = "weight", heterogeneity_condition = "", # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
+                       legend_x = '', legend_y = '', name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T) {
+  # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
+  if (missing(name) & !missing(vars) & !missing(along)) {
+    if (grepl('["\']', deparse(substitute(vars)))) {
+      name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1], "_"), paste0(vars[1], "_by_", along, "_"))
+      warning("The filename is formed with the first variable name, given that the argument 'name' is missing.")
+    } else name <- ifelse(invert_y_along, name <- paste0(along, "_by_", deparse(substitute(vars)), "_"), paste0(deparse(substitute(vars)), "_by_", along, "_"))
+  } else if (missing(name) & !missing(mean_ci)) { 
+    potential_name <- deparse(substitute(mean_ci))
+    if (missing(along)) along <- ""
+    if (grepl('["\']', potential_name)) warning("(file)name should be provided, or mean_ci should have a name.")
+    name <- ifelse(invert_y_along, paste0(along, "_by_", mean_ci, "_"), paste0(mean_ci, "_by_", along, "_"))
+  } else name <- "temp"
+  name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
+  
+  if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
+    
+  if (missing(mean_ci)) mean_ci <- mean_ci(along = along, outcome_vars = outcomes, outcomes = paste(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = outcomes,
+                                    origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
+                                    names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), heterogeneity_condition = "")
+    
+ #  if (missing(mean_ci)) {
+ #    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+ #    mean_ci$y <- factor(mean_ci$y, levels = vars, labels = labels) }
+ #  
+ #  if (invert_y_along & country_heterogeneity == F) {
+ #    names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
+ #    names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
+ #    names(mean_ci)[which(names(mean_ci) == "temp")] <- "y" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
+ #  } else if (country_heterogeneity) {
+ #    names(mean_ci)[which(names(mean_ci) == "variable")] <- "policy" # TODO: generalize this by rewriting heterogeneity_mean_CI
+ #    names(mean_ci)[which(names(mean_ci) == "country")] <- "y"
+ # }
+  
+  plot <- ggplot(mean_ci) + # For plot, we need mean_ci (cols: mean, CI_low,high, variable, along), legend_x, legend_y. For save, we need: name, folder, width, height.
+    geom_pointrange( aes(x = mean, y = y, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
+    labs(x = legend_x, y = legend_y, color="") + theme(legend.title = element_blank(), legend.position = "top") +
+    theme_minimal() # + scale_color_manual(values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+    # scale_color_manual(labels = Levels(df[[along]]), values = color(length(Levels(df[[along]])), theme='rainbow'))# BUG when we specify labels: the legend does not correspond to the colors
   plot
-  save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
+  if (save) save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
   return(plot)
 }
 # example :
+plot_along(vars = "tax_transfers_support", along = "treatment")
+plot_along(vars = rev(variables_all_policies_support), along = "treatment")
 plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"))
-plot_along(vars = variables_all_policies_support, along = "urban_category", name = "policies_support_by_urban_category", labels = labels_all_policies_support)
+plot_along(vars = variables_all_policies_support, along = "urban_category", df = fr, name = "policies_support_by_urban_category", labels = labels_all_policies_support)
+plot_along(vars = c("CC_affects_self"), along = "country_name", name = "CC_affects_self_by_country", labels = c("Feels affected by climate change"))
+# Beware, only use one variable at a time with country_heterogeneity = T
+plot_along(vars = "policies_support", along = "urban", country_heterogeneity = T)
+# For labels, check the output of heterogeneity_mean_CI (first column)
+plot_along(vars = "policies_support", along = "treatment", country_heterogeneity = T, along_labels = c("None", "Climate", "Policy", "Both"))
+mean_sd <- bind_rows((lapply(variables_all_policies_support, heterogeneity_mean_CI, heterogeneity_group = "country", df=all)))
+mean_sd$variable <- factor(mean_sd$variable, levels = variables_all_policies_support, labels = variables_all_policies_support)
 
-
-# eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along)
+# eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along) substitute(temp) deparse(substitute(temp))
 # e <- us
 e <- fr
 # e <- dk
@@ -1067,3 +1265,49 @@ ggarrange(tax_positive_by_inequality_CI95_FR, tax_positive_by_inequality_CI95_US
           nrow=2, ncol=2, common.legend = TRUE, legend = "top", align = "v")
 
 
+
+# Heterogeneity Graphs
+variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
+policies_label <- c("WTP", "Limit flying", "Limit driving", "Have electric car", "Limit heating or cooling home", "Limit beef consumption")
+
+plot_along(vars = variables_list, along = "country_name", name = "willingness_by_country", labels = policies_label)
+
+
+variables_list <- c("CC_anthropogenic","willing_limit_driving","wtp",
+                    "standard_support","standard_public_transport_support",
+                    "investments_support","tax_transfers_support",
+                    "beef_ban_intensive_support","insulation_support",
+                    "tax_1p_support")
+policies_label <- c("Climate change is anthropogenic", "Willing to limit driving",
+                    "Willing to Pay for climate action", "Support ban on combustion engine",
+                    "Support ban on combustion engine \n (public transport made available)",
+                    "Support green investments program", "Support carbon tax with cash transfer",
+                    "Support ban on intensive cattle farming", "Support mandatory insulation",
+                    "Support global wealth tax to fund LDCs")
+plot_along(vars = variables_list, along = "country_name", name = "main_var_by_country", labels = policies_label)
+
+
+variables_list <- c("CC_problem", "CC_anthropogenic", "CC_dynamic", "CC_will_end", "net_zero_feasible", "CC_affects_self", "effect_halt_CC_lifestyle", "effect_halt_CC_economy")
+policies_label <- c("CC is an important problem", "CC exists, is anthropogenic", "Cutting GHG emisions by half \n sufficient to stop rise in temperatures", "Likely to halt CC by the end of the century",
+                    "Feasible to stop GHG emissions \n while sustaining satisfactory \n standards of living in [country]", "CC will negatively affect personal lifestyle", "Negative 
+                    effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
+plot_along(vars = variables_list, along = "country_name", name = "attitudes_by_country", labels = policies_label)
+
+variables_list <- c("tax_transfer_constrained_hh", "tax_transfer_poor", "tax_transfer_all", "tax_reduction_personal_tax", "tax_reduction_corporate_tax", "tax_rebates_affected_firms", "tax_investments", "tax_subsidies", "tax_reduction_deficit")
+policies_label <- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructures", "Subsidies to low-carbon technologies", "Reduction in the deficit")
+plot_along(vars = variables_list, along = "country_name", name = "views_by_country", labels = policies_label)
+
+variables_list <- c("policies_support","standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
+policies_label <- c("Main Policies", "Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with \n cash transfer")
+plot_along(vars = variables_list, along = "country_name", name = "support_var_by_country", labels = policies_label)
+plot_along(vars = variables_list, along = "country_name", invert_point_y_axis = T, name = "support_var_by_country", labels = policies_label)
+plot_along(vars = variables_list, along = "treatment", name = "support_var_by_treatment", labels = policies_label)
+plot_along(vars = "policies_support", along = "treatment", invert_point_y_axis = T, name = "main_support_var_by_treatment", labels = "Main Policies")
+
+variables_list <- c("CC_anthropogenic", "CC_impacts_extinction", "donation", "should_fight_CC", "willing_limit_driving")
+policies_label <- c("CC caused by humans", "CC likely to cause extinction", "Donation", "[country] should fight CC", "Willing to limit driving")
+plot_along(vars = variables_list, along = "treatment", name = "attitudes_CC_by_country", labels = policies_label)
+
+variables_list <- c("policies_fair", "policies_self", "policies_poor", "policies_rich", "policies_large_effect", "policies_positive_negative")
+policies_label <- c("Fair", "HH would win", "Poor would win", "Rich would win", "Large economic effects", "Negative economic effects")
+plot_along(vars = variables_list, along = "treatment", name = "attitudes_pol_by_country", labels = policies_label)
