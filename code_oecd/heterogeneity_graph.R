@@ -153,6 +153,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
   if (!is.null(covariates)) {
     if (!(along %in% covariates)) print("ERROR: along must be in covariates")
     if (any(logit) & !logit_margin) print("Warning: Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
+    if (!is.null(subsamples) & (missing(labels) | labels == outcome_vars)) labels <- Levels(df[[subsamples]])
     regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
     mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, names_levels = names_levels, levels_along = levels_along)
   } else {
@@ -197,6 +198,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste(
                        legend_x = '', legend_y = '', name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T) {
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   # TODO: automatic values when missing(legend_x), legend_y
+  # TODO: labels legend (e.g. instead of T/F for urban)
   if (missing(name) & !missing(vars) & !missing(along)) {
     if (grepl('["\']', deparse(substitute(vars)))) {
       name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1]), paste0(vars[1], "_by_", along))
@@ -241,7 +243,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste(
   else return(plot)
 }
 # example :
-example_covariates <- c("treatment", "gender", "income", "urbanity", "country_name")
+example_covariates <- c("treatment", "gender", "as.factor(income)", "urbanity", "country_name")
 plot_along(vars = "tax_transfers_support", along = "treatment", covariates = example_covariates, logit = T, logit_margin = FALSE)
 plot_along(vars = rev(variables_all_policies_support), along = "treatment", covariates = example_covariates, logit = T, logit_margin = FALSE)
 # mean_ci(outcome_vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"), covariates = example_covariates, logit = T)
