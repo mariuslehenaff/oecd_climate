@@ -698,10 +698,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   text_education_master <- c("US" = "Master's degree or above", 
                              "FR" = "Bac +5 ou plus (master, école d'ingénieur ou de commerce, doctorat, médecine, maîtrise, DEA, DESS...)")
   
-  text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 35,000€/mois")
-  text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 35,000 et 70,000€/mois")
-  text_income_q3 <- c("US" = "between $70,000 and $120,000", "FR" = "Entre 70,000 et 120,000€/mois")
-  text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 120,000€/mois")
+  text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 35,000€/mois", "AU" = "less than $51,000",
+                      "CA" = "less than CA$22,000", "IA" = "less than ₹50,000", "SA" = "less than R35,000 per month", "UK" = "less than £35,000")
+  text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 35,000 et 70,000€/mois", "AU" = "between $51,000 and $80,000",
+                      "CA" = "between CA$22,000 and CA$39,000", "IA" = "between ₹50,000 and ₹100,000", "SA" = "between R35,000 and R70,000 per month")
+  text_income_q3 <- c("US" = "between $70,000 and $120,000", "FR" = "Entre 70,000 et 120,000€/mois", "AU" = "between $80,000 and $122,000",
+                      "CA" = "between CA$39,000 and CA$74,000", "IA" = "between ₹100,000 and ₹200,000", "SA" = "between R70,000 and R120,000 per month")
+  text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 120,000€/mois", "AU" = "more than $122,000", 
+                      "CA" = "more than CA$74,000", "IA" = "more than ₹200,000", "SA" = "more than R120,000 per month")
   
   text_wealth_q1 <- c("US" = "Less than $0 (I have a net debt)", "FR" = "Moins de 10 000€")
   text_wealth_q2 <- c("US" = "Close to $0", "FR" = "Entre 10 001€ et 60 000€")
