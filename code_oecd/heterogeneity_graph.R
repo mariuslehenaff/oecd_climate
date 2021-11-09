@@ -151,6 +151,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
                     origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95, 
                     labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), heterogeneity_condition = "") {
   z <- qnorm(1-(1-confidence)/2)
+  if (labels_along == levels_along & is.logical(df[[along]])) { labels_along <- paste0(along, ": ", levels_along) }
   names(labels_along) <- as.character(levels_along) # setNames(levels_along, levels_along)
   if (!is.null(covariates)) {
     if (!(along %in% covariates)) print("ERROR: along must be in covariates")
@@ -194,10 +195,9 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
   return(mean_ci)
 }
 
-
 plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = vars,
                        origin = 0, logit = c(FALSE), atmean = T, logit_margin = T, labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), 
-                       confidence = 0.95, weight = "weight", heterogeneity_condition = "", return_mean_ci = FALSE, print_name = T, # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
+                       confidence = 0.95, weight = "weight", heterogeneity_condition = "", return_mean_ci = FALSE, print_name = FALSE, # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
                        legend_x = '', legend_y = '', name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T) {
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   # TODO: automatic values when missing(legend_x), legend_y
