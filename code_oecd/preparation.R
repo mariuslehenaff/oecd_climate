@@ -1371,7 +1371,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       e$positive_treatment <- 0
       e$positive_treatment_present <- FALSE }
     annotation(e[[paste0(p, "_positive_effect")]]) <- sub("negative", "positive", Label(e[[paste0(p, "_positive_effect")]]))
-    annotation(e[[paste0(p, "_costless")]]) <- sub("costly|cost_effective", "costless", Label(e[[paste0(p, "_costless")]]))
+    annotation(e[[paste0(p, "_costless")]]) <- sub("costly|cost_effective", "costless", Label(e[[paste0(p, "_costless")]])) # _positive_negative and _costless_costly are the variables containing all obs. (the other contain only respective half)
     annotation(e[[paste0(p, "_positive_negative")]]) <- paste(sub("_negative_effect:", "_positive_negative:", sub("negative ", "positive [or negative] ", Label(e[[paste0(p, "_positive_negative")]]))), "[depending on positive_treatment = 0/1, all recoded as positive]")
     annotation(e[[paste0(p, "_costless_costly")]]) <-  paste(sub("_cost_effective:", "_costless_costly:", sub("costly ", "costless [or costly] ", Label(e[[paste0(p, "_costless_costly")]]))), "[depending on positive_treatment = 0/1, all recoded as costless]")
     # for (v in c("_positive_effect", "_costless", "_cost_effective", "_negative_effect")) annotation(e[[paste0(p, v)]]) <- paste(e[[paste0(p, v)]], "[formulation depends on positive_treatment if positive_treatment_present==T]")
@@ -1432,16 +1432,17 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   } else if (country %in% c("ID", "SA")) e$urban <- e$area
   else e$urban <- NA
   temp <- case_when(e$country %in% c("US") ~ e$urban == T,
-                    e$country %in% c("AU", "CA", "JP", "MX", "TR", "UA") ~ e$urban_category %in% c("Urban"),
+                    e$country %in% c("AU", "CA", "JP", "TR", "UA") ~ e$urban_category %in% c("Urban"),
                     e$country %in% c("DK") ~ e$urbanity > 2, # >20k
                     e$country %in% c("PL", "SP", "IA") ~ e$urbanity > 1, # >20k
+                    e$country == "MX" ~ e$urban_category %in% c("Urbano"),
                     e$country == "FR" ~ e$urban_category == "GP",
                     e$country == "DE" ~ e$urban_category %in% c("Towns_and_Suburbs", "Cities"),
                     e$country == "IT" ~ e$urban_category %in% c("Cities", "Small Cities"),
                     e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
                     e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                     e$country == "BR" ~ e$urbanity > 2,# >50k
-                    e$country == "CN" ~ e$urban_category %in% c("Urban", "Small_Urban"), # i.e. > 10k: probably better to define it using urbanity
+                    e$country == "CN" ~ e$urbanity > 3, #e$urban_category %in% c("Urban", "Small_Urban"), # i.e. > 10k: probably better to define it using urbanity
                     e$country == "ID" ~ e$urban %in% c("Kota", "Capital town of a Kabupaten"),
                     e$country == "SA" ~ e$urban %in% c("In a capital of a District municipality", "In a metropolitan municipality"), # BUG TODO!
                     # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
@@ -2687,7 +2688,7 @@ merge_all_countries <- function(countries = countries, weight_adult = T, weight_
   all$weight_adult <- all$weight * adult_pop[all$country]
   all$weight_pop_oecd <- all$weight * oecd[all$country] * population[all$country]
   all$weight_adult_oecd <- all$weight * oecd[all$country] * adult_pop[all$country]
-  for (w in c("weight_pop", "weight_adult", "weight_pop_oecd", "weight_adult_oecd")) all[[w]] <- 100 * as.numeric(all[[w]] / sum(all[[w]]))
+  for (w in c("weight_pop", "weight_adult", "weight_pop_oecd", "weight_adult_oecd")) all[[w]] <- nrow(all) * as.numeric(all[[w]] / sum(all[[w]]))
     
   if (weight_adult) {
     if (weight_oecd) all$weight <- all$weight_adult_oecd
