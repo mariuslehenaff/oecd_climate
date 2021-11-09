@@ -46,28 +46,107 @@ plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '
   return(plot)
 }
 
-plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_variable_along = FALSE, df = e, 
-                       confidence = 0.95, heterogeneity_condition = "", condition = "> 0", 
+# Given a set of regressions with one common variable (along), gives the coefs and CI of the levels of that variable.
+mean_ci_along_regressions <- function(regs, along, labels, data = e, origin = 0, logit = c(FALSE), confidence = 0.95,
+                                      names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]])) { # to handle numeric variables: levels_along = ifelse(is.numeric(data[[along]]), c(), Levels(data[[along]]))
+  # names_levels[1] should correspond to the control group (concatenation of along and the omitted level)
+  # origin can be 0, the intercept, the true (or predicted) mean of the control group, or all variables at their mean except along (at 0 i.e. the control group)
+  # TODO: logit, origin
+  k <- length(names_levels)
+  if (k < 2) warning("along must have several levels.")
+  if (length(levels_along)!=length(names_levels)) warning("levels_along and names_levels must have same length.")
+  mean_ci <- data.frame()
+  i <- 0
+  if (class(regs) != "list") regs <- list(regs)
+  if (length(logit)==1) logit <- rep(logit, length(regs)) # TODO determine automatically whether logit through class(regs)
+  for (reg in regs) {
+    i <- i+1
+    label <- rep(labels[i], length(levels_along))
+    if (logit[i]) {
+      if ("lm" %in% class(reg)) warning("Logit margins should be provided: logitmfx(..)$mfxest")
+      coefs <- c(0, reg[names_levels[2:k],1])
+      sd <- c(0, reg[names_levels[2:k],2])
+      z <- qnorm(1-(1-confidence)/2)
+      CI <- cbind(coefs - z*sd, coefs + z*sd)
+    } else {
+      coefs <- origin + c(0, reg$coefficient[names_levels[2:k]])
+      CI <- rbind(c(0, 0), confint(reg, names_levels[2:k], confidence)) 
+    }
+    mean_ci_reg <- data.frame(variable = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
+    mean_ci <- rbind(mean_ci, mean_ci_reg)    
+  }
+  row.names(mean_ci) <- NULL
+  return(mean_ci)
+}
+
+# gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
+# outcomes, covariates: string vectors / subsamples: variable name
+# /!\ when logit_margin = T, we don't take weights into account (haven't found an R function that gives the marginal logit effects with weights)
+regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, summary = FALSE) {
+  if (length(logit)==1) logit <- rep(logit, length(outcomes)*max(1, length(subsamples)))
+  regs <- list()
+  i <- 0
+  if (!is.null(subsamples)) for (s in Levels(df[[subsamples]])) {
+    regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, df = df[df[[subsamples]]==s,], logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
+    i <- i + 1
+  } else for (y in outcomes) {
+    formula <- as.formula(paste(y, " ~ ", paste(covariates, collapse = ' + ')))
+    i <- i + 1
+    if (logit[i]) { 
+      if (logit_margin) {
+        reg <- logitmfx(formula, data = df, atmean = atmean)$mfxest 
+      } else reg <- glm(formula, family = binomial(link='logit'), data = df, weights = df[[weight]])
+    } else reg <- lm(formula, data = df, weight = df[[weight]])
+    if (summary) reg <- summary(reg)
+    regs <- c(regs, reg)
+  }
+  return(regs)
+}
+  
+# default marginal effects represent the partial effects for the average observation. If atmean = FALSE the function calculates average partial effects.
+# formula <- as.formula("policies_support>0 ~ gender + age + income + education + hit_by_covid + employment_agg + treatment")
+# formula2 <- as.formula("tax_transfers_support>0 ~ gender + age + income + education + hit_by_covid + employment_agg + treatment")
+# reg <- lm(formula, data=e, weights=e$weight)
+# reg2 <- lm(formula, data=e, weights=e$weight)
+# (foo <- mean_ci_along_regressions(list(reg, logit_margins), "treatment", c("main policies", "tax and transfers"), logit = c(F, T)))
+# plot_along(foo, save = FALSE)
+# summary(reg)
+# 
+# confint(reg)
+# logit <- glm(formula, family = binomial(link='logit'), data=e)
+# summary(logit)
+# logit_margins <- logitmfx(formula, e, atmean=T)$mfxest
+# logit_margins
+
+plot_along <- function(mean_ci, vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_variable_along = FALSE, df = e, 
+                       confidence = 0.95, heterogeneity_condition = "", condition = "> 0", save = T,
                        folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
-  if (missing(name)) { 
+  if (missing(name) & !missing(vars) & !missing(along)) {
     if (grepl('["\']', deparse(substitute(vars)))) {
       name <- ifelse(invert_variable_along, paste0(along, "_by_", vars[1], "_"), paste0(vars[1], "_by_", along, "_"))
       warning("The filename is formed with the first variable name, given that the argument 'name' is missing.")
     } else name <- ifelse(invert_variable_along, name <- paste0(along, "_by_", deparse(substitute(vars)), "_"), paste0(deparse(substitute(vars)), "_by_", along, "_"))
-  }
+  } else if (missing(name) & !missing(mean_ci)) { 
+    potential_name <- deparse(substitute(mean_ci))
+    if (missing(along)) along <- ""
+    if (grepl('["\']', potential_name)) warning("(file)name should be provided, or mean_ci should have a name.")
+    name <- ifelse(invert_variable_along, paste0(along, "_by_", mean_ci, "_"), paste0(mean_ci, "_by_", along, "_"))
+  } else name <- "temp"
+  name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
+  
   if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
     
-  mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
-  mean_ci$variable <- factor(mean_ci$variable, levels = vars, labels = labels)
+  if (missing(mean_ci)) {
+    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+    mean_ci$variable <- factor(mean_ci$variable, levels = vars, labels = labels) }
   
   if (invert_variable_along) {
     names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
     names(mean_ci)[which(names(mean_ci) == "variable")] <- "along"
     names(mean_ci)[which(names(mean_ci) == "temp")] <- "variable" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
   } 
-  
-  if (missing(labels)) labels <- vars
+  # if (missing(labels)) labels <- vars
   
   plot <- ggplot(mean_ci) +
     geom_pointrange( aes(x = mean, y = variable, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
@@ -75,7 +154,7 @@ plot_along <- function(vars, along, name = NULL, labels = vars, legend_x = '', l
     theme_minimal() # + scale_color_manual(values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
     # scale_color_manual(labels = Levels(df[[along]]), values = color(length(Levels(df[[along]])), theme='rainbow'))# BUG when we specify labels: the legend does not correspond to the colors
   plot
-  save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
+  if (save) save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
   return(plot)
 }
 # example :
