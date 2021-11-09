@@ -7,6 +7,7 @@
 # by default there is no condition.
 heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", country_heterogeneity = FALSE, along_labels = "", df=e, weights = "weight", condition = "> 0", confidence = 0.95){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
+  # TODO: on_control = T
   CI <- 1-(1-confidence)/2
   if (country_heterogeneity){
    mean_ci <- as.data.frame(sapply(split(df, list(df$country_name, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), drop = F), function(x) c(unique(x$country_name), unique(x[[heterogeneity_group]]), eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
@@ -90,7 +91,7 @@ mean_ci_along_regressions <- function(regs, along, labels, data = e, origin = 0,
       coefs <- origin + c(0, reg$coefficient[names_levels[2:k]])
       CI <- rbind(c(0, 0), confint(reg, names_levels[2:k], confidence)) 
     }
-    mean_ci_reg <- data.frame(variable = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
+    mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
     mean_ci <- rbind(mean_ci, mean_ci_reg)    
   }
   row.names(mean_ci) <- NULL
@@ -136,40 +137,89 @@ regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, lo
 # logit_margins <- logitmfx(formula, e, atmean=T)$mfxest
 # logit_margins
 
-plot_along <- function(mean_ci, vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_variable_along = FALSE, df = e, 
-                       confidence = 0.95, heterogeneity_condition = "", condition = "> 0", save = T,
-                       folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
+# Two cases: with covariates (coefficients or marginal effects are shown, depending on origin = 0 or not) or without covariates (i.e. unconditional means of subgroups)
+# Three configurations: a. one outcomes, two heterogeneities / b. and c. different outcomes, one heterogeneity (c. is invert_y_along = T)
+# a. one outcome, y: subsamples (e.g. countries), along: heterogeneity; b. y: outcomes, along; c. y: heterogeneity, along: outcomes
+mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = outcome_vars,
+                    origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
+                    names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), heterogeneity_condition = "") {
+  z <- qnorm(1-(1-confidence)/2)
+  if (!is.null(covariates)) {
+    regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
+    mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, data = df, origin = origin, logit = logit, confidence = confidence, names_levels = names_levels, levels_along = levels_along)
+  } else {
+    if (!is.null(subsamples)) { # Configuration a.
+      if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
+      outcome <- outcomes[1]
+      y_loop <- Levels(df[[subsamples]])
+      configurations <- paste0("(x$", outcome, ")[", subsamples, "==", y_loop, "]")
+    } else { # Configuration b.
+      y_loop <- outcomes
+      configurations <- paste0("x$", y_loop)
+    }
+    i <- 0
+    mean_ci <- data.frame()
+    for (configuration in configurations) {
+      i <- i + 1
+      mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[along]]", heterogeneity_condition, sep = "")))), 
+                                      function(x) c(eval(str2expression(paste("wtd.mean(", configuration, ", w = x[[weight]], na.rm=T)"))), 
+                                                    eval(str2expression(paste("sqrt(modi::weighted.var(", configuration," , w = x[[weight]], na.rm=T))/sqrt(NROW(x))"))))))
+      mean_ci <- as.data.frame(t(apply(mean_ci, 2, function(x) c(x[1],x[1]-z*x[2], x[1]+z*x[2]))))
+      mean_ci <- tibble::rownames_to_column(mean_ci, along) # TODO remove this line?
+      mean_ci$y <- y_loop[i]
+      names(mean_ci) <- c("along", "mean", "CI_low", "CI_high", "y")
+    }
+    mean_ci <- rbind(mean_ci, mean_ci_reg) 
+  }
+  if (invert_y_along) names(mean_ci) <- c("y", "mean", "CI_low", "CI_high", "along")
+  # if (invert_y_along) {
+  #   names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
+  #   names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
+  #   names(mean_ci)[which(names(mean_ci) == "temp")] <- "y"  }
+  return(mean_ci)
+}
+
+
+
+plot_along <- function(mean_ci, along, vars = outcomes, outcomes = paste(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = vars,
+                       origin = 0, logit = c(FALSE), atmean = T, logit_margin = T, names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), 
+                       confidence = 0.95, weights = "weight", heterogeneity_condition = "", # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
+                       legend_x = '', legend_y = '', name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T) {
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   if (missing(name) & !missing(vars) & !missing(along)) {
     if (grepl('["\']', deparse(substitute(vars)))) {
-      name <- ifelse(invert_variable_along, paste0(along, "_by_", vars[1], "_"), paste0(vars[1], "_by_", along, "_"))
+      name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1], "_"), paste0(vars[1], "_by_", along, "_"))
       warning("The filename is formed with the first variable name, given that the argument 'name' is missing.")
-    } else name <- ifelse(invert_variable_along, name <- paste0(along, "_by_", deparse(substitute(vars)), "_"), paste0(deparse(substitute(vars)), "_by_", along, "_"))
+    } else name <- ifelse(invert_y_along, name <- paste0(along, "_by_", deparse(substitute(vars)), "_"), paste0(deparse(substitute(vars)), "_by_", along, "_"))
   } else if (missing(name) & !missing(mean_ci)) { 
     potential_name <- deparse(substitute(mean_ci))
     if (missing(along)) along <- ""
     if (grepl('["\']', potential_name)) warning("(file)name should be provided, or mean_ci should have a name.")
-    name <- ifelse(invert_variable_along, paste0(along, "_by_", mean_ci, "_"), paste0(mean_ci, "_by_", along, "_"))
+    name <- ifelse(invert_y_along, paste0(along, "_by_", mean_ci, "_"), paste0(mean_ci, "_by_", along, "_"))
   } else name <- "temp"
   name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
   
   if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
     
-  if (missing(mean_ci)) {
-  mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
-    mean_ci$variable <- factor(mean_ci$variable, levels = vars, labels = labels) }
+  if (missing(mean_ci)) mean_ci <- mean_ci(along = along, outcome_vars = outcomes, outcomes = paste(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = outcomes,
+                                    origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
+                                    names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), heterogeneity_condition = "")
+    
+ #  if (missing(mean_ci)) {
+ #    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+ #    mean_ci$y <- factor(mean_ci$y, levels = vars, labels = labels) }
+ #  
+ #  if (invert_y_along & country_heterogeneity == F) {
+ #    names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
+ #    names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
+ #    names(mean_ci)[which(names(mean_ci) == "temp")] <- "y" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
+ #  } else if (country_heterogeneity) {
+ #    names(mean_ci)[which(names(mean_ci) == "variable")] <- "policy" # TODO: generalize this by rewriting heterogeneity_mean_CI
+ #    names(mean_ci)[which(names(mean_ci) == "country")] <- "y"
+ # }
   
-  if (invert_variable_along & country_heterogeneity == F) {
-    names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
-    names(mean_ci)[which(names(mean_ci) == "variable")] <- "along"
-    names(mean_ci)[which(names(mean_ci) == "temp")] <- "variable" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
-  } else if (country_heterogeneity) {
-    names(mean_ci)[which(names(mean_ci) == "variable")] <- "policy"
-    names(mean_ci)[which(names(mean_ci) == "country")] <- "variable"
- }
-  
-  plot <- ggplot(mean_ci) +
-    geom_pointrange( aes(x = mean, y = variable, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
+  plot <- ggplot(mean_ci) + # For plot, we need mean_ci (cols: mean, CI_low,high, variable, along), legend_x, legend_y. For save, we need: name, folder, width, height.
+    geom_pointrange( aes(x = mean, y = y, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
     labs(x = legend_x, y = legend_y, color="") + theme(legend.title = element_blank(), legend.position = "top") +
     theme_minimal() # + scale_color_manual(values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
     # scale_color_manual(labels = Levels(df[[along]]), values = color(length(Levels(df[[along]])), theme='rainbow'))# BUG when we specify labels: the legend does not correspond to the colors
