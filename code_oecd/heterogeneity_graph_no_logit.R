@@ -144,7 +144,7 @@ variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "wil
 policies_label <- c("WTP", "Limit flying", "Limit driving", "Have electric car", "Limit heating or cooling home", "Limit beef consumption")
 willingness_by_country_urban_all <- plot_along(vars = variables_list, along = "urban", name = "willingness_by_country", labels = policies_label, along_labels = c("Rural", "Urban"))
 willingness_by_country_age_all <- plot_along(vars = variables_list, along = "age", name = "willingness_by_country", labels = policies_label)
-willingness_by_country_income_all <- plot_along(vars = variables_list, along = "income", name = "willingness_by_country", labels = policies_label)
+willingness_by_country_income_all <- plot_along(vars = variables_list, along = "income", name = "willingness_by_country", labels = policies_label, along_labels = c("Q1", "Q2", "Q3", "Q4"))
 
 # Main variables
 variables_list <- c("CC_anthropogenic","willing_limit_driving","wtp",
@@ -158,37 +158,37 @@ policies_label <- c("Climate change is anthropogenic", "Willing to limit driving
                     "Support green investments program", "Support carbon tax with cash transfer",
                     "Support ban on intensive cattle farming", "Support mandatory insulation",
                     "Support global wealth tax to fund LDCs")
-plot_along(vars = variables_list, along = "urban", name = "main_var_by_country", labels = policies_label,)
-plot_along(vars = variables_list, along = "age", name = "main_var_by_country", labels = policies_label)
-plot_along(vars = variables_list, along = "income", name = "main_var_by_country", labels = policies_label)
+main_var_by_country_urban_all <- plot_along(vars = variables_list, along = "urban", name = "main_var_by_country", labels = policies_label, along_labels = c("Rural", "Urban"))
+main_var_by_country_age_all <- plot_along(vars = variables_list, along = "age", name = "main_var_by_country", labels = policies_label)
+main_var_by_country_income_all <- plot_along(vars = variables_list, along = "income", name = "main_var_by_country", labels = policies_label, along_labels = c("Q1", "Q2", "Q3", "Q4"))
 
 # Views
 variables_list <- c("tax_transfer_constrained_hh", "tax_transfer_poor", "tax_transfer_all", "tax_reduction_personal_tax", "tax_reduction_corporate_tax", "tax_rebates_affected_firms", "tax_investments", "tax_subsidies", "tax_reduction_deficit")
 policies_label <- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructures", "Subsidies to low-carbon technologies", "Reduction in the deficit")
-plot_along(vars = variables_list, along = "urban", name = "views_by_country", labels = policies_label)
-plot_along(vars = variables_list, along = "age", name = "views_by_country", labels = policies_label)
-plot_along(vars = variables_list, along = "income", name = "views_by_country", labels = policies_label)
+views_by_country_urban_all <- plot_along(vars = variables_list, along = "urban", name = "views_by_country", labels = policies_label, along_labels = c("Rural", "Urban"))
+views_by_country_age_all <- plot_along(vars = variables_list, along = "age", name = "views_by_country", labels = policies_label)
+views_by_country_income_all <- plot_along(vars = variables_list, along = "income", name = "views_by_country", labels = policies_label, along_labels = c("Q1", "Q2", "Q3", "Q4"))
 
 # Support
 variables_list <- c("policies_support","standard_public_transport_support", "standard_support", "investments_support", "tax_transfers_support")
 policies_label <- c("Main Policies", "Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with \n cash transfer")
-plot_along(vars = "policies_support", along = "urban", invert_point_y_axis = T, name = "main_support_var_by_treatment", labels = "Main Policies")
-plot_along(vars = "policies_support", along = "age", invert_point_y_axis = T, name = "main_support_var_by_treatment", labels = "Main Policies")
-plot_along(vars = "policies_support", along = "income", invert_point_y_axis = T, name = "main_support_var_by_treatment", labels = "Main Policies")
+main_support_var_by_treatment_urban_all <- plot_along(vars = variables_list, along = "urban", name = "main_support_var_by_treatment", labels = policies_label, along_labels = c("Rural", "Urban"))
+main_support_var_by_treatment_age_all <- plot_along(vars = variables_list, along = "age", name = "main_support_var_by_treatment", labels = policies_label)
+main_support_var_by_treatment_income_all <- plot_along(vars = variables_list, along = "income", name = "main_support_var_by_treatment", labels = policies_label, along_labels = c("Q1", "Q2", "Q3", "Q4"))
 
 # Attitudes CC
 variables_list <- c("CC_anthropogenic", "CC_impacts_extinction", "donation", "should_fight_CC", "willing_limit_driving")
 policies_label <- c("CC caused by humans", "CC likely to cause extinction", "Donation", "[country] should fight CC", "Willing to limit driving")
-plot_along(vars = variables_list, along = "urban", name = "attitudes_CC_by_country", labels = policies_label)
-plot_along(vars = variables_list, along = "age", name = "attitudes_CC_by_country", labels = policies_label)
-plot_along(vars = variables_list, along = "income", name = "attitudes_CC_by_country", labels = policies_label)
+attitudes_CC_by_country_urban_all <- plot_along(vars = variables_list, along = "urban", name = "attitudes_CC_by_country", labels = policies_label, along_labels = c("Rural", "Urban"))
+attitudes_CC_by_country_age_all <- plot_along(vars = variables_list, along = "age", name = "attitudes_CC_by_country", labels = policies_label)
+attitudes_CC_by_country_income_all <- plot_along(vars = variables_list, along = "income", name = "attitudes_CC_by_country", labels = policies_label, along_labels = c("Q1", "Q2", "Q3", "Q4"))
 
 # Attitudes Pol
 variables_list <- c("policies_fair", "policies_self", "policies_poor", "policies_rich", "policies_large_effect", "policies_positive_negative")
 policies_label <- c("Fair", "HH would win", "Poor would win", "Rich would win", "Large economic effects", "Negative economic effects")
-plot_along(vars = variables_list, along = "urban", name = "attitudes_pol_by_country", labels = policies_label)
-plot_along(vars = variables_list, along = "age", name = "attitudes_pol_by_country", labels = policies_label)
-plot_along(vars = variables_list, along = "income", name = "attitudes_pol_by_country", labels = policies_label)
+attitudes_pol_by_country_urban_all <- plot_along(vars = variables_list, along = "urban", name = "attitudes_pol_by_country", labels = policies_label, along_labels = c("Rural", "Urban"))
+attitudes_pol_by_country_age_all <- plot_along(vars = variables_list, along = "age", name = "attitudes_pol_by_country", labels = policies_label)
+attitudes_pol_by_country_income_all <- plot_along(vars = variables_list, along = "income", name = "attitudes_pol_by_country", labels = policies_label, along_labels = c("Q1", "Q2", "Q3", "Q4"))
 
 ## Graphs 2.A
 main_policies_support_treatment_each_country <- plot_along(vars = "policies_support", along = "treatment", country_heterogeneity = T, along_labels = c("None", "Climate", "Policy", "Both"))
