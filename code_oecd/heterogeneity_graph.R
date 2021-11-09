@@ -70,17 +70,18 @@ plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '
 # /!\ when logit_margin = T, we don't take weight into account (haven't found an R function that gives the marginal logit effects with weight)
 regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, summary = FALSE) {
   # TODO! handle outcomes of type "future_richness" (so that they are understood as as.numeric(future_richness))
-  if (subsamples %in% covariates) print("ERROR: subsamples cannot be in covariates")
-  print(!is.null(subsamples))
-  if (length(logit)==1) logit <- rep(logit, length(outcomes)*max(1, length(subsamples)))
+  if (length(logit)==1) if (is.null(subsamples)) logit <- rep(logit, length(outcomes)) else logit <- logit <- rep(logit, length(outcomes)*max(1, length(Levels(df[[subsamples]]))))
   regs <- list()
   i <- 0
-  if (!is.null(subsamples)) for (s in Levels(df[[subsamples]])) {
-    regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, subsamples = NULL, df = df[df[[subsamples]]==s,], logit = logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
-    i <- i + 1
+  if (!is.null(subsamples)) {
+    if (subsamples %in% covariates) {
+      warning("subsamples should not be in covariates")
+      covariates <- covariates[covariates!=subsamples] }
+    for (s in Levels(df[[subsamples]])) {
+      regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, subsamples = NULL, df = df[df[[subsamples]]==s,], logit = logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
+      i <- i + 1   }
   } else for (y in outcomes) {
     formula <- as.formula(paste(y, " ~ ", paste(covariates, collapse = ' + ')))
-    print(formula)
     i <- i + 1
     if (logit[i]) {
       if (logit_margin) {
