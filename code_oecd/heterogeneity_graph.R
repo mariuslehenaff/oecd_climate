@@ -70,16 +70,19 @@ plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '
 # /!\ when logit_margin = T, we don't take weight into account (haven't found an R function that gives the marginal logit effects with weight)
 regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, summary = FALSE) {
   # TODO! handle outcomes of type "future_richness" (so that they are understood as as.numeric(future_richness))
+  if (subsamples %in% covariates) print("ERROR: subsamples cannot be in covariates")
+  print(!is.null(subsamples))
   if (length(logit)==1) logit <- rep(logit, length(outcomes)*max(1, length(subsamples)))
   regs <- list()
   i <- 0
   if (!is.null(subsamples)) for (s in Levels(df[[subsamples]])) {
-    regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, df = df[df[[subsamples]]==s,], logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
+    regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, subsamples = NULL, df = df[df[[subsamples]]==s,], logit = logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
     i <- i + 1
   } else for (y in outcomes) {
     formula <- as.formula(paste(y, " ~ ", paste(covariates, collapse = ' + ')))
+    print(formula)
     i <- i + 1
-    if (logit[i]) { 
+    if (logit[i]) {
       if (logit_margin) {
         reg <- logitmfx(formula, data = df, atmean = atmean)$mfxest 
       } else reg <- glm(formula, family = binomial(link='logit'), data = df, weights = weight)
@@ -113,7 +116,7 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 0, l
       z <- qnorm(1-(1-confidence)/2)
       CI <- cbind(coefs - z*sd, coefs + z*sd)       
     } else {
-      if (logit[i]) print("Warning: Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
+      if (logit[i]) warning("Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
       coefs <- origin + c(0, reg$coefficients[names_levels[2:k]])
       CI <- rbind(c(0, 0), confint(reg, names_levels[2:k], confidence)) 
     }
@@ -148,8 +151,9 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
   z <- qnorm(1-(1-confidence)/2)
   if (!is.null(covariates)) {
     if (!(along %in% covariates)) print("ERROR: along must be in covariates")
+    if (any(logit) & !logit_margin) print("Warning: Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
     regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
-    mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, confidence = confidence, names_levels = names_levels, levels_along = levels_along)
+    mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, names_levels = names_levels, levels_along = levels_along)
   } else {
     if (!is.null(subsamples)) { # Configuration a.
       if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
