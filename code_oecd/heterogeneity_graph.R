@@ -5,12 +5,12 @@
 # was made for support variables
 # heterogeneity_condition: corresponds to condition we want to apply to a subgroup. For instance, focus on people who don't trust
 # by default there is no condition.
-heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", country_heterogeneity = FALSE, along_labels = "", df=e, weights = "weight", condition = "> 0", confidence = 0.95){
+heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", country_heterogeneity = FALSE, along_labels = "", df=e, weight = "weight", condition = "> 0", confidence = 0.95){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
   # TODO: on_control = T
   CI <- 1-(1-confidence)/2
   if (country_heterogeneity){
-   mean_ci <- as.data.frame(sapply(split(df, list(df$country_name, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), drop = F), function(x) c(unique(x$country_name), unique(x[[heterogeneity_group]]), eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
+   mean_ci <- as.data.frame(sapply(split(df, list(df$country_name, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), drop = F), function(x) c(unique(x$country_name), unique(x[[heterogeneity_group]]), eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weight]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weight]], na.rm=T))/sqrt(NROW(x))*100"))))))
    # Get name of the country of group of heterogeneity into 1 df
    categories <- mean_ci[c(1:2),]
    # Take the mean and SD to compute CI
@@ -27,7 +27,7 @@ heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogene
    mean_ci$along <- factor(mean_ci$along, labels = along_labels)
    
   } else {
-    mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition, ", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
+    mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition, ", w = x[[weight]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weight]], na.rm=T))/sqrt(NROW(x))*100"))))))
     mean_ci <- as.data.frame(t(apply(mean_ci,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
     mean_ci <- tibble::rownames_to_column(mean_ci, heterogeneity_group)
     mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
@@ -40,10 +40,10 @@ variables_list <- variables_all_policies_support <- c("standard_public_transport
 #variables_list <- c("wtp", "willing_limit_flying", "willing_limit_driving", "willing_electric_car", "willing_limit_heating", "willing_limit_beef")
 policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
-plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_point_y_axis = FALSE, df = e, folder = '../figures/country_comparison/', weights = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
+plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_point_y_axis = FALSE, df = e, folder = '../figures/country_comparison/', weight = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
   levels_along <- Levels(df[[along]]) # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
-  mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights)))
+  mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weight = weight)))
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
 
   if (invert_point_y_axis){
@@ -100,7 +100,7 @@ mean_ci_along_regressions <- function(regs, along, labels, data = e, origin = 0,
 
 # gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
 # outcomes, covariates: string vectors / subsamples: variable name
-# /!\ when logit_margin = T, we don't take weights into account (haven't found an R function that gives the marginal logit effects with weights)
+# /!\ when logit_margin = T, we don't take weight into account (haven't found an R function that gives the marginal logit effects with weight)
 regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, summary = FALSE) {
   if (length(logit)==1) logit <- rep(logit, length(outcomes)*max(1, length(subsamples)))
   regs <- list()
@@ -114,7 +114,7 @@ regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, lo
     if (logit[i]) { 
       if (logit_margin) {
         reg <- logitmfx(formula, data = df, atmean = atmean)$mfxest 
-      } else reg <- glm(formula, family = binomial(link='logit'), data = df, weights = df[[weight]])
+      } else reg <- glm(formula, family = binomial(link='logit'), data = df, weight = df[[weight]])
     } else reg <- lm(formula, data = df, weight = df[[weight]])
     if (summary) reg <- summary(reg)
     regs <- c(regs, reg)
@@ -125,8 +125,8 @@ regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, lo
 # default marginal effects represent the partial effects for the average observation. If atmean = FALSE the function calculates average partial effects.
 # formula <- as.formula("policies_support>0 ~ gender + age + income + education + hit_by_covid + employment_agg + treatment")
 # formula2 <- as.formula("tax_transfers_support>0 ~ gender + age + income + education + hit_by_covid + employment_agg + treatment")
-# reg <- lm(formula, data=e, weights=e$weight)
-# reg2 <- lm(formula, data=e, weights=e$weight)
+# reg <- lm(formula, data=e, weight=e$weight)
+# reg2 <- lm(formula, data=e, weight=e$weight)
 # (foo <- mean_ci_along_regressions(list(reg, logit_margins), "treatment", c("main policies", "tax and transfers"), logit = c(F, T)))
 # plot_along(foo, save = FALSE)
 # summary(reg)
@@ -141,7 +141,7 @@ regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, lo
 # Three configurations: a. one outcomes, two heterogeneities / b. and c. different outcomes, one heterogeneity (c. is invert_y_along = T)
 # a. one outcome, y: subsamples (e.g. countries), along: heterogeneity; b. y: outcomes, along; c. y: heterogeneity, along: outcomes
 mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = outcome_vars,
-                    origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
+                    origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95, 
                     names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), heterogeneity_condition = "") {
   z <- qnorm(1-(1-confidence)/2)
   if (!is.null(covariates)) {
@@ -152,24 +152,27 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
       if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
       outcome <- outcomes[1]
       y_loop <- Levels(df[[subsamples]])
-      configurations <- paste0("(x$", outcome, ")[", subsamples, "==", y_loop, "]")
+      if (missing(labels) | labels == outcome_vars) labels <- y_loop # TODO: replace by/use name_levels or levels_along
+      if (is.character(y_loop)) y_loop <- paste0("'", y_loop, "'")
+      cond <- paste0("[x$", subsamples, "==", y_loop, "]")
+      configurations <- paste0("(x$", outcome, ")", cond, ", w = x[[weight]]", cond)
     } else { # Configuration b.
       y_loop <- outcomes
-      configurations <- paste0("x$", y_loop)
+      configurations <- paste0("x$", y_loop, ", w = x[[weight]]")
     }
     i <- 0
     mean_ci <- data.frame()
     for (configuration in configurations) {
       i <- i + 1
-      mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[along]]", heterogeneity_condition, sep = "")))), 
-                                      function(x) c(eval(str2expression(paste("wtd.mean(", configuration, ", w = x[[weight]], na.rm=T)"))), 
-                                                    eval(str2expression(paste("sqrt(modi::weighted.var(", configuration," , w = x[[weight]], na.rm=T))/sqrt(NROW(x))"))))))
-      mean_ci <- as.data.frame(t(apply(mean_ci, 2, function(x) c(x[1],x[1]-z*x[2], x[1]+z*x[2]))))
-      mean_ci <- tibble::rownames_to_column(mean_ci, along) # TODO remove this line?
-      mean_ci$y <- y_loop[i]
-      names(mean_ci) <- c("along", "mean", "CI_low", "CI_high", "y")
+      mean_ci_reg <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[along]]", heterogeneity_condition, sep = "")))), 
+                                      function(x) c(eval(str2expression(paste("wtd.mean(", configuration, ", na.rm=T)"))), 
+                                                    eval(str2expression(paste("sqrt(modi::weighted.var(", configuration,", na.rm=T))/sqrt(NROW(x))"))))))
+      mean_ci_reg <- as.data.frame(t(apply(mean_ci_reg, 2, function(x) c(x[1],x[1]-z*x[2], x[1]+z*x[2]))))
+      mean_ci_reg <- tibble::rownames_to_column(mean_ci_reg, along) # TODO remove this line?
+      mean_ci_reg$y <- labels[i]
+      names(mean_ci_reg) <- c("along", "mean", "CI_low", "CI_high", "y")
+      mean_ci <- rbind(mean_ci, mean_ci_reg) 
     }
-    mean_ci <- rbind(mean_ci, mean_ci_reg) 
   }
   if (invert_y_along) names(mean_ci) <- c("y", "mean", "CI_low", "CI_high", "along")
   # if (invert_y_along) {
@@ -181,32 +184,34 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
 
 
 
-plot_along <- function(mean_ci, along, vars = outcomes, outcomes = paste(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = vars,
+plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = vars,
                        origin = 0, logit = c(FALSE), atmean = T, logit_margin = T, names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), 
-                       confidence = 0.95, weights = "weight", heterogeneity_condition = "", # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
+                       confidence = 0.95, weight = "weight", heterogeneity_condition = "", return_mean_ci = FALSE, print_name = T, # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
                        legend_x = '', legend_y = '', name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T) {
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
+  # TODO: automatic values when missing(legend_x), legend_y
   if (missing(name) & !missing(vars) & !missing(along)) {
     if (grepl('["\']', deparse(substitute(vars)))) {
-      name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1], "_"), paste0(vars[1], "_by_", along, "_"))
+      name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1]), paste0(vars[1], "_by_", along))
       warning("The filename is formed with the first variable name, given that the argument 'name' is missing.")
-    } else name <- ifelse(invert_y_along, name <- paste0(along, "_by_", deparse(substitute(vars)), "_"), paste0(deparse(substitute(vars)), "_by_", along, "_"))
+    } else name <- ifelse(invert_y_along, name <- paste0(along, "_by_", deparse(substitute(vars))), paste0(deparse(substitute(vars)), "_by_", along))
   } else if (missing(name) & !missing(mean_ci)) { 
     potential_name <- deparse(substitute(mean_ci))
     if (missing(along)) along <- ""
     if (grepl('["\']', potential_name)) warning("(file)name should be provided, or mean_ci should have a name.")
-    name <- ifelse(invert_y_along, paste0(along, "_by_", mean_ci, "_"), paste0(mean_ci, "_by_", along, "_"))
+    name <- ifelse(invert_y_along, paste0(along, "_by_", mean_ci), paste0(mean_ci, "_by_", along))
   } else name <- "temp"
   name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
+  if (print_name) print(name) # TODO: name with subsamples
   
   if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
-    
-  if (missing(mean_ci)) mean_ci <- mean_ci(along = along, outcome_vars = outcomes, outcomes = paste(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = outcomes,
-                                    origin = 0, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
-                                    names_levels = paste0(along, levels_along), levels_along = Levels(data[[along]]), heterogeneity_condition = "")
+
+  if (missing(mean_ci)) mean_ci <- mean_ci(along = along, outcome_vars = vars, outcomes = outcomes, covariates = covariates, subsamples = subsamples, conditions = conditions, invert_y_along = invert_y_along, df = df, labels = labels,
+                                    origin = origin, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, confidence = confidence,
+                                    names_levels = names_levels, levels_along = levels_along, heterogeneity_condition = heterogeneity_condition)
     
  #  if (missing(mean_ci)) {
- #    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+ #    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weight = weight, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
  #    mean_ci$y <- factor(mean_ci$y, levels = vars, labels = labels) }
  #  
  #  if (invert_y_along & country_heterogeneity == F) {
@@ -225,18 +230,22 @@ plot_along <- function(mean_ci, along, vars = outcomes, outcomes = paste(vars, c
     # scale_color_manual(labels = Levels(df[[along]]), values = color(length(Levels(df[[along]])), theme='rainbow'))# BUG when we specify labels: the legend does not correspond to the colors
   plot
   if (save) save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
-  return(plot)
+  if (return_mean_ci) return(mean_ci)
+  else return(plot)
 }
 # example :
 plot_along(vars = "tax_transfers_support", along = "treatment")
 plot_along(vars = rev(variables_all_policies_support), along = "treatment")
+mean_ci(outcome_vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"))
 plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"))
 plot_along(vars = variables_all_policies_support, along = "urban_category", df = fr, name = "policies_support_by_urban_category", labels = labels_all_policies_support)
 plot_along(vars = c("CC_affects_self"), along = "country_name", name = "CC_affects_self_by_country", labels = c("Feels affected by climate change"))
 # Beware, only use one variable at a time with country_heterogeneity = T
-plot_along(vars = "policies_support", along = "urban", country_heterogeneity = T)
+# plot_along(vars = "policies_support", along = "urban", country_heterogeneity = T, save = FALSE)
+plot_along(vars = "policies_support", along = "urban", subsamples = "country_name")
 # For labels, check the output of heterogeneity_mean_CI (first column)
-plot_along(vars = "policies_support", along = "treatment", country_heterogeneity = T, along_labels = c("None", "Climate", "Policy", "Both"))
+# plot_along(vars = "policies_support", along = "treatment", country_heterogeneity = T, along_labels = c("None", "Climate", "Policy", "Both"), save = FALSE)
+plot_along(vars = "policies_support", along = "treatment")
 mean_sd <- bind_rows((lapply(variables_all_policies_support, heterogeneity_mean_CI, heterogeneity_group = "country", df=all)))
 mean_sd$variable <- factor(mean_sd$variable, levels = variables_all_policies_support, labels = variables_all_policies_support)
 
@@ -247,7 +256,7 @@ e <- fr
 
 # Apply to get df with info on each variable
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "left_right", df=e, weights = "weight")))
+                             heterogeneity_group = "left_right", df=e, weight = "weight")))
 
 ## Plot creation
 #mean_sd <- subset(mean_sd, political_affiliation %in% c("Democrat", "Republican"))
@@ -274,7 +283,7 @@ support_by_political_FR
 
 # Vote_agg
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "vote_agg", df=e, weights = "weight")))
+                             heterogeneity_group = "vote_agg", df=e, weight = "weight")))
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 mean_sd$vote_agg <- factor(mean_sd$vote_agg, levels = c("Left", "Center", "Right", "Far right", "PNR or other"))
 
@@ -287,7 +296,7 @@ support_by_vote_agg_FR
 
 # Urban category
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "urban_category", df=e, weights = "weight")))
+                             heterogeneity_group = "urban_category", df=e, weight = "weight")))
 mean_sd <- mean_sd %>%
   subset(urban_category != "0") # 1 obs is 0
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
@@ -303,7 +312,7 @@ support_by_urban_FR
 
 # Polluting_sector
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "polluting_sector", df=e, weights = "weight")))
+                             heterogeneity_group = "polluting_sector", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -317,7 +326,7 @@ support_by_polluting_sector_FR
 # Availability Transport
 e$availability_transport_dummy <- e$availability_transport >= 0
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "availability_transport_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "availability_transport_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -331,7 +340,7 @@ support_by_availability_transport_FR
 # Gas expenses
 e$gas_expenses_dummy <- e$gas_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "gas_expenses_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "gas_expenses_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -345,7 +354,7 @@ support_by_gas_expenses_FR
 # Heating expenses
 e$heating_expenses_dummy <- e$heating_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "heating_expenses_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "heating_expenses_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -367,7 +376,7 @@ policies_label <- c("WTP", "Limit flying", "Limit driving", "Have electric car",
 
 # Graphs
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "left_right", df=e, weights = "weight")))
+                             heterogeneity_group = "left_right", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -382,7 +391,7 @@ willing_by_political_FR
 
 # Vote_agg
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "vote_agg", df=e, weights = "weight")))
+                             heterogeneity_group = "vote_agg", df=e, weight = "weight")))
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 mean_sd$vote_agg <- factor(mean_sd$vote_agg, levels = c("Left", "Center", "Right", "Far right", "PNR or other"))
 
@@ -395,7 +404,7 @@ willing_by_vote_agg_FR
 
 # Urban category
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "urban_category", df=e, weights = "weight")))
+                             heterogeneity_group = "urban_category", df=e, weight = "weight")))
 mean_sd <- mean_sd %>%
   subset(urban_category != "0") # 1 obs is 0
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
@@ -410,7 +419,7 @@ willing_by_urban_FR
 
 # Polluting_sector
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "polluting_sector", df=e, weights = "weight")))
+                             heterogeneity_group = "polluting_sector", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -424,7 +433,7 @@ willing_by_polluting_sector_FR
 # Availability Transport
 e$availability_transport_dummy <- e$availability_transport >= 0
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "availability_transport_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "availability_transport_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -438,7 +447,7 @@ willing_by_availability_transport_FR
 # Gas expenses
 e$gas_expenses_dummy <- e$gas_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "gas_expenses_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "gas_expenses_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -452,7 +461,7 @@ willing_by_gas_expenses_FR
 # Heating expenses
 e$heating_expenses_dummy <- e$heating_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "heating_expenses_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "heating_expenses_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -465,7 +474,7 @@ willing_by_heating_expenses_FR
 
 # Income
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "income", df=e, weights = "weight")))
+                             heterogeneity_group = "income", df=e, weight = "weight")))
 
 mean_sd$policy <- factor(mean_sd$policy, levels =  variables_list, labels = policies_label)
 
@@ -478,9 +487,9 @@ willing_by_incomes_FR
 
 ### ALL POSITIVE ANSWERS PART
 
-# heterogeneity_mean_CI_01 <- function(variable_name, heterogeneity_group, df=e, weights = "weight"){
+# heterogeneity_mean_CI_01 <- function(variable_name, heterogeneity_group, df=e, weight = "weight"){
 #   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
-#   mean_sd <- as.data.frame(sapply(split(df, df[[heterogeneity_group]]), function(x) c(wtd.mean(x[[variable_name]], w = x[[weights]], na.rm=T)*100, sqrt(wtd.var(x[[variable_name]], w = x[[weights]], na.rm=T))/sqrt(sum(x[[weights]]))*100)))
+#   mean_sd <- as.data.frame(sapply(split(df, df[[heterogeneity_group]]), function(x) c(wtd.mean(x[[variable_name]], w = x[[weight]], na.rm=T)*100, sqrt(wtd.var(x[[variable_name]], w = x[[weight]], na.rm=T))/sqrt(sum(x[[weight]]))*100)))
 #   # Get low and high bounds of CI. For the moment only 10% CI
 #   mean_sd <- as.data.frame(t(apply(mean_sd,2, function(x) c(x[1],x[1]-1.645*x[2], x[1]+1.645*x[2]))))
 #   mean_sd <- tibble::rownames_to_column(mean_sd, heterogeneity_group)
@@ -489,7 +498,7 @@ willing_by_incomes_FR
 #   return(mean_sd)
 # }
 # mean_sd <- bind_rows((lapply(variables_list_index, heterogeneity_mean_CI_01,
-#                                           heterogeneity_group = "left_right", df=e, weights = "weight")))
+#                                           heterogeneity_group = "left_right", df=e, weight = "weight")))
 # variables_list_index <- c("index_knowledge" ,"index_affected")
 
 #Set-up
@@ -508,7 +517,7 @@ policies_label <- c("Climate change is anthropogenic", "Willing to limit driving
 
 # Graphs
 mean_sd <- bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                             heterogeneity_group = "left_right", df=e, weights = "weight")))
+                             heterogeneity_group = "left_right", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -523,7 +532,7 @@ positive_all_by_political_FR
 
 # Vote_agg
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "vote_agg", df=e, weights = "weight")))
+                             heterogeneity_group = "vote_agg", df=e, weight = "weight")))
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 mean_sd$vote_agg <- factor(mean_sd$vote_agg, levels = c("Left", "Center", "Right", "Far right", "PNR or other"))
 
@@ -536,7 +545,7 @@ positive_all_by_vote_agg_FR
 
 # Urban category
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "urban_category", df=e, weights = "weight")))
+                             heterogeneity_group = "urban_category", df=e, weight = "weight")))
 mean_sd <- mean_sd %>%
   subset(urban_category != "0") # 1 obs is 0
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
@@ -551,7 +560,7 @@ positive_all_by_urban_FR
 
 # Polluting_sector
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "polluting_sector", df=e, weights = "weight")))
+                             heterogeneity_group = "polluting_sector", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -565,7 +574,7 @@ positive_all_by_polluting_sector_FR
 # Availability Transport
 e$availability_transport_dummy <- e$availability_transport >= 0
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "availability_transport_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "availability_transport_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -579,7 +588,7 @@ positive_all_by_availability_transport_FR
 # Gas expenses
 e$gas_expenses_dummy <- e$gas_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "gas_expenses_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "gas_expenses_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -593,7 +602,7 @@ positive_all_by_gas_expenses_FR
 # Heating expenses
 e$heating_expenses_dummy <- e$heating_expenses > 100 # More than 125
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "heating_expenses_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "heating_expenses_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -606,7 +615,7 @@ positive_all_by_heating_expenses_FR
 
 # Income
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "income", df=e, weights = "weight")))
+                             heterogeneity_group = "income", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -619,7 +628,7 @@ positive_all_by_income_FR
 
 # Age
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "age", df=e, weights = "weight")))
+                             heterogeneity_group = "age", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -632,7 +641,7 @@ positive_all_by_age_FR
 
 # Diploma
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "diploma", df=e, weights = "weight")))
+                             heterogeneity_group = "diploma", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -645,7 +654,7 @@ positive_all_by_diploma_FR
 
 # Female
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "female", df=e, weights = "weight")))
+                             heterogeneity_group = "female", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -660,7 +669,7 @@ positive_all_by_female_FR
 e$Gilets_jaunes_agg <- e$Gilets_jaunes
 e$Gilets_jaunes_agg[e$Gilets_jaunes == "est_dedans"] <- "soutient"
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "Gilets_jaunes_agg", df=e, weights = "weight")))
+                             heterogeneity_group = "Gilets_jaunes_agg", df=e, weight = "weight")))
 
 mean_sd <- mean_sd %>%
   subset(Gilets_jaunes_agg != "est_dedans")
@@ -678,7 +687,7 @@ positive_all_by_yellow_vests_FR
 # CC anthropogenic
 e$CC_anthropogenic_dummy <- e$CC_anthropogenic > 0
 mean_sd <- bind_rows((lapply(variables_list[2:10], heterogeneity_mean_CI, 
-                             heterogeneity_group = "CC_anthropogenic_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "CC_anthropogenic_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list[2:10], labels = policies_label[2:10]))
 
@@ -690,13 +699,13 @@ positive_all_by_CC_anthropogenic_FR <- ggplot(mean_sd) +
 positive_all_by_CC_anthropogenic_FR
 
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "children", df=e, weights = "weight")))
+                             heterogeneity_group = "children", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
 #Children
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "children", df=e, weights = "weight")))
+                             heterogeneity_group = "children", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -709,7 +718,7 @@ positive_all_by_children_FR
 
 #Employment
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "employment_status", df=e, weights = "weight")))
+                             heterogeneity_group = "employment_status", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -738,21 +747,21 @@ e$collective_pb_score_dummy <- e$collective_pb_score > 0
 
 # Option 1
 mean_sd <- bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                             heterogeneity_group = "responsible_CC_companies_dummy_2", df=e, weights = "weight")))
+                             heterogeneity_group = "responsible_CC_companies_dummy_2", df=e, weight = "weight")))
 mean_sd$responsible_CC_companies_dummy_2[mean_sd$responsible_CC_companies_dummy_2 == "TRUE"] <- "T_companies" 
 mean_sd$responsible_CC_companies_dummy_2[mean_sd$responsible_CC_companies_dummy_2 == "FALSE"] <- "F_companies" 
 mean_sd <- mean_sd %>%
   rename(responsible_CC_each_dummy_2 = responsible_CC_companies_dummy_2)
 
 mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                                            heterogeneity_group = "responsible_CC_each_dummy_2", df=e, weights = "weight"))))
+                                            heterogeneity_group = "responsible_CC_each_dummy_2", df=e, weight = "weight"))))
 mean_sd$responsible_CC_each_dummy_2[mean_sd$responsible_CC_each_dummy_2 == "TRUE"] <- "T_each" 
 mean_sd$responsible_CC_each_dummy_2[mean_sd$responsible_CC_each_dummy_2 == "FALSE"] <- "F_each" 
 mean_sd <- mean_sd %>%
   rename(responsible_CC_govt_dummy_2 = responsible_CC_each_dummy_2)
 
 mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                                            heterogeneity_group = "responsible_CC_govt_dummy_2", df=e, weights = "weight"))))
+                                            heterogeneity_group = "responsible_CC_govt_dummy_2", df=e, weight = "weight"))))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -766,21 +775,21 @@ positive_all_by_responsible_option1_FR
 
 # Option 2 (same graph)
 mean_sd <- bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                             heterogeneity_group = "responsible_CC_companies_dummy_pos", df=e, weights = "weight")))
+                             heterogeneity_group = "responsible_CC_companies_dummy_pos", df=e, weight = "weight")))
 mean_sd$responsible_CC_companies_dummy_pos[mean_sd$responsible_CC_companies_dummy_pos == "TRUE"] <- "T_companies" 
 mean_sd$responsible_CC_companies_dummy_pos[mean_sd$responsible_CC_companies_dummy_pos == "FALSE"] <- "F_companies" 
 mean_sd <- mean_sd %>%
   rename(responsible_CC_each_dummy_pos = responsible_CC_companies_dummy_pos)
 
 mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                                            heterogeneity_group = "responsible_CC_each_dummy_pos", df=e, weights = "weight"))))
+                                            heterogeneity_group = "responsible_CC_each_dummy_pos", df=e, weight = "weight"))))
 mean_sd$responsible_CC_each_dummy_pos[mean_sd$responsible_CC_each_dummy_pos == "TRUE"] <- "T_each" 
 mean_sd$responsible_CC_each_dummy_pos[mean_sd$responsible_CC_each_dummy_pos == "FALSE"] <- "F_each" 
 mean_sd <- mean_sd %>%
   rename(responsible_CC_govt_dummy_pos = responsible_CC_each_dummy_pos)
 
 mean_sd <- rbind(mean_sd, bind_rows((lapply(variables_list_logic, heterogeneity_mean_CI, 
-                                            heterogeneity_group = "responsible_CC_govt_dummy_pos", df=e, weights = "weight"))))
+                                            heterogeneity_group = "responsible_CC_govt_dummy_pos", df=e, weight = "weight"))))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -794,7 +803,7 @@ positive_all_by_responsible_option2_FR
 
 # Option 3
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "collective_pb_score_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "collective_pb_score_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -808,7 +817,7 @@ positive_all_by_responsible_option3_FR
 # Trust
 e$can_trust_govt_dummy <- e$can_trust_govt > 0
 mean_sd <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                             heterogeneity_group = "can_trust_govt_dummy", df=e, weights = "weight")))
+                             heterogeneity_group = "can_trust_govt_dummy", df=e, weight = "weight")))
 
 mean_sd$policy <- fct_rev(factor(mean_sd$policy, levels =  variables_list, labels = policies_label))
 
@@ -828,7 +837,7 @@ policies_label <- c("Ban of combustion engine \n (public transport made availabl
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "urban", df=fr, weights = "weight")))
+                                heterogeneity_group = "urban", df=fr, weight = "weight")))
 mean_sd_FR <- mean_sd_FR %>%
   subset(urban != "0") # 1 obs is 0
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
@@ -843,7 +852,7 @@ support_by_urban_FR
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "urban", df = us, weights = "weight")))
+                                heterogeneity_group = "urban", df = us, weight = "weight")))
 
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 mean_sd_US$urban_category <- factor(mean_sd_US$urban, levels = c("Rural", "Urban"))
@@ -858,7 +867,7 @@ support_by_urban_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "urban", df=dk, weights = "weight")))
+                                heterogeneity_group = "urban", df=dk, weight = "weight")))
 
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 mean_sd_DK$urban_category <- factor(mean_sd_DK$urban, levels = c("Rural", "Urban"))
@@ -873,7 +882,7 @@ support_by_urban_DK
 
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "urban", df=de, weights = "weight")))
+                                heterogeneity_group = "urban", df=de, weight = "weight")))
 mean_sd_DE <- mean_sd_DE %>%
   subset(urban != "0") # 1 obs is 0
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
@@ -888,7 +897,7 @@ support_by_urban_DE
 
 
 # mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI,
-#                                 heterogeneity_group = "urban_category", df=de, weights = "weight")))
+#                                 heterogeneity_group = "urban_category", df=de, weight = "weight")))
 # mean_sd_DE <- mean_sd_DE %>%
 #   subset(urban_category != "0") # 1 obs is 0
 # mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
@@ -910,7 +919,7 @@ ggarrange(support_by_urban_FR, support_by_urban_US, support_by_urban_DE, support
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", df=fr, weights = "weight")))
+                                heterogeneity_group = "income", df=fr, weight = "weight")))
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeQ_FR <- ggplot(mean_sd_FR) +
@@ -923,7 +932,7 @@ support_by_incomeQ_FR
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", df=us, weights = "weight")))
+                                heterogeneity_group = "income", df=us, weight = "weight")))
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeQ_US <- ggplot(mean_sd_US) +
@@ -936,7 +945,7 @@ support_by_incomeQ_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", df=dk, weights = "weight")))
+                                heterogeneity_group = "income", df=dk, weight = "weight")))
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeQ_DK <- ggplot(mean_sd_DK) +
@@ -949,7 +958,7 @@ support_by_incomeQ_DK
 
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", df=de, weights = "weight")))
+                                heterogeneity_group = "income", df=de, weight = "weight")))
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeQ_DE <- ggplot(mean_sd_DE) +
@@ -969,7 +978,7 @@ ggarrange(support_by_incomeQ_FR, support_by_incomeQ_US, support_by_incomeQ_DE, s
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=fr, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=fr, weight = "weight")))
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_FR <- ggplot(mean_sd_FR) +
@@ -983,7 +992,7 @@ support_by_incomeM_FR
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=us, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=us, weight = "weight")))
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_US <- ggplot(mean_sd_US) +
@@ -996,7 +1005,7 @@ support_by_incomeM_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=dk, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=dk, weight = "weight")))
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_DK <- ggplot(mean_sd_DK) +
@@ -1008,7 +1017,7 @@ support_by_incomeM_DK <- ggplot(mean_sd_DK) +
 support_by_incomeM_DK
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=de, weights = "weight")))
+                                heterogeneity_group = "income", heterogeneity_condition = "> 2", df=de, weight = "weight")))
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
 
 support_by_incomeM_DE <- ggplot(mean_sd_DE) +
@@ -1028,7 +1037,7 @@ ggarrange(support_by_incomeM_FR, support_by_incomeM_US, support_by_incomeM_DE, s
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=fr, weights = "weight")))
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=fr, weight = "weight")))
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
 
 support_by_govtrust_FR <- ggplot(mean_sd_FR) +
@@ -1041,7 +1050,7 @@ support_by_govtrust_FR
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=us, weights = "weight")))
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=us, weight = "weight")))
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 
 support_by_govtrust_US <- ggplot(mean_sd_US) +
@@ -1054,7 +1063,7 @@ support_by_govtrust_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=dk, weights = "weight")))
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=dk, weight = "weight")))
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 
 support_by_govtrust_DK <- ggplot(mean_sd_DK) +
@@ -1067,7 +1076,7 @@ support_by_govtrust_DK
 
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=de, weights = "weight")))
+                                heterogeneity_group = "can_trust_govt", heterogeneity_condition = "< 0", df=de, weight = "weight")))
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
 
 support_by_govtrust_DE <- ggplot(mean_sd_DE) +
@@ -1086,7 +1095,7 @@ ggarrange(support_by_govtrust_FR, support_by_govtrust_US, support_by_govtrust_DE
 
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "college", df=fr, weights = "weight")))
+                                heterogeneity_group = "college", df=fr, weight = "weight")))
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
 
 support_by_college_FR <- ggplot(mean_sd_FR) +
@@ -1099,7 +1108,7 @@ support_by_college_FR
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "college", df=us, weights = "weight")))
+                                heterogeneity_group = "college", df=us, weight = "weight")))
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 
 support_by_college_US <- ggplot(mean_sd_US) +
@@ -1112,7 +1121,7 @@ support_by_college_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "college", df=dk, weights = "weight")))
+                                heterogeneity_group = "college", df=dk, weight = "weight")))
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 
 support_by_college_DK <- ggplot(mean_sd_DK) +
@@ -1125,7 +1134,7 @@ support_by_college_DK
 
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "college", df=de, weights = "weight")))
+                                heterogeneity_group = "college", df=de, weight = "weight")))
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
 
 support_by_college_DE <- ggplot(mean_sd_DE) +
@@ -1147,7 +1156,7 @@ policies_label <- c("CC is an important problem", "CC exists, is anthropogenic",
                     effects of ambitious policies on lifestyle", "Positive effects of ambitious policies \n on the [country] economy and employment")
 
 mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                 heterogeneity_group = "country", df=all, weights = "weight")))
+                                 heterogeneity_group = "country", df=all, weight = "weight")))
 mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
 
 CC_attitude_positive_CI_countries <- ggplot(mean_sd_all) +
@@ -1164,7 +1173,7 @@ policies_label <- c("Willing to limit flying", "Willing to limit driving", "Will
 
 
 mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                 heterogeneity_group = "country", df=all, weights = "weight")))
+                                 heterogeneity_group = "country", df=all, weight = "weight")))
 mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
 
 willing_positive_CI_countries <- ggplot(mean_sd_all) +
@@ -1180,7 +1189,7 @@ variables_list <- c("standard_public_transport_support", "standard_support", "in
 policies_label <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
 mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                 heterogeneity_group = "country", df=all, weights = "weight")))
+                                 heterogeneity_group = "country", df=all, weight = "weight")))
 mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
 
 policies_all_support_positive_CI_countries <- ggplot(mean_sd_all) +
@@ -1196,7 +1205,7 @@ variables_list <- c("tax_transfer_constrained_hh", "tax_transfer_poor", "tax_tra
 policies_label <- c("Cash for constrained HH", "Cash for the poorest", "Equal cash for all", "Reduction in income tax", "Reduction in corporate tax", "Tax rebate for affected firms", "Funding green infrastructures", "Subsidies to low-carbon technologies", "Reduction in the deficit")
 
 mean_sd_all <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                 heterogeneity_group = "country", df=all, weights = "weight")))
+                                 heterogeneity_group = "country", df=all, weight = "weight")))
 mean_sd_all$policy <- factor(mean_sd_all$policy, levels =  variables_list, labels = policies_label)
 
 tax_all_positive_CI_countries <- ggplot(mean_sd_all) +
@@ -1210,7 +1219,7 @@ tax_all_positive_CI_countries
 # Details by country: perception of inequalities
 # FR
 mean_sd_FR <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=fr, weights = "weight")))
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=fr, weight = "weight")))
 mean_sd_FR$policy <- factor(mean_sd_FR$policy, levels =  variables_list, labels = policies_label)
 
 tax_positive_by_inequality_CI95_FR <- ggplot(mean_sd_FR) +
@@ -1223,7 +1232,7 @@ tax_positive_by_inequality_CI95_FR
 
 # US
 mean_sd_US <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=us, weights = "weight")))
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=us, weight = "weight")))
 mean_sd_US$policy <- factor(mean_sd_US$policy, levels =  variables_list, labels = policies_label)
 
 tax_positive_by_inequality_CI95_US <- ggplot(mean_sd_US) +
@@ -1236,7 +1245,7 @@ tax_positive_by_inequality_CI95_US
 
 # DK
 mean_sd_DK <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=dk, weights = "weight")))
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=dk, weight = "weight")))
 mean_sd_DK$policy <- factor(mean_sd_DK$policy, levels =  variables_list, labels = policies_label)
 
 tax_positive_by_inequality_CI95_DK <- ggplot(mean_sd_DK) +
@@ -1249,7 +1258,7 @@ tax_positive_by_inequality_CI95_DK
 
 # DE
 mean_sd_DE <- bind_rows((lapply(variables_list, heterogeneity_mean_CI, 
-                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=de, weights = "weight")))
+                                heterogeneity_group = "problem_inequality", heterogeneity_condition = "> 0", df=de, weight = "weight")))
 mean_sd_DE$policy <- factor(mean_sd_DE$policy, levels =  variables_list, labels = policies_label)
 
 tax_positive_by_inequality_CI95_DE <- ggplot(mean_sd_DE) +
