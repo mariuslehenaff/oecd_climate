@@ -5,15 +5,33 @@
 # was made for support variables
 # heterogeneity_condition: corresponds to condition we want to apply to a subgroup. For instance, focus on people who don't trust
 # by default there is no condition.
-heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", df=e, weights = "weight", condition = "> 0", confidence = 0.95){
+heterogeneity_mean_CI <- function(variable_name, heterogeneity_group, heterogeneity_condition = "", country_heterogeneity = FALSE, along_labels = "", df=e, weights = "weight", condition = "> 0", confidence = 0.95){
   # Take mean normalised on 100 and se*100 = sd/sqrt(N)*100
   CI <- 1-(1-confidence)/2
-  mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition, ", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
-  # Get low and high bounds of CI. For the moment only 90% CI
-  mean_ci <- as.data.frame(t(apply(mean_ci,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
-  mean_ci <- tibble::rownames_to_column(mean_ci, heterogeneity_group)
-  mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
-  names(mean_ci) <- c("along", "mean", "CI_low", "CI_high", "variable") # this line is new
+  if (country_heterogeneity){
+   mean_ci <- as.data.frame(sapply(split(df, list(df$country_name, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), drop = F), function(x) c(unique(x$country_name), unique(x[[heterogeneity_group]]), eval(str2expression(paste("wtd.mean(x[[variable_name]]",condition,", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
+   # Get name of the country of group of heterogeneity into 1 df
+   categories <- mean_ci[c(1:2),]
+   # Take the mean and SD to compute CI
+   mean_ci <- mean_ci[c(3:4),]
+   # Get low and high bounds of CI. For the moment only 90% CI
+   mean_ci <- as.data.frame(t(apply(mean_ci, 2, function(x) c(as.numeric(x[1]),as.numeric(x[1])-qnorm(CI)*as.numeric(x[2]), as.numeric(x[1])+qnorm(CI)*as.numeric(x[2])))))
+   mean_ci$country <- t(categories[1,])
+   # Prepare countries' names to be alphabetically order in geom_pointranger
+   mean_ci$country <- factor(mean_ci$country, levels = rev(levels(factor(mean_ci$country))))
+   mean_ci[[heterogeneity_group]] <- t(categories[2,])
+   mean_ci <- tibble::rownames_to_column(mean_ci, "combined_name")
+   mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
+   names(mean_ci) <- c("combined_name", "mean", "CI_low", "CI_high", "country", "along", "variable") # this line is new
+   mean_ci$along <- factor(mean_ci$along, labels = along_labels)
+   
+  } else {
+    mean_ci <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[heterogeneity_group]]", heterogeneity_condition, sep = "")))), function(x) c(eval(str2expression(paste("wtd.mean(x[[variable_name]]", condition, ", w = x[[weights]], na.rm=T)*100"))), eval(str2expression(paste("sqrt(modi::weighted.var(x[[variable_name]]", condition," , w = x[[weights]], na.rm=T))/sqrt(NROW(x))*100"))))))
+    mean_ci <- as.data.frame(t(apply(mean_ci,2, function(x) c(x[1],x[1]-qnorm(CI)*x[2], x[1]+qnorm(CI)*x[2]))))
+    mean_ci <- tibble::rownames_to_column(mean_ci, heterogeneity_group)
+    mean_ci$variable <- variable_name # changed policy to variable, and mean_sd to mean_ci
+    names(mean_ci) <- c("along", "mean", "CI_low", "CI_high", "variable") # this line is new
+  }
   return(mean_ci)
 }
 
@@ -138,15 +156,17 @@ plot_along <- function(mean_ci, vars, along, name = NULL, labels = vars, legend_
   if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
     
   if (missing(mean_ci)) {
-    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+  mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weights = weights, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
     mean_ci$variable <- factor(mean_ci$variable, levels = vars, labels = labels) }
   
-  if (invert_variable_along) {
+  if (invert_variable_along & country_heterogeneity == F) {
     names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
     names(mean_ci)[which(names(mean_ci) == "variable")] <- "along"
     names(mean_ci)[which(names(mean_ci) == "temp")] <- "variable" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
-  } 
-  # if (missing(labels)) labels <- vars
+  } else if (country_heterogeneity) {
+    names(mean_ci)[which(names(mean_ci) == "variable")] <- "policy"
+    names(mean_ci)[which(names(mean_ci) == "country")] <- "variable"
+ }
   
   plot <- ggplot(mean_ci) +
     geom_pointrange( aes(x = mean, y = variable, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
@@ -163,7 +183,10 @@ plot_along(vars = rev(variables_all_policies_support), along = "treatment")
 plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"))
 plot_along(vars = variables_all_policies_support, along = "urban_category", df = fr, name = "policies_support_by_urban_category", labels = labels_all_policies_support)
 plot_along(vars = c("CC_affects_self"), along = "country_name", name = "CC_affects_self_by_country", labels = c("Feels affected by climate change"))
-
+# Beware, only use one variable at a time with country_heterogeneity = T
+plot_along(vars = "policies_support", along = "urban", country_heterogeneity = T)
+# For labels, check the output of heterogeneity_mean_CI (first column)
+plot_along(vars = "policies_support", along = "treatment", country_heterogeneity = T, along_labels = c("None", "Climate", "Policy", "Both"))
 mean_sd <- bind_rows((lapply(variables_all_policies_support, heterogeneity_mean_CI, heterogeneity_group = "country", df=all)))
 mean_sd$variable <- factor(mean_sd$variable, levels = variables_all_policies_support, labels = variables_all_policies_support)
 
