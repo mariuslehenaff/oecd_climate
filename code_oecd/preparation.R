@@ -11,6 +11,7 @@ source("relabel_rename.R")
 # TODO: Create a set of weights for all such that we get the global average of variables (maybe, assuming that e.g. Brazil represents all Latin America, etc.)
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
 # TODO: DE urbanity
+# TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
 control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
@@ -2674,6 +2675,7 @@ ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA
 All <- list()
 for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
 # # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
+all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
 e <- all <- merge_all_countries()
 
 merge_all_countries <- function(countries = countries, weight_adult = T, weight_oecd = F) {
