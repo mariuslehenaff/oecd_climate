@@ -8,7 +8,9 @@ terminated,terminated,terminated: Finished
 date_recored,date_recored,date_recored: Recorded Date
 distr,distr,distr: Distribution Channel
 lang,lang,lang: User Language
-consent,consent,"consent: This is a survey conducted for academic research purposes by researchers from Harvard University and the OECD. It will take approximately 25 minutes to complete. The survey data is used for research purposes only, and the research is non-partisan. You will be compensated for this survey if you complete the survey and your responses pass our survey quality checks. These checks use statistical control methods to detect incoherent and rushed responses. It is very important for the validity of our research that you answer honestly and read the questions carefully before answering.
+consent,consent,"consent: Please switch the language to English (United Kingdom) on the top right corner to view the correct version of the survey.
+
+This is a survey conducted for academic research purposes by researchers from Harvard University and the OECD. It will take approximately 25 minutes to complete. The survey data is used for research purposes only, and the research is non-partisan. You will be compensated for this survey if you complete the survey and your responses pass our survey quality checks. These checks use statistical control methods to detect incoherent and rushed responses. It is very important for the validity of our research that you answer honestly and read the questions carefully before answering.
 
  
 The survey collects personal data, including socio-demographic characteristics and political views. All of the answers you provide will remain anonymous and be treated with absolute confidentiality. The personal data we collect will be transferred and stored on secure servers. Only researchers working on the project will have access to the anonymized data. Your participation in this survey is completely voluntary. You are entitled to choose not to take part. If at first you agree to take part, you can later change your mind. Your decision will not be held against you in any way. Your refusal to participate will not result in any consequences or any loss of benefits that you are otherwise entitled to receive. You can ask any questions before you decide whether to participate.  
@@ -22,36 +24,28 @@ If you have questions, concerns, or complaints, or think the research has offend
 Do you agree to participate in the survey?"
 gender,gender,gender: What is your gender?
 age,age,age: How old are you?
-region,region,region: In which region do you live?
 zipcode,zipcode,zipcode: What is your ZIP code?
 urbanity,urbanity,
 couple,couple,
 marital_status,marital_status,marital_status: What is your marital status?
 HH_size,hh_size,
-income,income,
-wealth,wealth,
 education,education,
 employment_status,employment_status,
 polluting_sector_active,polluting_sector_active,"polluting_sector_active: If you work in any of the following industries, please select one describing your industry best"
 polluting_sector_inactive,polluting_sector_inactive,"polluting_sector_inactive: If in your last job you worked in any of the following industries, please select one describing your industry best."
 sector_active,sector_active,sector_active: What is the main activity of the company or organization where you work?
 sector_inactive,sector_inactive,sector_inactive: What was the main activity of the company or organization at which you last worked?
+income,income,
 hit_by_covid,hit_by_covid,
 home_tenant,home_tenant,home_tenant: Are you a homeowner or a tenant? (Multiple answers are possible) - Tenant
 home_owner,home_owner,home_owner: Are you a homeowner or a tenant? (Multiple answers are possible) - Owner
 home_landlord,home_landlord,home_landlord: Are you a homeowner or a tenant? (Multiple answers are possible) - Landlord renting out property
 home_hosted,home_hosted,home_hosted: Are you a homeowner or a tenant? (Multiple answers are possible) - Hosted free of charge
+wealth,wealth,
 interested_politics,interested_politics,
 member_environmental_orga,member_environmental_orga,
 relative_environmentalist,relative_environmentalist,
-vote_participation,vote_participation,
-vote_voters,vote_voters,vote_voters: Which candidate did you vote for in the last presidential election?
-vote_non_voters,vote_non_voters,"vote_non_voters: Even if you did NOT vote in the last presidential, please indicate the candidate that you were most likely to
-have voted for or who represents your views more closely."
 left_right,left_right,
-heating,heating,
-heating_expenses,heating_expenses,
-insulation,insulation,
 gas_expenses,gas_expenses,
 flights_3y,flights_3y,
 frequency_beef,frequency_beef,
@@ -67,7 +61,7 @@ Q5.1_First,q5_1_first,Q5.1_First: Timing - First Click
 Q5.1_Last,q5_1_last,Q5.1_Last: Timing - Last Click
 duration_CC_field,duration_cc_field,duration_CC_field: Timing - Page Submit
 Q5.1_Click,q5_1_click,Q5.1_Click: Timing - Click Count
-CC_field,cc_field,"CC_field: When thinking about climate change, what are your main considerations? What should the [Country] government do regarding climate change?
+CC_field,cc_field,"CC_field: When thinking about climate change, what are your main considerations? What should the Australian government do regarding climate change?
 
 
 Please write as much as you would like, your response will be very useful."
@@ -77,7 +71,7 @@ duration_treatment_climate,duration_treatment_climate,duration_treatment_climate
 Q140_Click,q140_click,Q140_Click: Timing - Click Count
 watched_climate,watched_climate,watched_climate: Were you able to watch and listen to the video until the end?
 know_temperature_2100,know_temperature_2100,"know_temperature_2100: From what was said in the video, if greenhouse gas emissions continue on their current trend, what will be the rise in global average temperature in 2100?"
-know_local_damage,know_local_damage,"know_local_damage: From what was said in the video, which of the following is not an expected effect of climate change in Denmark?"
+know_local_damage,know_local_damage,"know_local_damage: From what was said in the video, which of the following is not an expected effect of climate change in Australia?"
 Q141_First,q141_first,Q141_First: Timing - First Click
 Q141_Last,q141_last,Q141_Last: Timing - Last Click
 duration_treatment_policy,duration_treatment_policy,duration_treatment_policy: Timing - Page Submit
@@ -104,51 +98,51 @@ GHG_particulates,ghg_particulates,"GHG_particulates: Greenhouse gases are gases 
 
 Which of the following elements contribute to climate change? (Multiple answers are possible) - Particulate matter"
 CC_dynamic,cc_dynamic,
-footprint_tr_car,footprint_tr_car,"footprint_tr_car: If a family of 4 travels 500 miles from New York to Toronto, with which mode of transportation do they emit the most greenhouse gases?
+footprint_tr_car,footprint_tr_car,"footprint_tr_car: If a couple travels 900Km from Sydney to Melbourne, with which mode of transportation do they emit the most greenhouse gases?
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Car (running on diesel or gasoline)"
-footprint_tr_coach,footprint_tr_coach,"footprint_tr_coach: If a family of 4 travels 500 miles from New York to Toronto, with which mode of transportation do they emit the most greenhouse gases?
+footprint_tr_coach,footprint_tr_coach,"footprint_tr_coach: If a couple travels 900Km from Sydney to Melbourne, with which mode of transportation do they emit the most greenhouse gases?
 
 
-Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Coach"
-footprint_tr_plane,footprint_tr_plane,"footprint_tr_plane: If a family of 4 travels 500 miles from New York to Toronto, with which mode of transportation do they emit the most greenhouse gases?
+Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Bus"
+footprint_tr_plane,footprint_tr_plane,"footprint_tr_plane: If a couple travels 900Km from Sydney to Melbourne, with which mode of transportation do they emit the most greenhouse gases?
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Plane"
-footprint_tr_order_car,footprint_tr_order_car,"footprint_tr_order_car: If a family of 4 travels 500 miles from New York to Toronto, with which mode of transportation do they emit the most greenhouse gases?
+footprint_tr_order_car,footprint_tr_order_car,"footprint_tr_order_car: If a couple travels 900Km from Sydney to Melbourne, with which mode of transportation do they emit the most greenhouse gases?
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Display Order - Car (running on diesel or gasoline)"
-footprint_tr_order_coach,footprint_tr_order_coach,"footprint_tr_order_coach: If a family of 4 travels 500 miles from New York to Toronto, with which mode of transportation do they emit the most greenhouse gases?
+footprint_tr_order_coach,footprint_tr_order_coach,"footprint_tr_order_coach: If a couple travels 900Km from Sydney to Melbourne, with which mode of transportation do they emit the most greenhouse gases?
 
 
-Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Display Order - Coach"
-footprint_tr_order_plane,footprint_tr_order_plane,"footprint_tr_order_plane: If a family of 4 travels 500 miles from New York to Toronto, with which mode of transportation do they emit the most greenhouse gases?
+Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Display Order - Bus"
+footprint_tr_order_plane,footprint_tr_order_plane,"footprint_tr_order_plane: If a couple travels 900Km from Sydney to Melbourne, with which mode of transportation do they emit the most greenhouse gases?
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Display Order - Plane"
-footprint_fd_beef,footprint_fd_beef,"footprint_fd_beef: Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
+footprint_fd_beef,footprint_fd_beef,"footprint_fd_beef: Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - A beef steak"
-footprint_fd_pasta,footprint_fd_pasta,"footprint_fd_pasta: Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
+footprint_fd_pasta,footprint_fd_pasta,"footprint_fd_pasta: Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - One serving of pasta"
-footprint_fd_chicken,footprint_fd_chicken,"footprint_fd_chicken: Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
+footprint_fd_chicken,footprint_fd_chicken,"footprint_fd_chicken: Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Chicken wings"
-footprint_fd_order_beef,footprint_fd_order_beef,"footprint_fd_order_beef: Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
+footprint_fd_order_beef,footprint_fd_order_beef,"footprint_fd_order_beef: Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Display Order - A beef steak"
-footprint_fd_order_pasta,footprint_fd_order_pasta,"footprint_fd_order_pasta: Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
+footprint_fd_order_pasta,footprint_fd_order_pasta,"footprint_fd_order_pasta: Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Display Order - One serving of pasta"
-footprint_fd_order_chicken,footprint_fd_order_chicken,"footprint_fd_order_chicken: Which dish emits the most greenhouse gases? We consider that each dish weighs half a pound.
+footprint_fd_order_chicken,footprint_fd_order_chicken,"footprint_fd_order_chicken: Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
 
 
 Please rank the items from 1 (most) to 3 (least) (by clicking and dragging the items). - Display Order - Chicken wings"
@@ -204,6 +198,11 @@ footprint_pc_india,footprint_pc_india,"footprint_pc_india: In which region does 
 
 
 Please rank the regions from 1 (most) to 4 (least). - India"
+footprint_pc_country,footprint_pc_country,"footprint_pc_country: In which region does the consumption of an average person contribute most to greenhouse gas emissions?
+
+
+
+Please rank the regions from 1 (most) to 4 (least). - Australia"
 footprint_pc_order_US,footprint_pc_order_us,"footprint_pc_order_US: In which region does the consumption of an average person contribute most to greenhouse gas emissions?
 
 
@@ -237,11 +236,11 @@ responsible_CC_rich,responsible_cc_rich,
 responsible_CC_govt,responsible_cc_govt,
 responsible_CC_companies,responsible_cc_companies,
 responsible_CC_past,responsible_cc_past,
-responsible_CC_order_each,responsible_cc_order_each,responsible_CC_order_each: To what extent are the following groups responsible for climate change in [Country]? - Display Order - Each of us
-responsible_CC_order_rich,responsible_cc_order_rich,responsible_CC_order_rich: To what extent are the following groups responsible for climate change in [Country]? - Display Order - The high income earners
-responsible_CC_order_govt,responsible_cc_order_govt,responsible_CC_order_govt: To what extent are the following groups responsible for climate change in [Country]? - Display Order - The [Country] government
-responsible_CC_order_companies,responsible_cc_order_compani_132,responsible_CC_order_companies: To what extent are the following groups responsible for climate change in [Country]? - Display Order - Companies
-responsible_CC_order_past,responsible_cc_order_past,responsible_CC_order_past: To what extent are the following groups responsible for climate change in [Country]? - Display Order - Previous generations
+responsible_CC_order_each,responsible_cc_order_each,responsible_CC_order_each: To what extent are the following groups responsible for climate change in Australia? - Display Order - Each of us
+responsible_CC_order_rich,responsible_cc_order_rich,responsible_CC_order_rich: To what extent are the following groups responsible for climate change in Australia? - Display Order - The high income earners
+responsible_CC_order_govt,responsible_cc_order_govt,responsible_CC_order_govt: To what extent are the following groups responsible for climate change in Australia? - Display Order - The Australian government
+responsible_CC_order_companies,responsible_cc_order_compani_126,responsible_CC_order_companies: To what extent are the following groups responsible for climate change in Australia? - Display Order - Companies
+responsible_CC_order_past,responsible_cc_order_past,responsible_CC_order_past: To what extent are the following groups responsible for climate change in Australia? - Display Order - Previous generations
 net_zero_feasible,net_zero_feasible,
 CC_affects_self,cc_affects_self,
 CC_will_end,cc_will_end,
@@ -256,8 +255,8 @@ condition_ambitious_policies,condition_ambitious_policies,
 condition_financial_aid,condition_financial_aid,
 condition_people_change,condition_people_change,
 condition_rich_change,condition_rich_change,
-standard_effect_less_emission,standard_effect_less_emissio_148,
-standard_effect_less_pollution,standard_effect_less_polluti_149,
+standard_effect_less_emission,standard_effect_less_emissio_142,
+standard_effect_less_pollution,standard_effect_less_polluti_143,
 standard_negative_effect,standard_negative_effect,
 standard_large_effect,standard_large_effect,
 standard_cost_effective,standard_cost_effective,
@@ -268,10 +267,10 @@ standard_win_lose_rural,standard_win_lose_rural,
 standard_win_lose_self,standard_win_lose_self,
 standard_fair,standard_fair,
 standard_support,standard_support,
-standard_public_transport_support,standard_public_transport_su_160,
-investments_effect_elec_greener,investments_effect_elec_gree_161,
-investments_effect_public_transport,investments_effect_public_tr_162,
-investments_effect_less_pollution,investments_effect_less_poll_163,
+standard_public_transport_support,standard_public_transport_su_154,
+investments_effect_elec_greener,investments_effect_elec_gree_155,
+investments_effect_public_transport,investments_effect_public_tr_156,
+investments_effect_less_pollution,investments_effect_less_poll_157,
 investments_negative_effect,investments_negative_effect,
 investments_large_effect,investments_large_effect,
 investments_cost_effective,investments_cost_effective,
@@ -285,16 +284,16 @@ investments_support,investments_support,
 investments_funding_debt,investments_funding_debt,"investments_funding_debt: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
  
 What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Additional public debt"
-investments_funding_sales_tax,investments_funding_sales_ta_175,"investments_funding_sales_tax: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+investments_funding_sales_tax,investments_funding_sales_ta_169,"investments_funding_sales_tax: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
  
-What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Increase in sales taxes"
-investments_funding_wealth_tax,investments_funding_wealth_t_176,"investments_funding_wealth_tax: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Increase in the VAT (value-added tax)"
+investments_funding_wealth_tax,investments_funding_wealth_t_170,"investments_funding_wealth_tax: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
  
 What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Increase in taxes on the wealthiest"
-investments_funding_less_social,investments_funding_less_soc_177,"investments_funding_less_social: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+investments_funding_less_social,investments_funding_less_soc_171,"investments_funding_less_social: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
  
 What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Reduction in social spending"
-investments_funding_less_military,investments_funding_less_mil_178,"investments_funding_less_military: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+investments_funding_less_military,investments_funding_less_mil_172,"investments_funding_less_military: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
  
 What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Reduction in military spending"
 Q142_First,q142_first,Q142_First: Timing - First Click
@@ -302,14 +301,14 @@ Q142_Last,q142_last,Q142_Last: Timing - Last Click
 duration_tax_transfers,duration_tax_transfers,duration_tax_transfers: Timing - Page Submit
 Q142_Click,q142_click,Q142_Click: Timing - Click Count
 tax_transfers_effect_driving,tax_transfers_effect_driving,
-tax_transfers_effect_insulation,tax_transfers_effect_insulat_184,
-tax_transfers_effect_less_emission,tax_transfers_effect_less_em_185,
-tax_transfers_effect_less_pollution,tax_transfers_effect_less_po_186,
-tax_transfers_negative_effect,tax_transfers_negative_effec_187,
+tax_transfers_effect_insulation,tax_transfers_effect_insulat_178,
+tax_transfers_effect_less_emission,tax_transfers_effect_less_em_179,
+tax_transfers_effect_less_pollution,tax_transfers_effect_less_po_180,
+tax_transfers_negative_effect,tax_transfers_negative_effec_181,
 tax_transfers_large_effect,tax_transfers_large_effect,
 tax_transfers_cost_effective,tax_transfers_cost_effective,
 tax_transfers_win_lose_poor,tax_transfers_win_lose_poor,
-tax_transfers_win_lose_middle,tax_transfers_win_lose_middl_191,
+tax_transfers_win_lose_middle,tax_transfers_win_lose_middl_185,
 tax_transfers_win_lose_rich,tax_transfers_win_lose_rich,
 tax_transfers_win_lose_rural,tax_transfers_win_lose_rural,
 tax_transfers_win_lose_self,tax_transfers_win_lose_self,
@@ -323,8 +322,8 @@ policy_ban_city_centers,policy_ban_city_centers,
 policy_subsidies,policy_subsidies,
 policy_climate_fund,policy_climate_fund,
 policy_order_tax_flying,policy_order_tax_flying,policy_order_tax_flying: Do you support or oppose the following climate policies? - Display Order - A tax on flying (that increases ticket prices by 20%)
-policy_order_tax_fuels,policy_order_tax_fuels,policy_order_tax_fuels: Do you support or oppose the following climate policies? - Display Order - A national tax on fossil fuels (increasing gasoline prices by 40cts per gallon)
-policy_order_ban_city_centers,policy_order_ban_city_center_206,"policy_order_ban_city_centers: Do you support or oppose the following climate policies? - Display Order - A ban of polluting vehicles in dense areas, like city centers"
+policy_order_tax_fuels,policy_order_tax_fuels,policy_order_tax_fuels: Do you support or oppose the following climate policies? - Display Order - A national tax on fossil fuels (increasing gasoline prices by 15 cents per litre)
+policy_order_ban_city_centers,policy_order_ban_city_center_200,"policy_order_ban_city_centers: Do you support or oppose the following climate policies? - Display Order - A ban of polluting vehicles in dense areas, like city centers"
 policy_order_subsidies,policy_order_subsidies,"policy_order_subsidies: Do you support or oppose the following climate policies? - Display Order - Subsidies for low-carbon technologies (renewable energy, capture and storage of carbon...)"
 policy_order_climate_fund,policy_order_climate_fund,policy_order_climate_fund: Do you support or oppose the following climate policies? - Display Order - A contribution to a global climate fund to finance clean energy in low-income countries
 tax_transfer_constrained_hh,tax_transfer_constrained_hh,
@@ -336,15 +335,15 @@ tax_rebates_affected_firms,tax_rebates_affected_firms,
 tax_investments,tax_investments,
 tax_subsidies,tax_subsidies,
 tax_reduction_deficit,tax_reduction_deficit,
-tax_order_transfers_constrained_hh,tax_order_transfers_constrai_218,"tax_order_transfers_constrained_hh: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Cash transfers to households with no alternative to using fossil fuels"
-tax_order_transfers_poor,tax_order_transfers_poor,"tax_order_transfers_poor: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Cash transfers to the poorest households"
-tax_order_transfers_all,tax_order_transfers_all,"tax_order_transfers_all: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Equal cash transfers to all households"
-tax_order_reduction_personal_tax,tax_order_reduction_personal_221,"tax_order_reduction_personal_tax: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in personal income taxes"
-tax_order_reduction_corporate_tax,tax_order_reduction_corporat_222,"tax_order_reduction_corporate_tax: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in corporate income taxes"
-tax_order_rebates_affected_firms,tax_order_rebates_affected_f_223,"tax_order_rebates_affected_firms: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Tax rebates for the most affected firms"
-tax_order_investments,tax_order_investments,"tax_order_investments: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Funding environmental infrastructure projects (public transport, cycling ways, etc.)"
-tax_order_subsidies,tax_order_subsidies,"tax_order_subsidies: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Subsidizing low-carbon technologies, including renewable energy"
-tax_order_reduction_deficit,tax_order_reduction_deficit,"tax_order_reduction_deficit: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in the public deficit"
+tax_order_transfers_constrained_hh,tax_order_transfers_constrai_212,"tax_order_transfers_constrained_hh: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - Cash transfers to households with no alternative to using fossil fuels"
+tax_order_transfers_poor,tax_order_transfers_poor,"tax_order_transfers_poor: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - Cash transfers to the poorest households"
+tax_order_transfers_all,tax_order_transfers_all,"tax_order_transfers_all: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - Equal cash transfers to all households"
+tax_order_reduction_personal_tax,tax_order_reduction_personal_215,"tax_order_reduction_personal_tax: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - A reduction in personal income taxes"
+tax_order_reduction_corporate_tax,tax_order_reduction_corporat_216,"tax_order_reduction_corporate_tax: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - A reduction in corporate income taxes"
+tax_order_rebates_affected_firms,tax_order_rebates_affected_f_217,"tax_order_rebates_affected_firms: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - Tax rebates for the most affected firms"
+tax_order_investments,tax_order_investments,"tax_order_investments: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - Funding green infrastructure projects (public transport, cycling ways, etc.)"
+tax_order_subsidies,tax_order_subsidies,"tax_order_subsidies: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - Subsidizing low-carbon technologies, including renewable energy"
+tax_order_reduction_deficit,tax_order_reduction_deficit,"tax_order_reduction_deficit: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 15 cents per litre, if the government used this revenue to finance... - Display Order - A reduction in the public deficit"
 wtp_10,wtp_10,
 wtp_30,wtp_30,
 wtp_50,wtp_50,
@@ -358,14 +357,12 @@ donation,donation,"donation: By taking this survey, you are automatically entere
 You can also donate a part of this additional compensation (should you be selected in the lottery) to a reforestation project through the charity The Gold Standard. This charity has already proven effective to reduce 151 million tons of CO2 to fight climate change and has been carefully selected by our team. The Gold Standard is highly transparent and ensures that its projects feature the highest levels of environmental integrity and contribute to sustainable development. 
 
  
-  Should you win the lottery, please enter your donation amount using the slider below: - Donationsbeløb (i kroner)"
+  Should you win the lottery, please enter your donation amount using the slider below: - Donation amount (in AU$)"
 Q147_First,q147_first,Q147_First: Timing - First Click
 Q147_Last,q147_last,Q147_Last: Timing - Last Click
 duration_burden_sharing,duration_burden_sharing,duration_burden_sharing: Timing - Page Submit
 Q147_Click,q147_click,Q147_Click: Timing - Click Count
 scale_global,scale_global,scale_global: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - Global
-scale_federal,scale_federal,scale_federal: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - European
-scale_state,scale_state,scale_state: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - National
 scale_local,scale_local,scale_local: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - Local
 should_fight_CC,should_fight_cc,
 if_other_do_more,if_other_do_more,
@@ -373,38 +370,6 @@ if_other_do_less,if_other_do_less,
 global_assembly_support,global_assembly_support,
 global_tax_support,global_tax_support,
 tax_1p_support,tax_1p_support,
-will_insulate,will_insulate,
-obstacles_insulation_cannot,obstacles_insulation_cannot,obstacles_insulation_cannot: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - The choice to insulate or replace the heating system is not mine
-obstacles_insulation_cost,obstacles_insulation_cost,obstacles_insulation_cost: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - The upfront costs are too high
-obstacles_insulation_effort,obstacles_insulation_effort,obstacles_insulation_effort: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - It is too much effort
-obstacles_insulation_useless,obstacles_insulation_useless,obstacles_insulation_useless: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - It won't improve its energy efficiency
-obstacles_insulation_satisfactory,obstacles_insulation_satisfa_254,obstacles_insulation_satisfactory: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - My insulation and heating systems are already satisfactory
-insulation_mandatory_support_no_priming,insulation_mandatory_support_255,
-insulation_mandatory_support_priming,insulation_mandatory_support_256,
-beef_tax_support,beef_tax_support,
-beef_subsidies_vegetables_support,beef_subsidies_vegetables_su_258,
-beef_subsidies_removal_support,beef_subsidies_removal_suppo_259,
-beef_ban_intensive_support,beef_ban_intensive_support,
-beef_order_tax_support,beef_order_tax_support,"beef_order_tax_support: Imagine that, in order to fight climate change, [Country] government decides to limit the consumption of cattle products like beef and dairy.
-
-
-
-Do you support or oppose the following options? - Display Order - A high tax on cattle products, so that the price of beef doubles"
-beef_order_subsidies_vegetables_support,beef_order_subsidies_vegetab_262,"beef_order_subsidies_vegetables_support: Imagine that, in order to fight climate change, [Country] government decides to limit the consumption of cattle products like beef and dairy.
-
-
-
-Do you support or oppose the following options? - Display Order - Subsidies on organic and local vegetables, fruits, and nuts"
-beef_order_subsidies_removal_support,beef_order_subsidies_removal_263,"beef_order_subsidies_removal_support: Imagine that, in order to fight climate change, [Country] government decides to limit the consumption of cattle products like beef and dairy.
-
-
-
-Do you support or oppose the following options? - Display Order - The removal of subsidies for cattle farming"
-beef_order_ban_intensive_support,beef_order_ban_intensive_sup_264,"beef_order_ban_intensive_support: Imagine that, in order to fight climate change, [Country] government decides to limit the consumption of cattle products like beef and dairy.
-
-
-
-Do you support or oppose the following options? - Display Order - The ban of intensive cattle farming"
 can_trust_people,can_trust_people,
 can_trust_govt,can_trust_govt,
 view_govt,view_govt,
@@ -420,20 +385,19 @@ duration,duration,duration: Q_TotalDuration
 urban_category,urban_category,urban_category: urban_category
 treatment_climate,treatment_climate,
 treatment_policy,treatment_policy,
+region,region,region: region
 winner_latent,winner_latent,winner_latent: winner_latent
 winner,winner,winner: winner
+positive_treatment,positive_treatment,"positive_treatment: 0/1 If =1, questions on economic effect and cost-effectiveness of main policies asked in a positive way: positive/costless, if =0: negative/costly. Always =0 for US, DK, FR."
 affected_transport,affected_transport,affected_transport: Sum of activities for which a car or motorbike is used
 attentive,attentive,
-insulation_disruption_variant,insulation_disruption_varian_284,"insulation_disruption_variant: Random priming that insulation cause disruption: 'Insulating your home can take long, may cause disruptions to your daily life during the renovation works, and may even require you to leave your home until the renovation is completed.'"
-insulation_support,insulation_support,
 diploma,diploma,
+pro_rich_pay,pro_rich_pay,pro_rich_pay: In favor of burden_share where rich countries pay: agree to _population or _historical.
 employment_agg,employment_agg,
 inactive,inactive,
 sector,sector,"sector: What is the main activity of the company or organization where you work or have last worked? (For students, the question is not asked and sector = Student)"
 which_polluting_sector,which_polluting_sector,
 polluting_sector,polluting_sector,"polluting_sector: T/F whether sector is polluting (i.e. part of Oil, gas or cal/Cement/Construction/Automobile/Iron and steel/Chemical/Plastics/Pulp and paper/Farming/Air transport)"
-vote,vote,
-voted,voted,voted: Has voted in last election: Yes to vote_participation.
 survey_biased_yes,survey_biased_yes,survey_biased_yes: T/F Finds the survey biased (survey_biased != No)
 survey_biased_left,survey_biased_left,"survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)"
 survey_biased_right,survey_biased_right,"survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)"
@@ -442,10 +406,23 @@ wtp,wtp,
 country,country,country: Country of the survey.
 country_name,country_name,
 wave,wave,wave: Wave of the survey. pilot1/pilot2/full
+standard_costless,standard_costless,
+standard_costless_costly,standard_costless_costly,
+standard_positive_effect,standard_positive_effect,
+standard_positive_negative,standard_positive_negative,
+positive_treatment_present,positive_treatment_present,
+investments_costless,investments_costless,
+investments_costless_costly,investments_costless_costly,
+investments_positive_effect,investments_positive_effect,
+investments_positive_negative,investments_positive_negativ_285,
+tax_transfers_costless,tax_transfers_costless,
+tax_transfers_costless_costly,tax_transfers_costless_costl_287,
+tax_transfers_positive_effect,tax_transfers_positive_effec_288,
+tax_transfers_positive_negative,tax_transfers_positive_negat_289,
 policies_large_effect,policies_large_effect,"policies_large_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have large effect on the economy and employment? Strongly disagree-agree"
-policies_negative_effect,policies_negative_effect,"policies_negative_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have negative effect on the economy and employment? Strongly disagree-agree"
+policies_positive_negative,policies_positive_negative,"policies_positive_negative: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have negative effect on the economy and employment? Strongly disagree-agree"
 policies_fair,policies_fair,"policies_fair: An emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers is fair? Strongly disagree - strongly agree"
-policies_cost_effective,policies_cost_effective,"policies_cost_effective: An emission limit for cars, a green infrastrcuture program and a carbon tax would be cost-effective to fight climate change. Strongly disagree - strongly sagree"
+policies_costless_costly,policies_costless_costly,"policies_costless_costly: An emission limit for cars, a green infrastrcuture program and a carbon tax would be cost-effective to fight climate change. Strongly disagree - strongly sagree"
 policies_support,policies_support,"policies_support: Average of responses in [-2;+2] to Would you support an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers?"
 policies_urban,policies_urban,"policies_urban: Would urban dwellers win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
 policies_rural,policies_rural,"policies_rural: Would rural financially win or lose from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
@@ -470,18 +447,14 @@ gender_factor,gender_factor,
 children,children,"children: Live with at least one child below 14 (or has at least one child, for the US)"
 college,college,
 nb_origin,nb_origin,nb_origin: Number of origins (or race) of the respondent.
-origin,origin,"origin: Origin of the respondent. In case of multiple origins (nb_origins > 1), only one is retained (and not the main one in the country)."
 dominant_origin,dominant_origin,dominant_origin: T/F Respondent's origin is the dominant one in their country (US: white only; Other: national).
 income_factor,income_factor,
 weight,weight,
-vote_mode_leaning,vote_mode_leaning,
-vote_agg,vote_agg,
-vote_agg_number,vote_agg_number,vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other
 know_treatment_climate,know_treatment_climate,know_treatment_climate: Number of good responses among the 2 knowledge questions related to treatment content: temperature_2100 = 8°F (4 °C) & know_local_damage = 70 days per year / Ozone hole (depending on country)
 know_treatment_policy,know_treatment_policy,"know_treatment_policy: Number of good responses among the 2 knowledge questions related to treatment content: ban = A ban on combustion-engine cars & investments_funding = Additional government debt (for the US, second one is 1.5 million jobs instead)"
-know_temperature_2100_correct,know_temperature_2100_correc_339,
+know_temperature_2100_correct,know_temperature_2100_correc_323,
 know_local_damage_correct,know_local_damage_correct,
-know_investments_funding_correct,know_investments_funding_cor_341,
+know_investments_funding_correct,know_investments_funding_cor_325,
 know_ban_correct,know_ban_correct,
 score_GHG,score_ghg,score_GHG: Score to the knowledge of GHG [0;+4] = CO2 + methane - H2 - particulates + 2
 know_GHG_CO2,know_ghg_co2,know_GHG_CO2: Correct answer that CO2 is a GHG
@@ -517,13 +490,8 @@ footprint_reg_US_original,footprint_reg_us_original,footprint_reg_US: Which regi
 footprint_reg_EU_original,footprint_reg_eu_original,footprint_reg_EU: Which region contributes most to global greenhouse gas emissions?Please rank the regions from 1 (most) to 4 (least) and note that multiple regions may have the same rank. - The European Union
 footprint_reg_china_original,footprint_reg_china_original,footprint_reg_china: Which region contributes most to global greenhouse gas emissions?Please rank the regions from 1 (most) to 4 (least) and note that multiple regions may have the same rank. - China
 footprint_reg_india_original,footprint_reg_india_original,footprint_reg_india: Which region contributes most to global greenhouse gas emissions?Please rank the regions from 1 (most) to 4 (least) and note that multiple regions may have the same rank. - India
-footprint_pc_country,footprint_pc_country,"footprint_pc_country: In which region does the consumption of an average person contribute most to greenhouse gas emissions?
-
-
-
-Please rank the regions from 1 (most) to 4 (least). - [region]"
-correct_footprint_pc_compare_US,correct_footprint_pc_compare_362,correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's
-correct_footprint_pc_compare_own,correct_footprint_pc_compare_363,"correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA)"
+correct_footprint_pc_compare_US,correct_footprint_pc_compare_345,correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's
+correct_footprint_pc_compare_own,correct_footprint_pc_compare_346,"correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA, TR, UA)"
 footprint_pc_nb_na,footprint_pc_nb_na,footprint_pc_nb_na: Number of NA ranks in the ranking of footprint per capita
 footprint_reg_nb_na,footprint_reg_nb_na,footprint_reg_nb_na: Number of NA ranks in the ranking of total regional footprint
 score_footprint_elec,score_footprint_elec,e$score_footprint_elec: Kendall distance with true ranking of electricity footprints: coal>gas>nuclear
@@ -554,52 +522,36 @@ index_knowledge_dummies,index_knowledge_dummies,
 index_knowledge_dummies2SD,index_knowledge_dummies2sd,
 index_knowledge_simple,index_knowledge_simple,index_knowledge_simple: Weighted average of (non-standardized) variables in variables_knowledge_efa. Weights are chosen to fit intuition.
 index_knowledge_efa,index_knowledge_efa,index_knowledge_efa: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values.
-index_affected,index_affected,"index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values."
-index_affected_dummies,index_affected_dummies,
-index_affected_dummies2SD,index_affected_dummies2sd,
-index_progressist,index_progressist,"index_progressist: Non-weighted average of z-scores of variables in variables_index_progressist. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_progressist_dummies,index_progressist_dummies,
-index_progressist_dummies2SD,index_progressist_dummies2sd,
 index_concerned_about_CC,index_concerned_about_cc,"index_concerned_about_CC: Non-weighted average of z-scores of variables in variables_concerned_about_CC_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_concerned_about_CC_dummies,index_concerned_about_cc_dum_401,
-index_concerned_about_CC_dummies2SD,index_concerned_about_cc_dum_402,
-index_worried,index_worried,"index_worried: Non-weighted average of z-scores of variables in variables_index_worried. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_worried_dummies,index_worried_dummies,
-index_worried_dummies2SD,index_worried_dummies2sd,
-investments_economic_effect,investments_economic_effect,
-tax_transfers_economic_effect,tax_transfers_economic_effec_407,
-standard_economic_effect,standard_economic_effect,
+index_concerned_about_CC_dummies,index_concerned_about_cc_dum_378,
+index_concerned_about_CC_dummies2SD,index_concerned_about_cc_dum_379,
 index_positive_economy,index_positive_economy,"index_positive_economy: Non-weighted average of z-scores of variables in variables_index_positive_economy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_positive_economy_dummies,index_positive_economy_dummi_410,
-index_positive_economy_dummies2SD,index_positive_economy_dummi_411,
+index_positive_economy_dummies,index_positive_economy_dummi_381,
+index_positive_economy_dummies2SD,index_positive_economy_dummi_382,
 index_constrained,index_constrained,"index_constrained: Non-weighted average of z-scores of variables in variables_index_constrained. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_constrained_dummies,index_constrained_dummies,
 index_constrained_dummies2SD,index_constrained_dummies2sd,
 index_policies_efficient,index_policies_efficient,"index_policies_efficient: Non-weighted average of z-scores of variables in variables_index_policies_efficient. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_policies_efficient_dummies,index_policies_efficient_dum_416,
-index_policies_efficient_dummies2SD,index_policies_efficient_dum_417,
+index_policies_efficient_dummies,index_policies_efficient_dum_387,
+index_policies_efficient_dummies2SD,index_policies_efficient_dum_388,
 index_care_poverty,index_care_poverty,"index_care_poverty: Non-weighted average of z-scores of variables in variables_index_care_poverty. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_care_poverty_dummies,index_care_poverty_dummies,
-index_care_poverty_dummies2SD,index_care_poverty_dummies2s_420,
+index_care_poverty_dummies2SD,index_care_poverty_dummies2s_391,
 index_altruism,index_altruism,"index_altruism: Non-weighted average of z-scores of variables in variables_index_altruism. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_altruism_dummies,index_altruism_dummies,
 index_altruism_dummies2SD,index_altruism_dummies2sd,
-preferences_pricing_norms,preferences_pricing_norms,
-index_preferences_pricing_norms,index_preferences_pricing_no_425,
-index_preferences_pricing_norms_dummies,index_preferences_pricing_no_426,
-index_preferences_pricing_norms_dummies2SD,index_preferences_pricing_no_427,
 index_affected_subjective,index_affected_subjective,"index_affected_subjective: Non-weighted average of z-scores of variables in variables_index_affected_subjective. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_affected_subjective_dummies,index_affected_subjective_du_429,
-index_affected_subjective_dummies2SD,index_affected_subjective_du_430,
-index_lose_policies_subjective,index_lose_policies_subjecti_431,
-index_lose_policies_subjective_dummies,index_lose_policies_subjecti_432,
-index_lose_policies_subjective_dummies2SD,index_lose_policies_subjecti_433,
+index_affected_subjective_dummies,index_affected_subjective_du_396,
+index_affected_subjective_dummies2SD,index_affected_subjective_du_397,
+index_lose_policies_subjective,index_lose_policies_subjecti_398,
+index_lose_policies_subjective_dummies,index_lose_policies_subjecti_399,
+index_lose_policies_subjective_dummies2SD,index_lose_policies_subjecti_400,
 index_lose_policies_poor,index_lose_policies_poor,
-index_lose_policies_poor_dummies,index_lose_policies_poor_dum_435,
-index_lose_policies_poor_dummies2SD,index_lose_policies_poor_dum_436,
+index_lose_policies_poor_dummies,index_lose_policies_poor_dum_402,
+index_lose_policies_poor_dummies2SD,index_lose_policies_poor_dum_403,
 index_lose_policies_rich,index_lose_policies_rich,
-index_lose_policies_rich_dummies,index_lose_policies_rich_dum_438,
-index_lose_policies_rich_dummies2SD,index_lose_policies_rich_dum_439,
+index_lose_policies_rich_dummies,index_lose_policies_rich_dum_405,
+index_lose_policies_rich_dummies2SD,index_lose_policies_rich_dum_406,
 index_fairness,index_fairness,
 index_fairness_dummies,index_fairness_dummies,
 index_fairness_dummies2SD,index_fairness_dummies2sd,
@@ -608,42 +560,145 @@ index_trust_govt_dummies,index_trust_govt_dummies,
 index_trust_govt_dummies2SD,index_trust_govt_dummies2sd,
 index_willing_change,index_willing_change,"index_willing_change: Non-weighted average of z-scores of variables in variables_index_willing_change. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_willing_change_dummies,index_willing_change_dummies,
-index_willing_change_dummies2SD,index_willing_change_dummies_448,
+index_willing_change_dummies2SD,index_willing_change_dummies_415,
 index_standard_policy,index_standard_policy,"index_standard_policy: Non-weighted average of z-scores of variables in variables_index_standard_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_standard_policy_dummies,index_standard_policy_dummie_450,
-index_standard_policy_dummies2SD,index_standard_policy_dummie_451,
+index_standard_policy_dummies,index_standard_policy_dummie_417,
+index_standard_policy_dummies2SD,index_standard_policy_dummie_418,
 index_tax_transfers_policy,index_tax_transfers_policy,"index_tax_transfers_policy: Non-weighted average of z-scores of variables in variables_index_tax_transfers_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_tax_transfers_policy_dummies,index_tax_transfers_policy_d_453,
-index_tax_transfers_policy_dummies2SD,index_tax_transfers_policy_d_454,
+index_tax_transfers_policy_dummies,index_tax_transfers_policy_d_420,
+index_tax_transfers_policy_dummies2SD,index_tax_transfers_policy_d_421,
 index_investments_policy,index_investments_policy,"index_investments_policy: Non-weighted average of z-scores of variables in variables_index_investments_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_investments_policy_dummies,index_investments_policy_dum_456,
-index_investments_policy_dummies2SD,index_investments_policy_dum_457,
+index_investments_policy_dummies,index_investments_policy_dum_423,
+index_investments_policy_dummies2SD,index_investments_policy_dum_424,
 index_main_policies,index_main_policies,"index_main_policies: Non-weighted average of z-scores of variables in variables_index_main_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
 index_main_policies_dummies,index_main_policies_dummies,
-index_main_policies_dummies2SD,index_main_policies_dummies2_460,
-index_pricing_norm_main_policies_V1,index_pricing_norm_main_poli_461,
-index_pricing_norm_main_policies_V1_dummies,index_pricing_norm_main_poli_462,
-index_pricing_norm_main_policies_V1_dummies2SD,index_pricing_norm_main_poli_463,
-index_pricing_norm_main_policies_V2,index_pricing_norm_main_poli_464,
-index_pricing_norm_main_policies_V2_dummies,index_pricing_norm_main_poli_465,
-index_pricing_norm_main_policies_V2_dummies2SD,index_pricing_norm_main_poli_466,
-index_beef_policies,index_beef_policies,"index_beef_policies: Non-weighted average of z-scores of variables in variables_index_beef_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_beef_policies_dummies,index_beef_policies_dummies,
-index_beef_policies_dummies2SD,index_beef_policies_dummies2_469,
+index_main_policies_dummies2SD,index_main_policies_dummies2_427,
+index_pricing_norm_main_policies_V1,index_pricing_norm_main_poli_428,
+index_pricing_norm_main_policies_V1_dummies,index_pricing_norm_main_poli_429,
+index_pricing_norm_main_policies_V1_dummies2SD,index_pricing_norm_main_poli_430,
+index_pricing_norm_main_policies_V2,index_pricing_norm_main_poli_431,
+index_pricing_norm_main_policies_V2_dummies,index_pricing_norm_main_poli_432,
+index_pricing_norm_main_policies_V2_dummies2SD,index_pricing_norm_main_poli_433,
 index_international_policies,index_international_policies,"index_international_policies: Non-weighted average of z-scores of variables in variables_index_international_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_international_policies_dummies,index_international_policies_471,
-index_international_policies_dummies2SD,index_international_policies_472,
-index_other_policies,index_other_policies,"index_other_policies: Non-weighted average of z-scores of variables in variables_index_other_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_other_policies_dummies,index_other_policies_dummies,
-index_other_policies_dummies2SD,index_other_policies_dummies_475,
-index_all_policies,index_all_policies,"index_all_policies: Non-weighted average of z-scores of variables in variables_index_all_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-index_all_policies_dummies,index_all_policies_dummies,
-index_all_policies_dummies2SD,index_all_policies_dummies2s_478,
+index_international_policies_dummies,index_international_policies_435,
+index_international_policies_dummies2SD,index_international_policies_436,
 length_CC_field,length_cc_field,length_CC_field: Number of characters in CC_field
 length_comment_field,length_comment_field,length_comment_field: Number of characters in comment_field
-Nb_children__14,nb_children_14,Nb_children__14: How many children do you have?
-origin_pnr,origin_pnr,origin_pnr: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Prefer not to say
-origin_other,origin_other,origin_other: What race or ethnicity do you identify with? (Multiple answers are possible) - Other - Text
+Nb_children__14,nb_children_14,Nb_children__14: How many children below 14 live with you?
+tax_transfers_progressive_fair,tax_transfers_progressive_fa_440,
+tax_transfers_progressive_support,tax_transfers_progressive_su_441,
+global_quota,global_quota,"global_quota: All countries have signed the Paris agreement that aims to contain global warming ""well below +2 °C"". To limit global warming to this level, there is a maximum amount of greenhouse gases we can emit globally, called the carbon budget. Each country could aim to emit less than a share of the carbon budget. To respect the global carbon budget, countries that emit more than their national share would pay a fee to countries that emit less than their share.
+Do you support such a policy?"
+burden_share_population,burden_share_population,
+burden_share_emissions,burden_share_emissions,
+burden_share_historical,burden_share_historical,
+burden_share_damages,burden_share_damages,
+browser,browser,browser: Click to write the question text - Browser
+version,version,version: Click to write the question text - Version
+OS,os,OS: Click to write the question text - Operating System
+resolution,resolution,resolution: Click to write the question text - Resolution
+vote_participation,vote_participation,
+vote_voters,vote_voters,vote_voters: Which party did you vote for in the 2019 Australian federal election?
+vote_non_voters,vote_non_voters,"vote_non_voters: Even if you did NOT vote in the 2019 Australian federal election, please indicate the party that you were most likely to have voted for or who represents your views more closely."
+vote,vote,
+voted,voted,voted: Has voted in last election: Yes to vote_participation.
+vote_mode_leaning,vote_mode_leaning,
+vote_agg,vote_agg,
+vote_agg_number,vote_agg_number,vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other
+index_progressist,index_progressist,"index_progressist: Non-weighted average of z-scores of variables in variables_index_progressist. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+index_progressist_dummies,index_progressist_dummies,
+index_progressist_dummies2SD,index_progressist_dummies2sd,
+beef_tax_support,beef_tax_support,
+beef_subsidies_vegetables_support,beef_subsidies_vegetables_su_463,
+beef_subsidies_removal_support,beef_subsidies_removal_suppo_464,
+beef_ban_intensive_support,beef_ban_intensive_support,
+beef_order_tax_support,beef_order_tax_support,"beef_order_tax_support: Imagine that, in order to fight climate change, the Australian government decides to limit the consumption of cattle products like beef and dairy.
+
+
+
+Do you support or oppose the following options? - Display Order - A high tax on cattle products, so that the price of beef doubles"
+beef_order_subsidies_vegetables_support,beef_order_subsidies_vegetab_467,"beef_order_subsidies_vegetables_support: Imagine that, in order to fight climate change, the Australian government decides to limit the consumption of cattle products like beef and dairy.
+
+
+
+Do you support or oppose the following options? - Display Order - Subsidies on organic and local vegetables, fruits, and nuts"
+beef_order_subsidies_removal_support,beef_order_subsidies_removal_468,"beef_order_subsidies_removal_support: Imagine that, in order to fight climate change, the Australian government decides to limit the consumption of cattle products like beef and dairy.
+
+
+
+Do you support or oppose the following options? - Display Order - The removal of subsidies for cattle farming"
+beef_order_ban_intensive_support,beef_order_ban_intensive_sup_469,"beef_order_ban_intensive_support: Imagine that, in order to fight climate change, the Australian government decides to limit the consumption of cattle products like beef and dairy.
+
+
+
+Do you support or oppose the following options? - Display Order - The ban of intensive cattle farming"
+origin,origin,"origin: Origin of the respondent. In case of multiple origins (nb_origins > 1), only one is retained (and not the main one in the country)."
+index_beef_policies,index_beef_policies,"index_beef_policies: Non-weighted average of z-scores of variables in variables_index_beef_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+index_beef_policies_dummies,index_beef_policies_dummies,
+index_beef_policies_dummies2SD,index_beef_policies_dummies2_473,
+heating_expenses,heating_expenses,
+insulation,insulation,
+will_insulate,will_insulate,
+obstacles_insulation_cannot,obstacles_insulation_cannot,obstacles_insulation_cannot: What are the main hurdles preventing you from improving the insulation of your accommodation? (Multiple answers are possible) - The choice to insulate or replace the heating system is not mine
+obstacles_insulation_cost,obstacles_insulation_cost,obstacles_insulation_cost: What are the main hurdles preventing you from improving the insulation of your accommodation? (Multiple answers are possible) - The upfront costs are too high
+obstacles_insulation_effort,obstacles_insulation_effort,obstacles_insulation_effort: What are the main hurdles preventing you from improving the insulation of your accommodation? (Multiple answers are possible) - It is too much effort
+obstacles_insulation_useless,obstacles_insulation_useless,obstacles_insulation_useless: What are the main hurdles preventing you from improving the insulation of your accommodation? (Multiple answers are possible) - It won't improve its energy efficiency
+obstacles_insulation_satisfactory,obstacles_insulation_satisfa_481,obstacles_insulation_satisfactory: What are the main hurdles preventing you from improving the insulation of your accommodation? (Multiple answers are possible) - My insulation and heating systems are already satisfactory
+insulation_mandatory_support_no_priming,insulation_mandatory_support_482,
+insulation_mandatory_support_priming,insulation_mandatory_support_483,
+insulation_disruption_variant,insulation_disruption_varian_484,"insulation_disruption_variant: Random priming that insulation cause disruption: 'Insulating your home can take long, may cause disruptions to your daily life during the renovation works, and may even require you to leave your home until the renovation is completed.'"
+insulation_support,insulation_support,
+index_affected,index_affected,"index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values."
+index_affected_dummies,index_affected_dummies,
+index_affected_dummies2SD,index_affected_dummies2sd,
+index_other_policies,index_other_policies,"index_other_policies: Non-weighted average of z-scores of variables in variables_index_other_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+index_other_policies_dummies,index_other_policies_dummies,
+index_other_policies_dummies2SD,index_other_policies_dummies_491,
+index_all_policies,index_all_policies,"index_all_policies: Non-weighted average of z-scores of variables in variables_index_all_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+index_all_policies_dummies,index_all_policies_dummies,
+index_all_policies_dummies2SD,index_all_policies_dummies2s_494,
+heating,heating,
+origin_pnr,origin_pnr,origin_pnr: What is the nationality of your parents? (Multiple answers allowed) - Prefer not to say
+origin_other,origin_other,origin_other: What is the nationality of your parents? (Multiple answers allowed) - Other
+scale_state,scale_state,scale_state: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - State
+origin_country,origin_country,origin_country: What is the nationality of your parents? (Multiple answers allowed) - Australian
+origin_continent,origin_continent,origin_continent: What race or ethnicity do you identify with? (Multiple answers are possible) - [continent] (except [country])
+scale_federal,scale_federal,scale_federal: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - National
+standard_prefer_ban,standard_prefer_ban,"standard_prefer_ban: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+Which policy do you prefer?
+Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - A strict ban"
+standard_prefer_10k_fine,standard_prefer_10k_fine,"standard_prefer_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+Which policy do you prefer?
+Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - A 10,000€ fine"
+standard_prefer_100k_fine,standard_prefer_100k_fine,"standard_prefer_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+Which policy do you prefer?
+Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - A 100,000€ fine"
+standard_prefer_order_ban,standard_prefer_order_ban,"standard_prefer_order_ban: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+Which policy do you prefer?
+Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A strict ban"
+standard_prefer_order_10k_fine,standard_prefer_order_10k_fi_506,"standard_prefer_order_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+Which policy do you prefer?
+Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 10,000€ fine"
+standard_prefer_order_100k_fine,standard_prefer_order_100k_f_507,"standard_prefer_order_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+Which policy do you prefer?
+Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 100,000€ fine"
+standard_10k_fine,standard_10k_fine,"standard_10k_fine: Imagine that, instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine of 10,000€.
+Would you support or oppose such policy?"
+standard_100k_fine,standard_100k_fine,"standard_100k_fine: Imagine that, instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine of 100,000€.
+Would you support or oppose such policy?"
+scale_national,scale_national,scale_national: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - National
+footprint_pc_order_country,footprint_pc_order_country,"footprint_pc_order_country: In which region does the consumption of an average person contribute most to greenhouse gas emissions?
+
+
+
+Please rank the regions from 1 (most) to 4 (least). - Display Order - Australia"
+area,area,area: In which kind of municipality do you live in?
+investments_funding_global_transfer,investments_funding_global_t_513,"investments_funding_global_transfer: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+ 
+What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Transfers from high-income countries"
+origin_other_text,origin_other_text,origin_other_text: What are your parents' nationalities? (Multiple answers are possible) - Other - Text
+policy_ban_deforestation,policy_ban_deforestation,
+policy_order_ban_deforestation,policy_order_ban_deforestati_516,policy_order_ban_deforestation: Do you support or oppose the following climate policies? - Display Order - A complete ban of deforestation enforced by strong sanctions
 burden_sharing_income,burden_sharing_income,
 burden_sharing_emissions,burden_sharing_emissions,
 burden_sharing_cumulative,burden_sharing_cumulative,
@@ -651,12 +706,11 @@ burden_sharing_rich_pay,burden_sharing_rich_pay,
 burden_sharing_poor_receive,burden_sharing_poor_receive,
 clicked_petition,clicked_petition,
 pro_polluter_pay,pro_polluter_pay,"pro_polluter_pay: In favor of a burden_sharing option where polluter pay: agree to _income, _emissions or _cumulative."
-pro_rich_pay,pro_rich_pay,pro_rich_pay: In favor of burden_sharing where rich countries pay it all (including where vulnerable countries receive): agree to _rich_pay or _poor_receive.
 pro_grand_fathering,pro_grand_fathering,"pro_grand_fathering: In favor of burden_sharing akin to grand-fathering. Inferred as disagreement to _cumulative, _rich_pay and _poor_receive, i.e.: countries pay in proportion to cumulative emissions, and to options where poor and vulnerable countries don't pay. Results are in line with US pilot on 502 people, where the more explicit usp$equal_quota == grand-fathering gathered 6%."
 pro_polluter_and_rich_pay,pro_polluter_and_rich_pay,"pro_polluter_and_rich_pay: In favor of burden_sharing where polluters and only rich countries pay. Inferred as agreeing to at least one polluter-pay option and one option where rich countries pay it all: (_income, _emissions or _cumulative) and (_rich_pay or _poor_receive)."
 pro_global_tax_dividend,pro_global_tax_dividend,pro_global_tax_dividend: In favor of burden_sharing akin to global tax & dividend. Inferred as agreeing to paying in proportion to current emissions and one option where rich countries pay it all: _emissions and (_rich_pay or _poor_receive).
-pro_differentiated_responsibilities_strict,pro_differentiated_responsib_495,"pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
-pro_differentiated_responsibilities_large,pro_differentiated_responsib_496,"pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
+pro_differentiated_responsibilities_strict,pro_differentiated_responsib_527,"pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
+pro_differentiated_responsibilities_large,pro_differentiated_responsib_528,"pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
 right_click_petition,right_click_petition,
 left_click_petition,left_click_petition,
 variant_petition_real,variant_petition_real,"variant_petition_real: True iff the respondent faces the new version of the question, without link to petition but with a real stake, as they are informed that 'we will send the results to the President of the United States’ office, informing him what share of people who took this survey were willing to support the following petition'"
@@ -697,7 +751,7 @@ CC_field_contains_education,cc_field_contains_education,CC_field_contains_educat
 CC_field_contains_solar,cc_field_contains_solar,CC_field_contains_solar: T/F CC_field_english contains: solar
 CC_field_contains_coal,cc_field_contains_coal,CC_field_contains_coal: T/F CC_field_english contains: coal
 CC_field_contains_electric,cc_field_contains_electric,CC_field_contains_electric: T/F CC_field_english contains: electric
-CC_field_contains_electric_car,cc_field_contains_electric_c_537,CC_field_contains_electric_car: T/F CC_field_english contains: electric car
+CC_field_contains_electric_car,cc_field_contains_electric_c_569,CC_field_contains_electric_car: T/F CC_field_english contains: electric car
 CC_field_contains_nuclear,cc_field_contains_nuclear,CC_field_contains_nuclear: T/F CC_field_english contains: nuclear
 CC_field_contains_fossil,cc_field_contains_fossil,CC_field_contains_fossil: T/F CC_field_english contains: fossil|coal|oil|gas
 CC_field_contains_plastic,cc_field_contains_plastic,CC_field_contains_plastic: T/F CC_field_english contains: plastic
@@ -722,21 +776,72 @@ critic_comment_field,critic_comment_field,"critic_comment_field: T/F The answer 
 treated_comment_field,treated_comment_field,treated_comment_field: T/F comment_field has been treated/recoded. N
 comment_field_contains_long,comment_field_contains_long,comment_field_contains_long: T/F comment_field_english contains:  long
 comment_field_contains_good,comment_field_contains_good,comment_field_contains_good: T/F comment_field_english contains: good|Good|excellent|enjoy|interesting
-comment_field_contains_thanks,comment_field_contains_thank_562,comment_field_contains_thanks: T/F comment_field_english contains: thank|Thank
-comment_field_contains_learned,comment_field_contains_learn_563,comment_field_contains_learned: T/F comment_field_english contains: learnt|learn
+comment_field_contains_thanks,comment_field_contains_thank_594,comment_field_contains_thanks: T/F comment_field_english contains: thank|Thank
+comment_field_contains_learned,comment_field_contains_learn_595,comment_field_contains_learned: T/F comment_field_english contains: learnt|learn
 comment_field_contains_bias,comment_field_contains_bias,comment_field_contains_bias: T/F comment_field_english contains: bias
 non_empty_comment_field,non_empty_comment_field,"non_empty_comment_field: The respondent left a feedback comment, i.e. comment_field is not NA."
 origin_asia,origin_asia,origin_asia: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Asian
 origin_africa,origin_africa,origin_africa: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - African
+origin_north_america,origin_north_america,origin_north_america: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - North American
+origin_asian,origin_asian,origin_asian: What is the nationality of your parents? (Multiple answers allowed) - Asian
+origin_british,origin_british,origin_british: What is the nationality of your parents? (Multiple answers allowed) - British
+origin_EU,origin_eu,origin_EU: What is the nationality of your parents? (Multiple answers allowed) - European excluding British
+origin_new_zealand,origin_new_zealand,origin_new_zealand: What is the nationality of your parents? (Multiple answers allowed) - New Zealander
+origin_US_EU,origin_us_eu,origin_US_EU: What are your parents' nationalities? (Multiple answers are possible) - American or European
 origin_danish,origin_danish,origin_danish: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Danish
 origin_nordic,origin_nordic,origin_nordic: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Nordic
 origin_central_europe,origin_central_europe,origin_central_europe: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Central European
 origin_south_europe,origin_south_europe,origin_south_europe: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Southern European
 origin_east_europe,origin_east_europe,origin_east_europe: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - East European
 origin_middle_east,origin_middle_east,origin_middle_east: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Middle Eastern
-origin_north_america,origin_north_america,origin_north_america: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - North American
 origin_south_america,origin_south_america,origin_south_america: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - South American
 origin_other_choice,origin_other_choice,origin_other_choice: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Other
+origin_france,origin_france,origin_france: Quelles sont les nationalités de vos parents ? (Plusieurs réponses possibles) - France
+origin_europe,origin_europe,origin_europe: Quelles sont les nationalités de vos parents ? (Plusieurs réponses possibles) - Europe (hors France)
+origin_america,origin_america,origin_america: Quelles sont les nationalités de vos parents ? (Plusieurs réponses possibles) - Amérique / Océanie
+gilets_jaunes_dedans,gilets_jaunes_dedans,gilets_jaunes_dedans: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - J'en fais partie
+gilets_jaunes_soutien,gilets_jaunes_soutien,gilets_jaunes_soutien: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - Je les soutiens
+gilets_jaunes_compris,gilets_jaunes_compris,gilets_jaunes_compris: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - Je les comprends
+gilets_jaunes_oppose,gilets_jaunes_oppose,gilets_jaunes_oppose: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - Je m'y oppose
+gilets_jaunes_NSP,gilets_jaunes_nsp,"gilets_jaunes_NSP: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - NSP (Ne sais pas, ne se prononce pas)"
+flight_quota_1000km,flight_quota_1000km,
+flight_quota_1000km_global,flight_quota_1000km_global,
+flight_quota_one_trip,flight_quota_one_trip,
+flight_quota,flight_quota,
+variant_flight_quota,variant_flight_quota,
+gilets_jaunes,gilets_jaunes,
+Gilets_jaunes,gilets_jaunes_2,
+Gilets_jaunes_agg,gilets_jaunes_agg,
+vote_main,vote_main,
+policy_ban_coal,policy_ban_coal,
+policy_order_ban_coal,policy_order_ban_coal,policy_order_ban_coal: Do you support or oppose the following climate policies? - Display Order - A ban on coal power in 2030
+tax_reduction_EEG_Umlage,tax_reduction_eeg_umlage,"tax_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - A reduction in the EEG-Umlage"
+tax_more_commuter_allowance,tax_more_commuter_allowance,"tax_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - An increase in commuter tax allowance"
+tax_order_reduction_EEG_Umlage,tax_order_reduction_eeg_umla_635,"tax_order_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in the EEG-Umlage"
+tax_order_more_commuter_allowance,tax_order_more_commuter_allo_636,"tax_order_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - An increase in commuter tax allowance"
+origin_latin_america,origin_latin_america,origin_latin_america: What are your parents' nationalities? (Multiple answers are possible) - Latin America
+origin_europa,origin_europa,origin_europa: What are your parents' nationalities? (Multiple answers are possible) - Europa
+origin_oceania,origin_oceania,origin_oceania: What are your parents' nationalities? (Multiple answers are possible) - Oceania
+insulation_mandatory_support_progressive,insulation_mandatory_support_640,
+scale_EU,scale_eu,scale_EU: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - European
+footprint_pc_UK,footprint_pc_uk,"footprint_pc_UK: In which region does the consumption of an average person contribute most to greenhouse gas emissions?
+
+
+
+Please rank the regions from 1 (most) to 4 (least). - The United Kingdom"
+footprint_pc_order_UK,footprint_pc_order_uk,"footprint_pc_order_UK: In which region does the consumption of an average person contribute most to greenhouse gas emissions?
+
+
+
+Please rank the regions from 1 (most) to 4 (least). - Display Order - The United Kingdom"
+gas_spike_transition_needed,gas_spike_transition_needed,gas_spike_transition_needed: Do you support or oppose the following statements? - The current spike in gas prices shows that we need to transition more quickly to renewable energy to reduce our reliance on fossil fuels.
+gas_spike_policies_costly,gas_spike_policies_costly,gas_spike_policies_costly: Do you support or oppose the following statements? - The current spike in gas prices means that we cannot strengthen climate policies as this will raise the bill for consumers to an unacceptable level.
+gas_spike_higher_tax_rich,gas_spike_higher_tax_rich,gas_spike_higher_tax_rich: Do you support or oppose the following statements? - The current spike in gas prices means that we must fund new energy generation projects by a higher tax on top incomes rather than higher energy bills.
+gas_spike_not_related,gas_spike_not_related,gas_spike_not_related: Do you support or oppose the following statements? - The current gas price is unrelated to fighting climate change and does not affect my views on climate policies.
+gas_spike_order_transition_needed,gas_spike_order_transition_n_648,gas_spike_order_transition_needed: Do you support or oppose the following statements? - Display Order - The current spike in gas prices shows that we need to transition more quickly to renewable energy to reduce our reliance on fossil fuels.
+gas_spike_order_policies_costly,gas_spike_order_policies_cos_649,gas_spike_order_policies_costly: Do you support or oppose the following statements? - Display Order - The current spike in gas prices means that we cannot strengthen climate policies as this will raise the bill for consumers to an unacceptable level.
+gas_spike_order_higher_tax_rich,gas_spike_order_higher_tax_r_650,gas_spike_order_higher_tax_rich: Do you support or oppose the following statements? - Display Order - The current spike in gas prices means that we must fund new energy generation projects by a higher tax on top incomes rather than higher energy bills.
+gas_spike_order_not_related,gas_spike_order_not_related,gas_spike_order_not_related: Do you support or oppose the following statements? - Display Order - The current gas price is unrelated to fighting climate change and does not affect my views on climate policies.
 race_white,race_white,race_white: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - White
 race_black,race_black,race_black: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Black or African American
 race_hispanic,race_hispanic,race_hispanic: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Hispanic
@@ -758,59 +863,19 @@ state,state,
 CO2_emission_heating,co2_emission_heating,"CO2_emission_heating: CO2 emissions (in t/year) from heating of the respondent estimated from their heating expenses and country average emission factors of electricity, heating oil and gas."
 CO2_emission_gas,co2_emission_gas,CO2_emission_gas: CO2 emissions (in t/year) from gasoline of the respondent estimated from their gas expenses and emission factor of gasoline.
 CO2_emission,co2_emission,"CO2_emission: CO2 emissions (in t/year) of the respondent estimated from their heating & gas expenses, flights and income."
-origin_france,origin_france,origin_france: Quelles sont les nationalités de vos parents ? (Plusieurs réponses possibles) - France
-origin_europe,origin_europe,origin_europe: Quelles sont les nationalités de vos parents ? (Plusieurs réponses possibles) - Europe (hors France)
-origin_america,origin_america,origin_america: Quelles sont les nationalités de vos parents ? (Plusieurs réponses possibles) - Amérique / Océanie
-gilets_jaunes_dedans,gilets_jaunes_dedans,gilets_jaunes_dedans: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - J'en fais partie
-gilets_jaunes_soutien,gilets_jaunes_soutien,gilets_jaunes_soutien: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - Je les soutiens
-gilets_jaunes_compris,gilets_jaunes_compris,gilets_jaunes_compris: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - Je les comprends
-gilets_jaunes_oppose,gilets_jaunes_oppose,gilets_jaunes_oppose: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - Je m'y oppose
-gilets_jaunes_NSP,gilets_jaunes_nsp,"gilets_jaunes_NSP: Que pensez-vous des gilets jaunes ? (Plusieurs réponses possibles) - NSP (Ne sais pas, ne se prononce pas)"
-flight_quota_1000km,flight_quota_1000km,
-flight_quota_1000km_global,flight_quota_1000km_global,
-flight_quota_one_trip,flight_quota_one_trip,
-flight_quota,flight_quota,
-variant_flight_quota,variant_flight_quota,
-gilets_jaunes,gilets_jaunes,
-Gilets_jaunes,gilets_jaunes_2,
-Gilets_jaunes_agg,gilets_jaunes_agg,
-vote_main,vote_main,
-origin_country,origin_country,origin_country: What race or ethnicity do you identify with? (Multiple answers are possible) - [country]
-origin_continent,origin_continent,origin_continent: What race or ethnicity do you identify with? (Multiple answers are possible) - [continent] (except [country])
-standard_prefer_ban,standard_prefer_ban,"standard_prefer_ban: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
-Which policy do you prefer?
-Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - A strict ban"
-standard_prefer_10k_fine,standard_prefer_10k_fine,"standard_prefer_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
-Which policy do you prefer?
-Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - A 10,000€ fine"
-standard_prefer_100k_fine,standard_prefer_100k_fine,"standard_prefer_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
-Which policy do you prefer?
-Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - A 100,000€ fine"
-standard_prefer_order_ban,standard_prefer_order_ban,"standard_prefer_order_ban: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
-Which policy do you prefer?
-Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A strict ban"
-standard_prefer_order_10k_fine,standard_prefer_order_10k_fi_621,"standard_prefer_order_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
-Which policy do you prefer?
-Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 10,000€ fine"
-standard_prefer_order_100k_fine,standard_prefer_order_100k_f_622,"standard_prefer_order_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine, of either 10,000€ or 100,000€. 
-Which policy do you prefer?
-Please rank the policies from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 100,000€ fine"
-standard_10k_fine,standard_10k_fine,"standard_10k_fine: Imagine that, instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine of 10,000€.
-Would you support or oppose such policy?"
-standard_100k_fine,standard_100k_fine,"standard_100k_fine: Imagine that, instead of a ban, purchases of new combustion-engine cars would be sanctioned by a fine of 100,000€.
-Would you support or oppose such policy?"
-tax_transfers_progressive_fair,tax_transfers_progressive_fa_625,
-tax_transfers_progressive_support,tax_transfers_progressive_su_626,
-policy_ban_coal,policy_ban_coal,
-policy_order_ban_coal,policy_order_ban_coal,policy_order_ban_coal: Do you support or oppose the following climate policies? - Display Order - A ban on coal power in 2030
-tax_reduction_EEG_Umlage,tax_reduction_eeg_umlage,"tax_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - A reduction in the EEG-Umlage"
-tax_more_commuter_allowance,tax_more_commuter_allowance,"tax_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - An increase in commuter tax allowance"
-tax_order_reduction_EEG_Umlage,tax_order_reduction_eeg_umla_631,"tax_order_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in the EEG-Umlage"
-tax_order_more_commuter_allowance,tax_order_more_commuter_allo_632,"tax_order_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - An increase in commuter tax allowance"
-global_quota,global_quota,"global_quota: All countries have signed the Paris agreement that aims to contain global warming ""well below +2 °C"". To limit global warming to this level, there is a maximum amount of greenhouse gases we can emit globally, called the carbon budget. Each country could aim to emit less than a share of the carbon budget. To respect the global carbon budget, countries that emit more than their national share would pay a fee to countries that emit less than their share.
-Do you support such a policy?"
-burden_share_population,burden_share_population,"burden_share_population: Suppose the above policy is in place. How should the carbon budget be divided among countries? - The emission share of a country should be proportional to its population, so that each human has an equal right to emit."
-burden_share_emissions,burden_share_emissions,"burden_share_emissions: Suppose the above policy is in place. How should the carbon budget be divided among countries? - The emission share of a country should be proportional to its current emissions, so that those who already emit more have more rights to emit."
-burden_share_historical,burden_share_historical,"burden_share_historical: Suppose the above policy is in place. How should the carbon budget be divided among countries? - Countries that have emitted more over the past decades (from 1990 onwards) should receive a lower emission share, because they have already used some of their fair share."
-burden_share_damages,burden_share_damages,"burden_share_damages: Suppose the above policy is in place. How should the carbon budget be divided among countries? - Countries that will be hurt more by climate change should receive a higher emission share, to compensate them for the damages."
-positive_treatment,positive_treatment,positive_treatment: positive_treatment
+religion,religion,religion: Which religion do you belong to?
+origin_java,origin_java,origin_java: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Java
+origin_sunda,origin_sunda,origin_sunda: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Sunda
+origin_batak,origin_batak,origin_batak: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Batak
+origin_bugis,origin_bugis,origin_bugis: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Bugis
+origin_arab,origin_arab,origin_arab: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Arab
+origin_chinese,origin_chinese,origin_chinese: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Chinese
+scale_asean,scale_asean,scale_asean: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - European
+scale_african,scale_african,scale_african: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - African
+weight_country,weight_country,
+weight_pop,weight_pop,
+weight_adult,weight_adult,
+weight_pop_oecd,weight_pop_oecd,
+weight_adult_oecd,weight_adult_oecd,
+knows_anthropogenic,knows_anthropogenic,
+index_knowledge_efa_global,index_knowledge_efa_global,index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values.

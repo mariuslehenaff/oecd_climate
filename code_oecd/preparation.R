@@ -1782,6 +1782,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Guilherme Boulos; Left: Fernando Haddad|Marina Silva; Center: Ciro Gomes|Geraldo Alckmin|Henrique Meirelles|Alvaro Dias; Right: João Amoêdo; Far right: Jair Bolsonaro|Cabo Daciolo")
       
+    } else if (country == "UK") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <-  -1*(e$vote %in% c("Labour", "Green", "SNP")) -0*(e$vote %in% c("Liberal Democrats")) + 1*(e$vote %in% c("Conservative")) + 2*(e$vote %in% c("Brexit Party")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Labour|Green|SNP; Center: Liberal Democrats; Right: Conservative; Far right: Brexit Party")
+      
     } 
     
     
@@ -2702,8 +2707,8 @@ countries_field_treated <- c("DK", "US", "FR")
 # us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
 e <- us <- prepare(country = "US", duration_min = 686, zscores = T)# .59
 e <- dk <- prepare(country = "DK", duration_min = 686, zscores = T)# .95
-e <- fr <- prepare(country = "FR", duration_min = 686, zscores = F)# .61
-e <- de <- prepare(country = "DE", duration_min = 686, zscores = F)# .96
+e <- fr <- prepare(country = "FR", duration_min = 686, zscores = T)# .61
+e <- de <- prepare(country = "DE", duration_min = 686, zscores = T)# .96
 
 # e <- au <- prepare(country = "AU", duration_min = 686)
 # e <- ca <- prepare(country = "CA", duration_min = 686)
@@ -2786,8 +2791,7 @@ merge_all_countries <- function(countries = countries, weight_adult = T, weight_
   return(all)
 }
 
-## PREPARE DATA FOR STATA
-# write.csv(all,"../data/all_211102.csv", row.names=F)
+
 prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   if (pilots) {
     usp1 <<- prepare(country = "US", wave = "pilot1", duration_min = 0)
@@ -2831,6 +2835,8 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
 
 prepare_all(zscores = FALSE)
 
+## PREPARE DATA FOR STATA
+# write.csv(all,"../data/all_211110.csv", row.names=F)
 all_stata <- janitor::clean_names(all)
 names_stata <- c()
 for (i in seq_along(names(all_stata))){
