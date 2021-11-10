@@ -97,7 +97,7 @@ regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, lo
   
 # Given a set of regressions with one common variable (along), gives the coefs and CI of the levels of that variable.
 mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 0, logit = c(FALSE), logit_margin = T, confidence = 0.95,
-                                      names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]])) { # to handle numeric variables: levels_along = ifelse(is.numeric(df[[along]]), c(), Levels(df[[along]]))
+                                      subsamples = NULL, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), weight = 'weight') { # to handle numeric variables: levels_along = ifelse(is.numeric(df[[along]]), c(), Levels(df[[along]]))
   # names_levels[1] should correspond to the control group (concatenation of along and the omitted level)
   # origin can be 0, the intercept, the true (or predicted) mean of the control group, or all variables at their mean except along (at 0 i.e. the control group)
   # TODO: logit, origin
@@ -119,8 +119,15 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 0, l
       CI <- cbind(coefs - z*sd, coefs + z*sd)       
     } else {
       if (logit[i]) warning("Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
+      if (!is.null(subsamples)) data_s <- df[df[[subsamples]] == Levels(df[[subsamples]])[i],] else data_s <- df
+      if (origin == 'others_at_mean') {
+        origin <- 0
+        CI_origin <- c(0, 0) # to be coded, perhaps with: emmeans(reg, ~ 1 | along)
+      } else { # TODO! check that these confidence intervals are correct (I doubt it)
+        mean_ci_origin <- binconf(x = sum(data_s[[weight]][data_s[[along]] == levels_along[1]], na.rm=T), n = sum(data_s[[weight]], na.rm=T), alpha = 1-confidence)
+        CI_origin <- mean_ci_origin[2:3] - (origin == 0) * mean_ci_origin[1] } # c(0, 0) # 
       coefs <- origin + c(0, reg$coefficients[names_levels[2:k]])
-      CI <- rbind(c(0, 0), confint(reg, names_levels[2:k], confidence)) 
+      CI <- rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) 
     }
     mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
     mean_ci <- rbind(mean_ci, mean_ci_reg)    
@@ -158,7 +165,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
     if (any(logit) & !logit_margin) print("Warning: Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
     if (!is.null(subsamples) & (missing(labels) | labels == outcome_vars)) labels <- Levels(df[[subsamples]])
     regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
-    mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, names_levels = names_levels, levels_along = levels_along)
+    mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, subsamples = subsamples, names_levels = names_levels, levels_along = levels_along, weight = weight)
   } else {
     if (!is.null(subsamples)) { # Configuration a.
       if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
@@ -247,6 +254,8 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste(
 }
 # example :
 example_covariates <- c("treatment", "gender", "income", "urbanity", "country_name")
+plot_along(vars = c("tax_transfers_support", "policies_support"), along = "treatment", covariates = example_covariates, save = F)
+plot_along(vars = "policies_support", along = "income_factor", subsamples = "country_name", covariates = example_covariates, save = F)
 plot_along(vars = "tax_transfers_support", along = "treatment", covariates = example_covariates, logit = T, logit_margin = FALSE)
 plot_along(vars = rev(variables_all_policies_support), along = "treatment", covariates = example_covariates, logit = T, logit_margin = FALSE)
 # mean_ci(outcome_vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"), covariates = example_covariates, logit = T)
