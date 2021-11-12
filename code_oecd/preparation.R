@@ -299,7 +299,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
   # remove_id("UA")
-  # e <- read_csv("../data/SK.csv")
+  # e <- read_csv("../data/UA.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -2595,7 +2595,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   raked <- rake(design= unweigthed, sample.margins = lapply(vars, function(x) return(as.formula(paste("~", x)))), population.margins = freqs)
   
   if (printWeights) {    print(summary(weights(raked))  )
-    print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique
+    print(paste("(mean w)^2 / (n * mean w^2): ", representativity_index(weights(raked)), " (pb if < 0.5)")) # <0.5 : problématique
     print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
   }
   return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
@@ -2729,32 +2729,31 @@ e <- de <- prepare(country = "DE", duration_min = 686, zscores = T)# .96
 e <- it <- prepare(country = "IT", duration_min = 686, zscores = T)# .83
 e <- pl <- prepare(country = "PL", duration_min = 686, zscores = T)# .72
 e <- jp <- prepare(country = "JP", duration_min = 686, zscores = T)# .70
-e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .61
-e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .56
+e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .59
+e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .41
 e <- sa <- prepare(country = "SA", duration_min = 686, zscores = T)# .77
 e <- id <- prepare(country = "ID", duration_min = 686, zscores = T)# .99
 e <- ca <- prepare(country = "CA", duration_min = 686, zscores = T)# .68 # TODO: pb check "cor(e$index_k": SK
 e <- uk <- prepare(country = "UK", duration_min = 686, zscores = T)# .63
 e <- ia <- prepare(country = "IA", duration_min = 686, zscores = T)# .13
-e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .14
+e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .18
 e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .28
-e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .21
+e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
 e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
-e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .34
-ua <- pl
-ua$country <- "UA"
-ua$country_name <- "Ukraine"
-current_countries <- c("DK", "US", "FR", "DE")
-ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
+e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
+e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
+current_countries <- c("DK", "US", "FR", "DE", "ID")
+ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
 All <- list()
-for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
+for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 # # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+# all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
 e <- all <- merge_all_countries()
+# representativity_index(all$weight)
+# representativity_index(all$weight_country)
 
-merge_all_countries <- function(countries = countries, weight_adult = T, weight_oecd = F) {
-  temp <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
-  all <- temp
+merge_all_countries <- function(df = All, weight_adult = T, weight_oecd = F) {
+  all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, df)
   
   all$weight_country <- all$weight
   all$weight_pop <- all$weight * population[all$country]
@@ -2821,13 +2820,11 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   mx <<- prepare(country = "MX", duration_min = 686, weighting = weighting, zscores = zscores)
   cn <<- prepare(country = "CN", duration_min = 686, weighting = weighting, zscores = zscores)
   sk <<- prepare(country = "SK", duration_min = 686, weighting = weighting, zscores = zscores)
-  ua <- pl
-  ua$country <- "UA"
-  ua$country_name <- "Ukraine"
-  current_countries <- c("DK", "US", "FR", "DE")
-  ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
+  ua <<- prepare(country = "UA", duration_min = 686, weighting = weighting, zscores = zscores)
+  current_countries <- c("DK", "US", "FR", "DE", "ID")
+  ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
   All <<- list()
-  for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <<- eval(parse(text = tolower(c)))
+  for (c in c(ongoing_countries, current_countries)) All[[c]] <<- eval(parse(text = tolower(c)))
   # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
   all <<- merge_all_countries()
   e <<- all
