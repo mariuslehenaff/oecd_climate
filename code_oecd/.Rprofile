@@ -21,8 +21,8 @@ package <- function(p, version = NULL, remove = FALSE, github = '') {
   library(p, character.only = TRUE)
 } # loads packages with automatical install if needed
 
-Paths = c("/Users/Bluebii/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Documents/www/oecd_climate/code_oecd")
-names(Paths) = c("Bluebii", "afabre")
+Paths = c("/Users/Bluebii/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Documents/www/oecd_climate/code_oecd", "C:/Users/ans7406/Documents/GitHub/oecd_climate/code_oecd")
+names(Paths) = c("Bluebii", "afabre", "ans7406")
 setwd(Paths[Sys.info()[7]])
 if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.1.1/library", "C:/Users/afabre/R-4.1.2/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0"))  # R-4.0.3/
 
