@@ -299,7 +299,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
   # remove_id("UA")
-  # e <- read_csv("../data/SK.csv")
+  # e <- read_csv("../data/UA.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -2741,15 +2741,13 @@ e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .28
 e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
 e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
 e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
-ua <- pl
-ua$country <- "UA"
-ua$country_name <- "Ukraine"
-current_countries <- c("DK", "US", "FR", "DE")
-ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
+e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
+current_countries <- c("DK", "US", "FR", "DE", "ID")
+ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
 All <- list()
-for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
+for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 # # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+# all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
 e <- all <- merge_all_countries()
 # representativity_index(all$weight)
 # representativity_index(all$weight_country)
@@ -2822,13 +2820,11 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   mx <<- prepare(country = "MX", duration_min = 686, weighting = weighting, zscores = zscores)
   cn <<- prepare(country = "CN", duration_min = 686, weighting = weighting, zscores = zscores)
   sk <<- prepare(country = "SK", duration_min = 686, weighting = weighting, zscores = zscores)
-  ua <- pl
-  ua$country <- "UA"
-  ua$country_name <- "Ukraine"
-  current_countries <- c("DK", "US", "FR", "DE")
-  ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
+  ua <<- prepare(country = "UA", duration_min = 686, weighting = weighting, zscores = zscores)
+  current_countries <- c("DK", "US", "FR", "DE", "ID")
+  ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
   All <<- list()
-  for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <<- eval(parse(text = tolower(c)))
+  for (c in c(ongoing_countries, current_countries)) All[[c]] <<- eval(parse(text = tolower(c)))
   # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
   all <<- merge_all_countries()
   e <<- all
