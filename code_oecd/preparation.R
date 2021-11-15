@@ -1034,7 +1034,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   if ("liberal_conservative" %in% names(e) & !("left_right" %in% names(e))) e$left_right <- e$liberal_conservative
   if ("left_right" %in% names(e)) {
-    temp <- -2 * (e$left_right %in% text_very_liberal) - (e$left_right %in% text_liberal) + (e$left_right %in% text_conservative) + 2 * (e$left_right %in% text_very_conservative) - 0.1 * (e$left_right %in% text_pnr | is.na(e$left_right))
+    temp <- -2 * (as.character(e$left_right) %in% c(text_very_liberal, "1")) - (as.character(e$left_right) %in% c(text_liberal, "2")) + (as.character(e$left_right) %in% c(text_conservative, "4")) + 2 * (as.character(e$left_right) %in% c(text_very_conservative, "5")) - 0.1 * (e$left_right %in% text_pnr | is.na(e$left_right))
     if ("liberal_conservative" %in% names(e)) e$liberal_conservative <- as.item(temp, labels = structure(c(-2:2,-0.1),
                                                                                                          names = c("Very liberal", "Liberal", "Moderate", "Conservative", "Very conservative", "PNR")),
                                                                                 missing.values=-0.1, annotation=Label(e$left_right))
