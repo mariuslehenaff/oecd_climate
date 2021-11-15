@@ -1,2 +1,5 @@
 UK_zipcode.csv filter=lfs diff=lfs merge=lfs -text
 Poland_zipcode.csv filter=lfs diff=lfs merge=lfs -text
+all.dta filter=lfs diff=lfs merge=lfs -text
+all_211102_stataNames.csv filter=lfs diff=lfs merge=lfs -text
+all_211110.csv filter=lfs diff=lfs merge=lfs -text
