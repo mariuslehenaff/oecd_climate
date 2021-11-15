@@ -53,47 +53,47 @@ loadings_efa <- list()
 
 {
   levels_quotas <- list(
-                 "gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
-                 "income" = c("Q1", "Q2", "Q3", "Q4"),
-                 "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
-                 "urban" = c(FALSE, TRUE),
-                 "diploma" = c("No secondary", "Vocational", "High school", "College"), # "FR_education" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
-                 "US_region" = c("Northeast", "Midwest","South", "West"),
-                 "US_core_metropolitan" = c(FALSE, TRUE),
-                 "US_race" = c("White only", "Hispanic", "Black", "Other"),
-                 "US_vote_2020" = c("Biden", "Trump", "Other/Non-voter"), #, "PNR/no right"),
-                 "DK_region" = c("Hovedstaden", "Midtjylland", "Nordjylland", "Sjælland", "Syddanmark"),
-                 "FR_region" = c("autre", "IDF", "Nord-Est", "Nord-Ouest", "Sud-Est", "Sud-Ouest"),
-                 "FR_urban_category" = c("GP", "Couronne_GP", "Other"),
-                 "FR_diploma" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
-                 "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
-                 "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
-                 "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
-                 "IA_region" = c("Northern", "Southern", "Central", "Eastern", "Western"),
-                 #"IA_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
-                 "IT_region" = c("North-West", "North-East" ,"Center", "South", "Islands"),
-                 "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
-                 "UK_region" = c("London", "Southern England", "Central UK", "Northern England", "Northern UK"),
-                 "UK_urban_category" = c("Rural", "City_Town", "Large_urban"),
-                 "PL_region" = c("North", "Central", "South-West", "Central-East", "South-East"),
-                 "SP_region" = c("East", "Center",  "South", "North", "North-West"),
-                 "DE_region" = c("Northern", "Western", "Central", "Eastern", "Southern"),
-                 "DE_urban_category" = c("Rural", "Towns_and_Suburbs", "Cities"),
-                 "JP_region" = c("Kanto", "Kansai", "North", "Chubu", "South"),
-                 "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
-                 "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
-                 "CN_region" = c("North", "Northeast", "East", "South Central", "West"),
-                 "CN_urban_category" = c("Rural", "Small_Urban", "Urban"),
-                 "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
-                 "MX_region" = c("Central-Western", "Central-Eastern", "North-East", "North-West", "South"),
-                 "MX_urban_category" = c("Rural", "Semiurbano", "Urbano"),
-                 "SK_region" = c("Seoul", "North", "West", "East"),
-                 "SK_urban_category" = c("District", "Town", "City"),
-                 "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
-                 "CA_region" = c("North-West", "Central", "Ontario", "Quebec", "East"),
-                 "TR_region" = c("Marmara", "West", "Central", "East"),
-                 "UA_region" = c("Center", "East", "South", "West")
-
+    "gender" = c("Female", "Other", "Male"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
+    "income" = c("Q1", "Q2", "Q3", "Q4"),
+    "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
+    "urban" = c(FALSE, TRUE),
+    "diploma" = c("No secondary", "Vocational", "High school", "College"), # "FR_education" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
+    "US_region" = c("Northeast", "Midwest","South", "West"),
+    "US_core_metropolitan" = c(FALSE, TRUE),
+    "US_race" = c("White only", "Hispanic", "Black", "Other"),
+    "US_vote_2020" = c("Biden", "Trump", "Other/Non-voter"), #, "PNR/no right"),
+    "DK_region" = c("Hovedstaden", "Midtjylland", "Nordjylland", "Sjælland", "Syddanmark"),
+    "FR_region" = c("autre", "IDF", "Nord-Est", "Nord-Ouest", "Sud-Est", "Sud-Ouest"),
+    "FR_urban_category" = c("GP", "Couronne_GP", "Other"),
+    "FR_diploma" = c("Aucun diplôme ou brevet", "CAP ou BEP", "Baccalauréat", "Supérieur"),
+    "FR_CSP" = c("Inactif", "Ouvrier", "Cadre", "Indépendant", "Intermédiaire", "Retraité", "Employé", "Agriculteur"),
+    "FR_region9" = c("autre","ARA", "Est", "Nord", "IDF", "Ouest", "SO", "Occ", "Centre", "PACA"),
+    "FR_taille_agglo" = c("rural", "2-20k", "20-99k", ">100k", "Paris"),
+    "IA_region" = c("Northern", "Southern", "Central", "Eastern", "Western"),
+    #"IA_urban_category" = c("less_5k", "5k_20k", "20k_50k", "50k_250k", "250k_3M", "more_3M"),
+    "IT_region" = c("North-West", "North-East" ,"Center", "South", "Islands"),
+    "IT_urban_category" = c("Cities", "Small Cities", "Rural"),
+    "UK_region" = c("London", "Southern England", "Central UK", "Northern England", "Northern UK"),
+    "UK_urban_category" = c("Rural", "City_Town", "Large_urban"),
+    "PL_region" = c("North", "Central", "South-West", "Central-East", "South-East"),
+    "SP_region" = c("East", "Center",  "South", "North", "North-West"),
+    "DE_region" = c("Northern", "Western", "Central", "Eastern", "Southern"),
+    "DE_urban_category" = c("Rural", "Towns_and_Suburbs", "Cities"),
+    "JP_region" = c("Kanto", "Kansai", "North", "Chubu", "South"),
+    "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
+    "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
+    "CN_region" = c("North", "Northeast", "East", "South Central", "West"),
+    "CN_urban_category" = c("Rural", "Small_Urban", "Urban"),
+    "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
+    "MX_region" = c("Central-Western", "Central-Eastern", "North-East", "North-West", "South"),
+    "MX_urban_category" = c("Rural", "Semiurbano", "Urbano"),
+    "SK_region" = c("Seoul", "North", "West", "East"),
+    "SK_urban_category" = c("District", "Town", "City"),
+    "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
+    "CA_region" = c("North-West", "Central", "Ontario", "Quebec", "East"),
+    "TR_region" = c("Marmara", "West", "Central", "East"),
+    "UA_region" = c("Center", "East", "South", "West")
+    
   )
   
   pop_freq <- list(
@@ -256,27 +256,27 @@ loadings_efa <- list()
   )
   
   quotas <- list("US_vote" = c("gender", "income", "age", "region", "urban", "race", "vote_2020"),
-            "AU" = c("gender", "income", "age", "region", "urban"),
-            "CA" = c("gender", "income", "age", "region", "urban"),
-            "DK" = c("gender", "income", "age", "region", "urban"),
-            "FR" = c("gender", "income", "age", "region", "diploma"), #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
-            # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
-            "DE" = c("gender", "income", "age", "region", "urban_category"),
-            "IT" = c("gender", "income", "age", "region", "urban_category"),
-            "JP" = c("gender", "income", "age", "region", "urban"),
-            "MX" = c("gender", "income", "age", "region", "urban_category"),
-            "PL" = c("gender", "income", "age", "region", "urban"),
-            "SK" = c("gender", "income", "age", "region", "urban_category"),
-            "SP" = c("gender", "income", "age", "region", "urban"),
-            "TR" = c("gender", "income", "age", "region", "urban"),
-            "UK" = c("gender", "income", "age", "region", "urban_category"),
-            "US" = c("gender", "income", "age", "region", "urban", "race"), 
-            "BR" = c("gender", "income", "age", "region", "urban"),
-            "CN" = c("gender", "income", "age", "region", "urban_category"),
-            "IA" = c("gender", "income", "age", "region", "urban"),
-            "ID" = c("gender", "income", "age", "region", "urban"),
-            "SA" = c("gender", "income", "age", "region", "urban"),
-            "UA" = c("gender", "income", "age", "region", "urban")
+                 "AU" = c("gender", "income", "age", "region", "urban"),
+                 "CA" = c("gender", "income", "age", "region", "urban"),
+                 "DK" = c("gender", "income", "age", "region", "urban"),
+                 "FR" = c("gender", "income", "age", "region", "diploma"), #, "urban_category") Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
+                 # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
+                 "DE" = c("gender", "income", "age", "region", "urban_category"),
+                 "IT" = c("gender", "income", "age", "region", "urban_category"),
+                 "JP" = c("gender", "income", "age", "region", "urban"),
+                 "MX" = c("gender", "income", "age", "region", "urban_category"),
+                 "PL" = c("gender", "income", "age", "region", "urban"),
+                 "SK" = c("gender", "income", "age", "region", "urban_category"),
+                 "SP" = c("gender", "income", "age", "region", "urban"),
+                 "TR" = c("gender", "income", "age", "region", "urban"),
+                 "UK" = c("gender", "income", "age", "region", "urban_category"),
+                 "US" = c("gender", "income", "age", "region", "urban", "race"), 
+                 "BR" = c("gender", "income", "age", "region", "urban"),
+                 "CN" = c("gender", "income", "age", "region", "urban_category"),
+                 "IA" = c("gender", "income", "age", "region", "urban"),
+                 "ID" = c("gender", "income", "age", "region", "urban"),
+                 "SA" = c("gender", "income", "age", "region", "urban"),
+                 "UA" = c("gender", "income", "age", "region", "urban")
   )
 }
 
@@ -299,7 +299,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
   # remove_id("UA")
-  # e <- read_csv("../data/SK.csv")
+  # e <- read_csv("../data/UA.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -336,7 +336,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
     # print(paste(i, label(e[[i]])))
   }
   e <- e[-c(1:2),]
-
+  
   return(e)
 }
 
@@ -354,14 +354,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     # levels(e[[i]]) <- c(levels(e[[i]]), "PNR")
     e[[i]][e[[i]] %in% text_pnr] <- "PNR"
   }
-
+  
   for (v in c("urban_category", "region")) e[[v]] <- sub("\r$", "", gsub('"', '', sub("\n$", "", e[[v]])))
   
   variables_duration <<- names(e)[grepl('duration', names(e))]
   if (length(grep('footprint', names(e)))>0) variables_footprint <<- names(e)[grepl('footprint', names(e)) & !grepl('order', names(e))]
   else variables_footprint <- c()
   for (i in intersect(c(variables_duration, variables_footprint,  # US pilot: age[22]=NA, km_driven[17]=none => NA by coercion
-    "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "zipcode", "donation"#, "age"
+                        "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "zipcode", "donation"#, "age"
   ), names(e))) {
     lab <- label(e[[i]])
     e[[i]] <- as.numeric(as.vector( gsub("[^0-9]", "", e[[i]])))
@@ -375,9 +375,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$km_driven) <- "km_driven: How many kilometers have you and your household members driven in 2019?" }
   if ("hh_children" %in% names(e)) {
     e$hh_size <- e$hh_adults + e$hh_children
-  # e$bad_quality <- 
-  # e$bad_quality[e$hh_size > 12] <- 1.3 + e$bad_quality[e$hh_size > 12] # 
-  # e$bad_quality[e$hh_children > 10] <- 1 + e$bad_quality[e$hh_children > 10] # 
+    # e$bad_quality <- 
+    # e$bad_quality[e$hh_size > 12] <- 1.3 + e$bad_quality[e$hh_size > 12] # 
+    # e$bad_quality[e$hh_children > 10] <- 1 + e$bad_quality[e$hh_children > 10] # 
     e$hh_size <- pmin(e$hh_size, 12)
     label(e$hh_size) <- "hh_size: How many people are in you household?" }
   if ("hh_children" %in% names(e)) e$hh_children <- pmin(e$hh_children, 10)
@@ -391,7 +391,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   for (j in intersect(c("couple", "CC_real", "CC_dynamic", "change_lifestyle", "pro_global_assembly", "pro_global_tax", "pro_tax_1p", "tax_transfers_trust", "investments_trust",
                         "standard_trust", "tax_transfers_effective", "investments_effective", "standard_effective", "tax_transfers_supports", "investments_supports", # TODO in pilot1, 2 add an "s" to [policies]_supports & add cap to Beef, incl. in other .R files
                         "standard_supports", "hit_by_covid", "member_environmental_orga", "relative_environmentalist", "standard_exists", "petition", paste0("wtp_", c(10, 30, 50, 100, 300, 500, 1000))
-              ), names(e))) {
+  ), names(e))) {
     temp <- 1*(e[j][[1]] %in% text_yes) - 0.1*(e[j][[1]] %in% text_pnr) # - (e[j][[1]] %in% text_no)
     temp[is.na(e[j][[1]])] <- NA
     e[j][[1]] <- as.item(temp, labels = structure(c(0,-0.1,1), names = c("No","PNR","Yes")),
@@ -399,22 +399,22 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     # e[j][[1]] <- as.item(as.character(e[j][[1]]), labels = structure(yes_no_names, names = c("NA","No","PNR","Yes")),
     #             missing.values = c("","PNR"), annotation=attr(e[j][[1]], "label"))
   }
-
+  
   for (j in intersect(c(#"gender", "region", "speaks_well", "education", "employment_status", "income", "wealth", "frequency_beef", "survey_biased", "vote", "media", "country_should_act_condition
-              "heating", "transport_available", "trust_govt", "trust_public_spending", "inequality_problem", "CC_exists", "CC_dynamics", "CC_stoppable", 
-              "CC_talks", "CC_worries", "interest_politics"#, "flight_quota_1000km", "flight_quota_1000km_global", "flight_quota_one_trip", "vote_participation"
-              # "standard_employment", "investments_employment", "tax_transfers_employment", "standard_side_effects", "investments_side_effects", "tax_transfers_side_effects", 
-              # "standard_incidence_poor", "investments_incidence_poor", "tax_transfers_incidence_poor", "standard_incidence_rich", "investments_incidence_rich", "tax_transfers_incidence_rich", 
-              # "standard_incidence_middle", "investments_incidence_middle", "tax_transfers_incidence_middle", "standard_incidence_urban", "investments_incidence_urban", "tax_transfers_incidence_urban", 
-              # "standard_incidence_rural", "investments_incidence_rural", "tax_transfers_incidence_rural", "standard_incidence_self", "investments_incidence_self", "tax_transfers_incidence_self", 
-              # "future_gdp", "envi", "equal_quota", "country_should_act", "insulation_compulsory", "flight_quota_1000km", "flight_quota_3000km", "flight_quota_one_trip", "ban_incentives"
-      ), names(e))) {
+    "heating", "transport_available", "trust_govt", "trust_public_spending", "inequality_problem", "CC_exists", "CC_dynamics", "CC_stoppable", 
+    "CC_talks", "CC_worries", "interest_politics"#, "flight_quota_1000km", "flight_quota_1000km_global", "flight_quota_one_trip", "vote_participation"
+    # "standard_employment", "investments_employment", "tax_transfers_employment", "standard_side_effects", "investments_side_effects", "tax_transfers_side_effects", 
+    # "standard_incidence_poor", "investments_incidence_poor", "tax_transfers_incidence_poor", "standard_incidence_rich", "investments_incidence_rich", "tax_transfers_incidence_rich", 
+    # "standard_incidence_middle", "investments_incidence_middle", "tax_transfers_incidence_middle", "standard_incidence_urban", "investments_incidence_urban", "tax_transfers_incidence_urban", 
+    # "standard_incidence_rural", "investments_incidence_rural", "tax_transfers_incidence_rural", "standard_incidence_self", "investments_incidence_self", "tax_transfers_incidence_self", 
+    # "future_gdp", "envi", "equal_quota", "country_should_act", "insulation_compulsory", "flight_quota_1000km", "flight_quota_3000km", "flight_quota_one_trip", "ban_incentives"
+  ), names(e))) {
     e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label"))) 
   } # TODO all $likert scales?
-
+  
   for (j in names(e)) {
     if ((grepl('race_|home_|CC_factor_|CC_responsible_|CC_affected_|change_condition_|effect_policies_|kaya_|scale_|Beef_|far_left|left$|center$|gilets_jaunes', j)
-        | grepl('^right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice|GHG_|investments_funding_|obstacles_insulation_', j))
+         | grepl('^right|far_right|liberal|conservative|humanist|patriot|apolitical|^environmentalist|feminist|political_identity_other_choice|GHG_|investments_funding_|obstacles_insulation_', j))
         & !(grepl('_other$|order_|liberal_conservative', j))) {
       temp <- label(e[[j]])
       e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
@@ -537,7 +537,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   negatives_index_care_poverty <<- rep(F, 3)
   conditions_index_care_poverty <<- rep(" > 0", 3)
   before_treatment_index_care_poverty <<- rep(F, 3)
-
+  
   variables_index_altruism <<- c("donation")
   negatives_index_altruism <<- c(F)
   conditions_index_altruism <<- c("> median(df$donation)")
@@ -609,7 +609,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   negatives_index_main_policies <<- c(negatives_index_investments_policy, negatives_index_tax_transfers_policy, negatives_index_standard_policy)
   conditions_index_main_policies <<- c(conditions_index_investments_policy, conditions_index_tax_transfers_policy, conditions_index_standard_policy)
   before_treatment_index_main_policies <<- c(before_treatment_index_investments_policy, before_treatment_index_tax_transfers_policy, before_treatment_index_standard_policy)
-
+  
   variables_index_beef_policies <<- c("beef_tax_support", "beef_subsidies_vegetables_support", "beef_subsidies_removal_support", "beef_ban_intensive_support")
   negatives_index_beef_policies <<- rep(F, 4)
   conditions_index_beef_policies <<- rep(" > 0", 4)
@@ -707,11 +707,16 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 120,000€/mois", "AU" = "more than $122,000", 
                       "CA" = "more than CA$74,000", "IA" = "more than ₹200,000", "SA" = "more than R120,000 per month")
   
-  text_wealth_q1 <- c("US" = "Less than $0 (I have a net debt)", "FR" = "Moins de 10 000€")
-  text_wealth_q2 <- c("US" = "Close to $0", "FR" = "Entre 10 001€ et 60 000€")
-  text_wealth_q3 <- c("US" = "Between $4,000 and $120,000", "FR" = "Entre 60 001€ et 180 000€")
-  text_wealth_q4 <- c("US" = "Between $120,000 and $380,000", "FR" = "Entre 180 001€ et 350 000€")
-  text_wealth_q5 <- c("US" = "More than $380,000", "FR" = "Plus de 350 001€")
+  text_wealth_q1 <- c("US" = "Less than $0 (I have a net debt)", "FR" = "Moins de 10 000€", "CA" = "Less than CA$20,000",
+                      "AU" = "Less than $70,000", "IA" = "Less than ₹2,00,000", "SA" = "Less than R0 (I have a net debt)")
+  text_wealth_q2 <- c("US" = "Close to $0", "FR" = "Entre 10 001€ et 60 000€", "CA" = "Between CA$20,000 and CA$150,000",
+                      "AU" = "Between $70,000 and $300,000", "IA" = "Between ₹2,00,000 and ₹5,00,000", "SA" = "Between R0 and R80,000")
+  text_wealth_q3 <- c("US" = "Between $4,000 and $120,000", "FR" = "Entre 60 001€ et 180 000€", "CA" = "Between CA$150,000 and CA$350,000",
+                      "AU" = "Between $300,000 and $550,000", "IA" = "Between ₹5,00,000 and ₹10,00,000", "SA" = "Between R80,000 and R160,000")
+  text_wealth_q4 <- c("US" = "Between $120,000 and $380,000", "FR" = "Entre 180 001€ et 350 000€", "CA" = "Between CA$350,000 and CA$700,000",
+                      "AU" = "Between $550,000 and $1,000,000", "IA" = "Between ₹10,00,000 and ₹20,00,000", "SA" = "Between R160,000 and R500,000")
+  text_wealth_q5 <- c("US" = "More than $380,000", "FR" = "Plus de 350 001€", "CA" = "More than CA$700,000",
+                      "AU" = "More than $1,000,000", "IA" = "More than ₹20,00,000", "SA" = "More than R500,000")
   
   text_full_time <- c("US" = "Full-time employed", "FR" = "Employé⋅e à temps plein")
   text_part_time <- c("US" = "Part-time employed", "FR" = "Employé⋅e à temps partiel")
@@ -863,7 +868,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   # first: 1000km / second: 3000km / third: one_trip
   text_flight_quota_rationing <- c("US" = "No one would be allowed to fly more than 12,000 miles between now and 2040.", "US" = "No one would be allowed to fly more than 40,000 miles between now and 2040.",
-                                      "US" = "No one would be allowed to fly more than one round-trip every two years.")
+                                   "US" = "No one would be allowed to fly more than one round-trip every two years.")
   text_flight_quota_tradable <- c("US" = "Those who plan to not fly within a given year would be allowed to sell their “right to fly” to someone who wants to fly but has already reached their quota of 12,000 miles.",
                                   "US" = "Those who plan to not fly within a given year would be allowed to sell their “right to fly” to someone who wants to fly but has already reached their quota of 40,000 miles.",
                                   "US" = "Those who plan to not fly within a two-year period would be allowed to sell their “right to fly” to someone who wants to fly more than once during these two years.")
@@ -920,10 +925,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   for (v in intersect(names(e), c(variables_burden_sharing, variables_burden_share, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
     temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                          names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
-                        missing.values=-0.1, annotation=Label(e[[v]]))
+                                               names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
+                      missing.values=-0.1, annotation=Label(e[[v]]))
   }
-
+  
   for (v in intersect(names(e), c(variables_CC_impacts, "will_insulate", "CC_will_end"))) { 
     temp <-  2 * (e[[v]] %in% text_very_likely) + (e[[v]] %in% text_somewhat_likely) - (e[[v]] %in% text_somewhat_unlikely) - 2 * (e[[v]] %in% text_very_unlikely) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) # TODO accommodate NA everywhere?
     e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1),
@@ -931,7 +936,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
                       missing.values=c(-0.1,NA), annotation=Label(e[[v]])) 
   }
   for (v in intersect(names(e), c(variables_obstacles_insulation, "will_insulate"))) e[[v]][e$home_landlord==F & e$home_owner==F] <- NA # Questions not asked for non-owners
-
+  
   for (v in intersect(names(e), c(variables_responsible_CC, variables_willing, variables_condition, "CC_knowledgeable", "net_zero_feasible", "CC_affects_self", "pro_ambitious_policies", "effect_halt_CC_lifestyle", "interested_politics"))) { 
     temp <-  2 * (e[[v]] %in% text_intensity_great_deal) + (e[[v]] %in% text_intensity_lot) - (e[[v]] %in% text_intensity_little) - 2 * (e[[v]] %in% text_intensity_not) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) 
     e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
@@ -949,44 +954,44 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     if (v %in% names(e)) {
       temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
       e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                            names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
-                          missing.values=-0.1, annotation=Label(e[[v]])) 
-  } }
+                                                 names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
+                        missing.values=-0.1, annotation=Label(e[[v]])) 
+    } }
   
   if (country == "DK") temp <- (e$urbanity %in% text_large_town) + 2 * (e$urbanity %in% text_small_city) + 3 * (e$urbanity %in% text_medium_city) + 4 * (e$urbanity %in% text_large_city) + 5 * (e$urbanity == "Copenhagen")
   else temp <-  (e$urbanity %in% text_small_town) + 2 * (e$urbanity %in% text_large_town) + 3 * (e$urbanity %in% text_small_city) + 4 * (e$urbanity %in% text_medium_city) + 5 * (e$urbanity %in% c(text_large_city, text_megalopolis))
   e$urbanity <- as.item(temp, labels = structure(c(0:5), # TODO!! make names/labels country-specific
-                        # names = c("Rural","Small town","Large town","Small city","Medium-size city","Large city")),
-                        names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")), 
-                      annotation=paste(Label(e$urbanity), "(Beware, the bins are not defined the same way in each country: for DK, 5/20/50/250/3M are replaced by 1/10/20/100/1.2M)"))
+                                                 # names = c("Rural","Small town","Large town","Small city","Medium-size city","Large city")),
+                                                 names = c("Rural","5-20k","20-50k","50-250k","250k-3M",">3M")), 
+                        annotation=paste(Label(e$urbanity), "(Beware, the bins are not defined the same way in each country: for DK, 5/20/50/250/3M are replaced by 1/10/20/100/1.2M)"))
   
   if ("speaks_well" %in% names(e)) temp <-  (e$speaks_well %in% text_speaks_well) + 2 * (e$speaks_well %in% text_speaks_native) - 1 * (e$speaks_well %in% text_speaks_no) 
   if ("speaks_well" %in% names(e)) e$speaks_well <- as.item(temp, labels = structure(c(-1:2),
-                        names = c("Cannot speak","Somewhat well","Well or very well","Native")),
-                      annotation=Label(e$speaks_well))
+                                                                                     names = c("Cannot speak","Somewhat well","Well or very well","Native")),
+                                                            annotation=Label(e$speaks_well))
   
   temp <-  (e$education %in% text_education_primary) + 2 * (e$education %in% text_education_secondary) + 3 * (e$education %in% text_education_vocational) + 4 * (e$education %in% text_education_high) + 5 * (e$education %in% text_education_college) + 6 * (e$education %in% text_education_master)
   e$education <- as.item(temp, labels = structure(c(0:6),
-                        names = c("None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
-                      annotation=Label(e$education))
+                                                  names = c("None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
+                         annotation=Label(e$education))
   
   temp <- case_when(e$education < 3 ~ 0, e$education == 3 ~ 1,  e$education == 4 ~ 2, e$education > 4 ~ 3) 
   e$diploma <- as.item(temp, labels = structure(c(0:3), names = c("No secondary", "Vocational", "High school", "College")), annotation="diploma: recoded from education - What is the highest level of education you have completed?")
   
   temp <-  (e$income %in% text_income_q1) + 2 * (e$income %in% text_income_q2) + 3 * (e$income %in% text_income_q3) + 4 * (e$income %in% text_income_q4) 
   e$income <- as.item(temp, labels = structure(c(1:4),
-                        names = c("Q1","Q2","Q3","Q4")),
+                                               names = c("Q1","Q2","Q3","Q4")),
                       annotation=Label(e$income))
   
   temp <-  (e$wealth %in% text_wealth_q1) + 2 * (e$wealth %in% text_wealth_q2) + 3 * (e$wealth %in% text_wealth_q3) + 4 * (e$wealth %in% text_wealth_q4) + 5 * (e$wealth %in% text_wealth_q5) 
   e$wealth <- as.item(temp, labels = structure(c(1:5), # /!\ in the US, data is individual but question is household. In DK, FR, both are household. In other countries, both are individual.
-                        names = c("Q1","Q2","Q3","Q4","Q5")),
+                                               names = c("Q1","Q2","Q3","Q4","Q5")),
                       annotation=Label(e$wealth))
-
+  
   temp <-  -1*(e$frequency_beef %in% text_frequency_beef_never) + 1 * (e$frequency_beef %in% text_frequency_beef_weekly) + 2 * (e$frequency_beef %in% text_frequency_beef_daily) 
   e$frequency_beef <- as.item(temp, labels = structure(c(-1:2),
-                        names = c("Never", "Rarely", "Weekly", "Daily")),
-                      annotation=Label(e$frequency_beef))
+                                                       names = c("Never", "Rarely", "Weekly", "Daily")),
+                              annotation=Label(e$frequency_beef))
   
   for (v in c("insulation", "availability_transport")) { 
     if (v %in% names(e)) {
@@ -994,23 +999,23 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Very poor", "Poor", "Fair", "Good", "Excellent", "PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]])) 
     } }
-
+  
   if ("CC_anthropogenic" %in% names(e)) temp <- 2 * (e$CC_anthropogenic %in% text_most) + (e$CC_anthropogenic %in% text_a_lot) - (e$CC_anthropogenic %in% text_a_little) - 2 * (e$CC_anthropogenic %in% text_none | e$CC_real == 'No') - 0.1 * ((e$CC_anthropogenic %in% text_pnr | is.na(e$CC_anthropogenic)) & e$CC_real == 'Yes')
   if ("CC_anthropogenic" %in% names(e)) e$CC_anthropogenic <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                                                                                   names = c("None", "A little", "Some", "A lot", "Most", "PNR")),
+                                                                                               names = c("None", "A little", "Some", "A lot", "Most", "PNR")),
                                                                       missing.values=-0.1, annotation=Label(e$CC_anthropogenic))
   
   
   if ("effect_halt_CC_economy" %in% names(e)) temp <- 2 * (e$effect_halt_CC_economy %in% text_very_positive_effects) + (e$effect_halt_CC_economy %in% text_positive_effects) - (e$effect_halt_CC_economy %in% text_negative_effects) - 2 * (e$effect_halt_CC_economy %in% text_very_negative_effects) - 0.1 * (e$effect_halt_CC_economy %in% text_pnr | is.na(e$effect_halt_CC_economy))
   if ("effect_halt_CC_economy" %in% names(e)) e$effect_halt_CC_economy <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                                                                                               names = c("Very negative", "Negative", "None", "Positive", "Very positive", "PNR")),
+                                                                                                           names = c("Very negative", "Negative", "None", "Positive", "Very positive", "PNR")),
                                                                                   missing.values=-0.1, annotation=Label(e$effect_halt_CC_economy))
   
   
   for (v in intersect(names(e), c("if_other_do_more", "if_other_do_less"))) {
-  temp <- 2 * (e[[v]] %in% text_much_more) + (e[[v]] %in% text_more) - (e[[v]] %in% text_less) - 2 * (e[[v]] %in% text_much_less) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
-  e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Much less", "Less", "About the same", "More", "Much more", "PNR")),
-                    missing.values=-0.1, annotation=Label(e[[v]])) }
+    temp <- 2 * (e[[v]] %in% text_much_more) + (e[[v]] %in% text_more) - (e[[v]] %in% text_less) - 2 * (e[[v]] %in% text_much_less) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
+    e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Much less", "Less", "About the same", "More", "Much more", "PNR")),
+                      missing.values=-0.1, annotation=Label(e[[v]])) }
   
   if ("view_govt" %in% names(e)) temp <- (e$view_govt %in% text_govt_should_do_more) - (e$view_govt %in% text_govt_do_too_much) - 0.1 * (e$view_govt %in% text_pnr | is.na(e$view_govt))
   if ("view_govt" %in% names(e)) e$view_govt <- as.item(temp, labels = structure(c(-1:1,-0.1), names = c("Does too much", "Doing right amount", "Should do more", "PNR")),
@@ -1019,43 +1024,43 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   if ("problem_inequality" %in% names(e)) temp <- 2 * (e$problem_inequality %in% text_issue_very_serious) + (e$problem_inequality %in% text_issue_serious) - (e$problem_inequality %in% text_issue_small) - 2 * (e$problem_inequality %in% text_issue_not) - 0.1 * (e$problem_inequality %in% text_pnr | is.na(e$problem_inequality))
   if ("problem_inequality" %in% names(e)) e$problem_inequality <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                                                                                                           names = c("Not an issue at all", "A small issue", "An issue", "A serious issue", "A very serious issue", "PNR")),
+                                                                                                   names = c("Not an issue at all", "A small issue", "An issue", "A serious issue", "A very serious issue", "PNR")),
                                                                           missing.values=-0.1, annotation=Label(e$problem_inequality))
   
   if ("future_richness" %in% names(e)) temp <- 2 * (e$future_richness %in% text_much_richer) + (e$future_richness %in% text_richer) - (e$future_richness %in% text_poorer) - 2 * (e$future_richness %in% text_much_poorer) - 0.1 * (e$future_richness %in% text_pnr | is.na(e$future_richness))
   if ("future_richness" %in% names(e)) e$future_richness <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                                                                                                   names = c("Much poorer", "Poorer", "As rich as now", "Richer", "Much richer", "PNR")),
+                                                                                             names = c("Much poorer", "Poorer", "As rich as now", "Richer", "Much richer", "PNR")),
                                                                     missing.values=-0.1, annotation=Label(e$future_richness))
   
   if ("liberal_conservative" %in% names(e) & !("left_right" %in% names(e))) e$left_right <- e$liberal_conservative
   if ("left_right" %in% names(e)) {
-    temp <- -2 * (e$left_right %in% text_very_liberal) - (e$left_right %in% text_liberal) + (e$left_right %in% text_conservative) + 2 * (e$left_right %in% text_very_conservative) - 0.1 * (e$left_right %in% text_pnr | is.na(e$left_right))
+    temp <- -2 * (as.character(e$left_right) %in% c(text_very_liberal, "1")) - (as.character(e$left_right) %in% c(text_liberal, "2")) + (as.character(e$left_right) %in% c(text_conservative, "4")) + 2 * (as.character(e$left_right) %in% c(text_very_conservative, "5")) - 0.1 * (e$left_right %in% text_pnr | is.na(e$left_right))
     if ("liberal_conservative" %in% names(e)) e$liberal_conservative <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                              names = c("Very liberal", "Liberal", "Moderate", "Conservative", "Very conservative", "PNR")),
-                              missing.values=-0.1, annotation=Label(e$left_right))
+                                                                                                         names = c("Very liberal", "Liberal", "Moderate", "Conservative", "Very conservative", "PNR")),
+                                                                                missing.values=-0.1, annotation=Label(e$left_right))
     e$left_right <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Very left", "Left", "Center", "Right", "Very right", "PNR")),
-                                      missing.values=-0.1, annotation=Label(e$left_right))
+                            missing.values=-0.1, annotation=Label(e$left_right))
   }
   
   if ("transport_available" %in% names(e)) temp <-  (e$transport_available %in% text_transport_available_yes_limited) + 2 * (e$transport_available %in% text_transport_available_yes_easily) - (e$transport_available %in% text_transport_available_not_at_all) - 0.1*(e$transport_available %in% text_pnr)
   if ("transport_available" %in% names(e)) e$transport_available <- as.item(temp, labels = structure(c(-1:2,-0.1),
-                        names = c("Not at all", "Not so much", "Yes but limited", "Yes, easily", "PNR")),
-                      missing.values=-0.1, annotation=Label(e$transport_available)) # TODO: waves
+                                                                                                     names = c("Not at all", "Not so much", "Yes but limited", "Yes, easily", "PNR")),
+                                                                            missing.values=-0.1, annotation=Label(e$transport_available)) # TODO: waves
   
   if ("trust_govt" %in% names(e)) temp <-  (e$trust_govt %in% text_trust_govt_sometimes) + 2 * (e$trust_govt %in% text_trust_govt_often) + 3 * (e$trust_govt %in% text_trust_govt_always) - 0.1*(e$trust_govt %in% text_pnr)
   if ("trust_govt" %in% names(e)) e$trust_govt <- as.item(temp, labels = structure(c(0:3,-0.1),
-                        names = c("Never","Only some of the time","Most of the time","Nearly all the time","PNR")),
-                      missing.values=-0.1, annotation=Label(e$trust_govt))
+                                                                                   names = c("Never","Only some of the time","Most of the time","Nearly all the time","PNR")),
+                                                          missing.values=-0.1, annotation=Label(e$trust_govt))
   
   if ("inequality_problem" %in% names(e)) temp <-  2 * (e$inequality_problem %in% text_inequality_very_serious) + (e$inequality_problem %in% text_inequality_serious) - (e$inequality_problem %in% text_inequality_small) - 2 * (e$inequality_problem %in% text_inequality_not) - 0.1 * (e$inequality_problem %in% text_pnr)
   if ("inequality_problem" %in% names(e)) e$inequality_problem <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                        names = c("Very serious problem","Serious problem","A problem","Small problem","Not a problem at all","PNR")),
-                      missing.values=-0.1, annotation=Label(e$inequality_problem)) # TODO: waves
-
+                                                                                                   names = c("Very serious problem","Serious problem","A problem","Small problem","Not a problem at all","PNR")),
+                                                                          missing.values=-0.1, annotation=Label(e$inequality_problem)) # TODO: waves
+  
   if ("future_gdp" %in% names(e)) temp <-  (e$future_gdp %in% text_future_richer) - (e$future_gdp %in% text_future_poorer) - 0.1 * (e$future_gdp %in% text_pnr)
   if ("future_gdp" %in% names(e)) e$future_gdp <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                        names = c("Poorer","About as rich", "Richer","PNR")),
-                      missing.values=-0.1, annotation=Label(e$future_gdp))
+                                                                                   names = c("Poorer","About as rich", "Richer","PNR")),
+                                                          missing.values=-0.1, annotation=Label(e$future_gdp))
   
   if ("envi" %in% names(e)) {
     e$envi[e$envi %in% text_envi_pro_envi] <- "Pro environmental action"
@@ -1064,17 +1069,17 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$envi[e$envi %in% text_envi_progress] <- "Not a pb: progress"
     e$envi <- as.item(as.factor(e$envi), missing.values = c("PNR", "", NA), annotation=paste(attr(e$envi, "label")))
   }
-    
+  
   if ("CC_exists" %in% names(e)) temp <-  (e$CC_exists %in% text_CC_exists_human) - (e$CC_exists %in% text_CC_exists_not) - 0.1 * (e$CC_exists %in% text_pnr)
   if ("CC_exists" %in% names(e)) e$CC_exists <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                        names = c("Not a reality","Natural", "Anthropogenic","PNR")),
-                      missing.values=-0.1, annotation=Label(e$CC_exists))
-    
+                                                                                 names = c("Not a reality","Natural", "Anthropogenic","PNR")),
+                                                        missing.values=-0.1, annotation=Label(e$CC_exists))
+  
   if ("CC_dynamics" %in% names(e)) temp <-  (e$CC_dynamics %in% text_CC_dynamics_rise) - (e$CC_dynamics %in% text_CC_dynamics_decrease) - 2 * (e$CC_dynamics %in% text_CC_dynamics_none) - 0.1 * (e$CC_dynamics %in% text_pnr)
   if ("CC_dynamics" %in% names(e)) e$CC_dynamics <- as.item(temp, labels = structure(c(-2:1,-0.1),
-                        names = c("No impact","Decrease", "Stabilize","Rise more slowly","PNR")),
-                      missing.values=-0.1, annotation=Label(e$CC_dynamics))
-
+                                                                                     names = c("No impact","Decrease", "Stabilize","Rise more slowly","PNR")),
+                                                            missing.values=-0.1, annotation=Label(e$CC_dynamics))
+  
   if ("CC_stoppable" %in% names(e)) {
     e$CC_stoppable <- as.character(e$CC_stoppable)
     e$CC_stoppable[e$CC_stoppable %in% text_CC_stoppable_no_influence] <- "No influence"
@@ -1087,13 +1092,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   temp <-  (e$CC_talks %in% text_CC_talks_monthly) - (e$CC_talks %in% text_CC_talks_never) - 0.1 * (e$CC_talks %in% text_pnr)
   e$CC_talks <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                        names = c("Never","Yearly","Monthly","PNR")),
+                                                 names = c("Never","Yearly","Monthly","PNR")),
                         missing.values=-0.1, annotation=Label(e$CC_talks))
   
   if ("equal_quota" %in% names(e)) temp <-  2 * (e$equal_quota %in% text_equal_quota_no_redistribution) + (e$equal_quota %in% text_equal_quota_yes) - (e$equal_quota %in% text_equal_quota_no_grand_fathering) - 2 * (e$equal_quota %in% text_equal_quota_no_restriction) - 0.1 * (e$equal_quota %in% text_pnr)
   if ("equal_quota" %in% names(e)) e$equal_quota <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                        names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
-                      missing.values=-0.1, annotation=Label(e$equal_quota))
+                                                                                     names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
+                                                            missing.values=-0.1, annotation=Label(e$equal_quota))
   
   if ("burden_sharing_income" %in% names(e)) {
     e$pro_polluter_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0)
@@ -1121,34 +1126,34 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   }
   
   if (country=="US" & wave=="pilot2") e$equal_quota2 <- as.item(e$equal_quota, labels = structure(c(-2,-1,1,2,-0.1),
-                                                                                         names = c("No, against restriction","No, grand-fathering","Yes","No, more to vulnerable","PNR")),
+                                                                                                  names = c("No, against restriction","No, grand-fathering","Yes","No, more to vulnerable","PNR")),
                                                                 missing.values=-0.1, annotation=Label(e$equal_quota))
-    
+  
   if ("country_should_act" %in% names(e)) temp <-  (e$country_should_act %in% text_should_act_yes) - (e$country_should_act %in% text_should_act_no) - 0.1 * (e$country_should_act %in% text_pnr)
   if ("country_should_act" %in% names(e)) e$country_should_act <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                        names = c("No","Only if international agreement", "Yes","PNR")),
-                      missing.values=-0.1, annotation=Label(e$country_should_act))
+                                                                                                   names = c("No","Only if international agreement", "Yes","PNR")),
+                                                                          missing.values=-0.1, annotation=Label(e$country_should_act))
   
   # e$country_should_act_condition[e$country_should_act_condition %in% text_should_act_condition_compensation] <- 1
   # e$country_should_act_condition[e$country_should_act_condition %in% text_should_act_condition_reciprocity] <- 0
   # e$country_should_act_condition[e$country_should_act_condition %in% text_should_act_condition_free_riding] <- -1
   if ("country_should_act_condition" %in% names(e)) temp <- (e$country_should_act_condition %in% text_should_act_condition_compensation) - (e$country_should_act_condition %in% text_should_act_condition_free_riding) - 0.1 * (e$country_should_act_condition %in% text_pnr)
   if ("country_should_act_condition" %in% names(e)) e$country_should_act_condition <- as.item(temp, labels = structure(c(-1:1), # No PNR option here, but question asked only if Yes to country_should_act
-                                                                     names = c("Free-riding","Reciprocity", "Compensation")),
-                                             annotation=Label(e$country_should_act))
+                                                                                                                       names = c("Free-riding","Reciprocity", "Compensation")),
+                                                                                              annotation=Label(e$country_should_act))
   
   for (v in intersect(names(e), c(variables_side_effects, variables_employment))) { # TODO bug when variables_side_effects is not yet defined (pilots)
     temp <-  (e[[v]] %in% text_effects_positive) - (e[[v]] %in% text_effects_negative) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                          names = c("Negative","None notable","Positive","PNR")),
-                        missing.values=-0.1, annotation=Label(e[[v]]))
+                                               names = c("Negative","None notable","Positive","PNR")),
+                      missing.values=-0.1, annotation=Label(e[[v]]))
   }  
-
+  
   for (v in intersect(names(e), c(variables_incidence))) { 
     temp <-  (e[[v]] %in% text_incidence_win) - (e[[v]] %in% text_incidence_lose) - 0.1 * (e[[v]] %in% text_pnr)
     e[[v]] <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                          names = c("Lose","Unaffected","Win","PNR")),
-                        missing.values=-0.1, annotation=Label(e[[v]]))
+                                               names = c("Lose","Unaffected","Win","PNR")),
+                      missing.values=-0.1, annotation=Label(e[[v]]))
   }
   
   for (v in intersect(names(e), c(variables_win_lose))) {
@@ -1157,16 +1162,16 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
                                                names = c("Lose a lot", "Mostly lose", "Neither win nor lose","Mostly win", "Win a lot","PNR")),
                       missing.values=-0.1, annotation=Label(e[[v]]))
   }
-    
+  
   if ("CC_worries" %in% names(e)) temp <-  (e$CC_worries %in% text_CC_worries_very) - (e$CC_worries %in% text_CC_worries_not) - 2 * (e$CC_worries %in% text_CC_worries_not_at_all) - 0.1 * (e$CC_worries %in% text_pnr)
   if ("CC_worries" %in% names(e)) e$CC_worries <- as.item(temp, labels = structure(c(-2:1,-0.1),
-                        names = c("No worried at all","Not worried", "Worried","Very worried","PNR")),
-                      missing.values=-0.1, annotation=Label(e$CC_worries))
+                                                                                   names = c("No worried at all","Not worried", "Worried","Very worried","PNR")),
+                                                          missing.values=-0.1, annotation=Label(e$CC_worries))
   
   if ("occupation" %in% names(e)) temp <-  (e$occupation %in% text_clerc) - 2*(e$occupation %in% text_none_above) - 1 * (e$occupation %in% text_manual) + 2 * (e$occupation %in% text_independent) - 0.1*(is.na(e$occupation))
   if ("occupation" %in% names(e)) e$occupation <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Other","Manual","Skilled", "Clerc","Independent","PNR")),
                                                           missing.values=-0.1, annotation=Label(e$occupation))
-
+  
   e$employment_status <- case_when(e$employment_status %in% text_full_time ~ "Full-time employed",
                                    e$employment_status %in% text_part_time ~ "Part-time employed",
                                    e$employment_status %in% text_self_employed ~ "Self-employed",
@@ -1180,9 +1185,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   e[e$employment_status == "Retired", "employment_agg"] <- "Retired"
   e[e$employment_status == "Self-employed" | e$employment_status == "Full-time employed" | e$employment_status == "Part-time employed", "employment_agg"] <- "Working"
   e$employment_agg <- as.factor(e$employment_agg)
-
+  
   e$inactive <- e$employment_agg %in% c("Retired", "Not working")
-
+  
   if ("sector_active" %in% names(e)) {
     e$sector[e$employment_agg == "Student"] <- "Student"
     e$sector[e$inactive == T] <- e$sector_inactive[e$inactive == T]
@@ -1194,19 +1199,30 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$polluting_sector) <- "polluting_sector: T/F whether sector is polluting (i.e. part of Oil, gas or cal/Cement/Construction/Automobile/Iron and steel/Chemical/Plastics/Pulp and paper/Farming/Air transport)"
   }
   
-  if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses == "Less than $20") + 50*(e$heating_expenses == "$20 – $75") + 100*(e$heating_expenses == "$76 – $125") + 167*(e$heating_expenses == "$126 – $200") + 225*(e$heating_expenses == "$201 – $250") + 275*(e$heating_expenses == "$251 – $300") + 
-          350*(e$heating_expenses == "More than $300")  - 0.1*(e$heating_expenses %in% text_pnr) - 0.1*is.na(e$heating_expenses)
+  text_heating_expenses_1 <- c("US" = "Less than $20")
+  text_heating_expenses_2 <- c("US" = "$20 – $75")
+  text_heating_expenses_3 <- c("US" = "$76 – $125")
+  text_heating_expenses_4 <- c("US" = "$126 – $200")
+  text_heating_expenses_5 <- c("US" = "$201 – $250")
+  text_heating_expenses_6 <- c("US" = "$251 – $300")
+  text_heating_expenses_7 <- c("US" = "More than $300")
+  
+  # TODO: problem with CA (yearly expenses and only 4 categories in the csv), SA 5 categories (from <R2,000 to >R20,000),
+  # AU: only xxx in responses (might be bc. we export wrong csv), IA problem gas <- heating for people who answred in English (~90% of the sample)
+  
+  if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses %in% text_heating_expenses_1) + 50*(e$heating_expenses %in% text_heating_expenses_2) + 100*(e$heating_expenses %in% text_heating_expenses_3) + 167*(e$heating_expenses %in% text_heating_expenses_4) + 225*(e$heating_expenses %in% text_heating_expenses_5) + 275*(e$heating_expenses %in% text_heating_expenses_6) + 
+    350*(e$heating_expenses %in% text_heating_expenses_7)  - 0.1*(e$heating_expenses %in% text_pnr) - 0.1*is.na(e$heating_expenses)
   if ("heating_expenses" %in% names(e)) e$heating_expenses <- as.item(temp, labels = structure(c(-0.1, 10, 50, 100, 167, 225, 275, 350), names = c("Included","< 20","21-75", "76-125","126-200", "201-250", "251-300", "> 300")),
                                                                       missing.values=-0.1, annotation=Label(e$heating_expenses))
   
   if ("gas_expenses" %in% names(e)) temp <-  15*(e$gas_expenses == "$5 – $25") + 50*(e$gas_expenses == "$26 – $75") + 100*(e$gas_expenses== "$76 – $125") + 150*(e$gas_expenses == "$126 – $175") + 200*(e$gas_expenses== "$176 – $225") + 250*(e$gas_expenses == "More than $225")
   if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 15, 50, 100, 150, 200, 250), names = c("< 5","5-25","26-75", "76-125","126-175", "176-225", "> 225")),
-                                                          annotation=Label(e$gas_expenses))
+                                                              annotation=Label(e$gas_expenses))
   
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_mandatory] <- "Mandatory"
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_voluntary] <- "Voluntary"
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory <- as.item(as.character(e$insulation_compulsory), labels = structure(c("Mandatory", "Voluntary", "PNR"), names=c("Mandatory", "Voluntary", "PNR")), 
-                                      missing.values = "PNR", annotation=Label(e$insulation_compulsory))
+                                                                                missing.values = "PNR", annotation=Label(e$insulation_compulsory))
   
   if(any(grepl("flight_quota", names(e)))) {
     e$flight_quota <- e$flight_quota_1000km
@@ -1215,7 +1231,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$flight_quota[!is.na(e$flight_quota_one_trip)] <- e$flight_quota_one_trip[!is.na(e$flight_quota_one_trip)]
     label(e$flight_quota) <- "flight_quota: ~ Given that the govt decides to limit average flights per person, what do you prefer? Rationing / Tradable quota / PNR. Variants (distance per year): 1000km/1000km global/one round-trip every two years. [units adjusted to country]"
     variables_flight_quota <<- names(e)[grepl('flight_quota', names(e))]
-  
+    
     for (v in variables_flight_quota) {
       e[[v]][e[[v]] %in% text_flight_quota_rationing] <- "Rationing"
       e[[v]][e[[v]] %in% text_flight_quota_tradable] <- "Tradable" }
@@ -1225,9 +1241,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$variant_flight_quota[!is.na(e$flight_quota_1000km)] <- "1000km"
     e$variant_flight_quota[!is.na(e$flight_quota_one_trip)] <- "1 trip"
     for (v in variables_flight_quota) { e[[v]] <- as.item(as.character(e[[v]]), labels = structure(c("Rationing", "Tradable", "PNR"), 
-                            names=c("Rationing", "Tradable", "PNR")), missing.values = "PNR", annotation=Label(e[[v]])) }
+                                                                                                   names=c("Rationing", "Tradable", "PNR")), missing.values = "PNR", annotation=Label(e[[v]])) }
   }
-
+  
   if ("ban_incentives" %in% names(e)) {
     e$ban_incentives[e$ban_incentives %in% text_ban_incentives_encourage] <- "Encourage"
     e$ban_incentives[e$ban_incentives %in% text_ban_incentives_force] <- "Force"
@@ -1236,8 +1252,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   if ("interest_politics" %in% names(e)) temp <-  (e$interest_politics %in% text_interest_politics_lot) - (e$interest_politics %in% text_interest_politics_no) - 0.1 * (e$interest_politics %in% text_pnr)
   if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                        names = c("Not really or not at all","A little", "A lot","PNR")),
-                      missing.values=-0.1, annotation=Label(e$interest_politics))
+                                                                                                 names = c("Not really or not at all","A little", "A lot","PNR")),
+                                                                        missing.values=-0.1, annotation=Label(e$interest_politics))
   
   if ("media" %in% names(e)) {
     e$media[e$media %in% text_media_other] <- "Other"
@@ -1308,13 +1324,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$wtp <- 1*(e$wtp %in% c(1, text_yes)) - 0.1*(is.na(e$wtp) | e$wtp=="")
     e$wtp <- as.item(e$wtp, labels = structure(c(-0.1,0,1), names = c("PNR","No","Yes")), missing.values = c("",NA,"PNR"), annotation=attr(e$wtp, "label"))
   }
- 
+  
   if ("left" %in% names(e)) {
     e$left_right <- pmax(-2,pmin(2,-2 * e$far_left - 1*e$left + 1*e$right + 2 * e$far_right))
     is.na(e$left_right) <- (e$left_right == 0) & !e$center
     e$Left_right <- as.factor(e$left_right)
     e$left_right <- as.item(as.numeric(as.vector(e$left_right)), labels = structure(c(-2:2),
-                            names = c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right")), annotation="left_right: scale from -2 (far left) to +2 (far right) - Political leaning - How would you define yourself? Multiple answers are possible: (Far) left/Center/(Far) right/Liberal/Conservative/Humanist/Patriot/Apolitical/Environmentalist/Feminist/Other (specify)")
+                                                                                    names = c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right")), annotation="left_right: scale from -2 (far left) to +2 (far right) - Political leaning - How would you define yourself? Multiple answers are possible: (Far) left/Center/(Far) right/Liberal/Conservative/Humanist/Patriot/Apolitical/Environmentalist/Feminist/Other (specify)")
     levels(e$Left_right) <- c("Far left", "Left or center-left", "Center", "Right or center-right", "Far right", "Indeterminate")
     e$Left_right[is.na(e$Left_right)] <- "Indeterminate"
     e$indeterminate <- e$Left_right == "Indeterminate"
@@ -1323,10 +1339,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$left_right_pnr <- as.factor(e$left_right_pnr)
     e$left_right_pnr <- relevel(relevel(e$left_right_pnr, "Left or center-left"), "Far left")
     label(e$left_right) <- "left_right: How would you define yourself? Far Left/Left or center-left/Center/Right or center-right/Far right"
-  
+    
     e$right_pol <- e$left_right > 0
     label(e$right_pol) <- "right_pol: Dummy equal to one if the person define herself as Right or Far right"
-    }
+  }
   
   if ("gilets_jaunes_dedans" %in% names(e)) {
     e$gilets_jaunes[e$gilets_jaunes_NSP==T] <- -0.1
@@ -1335,7 +1351,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$gilets_jaunes[e$gilets_jaunes_soutien==T] <- 1
     e$gilets_jaunes[e$gilets_jaunes_dedans==T] <- 2
     e$gilets_jaunes <- as.item(e$gilets_jaunes, missing.values=-0.1, labels = structure(c(-0.1,-1:2), names=c('NSP', 'oppose', 'comprend', 'soutient', 'est_dedans')),
-                                annotation="gilets_jaunes: -1: s'oppose / 0: comprend sans soutenir ni s'opposer / 1: soutient / 2: fait partie des gilets jaunes (gilets_jaunes_compris/oppose/soutien/dedans/NSP)" )
+                               annotation="gilets_jaunes: -1: s'oppose / 0: comprend sans soutenir ni s'opposer / 1: soutient / 2: fait partie des gilets jaunes (gilets_jaunes_compris/oppose/soutien/dedans/NSP)" )
     e$Gilets_jaunes <- as.character(e$gilets_jaunes)
     e$Gilets_jaunes[e$gilets_jaunes=="NSP"] <- "NSP"
     e$Gilets_jaunes <- as.factor(e$Gilets_jaunes)
@@ -1385,7 +1401,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   if ('standard_cost_effective' %in% names(e)) variables_investments_effect <<- sub("negative", "positive_negative", sub("cost_effective", "costless_costly", variables_investments_effect))
   if ('standard_cost_effective' %in% names(e)) variables_tax_transfers_effect <<- sub("negative", "positive_negative", sub("cost_effective", "costless_costly", variables_tax_transfers_effect))
   if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
-
+  
   if ("standard_trust" %in% names(e)) e$policies_trust <- ((e$standard_trust=="Yes") + (e$investments_trust=="Yes") + (e$tax_transfers_trust=="Yes") - (e$standard_trust=="No") - (e$investments_trust=="No") - (e$tax_transfers_trust=="No"))/3
   if ("standard_trust" %in% names(e)) label(e$policies_trust) <- "policies_trust: Could [Country] government be trusted to correctly implement an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Yes/No/PNR"
   if ("standard_effective" %in% names(e)) e$policies_effective <- ((e$standard_effective=="Yes") + (e$investments_effective=="Yes") + (e$tax_transfers_effective=="Yes") - (e$standard_effective=="No") - (e$investments_effective=="No") - (e$tax_transfers_effective=="No"))/3
@@ -1425,7 +1441,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   for (v in names_policies) e$policies_rich <- e$policies_rich + e[[paste(v, text_incidence, "rich", sep="_")]]/3
   for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, text_incidence, "rural", sep="_")]]/3
   if ("standard_incidence_urban" %in% names(e)) for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, text_incidence, "urban", sep="_")]]/3
-
+  
   if (country %in% c("FR", "IT", "UK", "DE", "MX", "SK")) {
     e$urban_category[e$urban_category == "0"] <- NA
   }
@@ -1450,10 +1466,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
                     e$country == "ID" ~ e$urban %in% c("Kota", "Capital town of a Kabupaten"),
                     e$country == "SA" ~ e$urban %in% c("In a capital of a District municipality", "In a metropolitan municipality"), # BUG TODO!
                     # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
-                     TRUE ~ NA)
+                    TRUE ~ NA)
   e$urban <- temp
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
-
+  
   if ("CC_affected_2050" %in% names(e)) {
     e$CC_affected_min <- 2100
     e$CC_affected_min[e$CC_affected_2050==T] <- 2050
@@ -1462,7 +1478,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$CC_affected_min[e$CC_affected_1960==T] <- 1960
     e$CC_affected_min[e$CC_affected_pnr==T] <- -0.1
     e$CC_affected_min <- as.item(e$CC_affected_min, labels = structure(c(1960,1990,2020,2050,2100,-0.1),
-                                                          names = c("1960","1990","2020","2050","None","PNR")),
+                                                                       names = c("1960","1990","2020","2050","None","PNR")),
                                  missing.values=-0.1, annotation=Label(e$CC_affected_min))
     label(e$CC_affected_min) <- "CC_affected_min: Youngest generation seriously affected by climate change. 2100/2050/2020/1990/1960/PNR" 
   }
@@ -1470,7 +1486,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   if ("CC_impacts" %in% names(e)) {
     temp <- -2*(e$CC_impacts %in% text_CC_impacts_cataclysmic) -1*(e$CC_impacts %in% text_CC_impacts_disastrous) + 1*(e$CC_impacts %in% text_CC_impacts_small) + 2*(e$CC_impacts %in% text_CC_impacts_insignificant) -0.1*(e$CC_impacts %in% text_pnr)
     e$CC_impacts <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Insignificant","Small","Grave","Disastrous","Cataclysmic","PNR")),
-                                 missing.values=-0.1, annotation=Label(e$CC_impacts))
+                            missing.values=-0.1, annotation=Label(e$CC_impacts))
   }
   
   if (!("flights_agg" %in% names(e)) & ("flights" %in% names(e))) {
@@ -1514,7 +1530,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$car_leisure) <- "car_leisure: Usually uses car or motorbike for leisure (NA if Not Applicable)"
     label(e$car_shopping) <- "car_shopping: Uses car or motorbike to go shopping (NA if Not Applicable)"
   }
-
+  
   e$treatment_climate <- ifelse(e$treatment_climate > sqrt(5/17), 1, 0)
   e$treatment_policy <- ifelse(e$treatment_policy > sqrt(5/17), 1, 0)
   e$treatment <- "None"
@@ -1523,7 +1539,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   e$treatment[e$treatment_climate == 1 & e$treatment_policy == 1] <- "Both"
   e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
   label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
-
+  
   e$rush_treatment <- e$duration_treatment_climate < duration_climate_video[country] | e$duration_treatment_policy < duration_policy_video[country]
   e$rush_treatment[is.na(e$rush_treatment)] <- F
   label(e$rush_treatment) <- "rush_treatment: Has rushed the treatment. TRUE/FALSE" 
@@ -1647,7 +1663,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     # label(e$vote_mode_leaning) <- "vote_mode_leaning: left_right leaning of respondent's vote, computed as the mode to left_right question for respondents with same vote"
     temp <- -2*(e$vote_mode_leaning == "Very left") -1*(e$vote_mode_leaning=="Left") -0*(e$vote_mode_leaning=="Center") + 1*(e$vote_mode_leaning=="Right") + 2*(e$vote_mode_leaning=="Very right") -0.1*(e$vote=="PNR")
     e$vote_mode_leaning <- as.item(temp, labels = structure(c(-2:2,-0.1), names = c("Very left","Left","Center","Right","Very right","PNR")),
-                          missing.values=-0.1, annotation="vote_mode_leaning: left_right leaning of respondent's vote, computed as the mode to left_right question for respondents with same vote")
+                                   missing.values=-0.1, annotation="vote_mode_leaning: left_right leaning of respondent's vote, computed as the mode to left_right question for respondents with same vote")
     
   }  
   
@@ -1766,6 +1782,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Guilherme Boulos; Left: Fernando Haddad|Marina Silva; Center: Ciro Gomes|Geraldo Alckmin|Henrique Meirelles|Alvaro Dias; Right: João Amoêdo; Far right: Jair Bolsonaro|Cabo Daciolo")
       
+    } else if (country == "UK") { # Automatic classification is the same except that Far right parties are then considered Right
+      temp <-  -1*(e$vote %in% c("Labour", "Green", "SNP")) -0*(e$vote %in% c("Liberal Democrats")) + 1*(e$vote %in% c("Conservative")) + 2*(e$vote %in% c("Brexit Party")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Labour|Green|SNP; Center: Liberal Democrats; Right: Conservative; Far right: Brexit Party")
+      
     } 
     
     
@@ -1784,13 +1805,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       e$vote3[e$vote_2020 %in% c("PNR/no right", "Other/Non-voter")] <- "other"
     }
   }
- 
+  
   if (country == "FR") {
     e$know_local_damage <- case_when(e$know_local_damage == "Flooding" ~ "Ozone hole",
-                                    e$know_local_damage == "More rain" ~ "More heatwaves",
-                                    e$know_local_damage == "Damaging of marine ecosystems" ~ "More forest fires",
-                                    e$know_local_damage == "Ozone hole" ~ "Flooding",
-                                    e$know_local_damage == "PNR" ~ "PNR")
+                                     e$know_local_damage == "More rain" ~ "More heatwaves",
+                                     e$know_local_damage == "Damaging of marine ecosystems" ~ "More forest fires",
+                                     e$know_local_damage == "Ozone hole" ~ "Flooding",
+                                     e$know_local_damage == "PNR" ~ "PNR")
   }
   
   if ("know_temperature_2100" %in% names(e)) { 
@@ -1912,7 +1933,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$correct_footprint_pc_compare_own) <- "correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA, TR, UA)"
     label(e$correct_footprint_pc_compare_US) <- "correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's"
   }
-
+  
   if ("footprint_el_coal" %in% names(e)) {
     e$footprint_pc_nb_na <- apply(e[,Variables_footprint$pc], MARGIN = 1, FUN = function(vec) { sum(is.na(vec)) })
     e$footprint_reg_nb_na <- apply(e[,Variables_footprint$reg], MARGIN = 1, FUN = function(vec) { sum(is.na(vec)) }) # TODO: allow for India 3rd / EU 4th because not clear whether territorial or consumption based. Which region contributes most to global greenhouse gas emissions? 
@@ -1954,7 +1975,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
           if (v %in% c("el", "fd", "tr")) e[[paste("least_footprint", v, sep="_")]][e[[i]]==3] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i)) # +1*(v %in% c("reg", "pc"))
           if (v %in% c("reg", "pc")) e[[paste("most_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==1] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
           if (v %in% c("reg", "pc")) e[[paste("least_footprint", v, sep="_")]][e[[paste(i, "original", sep="_")]]==length(Variables_footprint[[v]])] <- capitalize(sub(paste("footprint_", v, "_", sep=""), "", i))
-      } }
+        } }
       e[[paste("most_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("most_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("most_footprint_", v, ": Largest footprint of type ", v, " according to the respondent", sep=""))
       e[[paste("least_footprint", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_", v, ": Smallest footprint of type ", v, " according to the respondent", sep=""))
       if (v %in% c("reg", "pc")) e[[paste("least_footprint_no_pnr", v, sep="_")]] <- as.item(as.vector(e[[paste("least_footprint_no_pnr", v, sep="_")]]), missing.values = "PNR", annotation = paste("least_footprint_no_pnr_", v, ": Smallest footprint of type ", v, " according to the respondent. In case of ties, a region is picked in this order of priority: IA,CN,EU,US", sep=""))
@@ -1969,17 +1990,17 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     negative <- group[2]
     condition <- group[3]
     before_treatment <- group[4]
-
+    
     # First we check if the variable is in the data frame, otherwise we return the NULL value
     if(variable_name %in% names(df)) {
       if (negative) df[[variable_name]] <- - 1*df[[variable_name]]
-    
+      
       # for questions asked before the treatment, we simply need the variable mean and sd (not the ones by treatment groups)
       if(before_treatment) {
         if (weight) weights <- df$weight else weights <- NULL
         
         df[[variable_name_zscore]] <- ((eval(str2expression(paste("df[[variable_name]]", condition))))-eval(str2expression(paste("wtd.mean(df[[variable_name]]", condition," , w = weights, na.rm=T)"))))/eval(str2expression(paste("sqrt(wtd.var(df[[variable_name]]", condition," , w = weights, na.rm=T))")))
-
+        
         df[[variable_name_zscore]][is.pnr(df[[variable_name]])] <- 0
       } else {
         # get mean and sd by treatment groups
@@ -1996,26 +2017,26 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
         df[[variable_name_zscore]][df$treatment == "Policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
         df[[variable_name_zscore]][df$treatment == "Both"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,4]-mean_sd[1,1])/mean_sd[2,1]
       }
-
+      
       zscore <- as.numeric(df[[variable_name_zscore]])
     } else {
       zscore <- NULL
     }
     return(zscore)
   } 
-# Conditions : conditions to transform into dummy variables; before_treatment : T if question asked before the treatment
-# /!\ Be careful of the logical implications of using both negatives and conditions! : if no condition just set negative = T,
-# if dummy leave negative = F and inverse condition (e.g., < 0 instead of > 0) or set condition accordingly (e.g., >-1 for logical)
+  # Conditions : conditions to transform into dummy variables; before_treatment : T if question asked before the treatment
+  # /!\ Be careful of the logical implications of using both negatives and conditions! : if no condition just set negative = T,
+  # if dummy leave negative = F and inverse condition (e.g., < 0 instead of > 0) or set condition accordingly (e.g., >-1 for logical)
   index_zscore <<- function(variables, negatives, conditions = rep("", max(seq_along(variables))), before_treatment = rep(F, max(seq_along(variables))), df=e, weight=T) {
     groups <- list()
     for (i in seq_along(variables)) groups <- c(groups, list(c(variables[i], negatives[i], conditions[i], before_treatment[i])))
     zscores <- as.data.frame(lapply(groups, z_score_computation, df=df, weight=weight))
     #zscore_names<- as.vector(sapply(variables_list,function(x) paste(x,"zscore", sep = "_")))
     #colnames(zscore) <- zscore_names
-
+    
     return(rowMeans(zscores))
   }
-
+  
   cronbach_index_zscore <<- function(variables, negatives, conditions = rep("", max(seq_along(variables))), before_treatment = rep(F, max(seq_along(variables))), df=e, weight=T) {
     groups <- list()
     for (i in seq_along(variables)) groups <- c(groups, list(c(variables[i], negatives[i], conditions[i], before_treatment[i])))
@@ -2030,13 +2051,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$index_knowledge <- index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = weighting)
     e$index_knowledge_dummies <- index_zscore(variables_knowledge_index, negatives_knowledge_index, conditions = c(rep(" > -1", 6), rep(" > 0", 2), rep(" > 2",2) ), before_treatment = rep(F,10), df = e, weight = weighting)
     e$index_knowledge_dummies2SD <- (e$index_knowledge_dummies - wtd.mean(e$index_knowledge_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_knowledge_dummies, w = e$weight, na.rm=T))
-
+    
     # If want Cronbach's alpha : 
     # cronbach_index_zscore(variables_knowledge_index, negatives_knowledge_index, df = e, weight = T)
     # If need double standardization :
     # e$index_knowledge2SD <- (e$index_knowledge - wtd.mean(e$index_knowledge, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_knowledge, w = e$weight, na.rm=T))
     label(e$index_knowledge) <- "index_knowledge: Non-weighted average of z-scores of variables in variables_knowledge_index. Each z-score is standardized with survey weights and impute mean of treatment group to missing values." }
- 
+  
   if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
     if ("weight" %in% names(e)) {
       weights <- e$weight
@@ -2067,7 +2088,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$index_knowledge_simple) <- "index_knowledge_simple: Weighted average of (non-standardized) variables in variables_knowledge_efa. Weights are chosen to fit intuition."
     label(e$index_knowledge_efa) <- "index_knowledge_efa: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
     try({cor(e$index_knowledge_efa, e$index_knowledge_simple, use = "complete.obs") # 0.872
-    cor(e$index_knowledge_efa, e$index_knowledge, use = "complete.obs") }) # 0.68 # TODO ID cf. above
+      cor(e$index_knowledge_efa, e$index_knowledge, use = "complete.obs") }) # 0.68 # TODO ID cf. above
     # correlogram("knowledge")
     # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
   }
@@ -2075,27 +2096,36 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   if (zscores) {
     if (all(variables_affected_index %in% names(e))) {
-        e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, before_treatment = rep(T,7), df = e, weight = weighting)
-        e$index_affected_dummies <- index_zscore(variables_affected_index, negatives_affected_index, conditions = c(rep("> 0", 5), "> -2", " > -1"), before_treatment = rep(T,7), df = e, weight = weighting)
-        # Double standardization
-        e$index_affected_dummies2SD <- (e$index_affected_dummies - wtd.mean(e$index_affected_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_dummies, w = e$weight, na.rm=T))
-        label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values."
+      e$index_affected <- index_zscore(variables_affected_index, negatives_affected_index, before_treatment = rep(T,7), df = e, weight = weighting)
+      e$index_affected_dummies <- index_zscore(variables_affected_index, negatives_affected_index, conditions = c(rep("> 0", 5), "> -2", " > -1"), before_treatment = rep(T,7), df = e, weight = weighting)
+      # Double standardization
+      e$index_affected_dummies2SD <- (e$index_affected_dummies - wtd.mean(e$index_affected_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_dummies, w = e$weight, na.rm=T))
+      label(e$index_affected) <- "index_affected: Non-weighted average of z-scores of variables in variables_affected_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values."
     }
-    e$index_progressist <- index_zscore(variables_index_progressist, negatives_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
-    e$index_progressist_dummies <- index_zscore(variables_index_progressist, negatives_index_progressist, conditions = conditions_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
-    # Double standardization
-    e$index_progressist_dummies2SD <- (e$index_progressist_dummies - wtd.mean(e$index_progressist_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_progressist_dummies, w = e$weight, na.rm=T))
     
-    e$index_concerned_about_CC <- index_zscore(variables_index_concerned_about_CC, negatives_index_concerned_about_CC, before_treatment = before_treatment_index_concerned_about_CC, df = e, weight = weighting)
-    e$index_concerned_about_CC_dummies <- index_zscore(variables_index_concerned_about_CC, negatives_index_concerned_about_CC, conditions = conditions_index_concerned_about_CC, before_treatment = before_treatment_index_concerned_about_CC, df = e, weight = weighting)
-    # Double standardization
-    e$index_concerned_about_CC_dummies2SD <- (e$index_concerned_about_CC_dummies - wtd.mean(e$index_concerned_about_CC_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_concerned_about_CC_dummies, w = e$weight, na.rm=T))
-    
-    e$index_worried <- index_zscore(variables_index_worried, negatives_index_worried, before_treatment = before_treatment_index_worried, df = e, weight = weighting)
-    e$index_worried_dummies <- index_zscore(variables_index_worried, negatives_index_worried, conditions = conditions_index_worried, before_treatment = before_treatment_index_worried, df = e, weight = weighting)
-    # Double standardization
-    e$index_worried_dummies2SD <- (e$index_worried_dummies - wtd.mean(e$index_worried_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_worried_dummies, w = e$weight, na.rm=T))
-    
+    if (all(variables_index_progressist %in% names(e))) {
+      e$index_progressist <- index_zscore(variables_index_progressist, negatives_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
+      e$index_progressist_dummies <- index_zscore(variables_index_progressist, negatives_index_progressist, conditions = conditions_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = weighting)
+      # Double standardization
+      e$index_progressist_dummies2SD <- (e$index_progressist_dummies - wtd.mean(e$index_progressist_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_progressist_dummies, w = e$weight, na.rm=T))
+      label(e$index_progressist) <- "index_progressist: Non-weighted average of z-scores of variables in variables_index_progressist. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_concerned_about_CC %in% names(e))) {
+      e$index_concerned_about_CC <- index_zscore(variables_index_concerned_about_CC, negatives_index_concerned_about_CC, before_treatment = before_treatment_index_concerned_about_CC, df = e, weight = weighting)
+      e$index_concerned_about_CC_dummies <- index_zscore(variables_index_concerned_about_CC, negatives_index_concerned_about_CC, conditions = conditions_index_concerned_about_CC, before_treatment = before_treatment_index_concerned_about_CC, df = e, weight = weighting)
+      # Double standardization
+      e$index_concerned_about_CC_dummies2SD <- (e$index_concerned_about_CC_dummies - wtd.mean(e$index_concerned_about_CC_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_concerned_about_CC_dummies, w = e$weight, na.rm=T))
+      label(e$index_concerned_about_CC) <- "index_concerned_about_CC: Non-weighted average of z-scores of variables in variables_concerned_about_CC_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(negatives_index_worried %in% names(e))) {
+      e$index_worried <- index_zscore(variables_index_worried, negatives_index_worried, before_treatment = before_treatment_index_worried, df = e, weight = weighting)
+      e$index_worried_dummies <- index_zscore(variables_index_worried, negatives_index_worried, conditions = conditions_index_worried, before_treatment = before_treatment_index_worried, df = e, weight = weighting)
+      # Double standardization
+      e$index_worried_dummies2SD <- (e$index_worried_dummies - wtd.mean(e$index_worried_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_worried_dummies, w = e$weight, na.rm=T))
+      label(e$index_worried) <- "index_worried: Non-weighted average of z-scores of variables in variables_index_worried. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
     # Prepare variables for Index Positive Economy: superseded by 'positive_negative'
     # e$investments_economic_effect <- -as.numeric(e$investments_negative_effect)
     # e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$investments_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
@@ -2103,145 +2133,184 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     # e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$tax_transfers_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
     # e$standard_economic_effect <- -as.numeric(e$standard_negative_effect)
     # e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)] <- -e$standard_economic_effect[e$positive_treatment == 1 & !is.na(e$positive_treatment)]
+    if (all(variables_index_positive_economy %in% names(e))) {
+      e$index_positive_economy <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
+      e$index_positive_economy_dummies <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, conditions = conditions_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
+      # Double standardization
+      e$index_positive_economy_dummies2SD <- (e$index_positive_economy_dummies - wtd.mean(e$index_positive_economy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_positive_economy_dummies, w = e$weight, na.rm=T))
+      label(e$index_positive_economy) <- "index_positive_economy: Non-weighted average of z-scores of variables in variables_index_positive_economy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
 
-    e$index_positive_economy <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
-    e$index_positive_economy_dummies <- index_zscore(variables_index_positive_economy, negatives_index_positive_economy, conditions = conditions_index_positive_economy, before_treatment = before_treatment_index_positive_economy, df = e, weight = weighting)
-    # Double standardization
-    e$index_positive_economy_dummies2SD <- (e$index_positive_economy_dummies - wtd.mean(e$index_positive_economy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_positive_economy_dummies, w = e$weight, na.rm=T))
-    
-    e$index_constrained <- index_zscore(variables_index_constrained, negatives_index_constrained, before_treatment = before_treatment_index_constrained, df = e, weight = weighting)
-    e$index_constrained_dummies <- index_zscore(variables_index_constrained, negatives_index_constrained, conditions = conditions_index_constrained, before_treatment = before_treatment_index_constrained, df = e, weight = weighting)
-    # Double standardization
-    e$index_constrained_dummies2SD <- (e$index_constrained_dummies - wtd.mean(e$index_constrained_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_constrained_dummies, w = e$weight, na.rm=T))
-    
-    e$index_policies_efficient <- index_zscore(variables_index_policies_efficient, negatives_index_policies_efficient, before_treatment = before_treatment_index_policies_efficient, df = e, weight = weighting)
-    e$index_policies_efficient_dummies <- index_zscore(variables_index_policies_efficient, negatives_index_policies_efficient, conditions = conditions_index_policies_efficient, before_treatment = before_treatment_index_policies_efficient, df = e, weight = weighting)
-    # Double standardization
-    e$index_policies_efficient_dummies2SD <- (e$index_policies_efficient_dummies - wtd.mean(e$index_policies_efficient_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_policies_efficient_dummies, w = e$weight, na.rm=T))
-    
-    e$index_care_poverty <- index_zscore(variables_index_care_poverty, negatives_index_care_poverty, before_treatment = before_treatment_index_care_poverty, df = e, weight = weighting)
-    e$index_care_poverty_dummies <- index_zscore(variables_index_care_poverty, negatives_index_care_poverty, conditions = conditions_index_care_poverty, before_treatment = before_treatment_index_care_poverty, df = e, weight = weighting)
-    # Double standardization
-    e$index_care_poverty_dummies2SD <- (e$index_care_poverty_dummies - wtd.mean(e$index_care_poverty_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_care_poverty_dummies, w = e$weight, na.rm=T))
-    
-    e$index_altruism <- index_zscore(variables_index_altruism, negatives_index_altruism, before_treatment = before_treatment_index_altruism, df = e, weight = weighting)
-    e$index_altruism_dummies <- index_zscore(variables_index_altruism, negatives_index_altruism, conditions = conditions_index_altruism, before_treatment = before_treatment_index_altruism, df = e, weight = weighting)
-    # Double standardization
-    e$index_altruism_dummies2SD <- (e$index_altruism_dummies - wtd.mean(e$index_altruism_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_altruism_dummies, w = e$weight, na.rm=T))
-    
-    if ("beef_tax_support" %in% names(e)) e$preferences_pricing_norms <- rowMeans(e[, c("tax_transfers_support", "beef_tax_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
-    else e$preferences_pricing_norms <- rowMeans(e[, c("tax_transfers_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
-    e$index_preferences_pricing_norms <- index_zscore(variables_index_preferences_pricing_norms, negatives_index_preferences_pricing_norms, before_treatment = before_treatment_index_preferences_pricing_norms, df = e, weight = weighting)
-    e$index_preferences_pricing_norms_dummies <- index_zscore(variables_index_preferences_pricing_norms, negatives_index_preferences_pricing_norms, conditions = conditions_index_preferences_pricing_norms, before_treatment = before_treatment_index_preferences_pricing_norms, df = e, weight = weighting)
-    # Double standardization
-    e$index_preferences_pricing_norms_dummies2SD <- (e$index_preferences_pricing_norms_dummies - wtd.mean(e$index_preferences_pricing_norms_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_preferences_pricing_norms_dummies, w = e$weight, na.rm=T))
+    if (all(variables_index_constrained %in% names(e))) {
+      e$index_constrained <- index_zscore(variables_index_constrained, negatives_index_constrained, before_treatment = before_treatment_index_constrained, df = e, weight = weighting)
+      e$index_constrained_dummies <- index_zscore(variables_index_constrained, negatives_index_constrained, conditions = conditions_index_constrained, before_treatment = before_treatment_index_constrained, df = e, weight = weighting)
+      # Double standardization
+      e$index_constrained_dummies2SD <- (e$index_constrained_dummies - wtd.mean(e$index_constrained_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_constrained_dummies, w = e$weight, na.rm=T))
+      label(e$index_constrained) <- "index_constrained: Non-weighted average of z-scores of variables in variables_index_constrained. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
 
-  
-    e$index_affected_subjective <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
-    e$index_affected_subjective_dummies <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, conditions = conditions_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
-    # Double standardization
-    e$index_affected_subjective_dummies2SD <- (e$index_affected_subjective_dummies - wtd.mean(e$index_affected_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_subjective_dummies, w = e$weight, na.rm=T))
+    if (all(variables_index_policies_efficient %in% names(e))) {
+      e$index_policies_efficient <- index_zscore(variables_index_policies_efficient, negatives_index_policies_efficient, before_treatment = before_treatment_index_policies_efficient, df = e, weight = weighting)
+      e$index_policies_efficient_dummies <- index_zscore(variables_index_policies_efficient, negatives_index_policies_efficient, conditions = conditions_index_policies_efficient, before_treatment = before_treatment_index_policies_efficient, df = e, weight = weighting)
+      # Double standardization
+      e$index_policies_efficient_dummies2SD <- (e$index_policies_efficient_dummies - wtd.mean(e$index_policies_efficient_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_policies_efficient_dummies, w = e$weight, na.rm=T))
+      label(e$index_policies_efficient) <- "index_policies_efficient: Non-weighted average of z-scores of variables in variables_index_policies_efficient. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
 
-    e$index_lose_policies_subjective <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
-    e$index_lose_policies_subjective_dummies <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, conditions = conditions_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
-    # Double standardization
-    e$index_lose_policies_subjective_dummies2SD <- (e$index_lose_policies_subjective_dummies - wtd.mean(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T))
-    
-        
-    e$index_lose_policies_poor <- index_zscore(variables_index_lose_policies_poor, negatives_index_lose_policies_poor, before_treatment = before_treatment_index_lose_policies_poor, df = e, weight = weighting)
-    e$index_lose_policies_poor_dummies <- index_zscore(variables_index_lose_policies_poor, negatives_index_lose_policies_poor, conditions = conditions_index_lose_policies_poor, before_treatment = before_treatment_index_lose_policies_poor, df = e, weight = weighting)
-    # Double standardization
-    e$index_lose_policies_poor_dummies2SD <- (e$index_lose_policies_poor_dummies - wtd.mean(e$index_lose_policies_poor_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_poor_dummies, w = e$weight, na.rm=T))
+    if (all(variables_index_care_poverty %in% names(e))) {
+      e$index_care_poverty <- index_zscore(variables_index_care_poverty, negatives_index_care_poverty, before_treatment = before_treatment_index_care_poverty, df = e, weight = weighting)
+      e$index_care_poverty_dummies <- index_zscore(variables_index_care_poverty, negatives_index_care_poverty, conditions = conditions_index_care_poverty, before_treatment = before_treatment_index_care_poverty, df = e, weight = weighting)
+      # Double standardization
+      e$index_care_poverty_dummies2SD <- (e$index_care_poverty_dummies - wtd.mean(e$index_care_poverty_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_care_poverty_dummies, w = e$weight, na.rm=T))
+      label(e$index_care_poverty) <- "index_care_poverty: Non-weighted average of z-scores of variables in variables_index_care_poverty. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
 
-    e$index_lose_policies_rich <- index_zscore(variables_index_lose_policies_rich, negatives_index_lose_policies_rich, before_treatment = before_treatment_index_lose_policies_rich, df = e, weight = weighting)
-    e$index_lose_policies_rich_dummies <- index_zscore(variables_index_lose_policies_rich, negatives_index_lose_policies_rich, conditions = conditions_index_lose_policies_rich, before_treatment = before_treatment_index_lose_policies_rich, df = e, weight = weighting)
-    # Double standardization
-    e$index_lose_policies_rich_dummies2SD <- (e$index_lose_policies_rich_dummies - wtd.mean(e$index_lose_policies_rich_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_rich_dummies, w = e$weight, na.rm=T))
-    
-    e$index_fairness <- index_zscore(variables_index_fairness, negatives_index_fairness, before_treatment = before_treatment_index_fairness, df = e, weight = weighting)
-    e$index_fairness_dummies <- index_zscore(variables_index_fairness, negatives_index_fairness, conditions = conditions_index_fairness, before_treatment = before_treatment_index_fairness, df = e, weight = weighting)
-    # Double standardization
-    e$index_fairness_dummies2SD <- (e$index_fairness_dummies - wtd.mean(e$index_fairness_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_fairness_dummies, w = e$weight, na.rm=T))
-    
-    e$index_trust_govt <- index_zscore(variables_index_trust_govt, negatives_index_trust_govt, before_treatment = before_treatment_index_trust_govt, df = e, weight = weighting)
-    e$index_trust_govt_dummies <- index_zscore(variables_index_trust_govt, negatives_index_trust_govt, conditions = conditions_index_trust_govt, before_treatment = before_treatment_index_trust_govt, df = e, weight = weighting)
-    # Double standardization
-    e$index_trust_govt_dummies2SD <- (e$index_trust_govt_dummies - wtd.mean(e$index_trust_govt_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_trust_govt_dummies, w = e$weight, na.rm=T))
-    
-    e$index_willing_change <- index_zscore(variables_index_willing_change, negatives_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
-    e$index_willing_change_dummies <- index_zscore(variables_index_willing_change, negatives_index_willing_change, conditions = conditions_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
-    # Double standardization
-    e$index_willing_change_dummies2SD <- (e$index_willing_change_dummies - wtd.mean(e$index_willing_change_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_willing_change_dummies, w = e$weight, na.rm=T))
-    
-    e$index_standard_policy <- index_zscore(variables_index_standard_policy, negatives_index_standard_policy, before_treatment = before_treatment_index_standard_policy, df = e, weight = weighting)
-    e$index_standard_policy_dummies <- index_zscore(variables_index_standard_policy, negatives_index_standard_policy, conditions = conditions_index_standard_policy, before_treatment = before_treatment_index_standard_policy, df = e, weight = weighting)
-    # Double standardization
-    e$index_standard_policy_dummies2SD <- (e$index_standard_policy_dummies - wtd.mean(e$index_standard_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_standard_policy_dummies, w = e$weight, na.rm=T))
-    
-    e$index_tax_transfers_policy <- index_zscore(variables_index_tax_transfers_policy, negatives_index_tax_transfers_policy, before_treatment = before_treatment_index_tax_transfers_policy, df = e, weight = weighting)
-    e$index_tax_transfers_policy_dummies <- index_zscore(variables_index_tax_transfers_policy, negatives_index_tax_transfers_policy, conditions = conditions_index_tax_transfers_policy, before_treatment = before_treatment_index_tax_transfers_policy, df = e, weight = weighting)
-    # Double standardization
-    e$index_tax_transfers_policy_dummies2SD <- (e$index_tax_transfers_policy_dummies - wtd.mean(e$index_tax_transfers_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_tax_transfers_policy_dummies, w = e$weight, na.rm=T))
-    
-    e$index_investments_policy <- index_zscore(variables_index_investments_policy, negatives_index_investments_policy, before_treatment = before_treatment_index_investments_policy, df = e, weight = weighting)
-    e$index_investments_policy_dummies <- index_zscore(variables_index_investments_policy, negatives_index_investments_policy, conditions = conditions_index_investments_policy, before_treatment = before_treatment_index_investments_policy, df = e, weight = weighting)
-    # Double standardization
-    e$index_investments_policy_dummies2SD <- (e$index_investments_policy_dummies - wtd.mean(e$index_investments_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_investments_policy_dummies, w = e$weight, na.rm=T))
-    
-    e$index_main_policies <- index_zscore(variables_index_main_policies, negatives_index_main_policies, before_treatment = before_treatment_index_main_policies, df = e, weight = weighting)
-    e$index_main_policies_dummies <- index_zscore(variables_index_main_policies, negatives_index_main_policies, conditions = conditions_index_main_policies, before_treatment = before_treatment_index_main_policies, df = e, weight = weighting)
-    # Double standardization
-    e$index_main_policies_dummies2SD <- (e$index_main_policies_dummies - wtd.mean(e$index_main_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_main_policies_dummies, w = e$weight, na.rm=T))
-    
-    e$index_pricing_norm_main_policies_V1 <- index_zscore(variables_index_main_policies[2:3], c(F,T), before_treatment = before_treatment_index_main_policies[2:3], df = e, weight = weighting)
-    e$index_pricing_norm_main_policies_V1_dummies <- index_zscore(variables_index_main_policies[2:3], c(F,T), conditions = conditions_index_main_policies[2:3], before_treatment = before_treatment_index_main_policies[2:3], df = e, weight = weighting)
-    # Double standardization
-    e$index_pricing_norm_main_policies_V1_dummies2SD <- (e$index_pricing_norm_main_policies_V1_dummies - wtd.mean(e$index_pricing_norm_main_policies_V1_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_pricing_norm_main_policies_V1_dummies, w = e$weight, na.rm=T))
-    
-    e$index_pricing_norm_main_policies_V2 <- index_zscore(variables_index_main_policies[1:3], c(T,F,T), before_treatment = before_treatment_index_main_policies[1:3], df = e, weight = weighting)
-    e$index_pricing_norm_main_policies_V2_dummies <- index_zscore(variables_index_main_policies[1:3], c(T,F,T), conditions = conditions_index_main_policies[1:3], before_treatment = before_treatment_index_main_policies[1:3], df = e, weight = weighting)
-    # Double standardization
-    e$index_pricing_norm_main_policies_V2_dummies2SD <- (e$index_pricing_norm_main_policies_V2_dummies - wtd.mean(e$index_pricing_norm_main_policies_V2_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_pricing_norm_main_policies_V2_dummies, w = e$weight, na.rm=T))
-    
-    e$index_beef_policies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
-    e$index_beef_policies_dummies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, conditions = conditions_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
-    # Double standardization
-    e$index_beef_policies_dummies2SD <- (e$index_beef_policies_dummies - wtd.mean(e$index_beef_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_beef_policies_dummies, w = e$weight, na.rm=T))
-    
-    e$index_international_policies <- index_zscore(variables_index_international_policies, negatives_index_international_policies, before_treatment = before_treatment_index_international_policies, df = e, weight = weighting)
-    e$index_international_policies_dummies <- index_zscore(variables_index_international_policies, negatives_index_international_policies, conditions = conditions_index_international_policies, before_treatment = before_treatment_index_international_policies, df = e, weight = weighting)
-    # Double standardization
-    e$index_international_policies_dummies2SD <- (e$index_international_policies_dummies - wtd.mean(e$index_international_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_international_policies_dummies, w = e$weight, na.rm=T))
-    
-    e$index_other_policies <- index_zscore(variables_index_other_policies, negatives_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = weighting)
-    e$index_other_policies_dummies <- index_zscore(variables_index_other_policies, negatives_index_other_policies, conditions = conditions_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = weighting)
-    # Double standardization
-    e$index_other_policies_dummies2SD <- (e$index_other_policies_dummies - wtd.mean(e$index_other_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_other_policies_dummies, w = e$weight, na.rm=T))
-    
-    e$index_all_policies <- index_zscore(variables_index_all_policies, negatives_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = weighting)
-    e$index_all_policies_dummies <- index_zscore(variables_index_all_policies, negatives_index_all_policies, conditions = conditions_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = weighting)
-    # Double standardization
-    e$index_all_policies_dummies2SD <- (e$index_all_policies_dummies - wtd.mean(e$index_all_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_all_policies_dummies, w = e$weight, na.rm=T))
-    
-    label(e$index_concerned_about_CC) <- "index_concerned_about_CC: Non-weighted average of z-scores of variables in variables_concerned_about_CC_index. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_progressist) <- "index_progressist: Non-weighted average of z-scores of variables in variables_index_progressist. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_worried) <- "index_worried: Non-weighted average of z-scores of variables in variables_index_worried. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_positive_economy) <- "index_positive_economy: Non-weighted average of z-scores of variables in variables_index_positive_economy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_constrained) <- "index_constrained: Non-weighted average of z-scores of variables in variables_index_constrained. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_policies_efficient) <- "index_policies_efficient: Non-weighted average of z-scores of variables in variables_index_policies_efficient. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_care_poverty) <- "index_care_poverty: Non-weighted average of z-scores of variables in variables_index_care_poverty. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_altruism) <- "index_altruism: Non-weighted average of z-scores of variables in variables_index_altruism. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_affected_subjective) <- "index_affected_subjective: Non-weighted average of z-scores of variables in variables_index_affected_subjective. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_willing_change) <- "index_willing_change: Non-weighted average of z-scores of variables in variables_index_willing_change. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_standard_policy) <- "index_standard_policy: Non-weighted average of z-scores of variables in variables_index_standard_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_tax_transfers_policy) <- "index_tax_transfers_policy: Non-weighted average of z-scores of variables in variables_index_tax_transfers_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_investments_policy) <- "index_investments_policy: Non-weighted average of z-scores of variables in variables_index_investments_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_main_policies) <- "index_main_policies: Non-weighted average of z-scores of variables in variables_index_main_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_beef_policies) <- "index_beef_policies: Non-weighted average of z-scores of variables in variables_index_beef_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_international_policies) <- "index_international_policies: Non-weighted average of z-scores of variables in variables_index_international_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_other_policies) <- "index_other_policies: Non-weighted average of z-scores of variables in variables_index_other_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
-    label(e$index_all_policies) <- "index_all_policies: Non-weighted average of z-scores of variables in variables_index_all_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    if (all(variables_index_altruism %in% names(e))) {
+      e$index_altruism <- index_zscore(variables_index_altruism, negatives_index_altruism, before_treatment = before_treatment_index_altruism, df = e, weight = weighting)
+      e$index_altruism_dummies <- index_zscore(variables_index_altruism, negatives_index_altruism, conditions = conditions_index_altruism, before_treatment = before_treatment_index_altruism, df = e, weight = weighting)
+      # Double standardization
+      e$index_altruism_dummies2SD <- (e$index_altruism_dummies - wtd.mean(e$index_altruism_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_altruism_dummies, w = e$weight, na.rm=T))
+      label(e$index_altruism) <- "index_altruism: Non-weighted average of z-scores of variables in variables_index_altruism. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
 
+    if (all(variables_index_preferences_pricing_norms %in% names(e))) {
+      if ("beef_tax_support" %in% names(e)) e$preferences_pricing_norms <- rowMeans(e[, c("tax_transfers_support", "beef_tax_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
+      else e$preferences_pricing_norms <- rowMeans(e[, c("tax_transfers_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
+      e$index_preferences_pricing_norms <- index_zscore(variables_index_preferences_pricing_norms, negatives_index_preferences_pricing_norms, before_treatment = before_treatment_index_preferences_pricing_norms, df = e, weight = weighting)
+      e$index_preferences_pricing_norms_dummies <- index_zscore(variables_index_preferences_pricing_norms, negatives_index_preferences_pricing_norms, conditions = conditions_index_preferences_pricing_norms, before_treatment = before_treatment_index_preferences_pricing_norms, df = e, weight = weighting)
+      # Double standardization
+      e$index_preferences_pricing_norms_dummies2SD <- (e$index_preferences_pricing_norms_dummies - wtd.mean(e$index_preferences_pricing_norms_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_preferences_pricing_norms_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_affected_subjective %in% names(e))) {
+      e$index_affected_subjective <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
+      e$index_affected_subjective_dummies <- index_zscore(variables_index_affected_subjective, negatives_index_affected_subjective, conditions = conditions_index_affected_subjective, before_treatment = before_treatment_index_affected_subjective, df = e, weight = weighting)
+      # Double standardization
+      e$index_affected_subjective_dummies2SD <- (e$index_affected_subjective_dummies - wtd.mean(e$index_affected_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_affected_subjective_dummies, w = e$weight, na.rm=T))
+      label(e$index_affected_subjective) <- "index_affected_subjective: Non-weighted average of z-scores of variables in variables_index_affected_subjective. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_lose_policies_subjective %in% names(e))) {
+      e$index_lose_policies_subjective <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
+      e$index_lose_policies_subjective_dummies <- index_zscore(variables_index_lose_policies_subjective, negatives_index_lose_policies_subjective, conditions = conditions_index_lose_policies_subjective, before_treatment = before_treatment_index_lose_policies_subjective, df = e, weight = weighting)
+      # Double standardization
+      e$index_lose_policies_subjective_dummies2SD <- (e$index_lose_policies_subjective_dummies - wtd.mean(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_subjective_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_lose_policies_poor %in% names(e))) {
+      e$index_lose_policies_poor <- index_zscore(variables_index_lose_policies_poor, negatives_index_lose_policies_poor, before_treatment = before_treatment_index_lose_policies_poor, df = e, weight = weighting)
+      e$index_lose_policies_poor_dummies <- index_zscore(variables_index_lose_policies_poor, negatives_index_lose_policies_poor, conditions = conditions_index_lose_policies_poor, before_treatment = before_treatment_index_lose_policies_poor, df = e, weight = weighting)
+      # Double standardization
+      e$index_lose_policies_poor_dummies2SD <- (e$index_lose_policies_poor_dummies - wtd.mean(e$index_lose_policies_poor_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_poor_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_lose_policies_rich %in% names(e))) {
+      e$index_lose_policies_rich <- index_zscore(variables_index_lose_policies_rich, negatives_index_lose_policies_rich, before_treatment = before_treatment_index_lose_policies_rich, df = e, weight = weighting)
+      e$index_lose_policies_rich_dummies <- index_zscore(variables_index_lose_policies_rich, negatives_index_lose_policies_rich, conditions = conditions_index_lose_policies_rich, before_treatment = before_treatment_index_lose_policies_rich, df = e, weight = weighting)
+      # Double standardization
+      e$index_lose_policies_rich_dummies2SD <- (e$index_lose_policies_rich_dummies - wtd.mean(e$index_lose_policies_rich_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_lose_policies_rich_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_fairness %in% names(e))) {
+      e$index_fairness <- index_zscore(variables_index_fairness, negatives_index_fairness, before_treatment = before_treatment_index_fairness, df = e, weight = weighting)
+      e$index_fairness_dummies <- index_zscore(variables_index_fairness, negatives_index_fairness, conditions = conditions_index_fairness, before_treatment = before_treatment_index_fairness, df = e, weight = weighting)
+      # Double standardization
+      e$index_fairness_dummies2SD <- (e$index_fairness_dummies - wtd.mean(e$index_fairness_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_fairness_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_trust_govt %in% names(e))) {
+      e$index_trust_govt <- index_zscore(variables_index_trust_govt, negatives_index_trust_govt, before_treatment = before_treatment_index_trust_govt, df = e, weight = weighting)
+      e$index_trust_govt_dummies <- index_zscore(variables_index_trust_govt, negatives_index_trust_govt, conditions = conditions_index_trust_govt, before_treatment = before_treatment_index_trust_govt, df = e, weight = weighting)
+      # Double standardization
+      e$index_trust_govt_dummies2SD <- (e$index_trust_govt_dummies - wtd.mean(e$index_trust_govt_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_trust_govt_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_willing_change %in% names(e))) {
+      e$index_willing_change <- index_zscore(variables_index_willing_change, negatives_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
+      e$index_willing_change_dummies <- index_zscore(variables_index_willing_change, negatives_index_willing_change, conditions = conditions_index_willing_change, before_treatment = before_treatment_index_willing_change, df = e, weight = weighting)
+      # Double standardization
+      e$index_willing_change_dummies2SD <- (e$index_willing_change_dummies - wtd.mean(e$index_willing_change_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_willing_change_dummies, w = e$weight, na.rm=T))
+      label(e$index_willing_change) <- "index_willing_change: Non-weighted average of z-scores of variables in variables_index_willing_change. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_standard_policy %in% names(e))) {
+      e$index_standard_policy <- index_zscore(variables_index_standard_policy, negatives_index_standard_policy, before_treatment = before_treatment_index_standard_policy, df = e, weight = weighting)
+      e$index_standard_policy_dummies <- index_zscore(variables_index_standard_policy, negatives_index_standard_policy, conditions = conditions_index_standard_policy, before_treatment = before_treatment_index_standard_policy, df = e, weight = weighting)
+      # Double standardization
+      e$index_standard_policy_dummies2SD <- (e$index_standard_policy_dummies - wtd.mean(e$index_standard_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_standard_policy_dummies, w = e$weight, na.rm=T))
+      label(e$index_standard_policy) <- "index_standard_policy: Non-weighted average of z-scores of variables in variables_index_standard_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_tax_transfers_policy %in% names(e))) {
+      e$index_tax_transfers_policy <- index_zscore(variables_index_tax_transfers_policy, negatives_index_tax_transfers_policy, before_treatment = before_treatment_index_tax_transfers_policy, df = e, weight = weighting)
+      e$index_tax_transfers_policy_dummies <- index_zscore(variables_index_tax_transfers_policy, negatives_index_tax_transfers_policy, conditions = conditions_index_tax_transfers_policy, before_treatment = before_treatment_index_tax_transfers_policy, df = e, weight = weighting)
+      # Double standardization
+      e$index_tax_transfers_policy_dummies2SD <- (e$index_tax_transfers_policy_dummies - wtd.mean(e$index_tax_transfers_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_tax_transfers_policy_dummies, w = e$weight, na.rm=T))
+      label(e$index_tax_transfers_policy) <- "index_tax_transfers_policy: Non-weighted average of z-scores of variables in variables_index_tax_transfers_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_investments_policy %in% names(e))) {
+      e$index_investments_policy <- index_zscore(variables_index_investments_policy, negatives_index_investments_policy, before_treatment = before_treatment_index_investments_policy, df = e, weight = weighting)
+      e$index_investments_policy_dummies <- index_zscore(variables_index_investments_policy, negatives_index_investments_policy, conditions = conditions_index_investments_policy, before_treatment = before_treatment_index_investments_policy, df = e, weight = weighting)
+      # Double standardization
+      e$index_investments_policy_dummies2SD <- (e$index_investments_policy_dummies - wtd.mean(e$index_investments_policy_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_investments_policy_dummies, w = e$weight, na.rm=T))
+      label(e$index_investments_policy) <- "index_investments_policy: Non-weighted average of z-scores of variables in variables_index_investments_policy. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_main_policies %in% names(e))) {
+      e$index_main_policies <- index_zscore(variables_index_main_policies, negatives_index_main_policies, before_treatment = before_treatment_index_main_policies, df = e, weight = weighting)
+      e$index_main_policies_dummies <- index_zscore(variables_index_main_policies, negatives_index_main_policies, conditions = conditions_index_main_policies, before_treatment = before_treatment_index_main_policies, df = e, weight = weighting)
+      # Double standardization
+      e$index_main_policies_dummies2SD <- (e$index_main_policies_dummies - wtd.mean(e$index_main_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_main_policies_dummies, w = e$weight, na.rm=T))
+      label(e$index_main_policies) <- "index_main_policies: Non-weighted average of z-scores of variables in variables_index_main_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_main_policies %in% names(e))) {
+      e$index_pricing_norm_main_policies_V1 <- index_zscore(variables_index_main_policies[2:3], c(F,T), before_treatment = before_treatment_index_main_policies[2:3], df = e, weight = weighting)
+      e$index_pricing_norm_main_policies_V1_dummies <- index_zscore(variables_index_main_policies[2:3], c(F,T), conditions = conditions_index_main_policies[2:3], before_treatment = before_treatment_index_main_policies[2:3], df = e, weight = weighting)
+      # Double standardization
+      e$index_pricing_norm_main_policies_V1_dummies2SD <- (e$index_pricing_norm_main_policies_V1_dummies - wtd.mean(e$index_pricing_norm_main_policies_V1_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_pricing_norm_main_policies_V1_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_main_policies %in% names(e))) {
+      e$index_pricing_norm_main_policies_V2 <- index_zscore(variables_index_main_policies[1:3], c(T,F,T), before_treatment = before_treatment_index_main_policies[1:3], df = e, weight = weighting)
+      e$index_pricing_norm_main_policies_V2_dummies <- index_zscore(variables_index_main_policies[1:3], c(T,F,T), conditions = conditions_index_main_policies[1:3], before_treatment = before_treatment_index_main_policies[1:3], df = e, weight = weighting)
+      # Double standardization
+      e$index_pricing_norm_main_policies_V2_dummies2SD <- (e$index_pricing_norm_main_policies_V2_dummies - wtd.mean(e$index_pricing_norm_main_policies_V2_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_pricing_norm_main_policies_V2_dummies, w = e$weight, na.rm=T))
+    }
+
+    if (all(variables_index_beef_policies %in% names(e))) {
+      e$index_beef_policies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
+      e$index_beef_policies_dummies <- index_zscore(variables_index_beef_policies, negatives_index_beef_policies, conditions = conditions_index_beef_policies, before_treatment = before_treatment_index_beef_policies, df = e, weight = weighting)
+      # Double standardization
+      e$index_beef_policies_dummies2SD <- (e$index_beef_policies_dummies - wtd.mean(e$index_beef_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_beef_policies_dummies, w = e$weight, na.rm=T))
+      label(e$index_beef_policies) <- "index_beef_policies: Non-weighted average of z-scores of variables in variables_index_beef_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_international_policies %in% names(e))) {
+      e$index_international_policies <- index_zscore(variables_index_international_policies, negatives_index_international_policies, before_treatment = before_treatment_index_international_policies, df = e, weight = weighting)
+      e$index_international_policies_dummies <- index_zscore(variables_index_international_policies, negatives_index_international_policies, conditions = conditions_index_international_policies, before_treatment = before_treatment_index_international_policies, df = e, weight = weighting)
+      # Double standardization
+      e$index_international_policies_dummies2SD <- (e$index_international_policies_dummies - wtd.mean(e$index_international_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_international_policies_dummies, w = e$weight, na.rm=T))
+      label(e$index_international_policies) <- "index_international_policies: Non-weighted average of z-scores of variables in variables_index_international_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_other_policies %in% names(e))) {
+      e$index_other_policies <- index_zscore(variables_index_other_policies, negatives_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = weighting)
+      e$index_other_policies_dummies <- index_zscore(variables_index_other_policies, negatives_index_other_policies, conditions = conditions_index_other_policies, before_treatment = before_treatment_index_other_policies, df = e, weight = weighting)
+      # Double standardization
+      e$index_other_policies_dummies2SD <- (e$index_other_policies_dummies - wtd.mean(e$index_other_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_other_policies_dummies, w = e$weight, na.rm=T))
+      label(e$index_other_policies) <- "index_other_policies: Non-weighted average of z-scores of variables in variables_index_other_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+
+    if (all(variables_index_all_policies %in% names(e))) {
+      e$index_all_policies <- index_zscore(variables_index_all_policies, negatives_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = weighting)
+      e$index_all_policies_dummies <- index_zscore(variables_index_all_policies, negatives_index_all_policies, conditions = conditions_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = weighting)
+      # Double standardization
+      e$index_all_policies_dummies2SD <- (e$index_all_policies_dummies - wtd.mean(e$index_all_policies_dummies, w = e$weight, na.rm=T)) / sqrt(wtd.var(e$index_all_policies_dummies, w = e$weight, na.rm=T))
+      label(e$index_all_policies) <- "index_all_policies: Non-weighted average of z-scores of variables in variables_index_all_policies. Each z-score is normalizeed with survey weights, control mean group and sd mean group. Impute mean of treatment group to missing values. If the question is asked before the treatment we simply use then variable mean and sd."
+    }
+    
     # cronbach_index_zscore(variables_index_progressist, negatives_index_progressist, conditions_index_progressist, before_treatment_index_progressist,df = e, weight = T)
     # cronbach_index_zscore(variables_index_progressist, negatives_index_progressist, before_treatment = before_treatment_index_progressist, df = e, weight = T)
     # cronbach_index_zscore(variables_index_concerned_about_CC, negatives_index_concerned_about_CC, conditions_index_concerned_about_CC, before_treatment_index_concerned_about_CC,df = e, weight = T)
@@ -2279,7 +2348,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     # cronbach_index_zscore(variables_index_all_policies, negatives_index_all_policies, conditions_index_all_policies, before_treatment_index_all_policies,df = e, weight = T)
     # cronbach_index_zscore(variables_index_all_policies, negatives_index_all_policies, before_treatment = before_treatment_index_all_policies, df = e, weight = T)
   }
-    
+  
   if ("clicked_petition" %in% names(e)) {
     e$right_click_petition <- e$clicked_petition == 2
     e$left_click_petition <- e$clicked_petition == 1
@@ -2331,13 +2400,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       # 3. Data>Import from text>.csv>Delimited>Semicolon 4. Widen first row until below lifestyle. 5. Home>Wrap text on first row + Format>Column width>60 6. Click on appropriate cells. 7. update countries_field_treated
       # for (i in 1:4) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub('\"', "\\\\\\'", e$CC_field[seq(i,nrow(e),4)])), collapse = '";"'), '"'), collapse=""),
       #      paste0("../data/fields/csv/CC_field_FR", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
-  
+      
       CC_field_names <<- c("worrying / should act" = "worry", "no need to worry/act" = "no_worry", "NA / empty content" = "na",
-                                              "don't know" = "do_not_know", "spelling mistake" = "bad_spelling", "damages" = "damage",
-                                              "adaptation" = "adaptation", "change lifestyle" = "lifestyle", "companies" = "companies",
-                                              "trash/recycling/plastic" = "trash", "cars/transport" = "transport", "power/energy" = "energy",
-                                              "housing/insulation" = "housing", "agriculture/forest" = "land_agri", "tax/incentives" = "tax",
-                                              "bans/sanctions" = "ban", "standard" = "standard", "subsidies/investment" = "spending")
+                           "don't know" = "do_not_know", "spelling mistake" = "bad_spelling", "damages" = "damage",
+                           "adaptation" = "adaptation", "change lifestyle" = "lifestyle", "companies" = "companies",
+                           "trash/recycling/plastic" = "trash", "cars/transport" = "transport", "power/energy" = "energy",
+                           "housing/insulation" = "housing", "agriculture/forest" = "land_agri", "tax/incentives" = "tax",
+                           "bans/sanctions" = "ban", "standard" = "standard", "subsidies/investment" = "spending")
       CC_field_names_names <<- names(CC_field_names)
       names(CC_field_names_names) <<- CC_field_names
       var_CC_field_names <<- paste0("CC_field_", CC_field_names)
@@ -2524,9 +2593,9 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   
   unweigthed <- svydesign(ids=~1, data=e)
   raked <- rake(design= unweigthed, sample.margins = lapply(vars, function(x) return(as.formula(paste("~", x)))), population.margins = freqs)
-
+  
   if (printWeights) {    print(summary(weights(raked))  )
-    print(paste("(mean w)^2 / (n * mean w^2): ", round(sum( weights(raked) )^2/(length(weights(raked))*sum(weights(raked)^2)), 3), " (pb if < 0.5)")) # <0.5 : problématique
+    print(paste("(mean w)^2 / (n * mean w^2): ", representativity_index(weights(raked)), " (pb if < 0.5)")) # <0.5 : problématique
     print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
   }
   return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
@@ -2599,7 +2668,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
     writeLines(data, con=file)  }
   e <- read_csv(file)
   # e <- read_csv("../data/IT.csv")
-
+  
   if (missing(wave)) wave <- "full"
   e <- relabel_and_rename(e, country = country, wave = wave)
   
@@ -2614,7 +2683,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
     # if (weighting) {
     #   e$weight <- weighting(e)
     #   if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
-  
+    
     # e$left_right_na <- as.numeric(e$left_right)
     # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
   } else {
@@ -2636,10 +2705,10 @@ countries_field_treated <- c("DK", "US", "FR")
 # usp12 <- merge(usp1, usp2, all = T)
 # usp <- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
 # us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
-# e <- us <- prepare(country = "US", duration_min = 686)# .59
-# e <- dk <- prepare(country = "DK", duration_min = 686)# .95
-# e <- fr <- prepare(country = "FR", duration_min = 686, zscores = F)# .61
-# e <- de <- prepare(country = "DE", duration_min = 686, zscores = F)# .96
+e <- us <- prepare(country = "US", duration_min = 686, zscores = T)# .59
+e <- dk <- prepare(country = "DK", duration_min = 686, zscores = T)# .95
+e <- fr <- prepare(country = "FR", duration_min = 686, zscores = T)# .61
+e <- de <- prepare(country = "DE", duration_min = 686, zscores = T)# .96
 
 # e <- au <- prepare(country = "AU", duration_min = 686)
 # e <- ca <- prepare(country = "CA", duration_min = 686)
@@ -2657,35 +2726,34 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- id <- prepare(country = "ID", duration_min = 686)
 # e <- sa <- prepare(country = "SA", duration_min = 686)
 # ua <- pl # prepare(country = "UA", duration_min = 686, weighting = F, zscores = F)
-e <- it <- prepare(country = "IT", duration_min = 686, zscores = F)# .83
-e <- pl <- prepare(country = "PL", duration_min = 686, zscores = F)# .72
-e <- jp <- prepare(country = "JP", duration_min = 686, zscores = F)# .70
-e <- sp <- prepare(country = "SP", duration_min = 686, zscores = F)# .61
-e <- au <- prepare(country = "AU", duration_min = 686, zscores = F)# .56
-e <- sa <- prepare(country = "SA", duration_min = 686, zscores = F)# .77
-e <- id <- prepare(country = "ID", duration_min = 686, zscores = F)# .99
-e <- ca <- prepare(country = "CA", duration_min = 686, zscores = F)# .68 # TODO: pb check "cor(e$index_k": SK
-e <- uk <- prepare(country = "UK", duration_min = 686, zscores = F)# .63
-e <- ia <- prepare(country = "IA", duration_min = 686, zscores = F)# .13
-e <- tr <- prepare(country = "TR", duration_min = 686, zscores = F)# .14
-e <- br <- prepare(country = "BR", duration_min = 686, zscores = F)# .28
-e <- mx <- prepare(country = "MX", duration_min = 686, zscores = F)# .21
-e <- cn <- prepare(country = "CN", duration_min = 686, zscores = F)# .21
-e <- sk <- prepare(country = "SK", duration_min = 686, zscores = F)# .34
-ua <- pl
-ua$country <- "UA"
-ua$country_name <- "Ukraine"
-current_countries <- c("DK", "US", "FR", "DE")
-ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
+e <- it <- prepare(country = "IT", duration_min = 686, zscores = T)# .83
+e <- pl <- prepare(country = "PL", duration_min = 686, zscores = T)# .72
+e <- jp <- prepare(country = "JP", duration_min = 686, zscores = T)# .70
+e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .59
+e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .41
+e <- sa <- prepare(country = "SA", duration_min = 686, zscores = T)# .77
+e <- id <- prepare(country = "ID", duration_min = 686, zscores = T)# .99
+e <- ca <- prepare(country = "CA", duration_min = 686, zscores = T)# .68 # TODO: pb check "cor(e$index_k": SK
+e <- uk <- prepare(country = "UK", duration_min = 686, zscores = T)# .63
+e <- ia <- prepare(country = "IA", duration_min = 686, zscores = T)# .13
+e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .18
+e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .28
+e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
+e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
+e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
+e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
+current_countries <- c("DK", "US", "FR", "DE", "ID")
+ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
 All <- list()
-for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <- eval(parse(text = tolower(c)))
+for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 # # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+# all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
 e <- all <- merge_all_countries()
+# representativity_index(all$weight)
+# representativity_index(all$weight_country)
 
-merge_all_countries <- function(countries = countries, weight_adult = T, weight_oecd = F) {
-  temp <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
-  all <- temp
+merge_all_countries <- function(df = All, weight_adult = T, weight_oecd = F) {
+  all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, df)
   
   all$weight_country <- all$weight
   all$weight_pop <- all$weight * population[all$country]
@@ -2693,7 +2761,7 @@ merge_all_countries <- function(countries = countries, weight_adult = T, weight_
   all$weight_pop_oecd <- all$weight * oecd[all$country] * population[all$country]
   all$weight_adult_oecd <- all$weight * oecd[all$country] * adult_pop[all$country]
   for (w in c("weight_pop", "weight_adult", "weight_pop_oecd", "weight_adult_oecd")) all[[w]] <- nrow(all) * as.numeric(all[[w]] / sum(all[[w]]))
-    
+  
   if (weight_adult) {
     if (weight_oecd) all$weight <- all$weight_adult_oecd
     else all$weight <- all$weight_adult
@@ -2722,8 +2790,7 @@ merge_all_countries <- function(countries = countries, weight_adult = T, weight_
   return(all)
 }
 
-## PREPARE DATA FOR STATA
-# write.csv(all,"../data/all_211102.csv", row.names=F)
+
 prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   if (pilots) {
     usp1 <<- prepare(country = "US", wave = "pilot1", duration_min = 0)
@@ -2753,13 +2820,11 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   mx <<- prepare(country = "MX", duration_min = 686, weighting = weighting, zscores = zscores)
   cn <<- prepare(country = "CN", duration_min = 686, weighting = weighting, zscores = zscores)
   sk <<- prepare(country = "SK", duration_min = 686, weighting = weighting, zscores = zscores)
-  ua <- pl
-  ua$country <- "UA"
-  ua$country_name <- "Ukraine"
-  current_countries <- c("DK", "US", "FR", "DE")
-  ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "ID", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK")
+  ua <<- prepare(country = "UA", duration_min = 686, weighting = weighting, zscores = zscores)
+  current_countries <- c("DK", "US", "FR", "DE", "ID")
+  ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
   All <<- list()
-  for (c in c(ongoing_countries, current_countries, "UA")) All[[c]] <<- eval(parse(text = tolower(c)))
+  for (c in c(ongoing_countries, current_countries)) All[[c]] <<- eval(parse(text = tolower(c)))
   # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
   all <<- merge_all_countries()
   e <<- all
@@ -2767,6 +2832,8 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
 
 prepare_all(zscores = FALSE)
 
+## PREPARE DATA FOR STATA
+# write.csv(all,"../data/all_211110.csv", row.names=F)
 all_stata <- janitor::clean_names(all)
 names_stata <- c()
 for (i in seq_along(names(all_stata))){
