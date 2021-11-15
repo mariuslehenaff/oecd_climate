@@ -5,7 +5,7 @@
 # TODO!! add column World, bigger heatmaps
 
 update_constant <- function(data = all) {
-  df <<-e <<- data
+  df <<- e <<- data
   country <- deparse(substitute(data))
   if (country == "all") {
     folder <<- paste0('../figures/country_comparison/')
@@ -17,6 +17,7 @@ update_constant <- function(data = all) {
   alphabetical <<- FALSE
   heatmap_conditions <<- c("", "> 0")
   along <<- "country_name"
+  cond <<- "> 0"
   parentheses <<- FALSE
   nolabel <<- T
   on_control <<- T
@@ -1906,3 +1907,6 @@ plot_world_map("net_zero_feasible", continuous = FALSE, width = 900, height = 40
 temp <- heatmap_table(vars = main_variables_behavior, data = all, labels = labels_main_behavior, along = along, special = c('World', 'OECD'), conditions = list("> 0", "> 1", ">= 1", "== 'Car or Motorbike'", "== 'Monthly'", "== T"), on_control = T, alphabetical = alphabetical) # TODO! change commutes by leisure
 heatmap_plot(temp, proportion = T)
 # corrplot(temp, method='color', col.lim = c(0, 1), addCoef.col = 'black', addCoefasPercent = T, type='full', is.corr = F)
+# corrplot(matrix(c(0.8, 0.5, 0.6, 0.7), ncol=2), method='color', col.lim = c(0, 1), col = COL2('RdYlBu'),  addCoef.col = 'black', addCoefasPercent = T, type="full", is.corr = F)
+# corrplot(matrix(c(0.8, 0.5, 0.6, 0.4), ncol=2), method='color', col.lim = c(0, 1), col = COL2('RdYlBu'), addCoef.col = 'black', addCoefasPercent = T, type="full", is.corr = F)
+# corrplot(matrix(c(0.8, 0.5, 0.2, 0.4), ncol=2), method='color', col.lim = c(0, 1), col = COL2('RdYlBu'), addCoef.col = 'black', addCoefasPercent = T, type="full", is.corr = F)
