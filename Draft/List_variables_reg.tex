@@ -1,0 +1,243 @@
+\documentclass{article}
+\input{draft_preamble.tex}
+\usepackage[utf8]{inputenc}
+
+\title{List variables used for regressions}
+\date{March 2021}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Variable Definition \label{app-sec-variables}}
+
+
+\medskip
+\noindent \textbf{Set A: Core respondents characteristics}\\
+\textit{Dominant origin:} respondent's origin is the dominant one in their country (U.S.: white only; IA: religion is Hinduism; Other: national).\\
+\textit{Female:} respondent is a female.\\
+\textit{Age 18-24:} respondent's age is between 18 and 24 years (usually omitted category in the regressions).\\ 
+\textit{Age 25-34:} respondent's age is between 25 and 34 years.\\
+\textit{Age 35-49:} respondent's age is between 35 and 49 years.\\
+\textit{Age 50-65:} respondent's age is between 50 and 65 years.\\
+\textit{Age 65+:} respondent's age is more than 65 years old.\\
+\textit{Has children:} respondent lives with at least one child below 14 (or has at least one child, for the U.S.) .\\
+\textit{Income Q1:} respondent's household income (before withholding tax) is in the first quartile of her country distribution (usually omitted category in the regressions).\\
+\textit{Income Q2:} respondent's household income (before withholding tax) is between the first and second quartiles of her country distribution.\\
+\textit{Income Q3:} respondent's household income (before withholding tax) is between the second and third quartiles of her country distribution.\\
+\textit{Income Q4:} respondent's household income (before withholding tax) is above the third quartile of her country distribution.\\
+\textit{Not working:} respondent is unemployed and looking for work or not currently working and not looking for work (usually omitted category in the regressions). \\
+\textit{Student:} respondent is student. \\
+\textit{Working:} respondent is full-time or part-time employee, or self-employed, or small business owner. \\
+\textit{Retired:} respondent is retired. \\
+\textit{College (degree):} respondent has at least a 4-year college degree (or equivalent).\\
+\textit{Hit by COVID:} respondent indicated that a member of her household was laid off or took a cut in their salary due to the Covid-19 pandemic.\\
+\textit{No economic policy leaning:} respondent's did not indicate any economic policy leaning (usually omitted category in the regressions).\\
+\textit{Center:} respondent's economic policy leaning is center.\\
+\textit{Left:} respondent's economic policy leaning is either very left or left.\\
+\textit{Right:} respondent's economic policy leaning is either very right or right.\\
+\textit{Control group:} respondent was randomized to see no information treatment (usually omitted category in the regressions).\\
+\textit{Treatment Climate:} respondent was randomized to see the information treatment focused on the effects of climate change.\\
+\textit{Treatment Policy:} respondent was randomized to see the information treatment focused on the climate policies.\\
+\textit{Treatment Both:} respondent was randomized to see the information treatment focused on both climate policies and the effects of climate change. 
+
+\bigskip 
+
+\noindent \textbf{Indices}\\
+
+The summary indices that aggregate information over the same domain are constructed following the methodology in \citet{Kling_Liebman_Katz}. Each index consists of an equally weighted average of the z-scores of its components with signs oriented consistently within domain (e.g. the higher the distortion index, the higher the belief of the respondent in the distortionary nature of taxes). Variables are transformed into z-scores by subtracting the control group mean and dividing by the control group standard deviation, so that each z-score has mean 0 and standard deviation 1 for the control group. To further ease interpretation, the resulting index is itself standardized by subtracting the mean in the control group and dividing by the standard deviation, so that each index has mean zero and standard deviation one. \\
+
+\bigskip 
+
+\noindent \textbf{Set B: Personal characteristics related to climate or policy exposure}\\
+\textit{Affected by climate change:} index based on the following variables
+\begin{itemize}
+	\item \textit{Rural:} respondent's lives in a rural area.
+	\item \textit{Polluting Sector:} respondent's economic works in a polluting sector.
+	\item \textit{Transport exposure:} sum of activities (among shopping, going to work, hobbies) for which the respondent uses a car or motorbike is used.
+	\item \textit{Gas expenses:} respondent's monthly gas expenses.
+	\item \textit{Heating expenses:} respondent's yearly heating or cooling expenses. (\textcolor{red}{NB: VARIABLE NOT AVAILABLE IN ALL COUNTRY, THUS THE INDEX IS NOT CREATED FOR EVERY COUNTRY})
+	\item \textit{Availability of Public Transport:} respondent indicates that the availability of public transport are ``very poor'' or ``poor'' whe she lives.
+	\item \textit{Urbanity:} size of the agglomeration the respondent lives in.
+\end{itemize}
+
+
+\noindent \textbf{Set C: Mechanisms}\\
+\textit{Concerned about climate change:} index based on the following variables
+\begin{itemize}
+	\item \textit{Talks about climate change:} respondent talks about climate change yearly or monthly.
+	\item \textit{Climate change problematic:} respondent ``somewhat agrees'' or ``strongly agrees'' that climate change is an important problem.
+	\item \textit{Should fight climate change:} respondent ``somewhat agrees'' or ``strongly agrees'' that her country should take measures to fight climate change.
+	\item \textit{Member environmental organization:} respondent is a member of an environmental organization.
+\end{itemize}
+\textit{Worried about the future:} index based on the following variables
+\begin{itemize}
+	\item \textit{More migration:} respondent ``somewhat agrees'' or ``strongly agrees'' that climate change will lead to larger flows of migration.
+	\item \textit{More wars:} respondent ``somewhat agrees'' or ``strongly agrees'' that climate change will lead to more armed conflicts.
+	\item \textit{Extinction of humankind:} respondent ``somewhat agrees'' or ``strongly agrees'' that climate change will lead to the extinction of humankind.
+	\item \textit{Drop in standard of living:} respondent ``somewhat agrees'' or ``strongly agrees'' that climate change will lead to drop in standards of living.
+	\item \textit{Climate change will not end:} respondent thinks that it is ``somewhat unlikely'' or ``very unlikely'' that humankind halts climatechange by the end of the century.
+	\item \textit{Unfeasible to stop GHG:} respondent thinks that it is ``a little'' or a ``not at all'' technically feasible to stop greenhouse gas emissions by the end of the century while maintaning satisfactory standards of living in her country.
+	\item \textit{World will be poorer:} respondent' thinks that overall the world will be ``poorer'' or ``much poorer'' in 100 years.
+\end{itemize}
+\textit{Positive effect of climate policies on the economy:} index based on the following variables
+\begin{itemize}
+	\item \textit{Positive effects of ambitious policies:} respondent thinks that halting climate change through ambitious policies would have a ``positive'' or a ``very positive'' effect on their country's economy and employment.
+	\item \textit{Positive effects of a green investment program:} respondent ``somewhat agrees'' or ``strongly agrees'' that a green infrastructure program would have a positive effect on the economy and employment.
+	\item \textit{Positive effects of a carbon tax with cash transfers:} espondent ``somewhat agrees'' or ``strongly agrees'' that a carbon tax with cash transfers would have a positive effect on the economy and employment.
+	\item \textit{Positive effects of a ban on combustion engine cars:} espondent ``somewhat agrees'' or ``strongly agrees'' that a ban on combustion engine cars would have a positive effect on the economy and employment.
+\end{itemize}
+\textit{Financially constrained:} index based on the following variables
+\begin{itemize}
+	\item \textit{Condition financial aid:} respondent indicates that having enough financial support is ``moderately'' or ``a lot'' imortant to adopt a sustainable lifestyle.
+	\item \textit{Income:} respondent has an income greater than the median of their country.  \textcolor{red}{colinear with income}
+	\item \textit{Wealth:} respondent has a wealth greater than the median of their country.
+\end{itemize}
+\textit{Effectiveness of climate policies:} index based on the following variables \\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Care about poverty and inequalities:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Willing to donate:} index based on the following variables\\
+% \begin{itemize}
+% 		\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Believe will suffer from climate change:} index based on the following variable\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Willing to adopt climate friendly behaviors:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Will personally lose from main policies:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Fairness of main policies:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Trust the government:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Poor people will lose from main policies:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Rich people will lose from main policies:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+
+
+\noindent \textbf{Set D: Outcomes}\\
+\textit{Knowledge of climate change:} index based on the following variables
+\begin{itemize}
+	\item \textit{Score footprint transport:} respondent's Kendall distance with true ranking on knowledge questions about transport emissions.
+	\item \textit{Score footprint electricty:} respondent's Kendall distance with true ranking on knowledge questions about electricty production emissions.
+	\item \textit{Score footprint food:} respondent's Kendall distance with true ranking on knowledge questions about food emissions.
+	\item \textit{Score footprint countries per capita:} respondent's Kendall distance with true ranking on knowledge questions about countries' emissions per capita.
+	\item \textit{Score footprint countries total:} respondent's Kendall distance with true ranking on knowledge questions about total countries' emissions.
+	\item \textit{Heating expenses:} respondent's yearly heating or cooling expenses. (\textcolor{red}{NB: VARIABLE NOT AVAILABLE IN ALL COUNTRY, THUS THE INDEX IS NOT CREATED FOR EVERY COUNTRY})
+	\item \textit{Climate change real:} respondent indicates that climate change is real.
+	\item \textit{Dynamic of Climate change:} respondent indicates that halving global emissions would not be sufficient to stop temperatures from rising.
+	\item \textit{Climate change anthropogenic:} respondent indicates that ``a lot'' or ``most'' of climate change is due to human activity.
+
+	\item \textit{Score impacts of climate change:} respondent's number of good responses on questions related to the impacts of climate change. Where we add 1 if the respondent indicates that it is ``somewhat likely'' or ``very likely'' that climate change will lead to severe droughts and heatwaves, and 1 if the respondent indicates that it is ``somewhat likely'' or ``very likely'' that it will lead to rising sea levels, and 1 if the respondent indicates that it is  ``somewhat unlikely'' that climate change will lead to more frequent volcanic eruptions, and 2 if the respondent indicates that it is  ``very unlikely'' that climate change will lead to more frequent volcanic eruptions.).
+
+	\item \textit{Knowledgeable about climate change:} respondent considers herself ``a lot'' or ``a great deal'' knowlegeable about climate change.
+\textcolor{red}{BP: more subjective, should we keep it in this index?}
+	\item \textit{Score greenhouse gases:} respondent's number of good responses minus wrong responses scaled up on [0,4] regarding whether $CO_2$, methane, hydrogen and particulate matter are greenhouse gases.
+\end{itemize}
+\textit{Ban of combustion engine support:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Carbon tax with cash transfers support:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Green investment program support:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Main policies support:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+
+\noindent \textbf{Set E: Excluded outcomes}\\
+\textit{Cattle policies support:} index based on the following variables \\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize} 
+\textit{Global policies support:} index based on the following variables \\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{Other policies support:} index based on the following variables \\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+\textit{All policies support:} index based on the following variables\\
+% \begin{itemize}
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% 	\item \textit{Rural:} respondent's lives in a rural area.
+% \end{itemize}
+
+\noindent \textbf{Set F: Excluded explanatory variables}\\
+\textit{Wealth Q1:} respondent's household wealth is in the first quartile of her country distribution.\\
+\textit{Wealth Q2:} respondent's household wealth is between the first and second quartiles of her country distribution.\\
+\textit{Wealth Q3:} respondent's household wealth is between the second and third quartiles of her country distribution.\\
+\textit{Wealth Q4:} respondent's household wealth is above the third quartile of her country distribution.\\
+\textit{No candidate or other:} respondent's did not answer or indicate voting (even hypothetically) for one of the main candidates/parties (usually motted category in the regressions).\\
+\textit{Center:} respondent's voted or would have voted for a center candidate/party.\\
+\textit{Left:} respondent's voted or would have voted for a far left or left candidate/party.\\
+\textit{Right:} respondent's voted or would have voted for a far right or right candidate/party.\\
+\textit{Small agglomeration:} respondent's lives in a small agglomeration (not same definition per country).\\
+\textit{Large agglomeration:} respondent's lives in a large agglomeration (not same definition per country).\\
+
+\bibliographystyle{chicago}
+\bibliography{My_Library}
+
+\end{document}
