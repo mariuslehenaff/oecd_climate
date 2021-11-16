@@ -4,14 +4,14 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
-# TODO! DE: know_local_damage, left_right, vote, heating, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
-# TODO!!: affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; code CSP, cu, share of policies approved, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, index_pro_climate, vote, ranking vs. order of display
-# TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
+# TODO!: burden_share, cu, standard of living, share of policies approved, index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
+# TODO! (relabel_rename): origin, area (SA, ID), investments_funding_global_transfer, scale_asean/african/EU, gas_spike, ia$religion, standard_prefer, policy_ban_coal/tax_reduction_EEG_Umlage, sp$insulation_mandatory_support_progressive
+# TODO: country-specific: train/coach, income, wealth, tax_transfers_progressive_fair/support, urbanity, sa$urban
+# TODO! DE: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
+# TODO: code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
+# TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
-# TODO: DE urbanity
-# TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
-# TODO!! when final data: replace xxx 242 3.2 in AU, CA, SA
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
 control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
@@ -2430,7 +2430,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     
     # Carbon footprint of heating gas: 3.79 kgCO2/$. Using: $1.40 per 100,000 BTU (https://energysvc.com/the-real-cost-of-heating); 53.07 kgCO2/MBTU (https://www.eia.gov/environment/emissions/co2_vol_mass.php)
     # Carbon footprint of heating oil: 3.17 kgCO2/$. Using: $3.20 per 138,500 BTU (https://energysvc.com/the-real-cost-of-heating); 73.16 kgCO2/MBTU (https://www.eia.gov/environment/emissions/co2_vol_mass.php)
-    # datasummary(heating_expenses*mean ~ Factor(heating), data=us) # TODO: disaggregate
+    # datasummary(heating_expenses*mean ~ Factor(heating), data=us) # TODO: disaggregate # CrossTable
     # Carbon footprint of gasoline: 2.76 kgCO2/$. Using 8.887 kgCO2/gallon (https://www.epa.gov/energy/greenhouse-gases-equivalencies-calculator-calculations-and-references) and 3.221 gallon/$ (https://www.globalpetrolprices.com/USA/gasoline_prices/)
     # in the US gasoline much more used as diesel https://rentar.com/no-diesel-cars-u-s-diesel-popular-abroad/ (Carbon footprint of diesel: 3.31 kgCO2/$. Using 10.18 kgCO2/gallon (https://www.epa.gov/energy/greenhouse-gases-equivalencies-calculator-calculations-and-references) and 3.078 gallon/$ (https://www.globalpetrolprices.com/USA/diesel_prices/))
     # unused because we use State-wide values. Carbon footprint of electricity (US mean): 3.96 kgCO2/$. cf. US_elec.csv From https://www.eia.gov/electricity/state/unitedstates/
