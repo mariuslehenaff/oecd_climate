@@ -1251,7 +1251,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   # if ("gas_expenses" %in% names(e)) temp <-  15*(e$gas_expenses %in% text_gas_expenses_15) + 50*(e$gas_expenses %in% text_gas_expenses_50) + 100*(e$gas_expenses %in% text_gas_expenses_100) + 150*(e$gas_expenses %in% text_gas_expenses_150) + 200*(e$gas_expenses %in% text_gas_expenses_200) + 250*(e$gas_expenses %in% text_gas_expenses_250)
   # if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 15, 50, 100, 150, 200, 250), names = c("< 5","5-25","26-75", "76-125","126-175", "176-225", "> 225")),
   #                                                             annotation=Label(e$gas_expenses))
-  
+
   if ("heating_expenses" %in% names(e)) temp <- 125*(e$heating_expenses %in% c(text_heating_expenses_125[c("EN", country)], text_heating_expenses_10["US"])) + 600*(e$heating_expenses %in% c(text_heating_expenses_600[c("EN", country)], text_heating_expenses_50["US"])) + 1250*(e$heating_expenses %in% c(text_heating_expenses_1250[c("EN", country)], text_heating_expenses_100["US"])) + 
     2000*(e$heating_expenses %in% c(text_heating_expenses_2000[c("EN", country)], text_heating_expenses_167["US"])) + 3000*(e$heating_expenses %in% c(text_heating_expenses_3000[c("EN", country)], text_heating_expenses_225["US"], text_heating_expenses_275["US"], text_heating_expenses_350["US"])) - 0.1*((e$heating_expenses %in% text_pnr) | is.na(e$heating_expenses))
   if ("heating_expenses" %in% names(e)) e$heating_expenses <- as.item(temp, labels = structure(c(-0.1, 125, 600, 1250, 2000, 3000), names = c("Don't know","< 250","251-1,000", "1,001-1,500","1,501-2,500", "> 2,500")), missing.values=-0.1, annotation=Label(e$heating_expenses))

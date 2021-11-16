@@ -1025,7 +1025,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(heating_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "heating", export_xls = export_xls, df = e, miss=T, labels="Heating type", rev = F, legend=c("Electricity", "Gas", "Oil", "Other", "PNR")))
       save_plotly_new_filename(heating_US, width= 525, height=fig_height(1*nb_levels))})
     
-    try({(heating_expenses_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "heating_expenses", export_xls = export_xls, df = e, miss=T, fr="Included", labels="Monthly heating expenses", rev = F))
+    try({(heating_expenses_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "heating_expenses", export_xls = export_xls, df = e, miss=T, fr="Don't know", labels="Monthly heating expenses", rev = F))
       save_plotly_new_filename(heating_expenses_US, width= 950, height=fig_height(1*nb_levels))})
     
     try({(insulation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation", export_xls = export_xls, df = e, miss=F, rev_color = T, labels="Quality of insulation", rev = F))
