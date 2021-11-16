@@ -17,6 +17,7 @@ update_constant <- function(data = all) {
   alphabetical <<- FALSE
   heatmap_conditions <<- c("", "> 0")
   along <<- "country_name"
+  nb_levels <<- length(Levels(e[[along]]))
   cond <<- "> 0"
   parentheses <<- FALSE
   nolabel <<- T
