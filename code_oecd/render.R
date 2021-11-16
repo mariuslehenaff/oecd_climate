@@ -1,8 +1,10 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
-# TODO! vote, comparison heterogeneity, function coef along, quality (know_treatment_climate, watched_climate)
-# TODO!! add column World, bigger heatmaps
+# TODO!! add column World, bigger font in heatmaps
+# TODO!: render positive/costless (e.g. standard_effect, standard_all, policies_costless), vote/left_right, wealth, burden_share (incl. opinion_)
+# TODO: various things below to debug or improve figures (at most as important as previous line)
+# TODO: size of town (DK has not same bins), quality (know_treatment_climate, watched_climate)
+# TODO: translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 
 update_constant <- function(data = all) {
   df <<- e <<- data
@@ -72,11 +74,11 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     
     try({ stopwords <- unlist(sapply(c("danish", "french", "english", "german", "italian", "spanish"), function(v) stopwords(v)))
     # stopwords <<- unlist(sapply(c("danish", "french", "english", "german", "italian", "spanish"), function(v) stopwords(v)))
-    # rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = stopwords) # TODO: update
+    # rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = stopwords) 
     rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, colorPalette = "Blues", excludeWords = c(stopwords, "climate", "change", "government"))
     save_plot(filename = paste0(folder, "CC_field", replacement_text), height = 400, width = 400)
     # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), max.words = 70)
-    # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", max.words = 70) # TODO save
+    # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", max.words = 70)
     rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = stopwords, colorPalette = "Blues", max.words = 70) # Spectral
     save_plot(filename = paste0(folder, "comment_field", replacement_text), height = 400, width = 400)  })
     
