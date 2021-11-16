@@ -8,10 +8,10 @@ source("relabel_rename.R")
 # TODO!!: affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; code CSP, cu, share of policies approved, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, index_pro_climate, vote, ranking vs. order of display
 # TODO:   Yes/No => T/F?, heating, CC_affected, (standard of living, zipcode), 
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
-# TODO: Create a set of weights for all such that we get the global average of variables (maybe, assuming that e.g. Brazil represents all Latin America, etc.)
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
 # TODO: DE urbanity
 # TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
+# TODO!! when final data: replace xxx 242 3.2 in AU, CA, SA
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
 control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
@@ -341,9 +341,10 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 }
 
 convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
-  text_pnr <- c( "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
+  text_pnr <- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                  "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
-                 "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Je ne sais pas", "FR" = "Préfère ne pas le dire")
+                "FR" = "Je ne sais pas", "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Préfère ne pas le dire",
+                "UK" = "I don't know", "CN" = "我不知道", "DE" = "Ich weiß es nicht", "CA" = "I don't know", "AU" = "I don't know", "SA" = "I don't know", "DK" = "Jeg ved det ikke", "IT" = "Non lo so", "UA" = "Не знаю", "TR" = "Bilmiyorum", "SP" = "No lo sé", "MX" = "No lo sé", "JP" = "わからない", "PL" = "Nie wiem", "ZU" = "Angazi", "SK" = "잘 모르겠습니다")
   text_yes <- c("US" = "Yes", 
                 "FR" = "Oui")
   text_no <- c("US" = "No", "US" = "No or I don't have a partner", 
@@ -698,6 +699,49 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   text_education_master <- c("US" = "Master's degree or above", 
                              "FR" = "Bac +5 ou plus (master, école d'ingénieur ou de commerce, doctorat, médecine, maîtrise, DEA, DESS...)")
   
+  # These two first sets have 7 and 6 bins: this was the case for US, DK and FR only. heating_expenses are also monthly for these countries.
+  text_heating_expenses_10 <- c("US" = "Less than $20", "FR" = "Moins de 15€", "DK" = "Mindre end 125 kr.")
+  text_heating_expenses_50 <- c("US" = "$20 – $75", "FR" = "De 15 à 60€", "DK" = "125 - 465 kr.")
+  text_heating_expenses_100 <- c("US" = "$76 – $125", "FR" = "De 61 à 100€", "DK" = "466 - 775 kr.")
+  text_heating_expenses_167 <- c("US" = "$126 – $200", "FR" = "De 101 à 165€", "DK" = "776 - 1.240 kr.")
+  text_heating_expenses_225 <- c("US" = "$201 – $250", "FR" = "De 166 à 210€", "DK" = "1.241 - 1.550 kr.")
+  text_heating_expenses_275 <- c("US" = "$251 – $300", "FR" = "De 211 à 350€", "DK" = "1.551 - 1.860 kr.") # we regroup the 225, 275 and 350 categories for 3000
+  text_heating_expenses_350 <- c("US" = "More than $300", "FR" = "Plus de 350€", "DK" = "Mere end 1.860 kr.")
+  
+  text_gas_expenses_0 <- c("US" = "Less than $5", "FR" = "Moins de 5€", "DK" = "Mindre end 30 kr.")
+  text_gas_expenses_15 <- c("US" = "$5 – $25", "FR" = "De 5 à 20€", "DK" = "31 - 155 kr.")
+  text_gas_expenses_50 <- c("US" = "$26 – $75", "FR" = "De 15 à 60€", "DK" = "156 - 460 kr.")
+  text_gas_expenses_100 <- c("US" = "$76 – $125", "FR" = "De 61 à 100€", "DK" = "461 - 770 kr.")
+  text_gas_expenses_150 <- c("US" = "$126 – $175", "FR" = "De 101 à 145€", "DK" = "771 - 1.100 kr.") # we regroup the 150 and 201 categories for 200
+  text_gas_expenses_201 <- c("US" = "$176 – $225", "FR" = "De 146 à 185€", "DK" = "1.101 - 1.400 kr.")
+  text_gas_expenses_220 <- c("US" = "More than $225", "FR" = "Plus de 185€", "DK" = "Mere end 1.400 kr.")
+  # English-speaking countries surveyed with EN: CA (use CA), SA (use SA), US (use the above) / EN-GB: AU (use AU), UK (use EN)
+  # These two last sets have 6 and 4 bins: they correspond to the other countries (except BR, IA, ID, MX for which the question was not asked)
+  text_heating_expenses_125 <- c("EN" = "Less than $20", "US" = "Less than $20", "EU" = "Less than €250", "DK" = "Mindre end 125 kr.", "DE" = "Unter €250", "AU" = "Less than $200", "CN" = "人民币800元以下",
+                                 "UA" = "Менше 2,000₴", "UK" = "Less than £200", "TR" = "2000₺'den az", "SP" = "Menos de 200 €", "SK" = "200,000원 미만", "SA" = "Less than R2,000", "ZU" = "Ngaphansi kuka- R2,000", "CA" = "Less than $200", "FR" = "Moins de 15€", "IT" = "Meno di 200€", "JP" = "20,000円未満", "PL" = "Mniej niż 1.000 zł")
+  text_heating_expenses_600 <- c("EN" = "$20 – $75", "US" = "$20 – $75", "EU" = "€251 – €1,000", "DK" = "125 - 465 kr.", "DE" = "€251 – €1000", "AU" = "$201 – $800",  "CN" = "人民币800至3,000元",
+                                 "UA" = "2,000₴ – 8,000₴", "UK" = "£201 – £800", "TR" = "2,000 - 8,000 ₺ arası", "SP" = "200 € - 800 €", "SK" = "200,000 – 800,000원", "SA" = "R2,000 - R8,000", "CA" = "$200 – $800", "FR" = "De 15 à 60€", "IT" = "201€ - 800€", "JP" = "20,001円 – 80,000円", "PL" = "1.001 – 3.000 zł")
+  text_heating_expenses_1250 <- c("EN" = "$76 – $125", "US" = "$76 – $125", "EU" = "€1,001 – €1,500", "DK" = "466 - 775 kr.", "DE" = "€1001 – €1.500", "AU" = "$801 – $1,300",  "CN" = "人民币3,000至5,000元",
+                                  "UA" = "8,000₴ – 13,000₴", "UK" = "£801 – £1,300", "TR" = "8,000 ₺ - 13,000 ₺ arası", "SP" = "800 € - 1300 €", "SK" = "800,000 – 1,300,000원", "SA" = "R8,000 - R13,000", "CA" = "$800 – $1,300", "FR" = "De 61 à 100€", "IT" = "8001€ - 1300€", "JP" = "80,001 – 130,000円", "PL" = "3.001 – 5.000 zł")
+  text_heating_expenses_2000 <- c("EN" = "$126 – $200", "US" = "$126 – $200", "EU" = "€1,1501 - €2,500", "DK" = "776 - 1.240 kr.", "DE" = "€1.501 – €2.500", "AU" = "$1,301 – $2,000",  "CN" = "人民币5,000至8,000元",
+                                  "UA" = "13,000₴ –20,000₴", "UK" = "£1,301 – £2,000", "TR" = "13,000 ₺ - 20,000 ₺ arası", "SP" = "1300 € - 2000 €", "SK" = "1,300,000 – 2,000,000원", "SA" = "R13,000 - R20,000", "CA" = "$1,300 – $2,000", "FR" = "De 101 à 165€", "IT" = "1301€ - 2000€", "JP" = "130,001円 – 200,000円", "PL" = "5.001 – 8.000 zł")
+  text_heating_expenses_3000 <- c("EN" = "More than $300", "US" = "More than $200", "EU" = "More than €2,500", "DK" = "Mere end 1.241 kr.", "DE" = "Über €2.500", "AU" = "More than $2,000",  "CN" = "人民币8,000元以上",
+                                  "UA" = "Понад 20,000₴", "UK" = "More than £2,000", "TR" = "20,000 ₺'den çok", "SP" = "Más de 2000 €", "SK" = "2,000,000원 이상", "SA" = "More than R20,000", "ZU" = "Ngaphezu kuka R20,000", "CA" = "More than $2,000", "FR" = "Plus de 166€", "IT" = "Più di 2000€", "JP" = "200,000円以上", "PL" = "Ponad 8.000 zł")
+  # /!\ For India, there was a mistake and we have no data on gas_expenses (heating_expenses were asked instead, with everyone in the lowest category).
+  text_gas_expenses_0 <- c("EN" = "Less than $5", "US" = "Less than $5", "EU" = "Less than €5", "DK" = "Mindre end 30 kr.", "DE" = "Unter €5", "AU" = "Less than $5",  "CN" = "人民币20元以下", "ID" = "Kurang dari Rp 50.000,00",
+                           "UA" = "Менше 50₴", "UK" = "Less than £5", "TR" = "50 ₺'den az", "SP" = "Menos de 5 €", "SK" = "5,000원 미만", "SA" = "Less than R50", "ZU" = "Ngaphansi kuka- R50", "PL" = "Mniej niż 20 zł", "BR" = "Menos de R$20,00", "CA" = "Less than $5", "FR" = "Moins de 5€", "IT" = "Meno di 5 €", "JP" = "500円未満", "MX" = "Menos de 50 pesos")
+  text_gas_expenses_20 <- c("EN" = "$5 – $25", "US" = "$5 – $25", "EU" = "€5 - €30", "DK" = "31 - 155 kr.", "DE" = "€5 - €30", "AU" = "$5 – $25",  "CN" = "人民币20至100元", "ID" = "Rp 50.001,00 - Rp 250.000,00",
+                            "UA" = "50₴ – 250₴", "UK" = "£5 – £25", "TR" = "50 ₺ - 250 ₺ arası", "SP" = "5 € - 25 €", "SK" = "5,000 – 25,000원", "SA" = "R50 - R250", "PL" = "20 – 100 zł", "BR" = "R$20,00- R$100,00", "CA" = "$5 – $25", "FR" = "De 5 à 20€", "IT" = "5 €- 25 €", "JP" = "500円 – 2,500円", "MX" = "50 - 250 pesos")
+  text_gas_expenses_60 <- c("EN" = "$26 – $75", "US" = "$26 – $75", "EU" = "€31 - €90", "DK" = "156 - 460 kr.", "DE" = "€31 - €90", "AU" = "$26 – $75",  "CN" = "人民币100至300元", "ID" = "Rp 250.001,00 - Rp 750.000,00",
+                            "UA" = "250₴ – 750₴", "UK" = "£26 – £75", "TR" = "250 ₺ - 750 ₺ arası", "SP" = "26 € - 75 €", "SK" = "25,000 – 75,000원", "SA" = "R250 - R750", "PL" = "101 – 300 zł", "BR" = "R$100,00 - R$300,00", "CA" = "$26 – $75", "FR" = "De 15 à 60€", "IT" = "26 €- 75 €", "JP" = "2,501円 – 7,500円", "MX" = "250 -750 pesos")
+  text_gas_expenses_120 <- c("EN" = "$76 – $125", "US" = "$76 – $125", "EU" = "€91 - €150", "DK" = "461 - 770 kr.", "DE" = "€91 - €150", "AU" = "$76 – $125",  "CN" = "人民币300至500元", "ID" = "Rp 750.001,00 - Rp 1.300.000,00",
+                             "UA" = "750₴ – 1250₴", "UK" = "£76 – £125", "TR" = "750 ₺ - 1,250 ₺ arası", "SP" = "76 € - 125 €", "SK" = "75,000 – 125,000원", "SA" = "R750 - R1,250", "PL" = "301 – 500 zł", "BR" = "R$300,00 - R$500,00", "CA" = "$76 – $125", "FR" = "De 61 à 100€", "IT" = "76 €- 125 €", "JP" = "7,501円 – 13,000円", "MX" = "750 - 1250 pesos")
+  text_gas_expenses_200 <- c("EN" = "$126 – $175", "US" = "$126 – $225", "EU" = "€151 - €250", "DK" = "771 - 1.400 kr.", "DE" = "€151 - €250", "AU" = "$126 – $200",  "CN" = "人民币500至800元", "ID" = "Rp 1.300.001,00 - Rp 2.000.000,00",
+                             "UA" = "1250₴ – 2000₴", "UK" = "£126 – £200", "TR" = "1,250 ₺ - 2,000 ₺ arası", "SP" = "126 € - 200 €", "SK" = "125,000 – 200,000원", "SA" = "R1,250 - R2,000", "PL" = "501 – 800 zł", "BR" = "R$500,00 - R$800,00", "CA" = "$126 – $200", "FR" = "De 101 à 185€", "IT" = "126 €- 200 €", "JP" = "13,001円 – 20,000円", "MX" = "1250 - 2000 pesos")
+  text_gas_expenses_300 <- c("EN" = "More than $225", "US" = "More than $225", "EU" = "More than €250", "DK" = "Mere end 1.400 kr.", "DE" = "Über €250", "AU" = "More than $200",  "CN" = "人民币800元以上", "ID" = "Lebih dari Rp 2.000.000,00",
+                             "UA" = "Понад 2000₴", "UK" = "More than £200", "TR" = "2,000 ₺'den fazla", "SP" = "Más de 200 €", "SK" = "200,000원 이상", "SA" = "More than R2,000", "ZU" = "Ngaphezulu kuka R2,000", "PL" = "Więcej niż 800 złotych", "BR" = "Mais de R$800,00", "CA" = "More than $200", "FR" = "Plus de 185€", "IT" = "Più di 200 €", "JP" = "20,000円以上", "MX" = "Más de 2000 pesos")
+  
+ 
   text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 35,000€/mois", "AU" = "less than $51,000",
                       "CA" = "less than CA$22,000", "IA" = "less than ₹50,000", "SA" = "less than R35,000 per month", "UK" = "less than £35,000")
   text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 35,000 et 70,000€/mois", "AU" = "between $51,000 and $80,000",
@@ -1199,25 +1243,27 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$polluting_sector) <- "polluting_sector: T/F whether sector is polluting (i.e. part of Oil, gas or cal/Cement/Construction/Automobile/Iron and steel/Chemical/Plastics/Pulp and paper/Farming/Air transport)"
   }
   
-  text_heating_expenses_1 <- c("US" = "Less than $20")
-  text_heating_expenses_2 <- c("US" = "$20 – $75")
-  text_heating_expenses_3 <- c("US" = "$76 – $125")
-  text_heating_expenses_4 <- c("US" = "$126 – $200")
-  text_heating_expenses_5 <- c("US" = "$201 – $250")
-  text_heating_expenses_6 <- c("US" = "$251 – $300")
-  text_heating_expenses_7 <- c("US" = "More than $300")
+  # if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses %in% text_heating_expenses_10) + 50*(e$heating_expenses %in% text_heating_expenses_50) + 100*(e$heating_expenses %in% text_heating_expenses_100) + 167*(e$heating_expenses %in% text_heating_expenses_167) + 225*(e$heating_expenses %in% text_heating_expenses_225) + 275*(e$heating_expenses %in% text_heating_expenses_275) + 
+  #   350*(e$heating_expenses %in% text_heating_expenses_350)  - 0.1*(e$heating_expenses %in% text_pnr) - 0.1*is.na(e$heating_expenses)
+  # if ("heating_expenses" %in% names(e)) e$heating_expenses <- as.item(temp, labels = structure(c(-0.1, 10, 50, 100, 167, 225, 275, 350), names = c("Included","< 20","21-75", "76-125","126-200", "201-250", "251-300", "> 300")),
+  #                                                                     missing.values=-0.1, annotation=Label(e$heating_expenses))
+  # 
+  # if ("gas_expenses" %in% names(e)) temp <-  15*(e$gas_expenses %in% text_gas_expenses_15) + 50*(e$gas_expenses %in% text_gas_expenses_50) + 100*(e$gas_expenses %in% text_gas_expenses_100) + 150*(e$gas_expenses %in% text_gas_expenses_150) + 200*(e$gas_expenses %in% text_gas_expenses_200) + 250*(e$gas_expenses %in% text_gas_expenses_250)
+  # if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 15, 50, 100, 150, 200, 250), names = c("< 5","5-25","26-75", "76-125","126-175", "176-225", "> 225")),
+  #                                                             annotation=Label(e$gas_expenses))
   
-  # TODO: problem with CA (yearly expenses and only 4 categories in the csv), SA 5 categories (from <R2,000 to >R20,000),
-  # AU: only xxx in responses (might be bc. we export wrong csv), IA problem gas <- heating for people who answred in English (~90% of the sample)
+  if ("heating_expenses" %in% names(e)) temp <- 125*(e$heating_expenses %in% c(text_heating_expenses_125[c("EN", country)], text_heating_expenses_10["US"])) + 600*(e$heating_expenses %in% c(text_heating_expenses_600[c("EN", country)], text_heating_expenses_50["US"])) + 1250*(e$heating_expenses %in% c(text_heating_expenses_1250[c("EN", country)], text_heating_expenses_100["US"])) + 
+    2000*(e$heating_expenses %in% c(text_heating_expenses_2000[c("EN", country)], text_heating_expenses_167["US"])) + 3000*(e$heating_expenses %in% c(text_heating_expenses_3000[c("EN", country)], text_heating_expenses_225["US"], text_heating_expenses_275["US"], text_heating_expenses_350["US"])) - 0.1*((e$heating_expenses %in% text_pnr) | is.na(e$heating_expenses))
+  if ("heating_expenses" %in% names(e)) e$heating_expenses <- as.item(temp, labels = structure(c(-0.1, 125, 600, 1250, 2000, 3000), names = c("Don't know","< 250","251-1,000", "1,001-1,500","1,501-2,500", "> 2,500")), missing.values=-0.1, annotation=Label(e$heating_expenses))
+  if ("heating_expenses" %in% names(e)) e$heating_expenses_country <- as.item(temp, labels = structure(c(-0.1, 125, 600, 1250, 2000, 3000), 
+      names = c(text_pnr[country], text_heating_expenses_125[country], text_heating_expenses_600[country], text_heating_expenses_1250[country], text_heating_expenses_2000[country], text_heating_expenses_3000[country])), missing.values=-0.1, annotation=Label(e$heating_expenses))
   
-  if ("heating_expenses" %in% names(e)) temp <- 10*(e$heating_expenses %in% text_heating_expenses_1) + 50*(e$heating_expenses %in% text_heating_expenses_2) + 100*(e$heating_expenses %in% text_heating_expenses_3) + 167*(e$heating_expenses %in% text_heating_expenses_4) + 225*(e$heating_expenses %in% text_heating_expenses_5) + 275*(e$heating_expenses %in% text_heating_expenses_6) + 
-    350*(e$heating_expenses %in% text_heating_expenses_7)  - 0.1*(e$heating_expenses %in% text_pnr) - 0.1*is.na(e$heating_expenses)
-  if ("heating_expenses" %in% names(e)) e$heating_expenses <- as.item(temp, labels = structure(c(-0.1, 10, 50, 100, 167, 225, 275, 350), names = c("Included","< 20","21-75", "76-125","126-200", "201-250", "251-300", "> 300")),
-                                                                      missing.values=-0.1, annotation=Label(e$heating_expenses))
-  
-  if ("gas_expenses" %in% names(e)) temp <-  15*(e$gas_expenses == "$5 – $25") + 50*(e$gas_expenses == "$26 – $75") + 100*(e$gas_expenses== "$76 – $125") + 150*(e$gas_expenses == "$126 – $175") + 200*(e$gas_expenses== "$176 – $225") + 250*(e$gas_expenses == "More than $225")
-  if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 15, 50, 100, 150, 200, 250), names = c("< 5","5-25","26-75", "76-125","126-175", "176-225", "> 225")),
-                                                              annotation=Label(e$gas_expenses))
+  # /!\ For India, there was a mistake and we have no data on gas_expenses (heating_expenses were asked instead, with everyone in the lowest category).
+  if ("gas_expenses" %in% names(e)) temp <-  0*(e$gas_expenses %in% c(text_gas_expenses_0[c("EN", country)], text_gas_expenses_0["US"])) + 20*(e$gas_expenses %in% c(text_gas_expenses_20[c("EN", country)], text_gas_expenses_15["US"])) + 60*(e$gas_expenses %in% c(text_gas_expenses_60[c("EN", country)], text_gas_expenses_50["US"])) + 
+    120*(e$gas_expenses %in% c(text_gas_expenses_120[c("EN", country)], text_gas_expenses_100["US"])) + 200*(e$gas_expenses %in% c(text_gas_expenses_200[c("EN", country)], text_gas_expenses_150["US"], text_gas_expenses_201["US"])) + 300*(e$gas_expenses %in% c(text_gas_expenses_300[c("EN", country)], text_gas_expenses_220["US"]))
+  if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 20, 60, 120, 200, 300), names = c("< 5","5-30","31-90", "91-150", "151-250", "> 250")), annotation=Label(e$gas_expenses))
+  if ("gas_expenses" %in% names(e) & country != "IA") e$gas_expenses_country <- as.item(temp, labels = structure(c(0, 20, 60, 120, 200, 300), 
+      names = c(text_gas_expenses_0[country], text_gas_expenses_20[country], text_gas_expenses_60[country], text_gas_expenses_120[country], text_gas_expenses_200[country], text_gas_expenses_300[country])), annotation=Label(e$gas_expenses))
   
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_mandatory] <- "Mandatory"
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_voluntary] <- "Voluntary"
@@ -1452,7 +1498,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   } else if (country %in% c("ID", "SA")) e$urban <- e$area
   else e$urban <- NA
   temp <- case_when(e$country %in% c("US") ~ e$urban == T,
-                    e$country %in% c("AU", "CA", "JP", "TR", "UA") ~ e$urban_category %in% c("Urban"),
+                    e$country %in% c("AU", "CA", "JP", "TR", "UA") ~ e$urban_category %in% c("Urban", '"Urban'),
                     e$country %in% c("DK") ~ e$urbanity > 2, # >20k
                     e$country %in% c("PL", "SP", "IA") ~ e$urbanity > 1, # >20k
                     e$country == "MX" ~ e$urban_category %in% c("Urbano"),
@@ -1669,21 +1715,28 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   # political position
   if ("vote" %in% names(e)) {
-    e$vote_agg <- as.character(e$vote)
+    e$vote_agg <- as.character(e$vote) # TODO: missing vote_agg
     if (country == "US") { # Automatic classification yields Trump: Very right and all others (incl. Biden, PNR): Center
       temp <- -1*grepl("Biden", e$vote) + 2*grepl("Trump", e$vote) -0.1*(!(e$vote %in% c("Biden", "Trump")))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,2,-0.1), names = c("Biden","Trump","PNR or other")),
-                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Biden, Trump")
-      
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Left: Biden; Far right: Trump")
+      # Previous code
+      # e$vote_agg <- as.item(temp, labels = structure(c(-1,2,-0.1), names = c("Biden","Trump","PNR or other")),
+      #                       missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Biden, Trump")
+      # 
       # e$vote_agg[!(e$vote %in% c("Biden", "Trump"))] <- "Other"
       # if ("Other" %in% levels(as.factor(e$vote_agg))) e$vote_agg <- relevel(as.factor(e$vote_agg), "Other")
       # # e$vote_agg[e$vote_participation != "Yes] <- "Other" # add non-voters as others
       # # e$vote_agg <- as.factor(e$vote_agg)
       # # e$vote_agg <- relevel(e$vote_agg, ref ="Other")
     } else if (country == "FR") {  # Automatic classification is close but leads to an inversion Fillon (center) / Macron (right) + some minor discrepancies (Arthaud as Center, Dupont-Aignan as Right, Lassalle as Center, Cheminade as Very right)
-      temp <- -2*grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
-                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Hamon|Mélenchon|Arthaud|Poutou; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
+      temp <- -2*grepl("Mélenchon|Arthaud|Poutou", e$vote) -1*grepl("Hamon", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
+      e$vote_agg <- as.item(temp, labels = structure(c(-2, -1, 0, 1,2,-0.1), names = c("Far left", "Left","Center","Right","Far right","PNR or other")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Mélenchon|Arthaud|Poutou; Left: Hamon; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
+      # Previous code
+      # temp <- -2*grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote) -0*grepl("Macron", e$vote) + 1*grepl("Fillon|Asselineau", e$vote) + 2*grepl("Le Pen|Dupont-Aignan", e$vote) -0.1*grepl("Cheminade|Lassalle|PNR", e$vote)
+      # e$vote_agg <- as.item(temp, labels = structure(c(-2,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")), # c("Gauche","Centre","Droite","Extrême-droite","NSP ou autre")
+      #                       missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Hamon|Mélenchon|Arthaud|Poutou; Center: Macron; Right: Fillon|Asselineau; Far right: Le Pen|Dupont-Aignan")
       # e$vote_agg[grepl("Hamon|Mélenchon|Arthaud|Poutou", e$vote)] <- "Gauche"
       # e$vote_agg[grepl("Macron", e$vote)] <- "Centre"
       # e$vote_agg[grepl("Fillon|Asselineau", e$vote)] <- "Droite"
@@ -1698,10 +1751,15 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       e$vote_main <- as.item(e$vote_main, labels = structure(c(-2:2,-0.1), names = c("Mélenchon","Hamon","Macron","Fillon","Le Pen","PNR or other")),
                              missing.values=-0.1, annotation="vote_main: vote recoded as 5 main candidates + PNR or other.")
     } else if (country == "DK") { # Automatic classification is the same except that Far right parties are then considered Right
-      temp <- -2*(e$vote %in% c("Alternativet", "Enhedslisten", "Socialistisk Folkeparti")) -1*(e$vote %in% c("Socialdemokratiet", "Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Social democrats & Center","Right","Far right","PNR or other")),
-                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Alternativet|Enhedslisten|Socialistisk Folkeparti; Social democrats & center: Socialdemokratiet|Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")
+      temp <- -2*(e$vote %in% c("Enhedslisten")) -1*(e$vote %in% c("Socialdemokratiet", "Alternativet", "Socialistisk Folkeparti")) -0*(e$vote %in% c("Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
+                            missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far Left: Enhedslisten; Left: Alternativet|Socialdemokratiet|Socialistisk Folkeparti; Center: Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")
       
+      # Previous code
+      # temp <- -2*(e$vote %in% c("Alternativet", "Enhedslisten", "Socialistisk Folkeparti")) -1*(e$vote %in% c("Socialdemokratiet", "Radikale Venstre")) + 1*(e$vote %in% c("Det Konservative Folkeparti", "Liberal Alliance", "Venstre")) + 2*(e$vote %in% c("Dansk Folkeparti", "Nye Borgerlige")) -0.1*(e$vote %in% c("Other", "PNR"))
+      # e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,1,2,-0.1), names = c("Left","Social democrats & Center","Right","Far right","PNR or other")),
+      #                       missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Alternativet|Enhedslisten|Socialistisk Folkeparti; Social democrats & center: Socialdemokratiet|Radikale Venstre; Right: Det Konservative Folkeparti|Liberal Alliance|Venstre; Far right: Dansk Folkeparti|Nye Borgerlige")
+      # 
       # e$vote_agg[grepl("Alternativet|Enhedslisten|Socialistisk Folkeparti", e$vote)] <- "Left"
       # e$vote_agg[grepl("Socialdemokratiet|Radikale Venstre", e$vote)] <- "Social democrats & center"
       # e$vote_agg[grepl("Det Konservative Folkeparti|Liberal Alliance|Venstre", e$vote)] <- "Right"
@@ -1709,82 +1767,82 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
       # e$vote_agg[grepl("Other|PNR", e$vote)] <- "PNR or other"
     } else if (country == "IT") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("Partito Democratico", "Liberi e Uguali")) -0*(e$vote %in% c("Movimento 5 Stelle", "+Europa", "Civica Popolare", "Partito Autonomista Trentino Tirolese", "MAIE", "USEI")) + 1*(e$vote %in% c("Forza Italia", "Noi con l'Italia")) + 2*(e$vote %in% c("Lega", "Fratelii d'Italia")) -0.1*(e$vote %in% c("Other", "Altro", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Partito Democratico|Liberi e Uguali; Center: Movimento 5 Stelle|+Europa|Civica Popolare|Partito Autonomista Trentino Tirolese|MAIE|USEI; Right: Forza Italia|Noi con l'Italia; Far right: Lega Nord|Fratelii d'Italia")
       
     } else if (country == "PL") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("Robert Biedroń", "Waldemar Witkowski")) -0*(e$vote %in% c("Szymon Hołownia", "Władysław Kosiniak-Kamysz")) + 1*(e$vote %in% c("Rafał Trzaskowski", "Stanisław Żółtek", "Marek Jakubiak", "Paweł Tanajno", "Mirosław Piotrowski")) + 2*(e$vote %in% c("Andrzej Duda", "Krzysztof Bosak")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right","Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Robert Biedroń|Waldemar Witkowski; Center: Szymon Hołownia|Władysław Kosiniak-Kamysz; Right: Rafał Trzaskowski|Stanisław Żółtek|Marek Jakubiak|Paweł Tanajno|Mirosław Piotrowski; Far right: Andrzej Duda|Krzysztof Bosak")
       
     } else if (country == "MX") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("PRD", "MORENA", "Movimiento Ciudadano", "PT", "VERDE")) -0*(e$vote %in% c("PRI")) + 1*(e$vote %in% c("PAN"))-0.1*(e$vote %in% c("Other", "Otro", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,-0.1), names = c("Left","Center","Right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: PRD|Morena|Movimiento Ciudadano|PT|Verde; Center: PRI; Right: PAN")
       
     } else if (country == "JP") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -2*(e$vote %in% c("Japanese Communist Party")) -1*(e$vote %in% c("Constitutional Democratic Party of Japan", "Social Democratic Party")) -0*(e$vote %in% c("Komeito", "Democratic Party For the People", "Japan Innovation Party")) + 1*(e$vote %in% c("Liberal Democratic Party"))-0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,-0.1), names = c("Far left", "Left","Center","Right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Far left: Japanese Communist Party; Left: Constitutional Democratic Party of Japan|Social Democratic Party; Center: Komeito|Democratic Party For the People|Japan Innovation Party; Right: Liberal Democratic Party")
       
     } else if (country == "SP") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -2*(e$vote %in% c("Unidas Podemos")) -1*(e$vote %in% c("PSOE", "Esquerra Republicana")) -0*(e$vote %in% c("Ciudadanos")) + 1*(e$vote %in% c("PP")) + 2*(e$vote %in% c("VOX")) -0.1*(e$vote %in% c("Other", "Otro", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Unidas Podemos; Left: PSOE|Esquerra Republicana; Center: Ciudadanos; Right: PP; Far right: VOX")
       
     } else if (country == "IA") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("Congress", "BSP", "TMC")) -0*(e$vote %in% c("AAP")) + 1*(e$vote %in% c("BJP", "Akaali Dal")) + 2*(e$vote %in% c("Shiv-Sena")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Congress|BSP|TMC; Center: AAP; Right: BJP|Akaali Dal; Far right: Shiv-Sena")
       
     } else if (country == "ID") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("PDI-P")) -0*(e$vote %in% c("PKB", "PAN")) + 1*(e$vote %in% c("Nasdem", "Demokrat", "PPP", "Golkar")) + 2*(e$vote %in% c("Gerindra", "PKS")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: PDI-P; Center: PKB|PAN; Right: Nasdem|Demokrat|PPP|Golkar; Far right: Gerindra|PKS")
       
     } else if (country == "SA") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -2*(e$vote %in% c("Economic Freedom Fighters (EFF)")) -1*(e$vote %in% c("African National Congress (ANC)")) -0*(e$vote %in% c("Democratic Alliance (DA)")) + 1*(e$vote %in% c("Inkatha Freedom Party (IFP)")) + 2*(e$vote %in% c("Freedom Front Plus (FF Plus)")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Economic Freedom Fighters (EFF); Left: African National Congress (ANC); Center: Democratic Alliance (DA); Right: Inkatha Freedom Party (IFP); Far right: Freedom Front Plus (FF Plus)")
       
     } else if (country == "DE") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -2*(e$vote %in% c("Die Linke")) -1*(e$vote %in% c("SPD", "Bündnis 90/ Die Grünen")) -0*(e$vote %in% c("FDP")) + 1*(e$vote %in% c("CDU/CSU")) + 2*(e$vote %in% c("AfD")) -0.1*(e$vote %in% c("Other", "Sonstige","PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Die Linke; Left: SPD|Bündnis 90/ Die Grünen; Center: FDP; Right: CDU/CSU; Far right: AfD")
       
     } else if (country == "CA") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("Liberal", "Bloc québécois", "New Democratic", "Green")) + 1*(e$vote %in% c("Conservative")) +2*(e$vote %in% c("People's Party")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,1,2,-0.1), names = c("Left","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 3 categories. Left: Liberal|Bloc québécois|New Democratic|Green; Right: Conservative; Far right: People's Party")
       
     } else if (country == "AU") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("Labor", "Greens")) + 1*(e$vote %in% c("Liberal/National coalition")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,1,-0.1), names = c("Left","Right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 2 categories. Left: Labor|Greens; Right: Liberal/National coalition")
       
     } else if (country == "UA") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <-  -1*(e$vote %in% c("Petro Poroshenko")) -0*(e$vote %in% c("Volodymyr Zelensky", "Ioulia Tymochenko", "Iouri Boïko", "Anatoliy Hrytsenko", "Oleksandr Vilkul")) + 1*(e$vote %in% c("Ihor Smeshko", "Oleh Lyashko")) + 2*(e$vote %in% c("Ruslan Koshulynskyi")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Petro Poroshenko; Center: Volodymyr Zelensky|Ioulia Tymochenko|Iouri Boïko|Anatoliy Hrytsenko|Oleksandr Vilkul; Right: Ihor Smeshko|Oleh Lyashko; Far right: Ruslan Koshulynskyi")
       
     } else if (country == "SK") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -1*(e$vote %in% c("Moon Jae-in", "Sim Sang-jung")) -0*(e$vote %in% c("Ahn Cheol-soo")) + 1*(e$vote %in% c("Yoo Seong-min")) + 2*(e$vote %in% c("Hong Joon-pyo")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Moon Jae-in|Sim Sang-jung; Center: Ahn Cheol-soo; Right: Yoo Seong-min; Far right: Hong Joon-pyo")
       
     } else if (country == "TR") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -2*(e$vote %in% c("Vatan Partisi")) -1*(e$vote %in% c("Cumhuriyet Halk Partisi", "Halkların Demokratik Partisi")) -0*(e$vote %in% c("İYİ Parti")) + 1*(e$vote %in% c("Adalet ve Kalkınma Partisi")) + 2*(e$vote %in% c("Milliyetçi Hareket Partisi", "Saadet Partisi", "Hür Dava Partisi")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Vatan Partisi; Left: Cumhuriyet Halk Partisi|Halkların Demokratik Partisi; Center: İYİ Parti; Right: Adalet ve Kalkınma Partisi; Far right: Milliyetçi Hareket Partisi|Saadet Partisi|Hür Dava Partisi")
       
     } else if (country == "BR") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <- -2*(e$vote %in% c("Guilherme Boulos")) -1*(e$vote %in% c("Fernando Haddad", "Marina Silva")) -0*(e$vote %in% c("Ciro Gomes", "Geraldo Alckmin", "Henrique Meirelles", "Alvaro Dias")) + 1*(e$vote %in% c("João Amoêdo")) + 2*(e$vote %in% c("Jair Bolsonaro", "Cabo Daciolo")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,-0,1,2,-0.1), names = c("Far left","Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Guilherme Boulos; Left: Fernando Haddad|Marina Silva; Center: Ciro Gomes|Geraldo Alckmin|Henrique Meirelles|Alvaro Dias; Right: João Amoêdo; Far right: Jair Bolsonaro|Cabo Daciolo")
       
     } else if (country == "UK") { # Automatic classification is the same except that Far right parties are then considered Right
       temp <-  -1*(e$vote %in% c("Labour", "Green", "SNP")) -0*(e$vote %in% c("Liberal Democrats")) + 1*(e$vote %in% c("Conservative")) + 2*(e$vote %in% c("Brexit Party")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp, labels = structure(c(-1,-0,1,2,-0.1), names = c("Left","Center","Right", "Far right","PNR or other")),
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 4 categories. Left: Labour|Green|SNP; Center: Liberal Democrats; Right: Conservative; Far right: Brexit Party")
       
     } 
@@ -2563,7 +2621,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   }
   
   # e <- e[, -c(9:17)] 
-  print("convert: success")
+  print(paste("convert: success", country))
   return(e)
 }
 
@@ -2650,7 +2708,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   # 
 }
 
-prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = F, zscores = T) { #(country!="DK") # , exclude_quotas_full=TRUE
+prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = F, zscores = T, remove_id = FALSE) { #(country!="DK") # , exclude_quotas_full=TRUE
   # if (country == "US") {
   #   if (wave == "pilot1") e <- read_csv("../data/US_pilot.csv") 
   #   else if (wave == "pilot2") e <- read_csv("../data/US_pilot2.csv") 
@@ -2659,7 +2717,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   # } else if (country == "DK") e <- read_csv("../data/DK.csv") 
   filename <- paste0(c(country, wave), collapse="_")
   # if (filename != "SA") remove_id(filename)
-  remove_id(filename)
+  if (remove_id) remove_id(filename)
   file <- paste0("../data/", filename, ".csv")
   if (replace_brackets) {
     data <- readLines(file)
@@ -2742,6 +2800,7 @@ e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
 e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
 e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
 e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
+e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)# .22
 current_countries <- c("DK", "US", "FR", "DE", "ID")
 ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
 All <- list()
@@ -2859,3 +2918,11 @@ names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
 #   if(class(x) == 'character') substr(x, 1, 128) else x}))
 # write_dta(df, "all.dta")
 # write.csv(all, "../data/all.csv") # bug: quotes are not put around items so that messes things up as there are "," and ";" in some of them.
+
+# uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, exclude_screened = F)
+# uab <- uaa[135:362,] # Those after the recoding of zipcodes
+# uac <- uab[which(uab$age != "Below 18" & uab$attention_test == "A little" & uab$duration > 686/60),]
+# nrow(uac) # Those after the recoding of zipcodes that shouldn't be screened out
+# mean(is.na(uac$urban_category)) # 10%
+# mean(is.na(uac$urban_category)) # 0
+# uac$zipcode[is.na(uac$urban_category)]
