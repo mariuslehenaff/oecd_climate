@@ -600,7 +600,7 @@ data1 <- function(vars, data=e, weights=T) {
   return( matrix(res, ncol=length(vars)) )
 }
 dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE) {
-  missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "PNR or other", "NSP ou autre", "PNR ou autre")
+  missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
   if (is.null(data[['weight']])) weights <- F # TODO? warning
   mat <- c()
   if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !grepl("item", class(data[[var]]))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
@@ -722,13 +722,18 @@ barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover,
     else hover <- legend <- dataN(var = vars[1], data=df[[1]], miss=miss, weights = weights, return = "legend", fr=fr, rev_legend = rev) } 
   agree <- order_agree(data = data1, miss = miss)
   if (is.logical(df[[1]][[vars[1]]])) agree <- rev(agree)
-  if (return=="data") return(dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = ""))
-  else if (return=="levels") {if (is.null(levels)) {return(labels)} else {return(levels)}}
+  if (return=="levels") {if (is.null(levels)) {return(labels)} else {return(levels)}}
   else if (return=="labels") return(labels) # labels12(labels[agree], en = !fr, comp = comp, orig = orig)
   else if (return=="legend") return(legend)
-  else return(barres(data = dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = ""), 
-                     labels=labels, legend=legend, # labels12(labels[agree], en = !fr, comp = comp, orig = orig) # /!\ doesn't currently support multiple vars
+  else {
+    plotted_data <- dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = "")
+    if (return=="data") { return(plotted_data)
+    } else {
+      not_nan <- sapply(c(1:ncol(plotted_data)), function(j) any(!is.nan(plotted_data[,j])))
+      plotted_data <- plotted_data[,not_nan]
+      return(barres(data = plotted_data, labels=labels[not_nan], legend=legend, # labels12(labels[agree], en = !fr, comp = comp, orig = orig) # /!\ doesn't currently support multiple vars
                      miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls, error_margin = error_margin))
+  } }
 }
 color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
 color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') { # TODO! whitout white
@@ -833,9 +838,9 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
         values <- c(values, paste(round(100*data[length(hover), j]/(1+data[length(hover), j])), '%', sep='')) # '%  '
       }
     }
-    else {
-      if (is.element(hover[length(hover)],c("PNR", "PNR or other", "NSP", "Included"))) hover <- hover[1:(length(hover)-1)]
-      if (is.element(legend[length(legend)],c("PNR", "PNR or other", "NSP", "Included"))) legend <- legend[1:(length(legend)-1)]
+    else { 
+      if (is.element(hover[length(hover)],c("PNR", "PNR or other", "NSP"))) hover <- hover[1:(length(hover)-1)]
+      if (is.element(legend[length(legend)],c("PNR", "PNR or other", "NSP"))) legend <- legend[1:(length(legend)-1)]
       for (i in 1:length(hover)) { 
         for (j in 1:length(labels)) {
           hovers <- c(hovers, paste(hover[i], '<br>', round(100*data[i, j]), '% des réponses exprimées<br>') )
