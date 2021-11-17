@@ -1145,6 +1145,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
                                                                                      names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
                                                             missing.values=-0.1, annotation=Label(e$equal_quota))
   
+  e$scale_federal_continent <- e[[variables_scale[2]]]
+  e$scale_state_national <- e[[variables_scale[3]]]
+  variables_scale <<- c("scale_global", "scale_federal_continent", "scale_state_national", "scale_local")
+    
   if ("burden_sharing_income" %in% names(e)) {
     e$pro_polluter_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0)
     label(e$pro_polluter_pay) <- "pro_polluter_pay: In favor of a burden_sharing option where polluter pay: agree to _income, _emissions or _cumulative."
@@ -1164,10 +1168,15 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     label(e$pro_differentiated_responsibilities_large) <- "pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
     # e$pro_other_burden_sharing <- e$pro_grand_fathering == F & e$pro_rich_pay == F & e$pro_polluter_pay == F # e$pro_global_tax_dividend_large == F & e$pro_differentiated_responsibilities_large == F
     variables_burden_sharing_inferred <<- c("pro_polluter_pay", "pro_rich_pay",  "pro_grand_fathering", "pro_polluter_and_rich_pay", "pro_global_tax_dividend", "pro_differentiated_responsibilities_large", "pro_differentiated_responsibilities_strict")
+    e$burden_share_ing_population <- e$burden_sharing_emissions # would burden_share_income be closer? Because if investments in the transition is supposed to be equal for every human, _emission would amount to burden_share_population / but if there are more investments in low-income countries (not sure!) and if carbon intensity is lower in high-income countries, _income is closer to burden_share_population's distributional effects
+    e$burden_share_ing_historical <- e$burden_sharing_cumulative # burden_share_emissions is less (or as) progressive than burden_share_population and burden_sharing_income, it is not clear however which is more progressive between burden_sharing_income and burden_share_population (it is _income iff investments p.c. are almost equal among countries)
+    e$burden_share_ing_damages <- e$burden_sharing_poor_receive 
   } else if ("burden_share_population" %in% names(e)) {
     e$pro_rich_pay <- (e$burden_share_historical > 0 | e$burden_share_population > 0)
     label(e$pro_rich_pay) <- "pro_rich_pay: In favor of burden_share where rich countries pay: agree to _population or _historical."
     variables_burden_sharing_inferred <<- c("pro_rich_pay")
+    for (v in variables_burden_share) e[[sub("share_", "share_ing_", v)]] <- e[[v]]
+    variables_burden_share_ing <<- gsub("share_", "share_ing_", variables_burden_share)
   }
   
   if (country=="US" & wave=="pilot2") e$equal_quota2 <- as.item(e$equal_quota, labels = structure(c(-2,-1,1,2,-0.1),
