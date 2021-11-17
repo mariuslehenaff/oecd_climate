@@ -1,3 +1,5 @@
+# TODO!: choose what variables to include
+
 ##### Functions LDA #####
 # Function to scale-up probabilities from the beta vectors. Does not account for mutually exclusive answers.
 # beta_transformation <- function(beta, nbr_question=107) {
