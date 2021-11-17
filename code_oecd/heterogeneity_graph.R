@@ -1,3 +1,9 @@
+# TODO! plot_along: order countries as usual
+# TODO! mean_ci_along_regressions: confidence intervals (currently probably incorrect), origin
+# TODO! regressions_list: handle outcomes of type "future_richness" (so that they are understood as as.numeric(future_richness))
+# TODO plot_along: automatic name, conditions, automatic values when missing(legend_x), legend_y, show legend for 20 countries (display UA!) even if there is less than 4 variables, 
+# TODO mean_ci_along_regressions: determine automatically whether logit through class(regs)
+# TODO: other various things below
 
 # Nb: condition is > 0. Might be different for other variables
 # Return a df with mean and CI for each sub-group
@@ -41,7 +47,7 @@ variables_list <- variables_all_policies_support <- c("standard_public_transport
 policies_label <- labels_all_policies_support <- c("Ban of combustion engine \n (public transport made available)", "Ban of combustion engine", "Green investments program", "Carbon tax with cash transfer")
 
 plot_along_old <- function(vars, along, name = NULL, labels = vars, legend_x = '', legend_y = '', invert_point_y_axis = FALSE, df = e, folder = '../figures/country_comparison/', weight = "weight", width = dev.size('px')[1], height = dev.size('px')[2]) {
-  levels_along <- Levels(df[[along]]) # TODO! automatic name, conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
+  levels_along <- Levels(df[[along]]) 
   if (is.missing(name)) name <- paste0(vars[1], "_by_", along, "_") #name <- sub("variables_", "", deparse(substitute(vars)))
   mean_sd <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weight = weight)))
   mean_sd$policy <- factor(mean_sd$policy, levels = vars, labels = labels)
@@ -94,7 +100,7 @@ regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, lo
   }
   return(regs)
 }
-  
+
 # Given a set of regressions with one common variable (along), gives the coefs and CI of the levels of that variable.
 mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 0, logit = c(FALSE), logit_margin = T, confidence = 0.95,
                                       subsamples = NULL, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), weight = 'weight') { # to handle numeric variables: levels_along = ifelse(is.numeric(df[[along]]), c(), Levels(df[[along]]))
@@ -208,7 +214,6 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste(
                        legend_x = '', legend_y = '', name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T) {
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables, order countries as usual
   # TODO: automatic values when missing(legend_x), legend_y
-  # TODO: labels legend (e.g. instead of T/F for urban)
   if (missing(name) & !missing(vars) & !missing(along)) {
     if (grepl('["\']', deparse(substitute(vars)))) {
       name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1]), paste0(vars[1], "_by_", along))
