@@ -1713,7 +1713,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     # adj_leaning
     # round_mean_leaning
     # mode_leaning
-    parties_leaning[country] <- list(mode_leaning)
+    parties_leaning[country] <<- list(mode_leaning)
     e$vote_mode_leaning <- mode_leaning[e$vote]
     # if ("Left" %in% Levels(e$vote_mode_leaning)) e$vote_mode_leaning <- relevel(e$vote_mode_leaning, "Left")
     # label(e$vote_mode_leaning) <- "vote_mode_leaning: left_right leaning of respondent's vote, computed as the mode to left_right question for respondents with same vote"
@@ -2861,6 +2861,7 @@ merge_all_countries <- function(df = All, weight_adult = T, weight_oecd = F) {
 
 
 prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
+  start <- Sys.time()
   if (pilots) {
     usp1 <<- prepare(country = "US", wave = "pilot1", duration_min = 0)
     usp2 <<- prepare(country = "US", wave = "pilot2", duration_min = 686)
@@ -2897,6 +2898,7 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
   all <<- merge_all_countries()
   e <<- all
+  print(Sys.time()-start)
 }
 
 prepare_all(zscores = FALSE)
