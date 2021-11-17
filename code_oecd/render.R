@@ -1,8 +1,10 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO: size of town (DK has not same bins), translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
-# TODO! vote, comparison heterogeneity, function coef along, quality (know_treatment_climate, watched_climate)
-# TODO!! add column World, bigger heatmaps
+# TODO!! add column World, bigger font in heatmaps
+# TODO!: render positive/costless (e.g. standard_effect, standard_all, policies_costless), vote/left_right, wealth, burden_share (incl. opinion_)
+# TODO: various things below to debug or improve figures (at most as important as previous line)
+# TODO: size of town (DK has not same bins), quality (know_treatment_climate, watched_climate)
+# TODO: translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
 
 update_constant <- function(data = all) {
   df <<- e <<- data
@@ -72,11 +74,11 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     
     try({ stopwords <- unlist(sapply(c("danish", "french", "english", "german", "italian", "spanish"), function(v) stopwords(v)))
     # stopwords <<- unlist(sapply(c("danish", "french", "english", "german", "italian", "spanish"), function(v) stopwords(v)))
-    # rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = stopwords) # TODO: update
+    # rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, excludeWords = stopwords) 
     rquery.wordcloud(paste(e$CC_field, collapse=" \n "), max.words = 70, colorPalette = "Blues", excludeWords = c(stopwords, "climate", "change", "government"))
     save_plot(filename = paste0(folder, "CC_field", replacement_text), height = 400, width = 400)
     # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), max.words = 70)
-    # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", max.words = 70) # TODO save
+    # rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = "survey", max.words = 70)
     rquery.wordcloud(paste(e$comment_field, collapse=" \n "), excludeWords = stopwords, colorPalette = "Blues", max.words = 70) # Spectral
     save_plot(filename = paste0(folder, "comment_field", replacement_text), height = 400, width = 400)  })
     
@@ -1025,7 +1027,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(heating_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "heating", export_xls = export_xls, df = e, miss=T, labels="Heating type", rev = F, legend=c("Electricity", "Gas", "Oil", "Other", "PNR")))
       save_plotly_new_filename(heating_US, width= 525, height=fig_height(1*nb_levels))})
     
-    try({(heating_expenses_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "heating_expenses", export_xls = export_xls, df = e, miss=T, fr="Included", labels="Monthly heating expenses", rev = F))
+    try({(heating_expenses_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "heating_expenses", export_xls = export_xls, df = e, miss=T, fr="Don't know", labels="Monthly heating expenses", rev = F))
       save_plotly_new_filename(heating_expenses_US, width= 950, height=fig_height(1*nb_levels))})
     
     try({(insulation_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "insulation", export_xls = export_xls, df = e, miss=F, rev_color = T, labels="Quality of insulation", rev = F))
