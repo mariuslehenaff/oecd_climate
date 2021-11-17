@@ -974,7 +974,7 @@ correlogram <- function(grep = NULL, vars = NULL, df = e) {
   names(data) <- vars
   corr <- cor(data, use="complete.obs")
   p.mat <- cor.mtest(data) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
-  corrplot(corr, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
+  corrplot(corr, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T, type='upper') #, order='hclust'
 }
 heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # type in full, upper, lower
   diag <- if(type=="full") T else F
@@ -985,7 +985,7 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # 
   # col <- colorRampPalette(color2)(200)
   # # if (proportion) col <- colorRampPalette(c(rep("#67001F", 10), col2))(200)
   par(xpd=TRUE)
-  return(corrplot(data, method='color', col = COL2('RdYlBu'),  mar = c(0,0, 1.3,0), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale
+  return(corrplot(data, method='color', col = COL2('RdYlBu'), tl.cex = 1, number.cex = 1, mar = c(0,1,1.3,1), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale # cex
 }
 heatmap_table <- function(vars, labels = vars, data = all, along = "country_name", special = c(), conditions = c("> 0"), on_control = T, alphabetical = FALSE) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
@@ -1013,10 +1013,11 @@ heatmap_table <- function(vars, labels = vars, data = all, along = "country_name
   row.names(table) <- labels
   return(table)
 }
-heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", special = c(), conditions = c("> 0"), df = all, width = NULL, height = NULL, alphabetical = T) {
+heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", special = c(), conditions = c("> 0"), df = all, width = NULL, height = NULL, alphabetical = T, on_control = T) {
   # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
   # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
   # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few). 
+  # special can be c("World", "OECD")
   if (is.null(width)) width <- ifelse(length(labels) <= 3, 1000, 1770) # TODO! more precise than <= 3 vs. > 3
   if (is.null(height)) height <- ifelse(length(labels) <= 3, 163, 400)
   
@@ -1029,9 +1030,15 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
                                 cond == "<= 0" ~ "non-positive", 
                                 cond == "== 2" ~ "max", 
                                 cond == "== -2" ~ "min", 
+                                cond == "-" ~ "difference",
+                                cond == "/" ~ "share",
                                 TRUE ~ "unknown"), sep = "_")
     try({
-      temp <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = cond, on_control = T, alphabetical = alphabetical)
+      if (cond %in% c("/", "-")) {
+        pos <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = "> 0", on_control = on_control, alphabetical = alphabetical)
+        neg <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = "< 0", on_control = on_control, alphabetical = alphabetical)
+        if (cond == "-") temp <- pos - neg else temp <- pos / (pos + neg)
+      } else {  temp <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical) }
       heatmap_plot(temp, proportion = (cond != ""))
       save_plot(filename = paste0(folder, filename, replacement_text), width = width, height = height)
     })
