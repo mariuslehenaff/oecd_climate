@@ -1,8 +1,8 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
 # TODO!! add column World, bigger font in heatmaps
-# TODO!: add condition Delta or nu
 # TODO!: render positive/costless (e.g. standard_effect, standard_all, policies_costless), vote/left_right, wealth, burden_share (incl. opinion_)
+# TODO? on_control = FALSE on some of them?
 # TODO? replace burden_share by corresponding burden_share_ing for FR, DK, US?
 # TODO: various things below to debug or improve figures (at most as important as previous line)
 # TODO: size of town (DK has not same bins), quality (know_treatment_climate, watched_climate)
@@ -19,7 +19,7 @@ update_constant <- function(data = all) {
     replacement_text <<- paste0("_", toupper(country))
   }
   alphabetical <<- FALSE
-  heatmap_conditions <<- c("", "> 0")
+  heatmap_conditions <<- c("", "> 0", "/") # c("/") # c("", "> 0", "/")
   along <<- "country_name"
   nb_levels <<- length(Levels(e[[along]]))
   cond <<- "> 0"
@@ -936,7 +936,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
 }
 
 # /!\ open the Plots pane at its maximum before running the function
-render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", "> 0"), alphabetical = FALSE) { # c("", "> 0", "< 0", ">= 0", "<= 0", "== 2", "== -2")
+render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", "> 0", "/"), alphabetical = FALSE) { # c("", "> 0", "< 0", ">= 0", "<= 0", "== 2", "== -2")
   start <- Sys.time()
   
   e <- data
@@ -1820,11 +1820,11 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = variables_tax, labels = labels_tax_short, conditions = heatmap_conditions, alphabetical = alphabetical)
     heatmap_wrapper(vars = c("tax_transfers_support", variables_tax), name = "tax_all", labels = c("Tax with cash transfers", labels_tax_short), conditions = heatmap_conditions, alphabetical = alphabetical)
  
-    heatmap_wrapper(vars = rev(c("investments_support", "tax_transfers_fair", "investments_costless_costly", "investments_positive_negative", "investments_large_effect", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener"), alphabetical = alphabetical), name = "investments_all", 
+    heatmap_wrapper(vars = rev(c("investments_support", "tax_transfers_fair", "investments_costless_costly", "investments_positive_negative", "investments_large_effect", "investments_effect_less_pollution", "investments_effect_public_transport", "investments_effect_elec_greener")), alphabetical = alphabetical, name = "investments_all", 
                     labels = rev(c("Support", "Be fair", "Costless way to fight climate change", "Positive effect on [country]\neconomy and employment", "Large effect on [country]\neconomy and employment", "Reduce air pollution", "Increase the use of public transport", "Make electricity production greener")), conditions = heatmap_conditions)
-    heatmap_wrapper(vars = rev(c("standard_support", "standard_fair", "standard_costless_costly", "standard_positive_negative", "standard_large_effect", "standard_effect_less_pollution", "standard_effect_less_emission"), alphabetical = alphabetical), name = "standard_all", 
+    heatmap_wrapper(vars = rev(c("standard_support", "standard_fair", "standard_costless_costly", "standard_positive_negative", "standard_large_effect", "standard_effect_less_pollution", "standard_effect_less_emission")), alphabetical = alphabetical, name = "standard_all", 
                     labels = rev(c("Support", "Be fair", "Costless way to fight climate change", "Positive effect on [country]\neconomy and employment", "Large effect on [country]\neconomy and employment", "Reduce air pollution", "Reduce CO2 emissions from cars")), conditions = heatmap_conditions)
-    heatmap_wrapper(vars = rev(c("tax_transfers_support", "tax_transfers_fair", "tax_transfers_costless_costly", "tax_transfers_positive_negative", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving"), alphabetical = alphabetical), name = "tax_transfers_all", 
+    heatmap_wrapper(vars = rev(c("tax_transfers_support", "tax_transfers_fair", "tax_transfers_costless_costly", "tax_transfers_positive_negative", "tax_transfers_large_effect", "tax_transfers_effect_less_pollution", "tax_transfers_effect_less_emission", "tax_transfers_effect_insulation", "tax_transfers_effect_driving")), alphabetical = alphabetical, name = "tax_transfers_all", 
                     labels = rev(c("Support", "Be fair", "Costless way to fight climate change", "Positive effect on [country]\neconomy and employment", "Large effect on [country]\neconomy and employment", "Reduce air pollution", "Reduce GHG emissions", "Encourage insulation of buildings", "Encourage people to drive less")), conditions = heatmap_conditions)
     heatmap_wrapper(vars = paste(names_policies, "costless_costly", sep="_"), name = "policies_costless_costly", labels = labels_policies, conditions = heatmap_conditions, alphabetical = alphabetical)
     heatmap_wrapper(vars = paste(names_policies, "costless", sep="_"), name = "policies_costless", labels = labels_policies, conditions = heatmap_conditions, alphabetical = alphabetical)
