@@ -4,11 +4,12 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
-# TODO!: burden_share, cu, standard of living, share of policies approved, index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
+# TODO!: burden_share, share of policies approved, index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
 # TODO! (relabel_rename): origin, area (SA, ID), investments_funding_global_transfer, scale_asean/african/EU, gas_spike, ia$religion, standard_prefer, policy_ban_coal/tax_reduction_EEG_Umlage, sp$insulation_mandatory_support_progressive
+# TODO! list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...), complete board.xlsx with countries specificities
 # TODO: country-specific: train/coach, income, wealth, tax_transfers_progressive_fair/support, urbanity, sa$urban
 # TODO! DE: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
-# TODO: code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
+# TODO: cu, standard of living (not a priority), code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
 # TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
@@ -994,7 +995,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$insulation_support <- ifelse(e$insulation_disruption_variant, e$insulation_mandatory_support_priming, e$insulation_mandatory_support_no_priming)
   }
   
-  for (v in c(variables_policy , variables_tax, variables_support, "insulation_support")) { # TODO compatibility pilots 1, 2
+  for (v in c(variables_policy , variables_tax, variables_support, "insulation_support", "global_quota")) { # TODO compatibility pilots 1, 2
     if (v %in% names(e)) {
       temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
       e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
