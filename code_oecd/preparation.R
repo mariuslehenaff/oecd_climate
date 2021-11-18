@@ -4,7 +4,7 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
-# TODO!: burden_share, share of policies approved, index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
+# TODO!: burden_share, car_dependency, owner, dominant_origin, share of policies approved (common vs. all policies), index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
 # TODO! (relabel_rename): origin, area (SA, ID), investments_funding_global_transfer, scale_asean/african/EU, gas_spike, ia$religion, standard_prefer, policy_ban_coal/tax_reduction_EEG_Umlage, sp$insulation_mandatory_support_progressive
 # TODO! list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...), complete board.xlsx with countries specificities
 # TODO: country-specific: train/coach, income, wealth, tax_transfers_progressive_fair/support, urbanity, sa$urban
@@ -981,6 +981,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
                       missing.values=c(-0.1,NA), annotation=Label(e[[v]])) 
   }
   for (v in intersect(names(e), c(variables_obstacles_insulation, "will_insulate"))) e[[v]][e$home_landlord==F & e$home_owner==F] <- NA # Questions not asked for non-owners
+  e$owner <- e$home_owner == T | e$home_landlord == T
+  label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
   
   for (v in intersect(names(e), c(variables_responsible_CC, variables_willing, variables_condition, "CC_knowledgeable", "net_zero_feasible", "CC_affects_self", "pro_ambitious_policies", "effect_halt_CC_lifestyle", "interested_politics"))) { 
     temp <-  2 * (e[[v]] %in% text_intensity_great_deal) + (e[[v]] %in% text_intensity_lot) - (e[[v]] %in% text_intensity_little) - 2 * (e[[v]] %in% text_intensity_not) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]])) 
@@ -1602,6 +1604,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   e$rush <- e$rush_treatment | (e$duration < 15)
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
+  
+  if (!exists(all_policies)) {
+    print("all_policies undefined")
+    all_policies <- c(variables_policies_support, "standard_public_transport_support", variables_policy, variables_tax, "global_quota", variables_global_policies, variables_beef) 
+  }
+  e$share_policies_supported <- rowMeans(e[, intersect(all_policies, names(e))] > 0, na.rm = T)
+  label(e$share_policies_supported) <- "share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent."
   
   # # [deprecated] problem: someone can be at the same time Hispanic and black or white. Why don't you keep the dummies race_white, race_black, race_hispanic?
   # e$race_white_only <- 0 # 
@@ -2903,6 +2912,16 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
 
 prepare_all(zscores = FALSE)
 
+# Sets. A: core socio-demos + vote. At: A + treatment. B: energy characteristics. C: mechanisms. D: outcomes. Dpos: binary outcomes (> 0).
+setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
+setAt <- c(setA, "treatment")
+setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "car_dependency", "owner", "flights_agg > 1")
+setC <- c()
+all_policies <- c(variables_policies_support, "standard_public_transport_support", variables_policy, variables_tax, "global_quota", variables_global_policies, variables_beef) 
+setD <- common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names)))
+setDpos <- paste(setD, "> 0")
+                          
+                          
 ## PREPARE DATA FOR STATA
 # write.csv(all,"../data/all_211110.csv", row.names=F)
 all_stata <- janitor::clean_names(all)
