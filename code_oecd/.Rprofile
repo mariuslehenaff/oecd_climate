@@ -985,7 +985,7 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T) { # 
   # col <- colorRampPalette(color2)(200)
   # # if (proportion) col <- colorRampPalette(c(rep("#67001F", 10), col2))(200)
   par(xpd=TRUE)
-  return(corrplot(data, method='color', col = COL2('RdYlBu'), tl.cex = 1, number.cex = 1, mar = c(0,1,1.3,1), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale # cex
+  return(corrplot(data, method='color', col = COL2('RdYlBu'), tl.cex = 1.3, na.label = "NA", number.cex = 1.3, mar = c(1,1,1.3,1.1), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = proportion, type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale # cex
 }
 heatmap_table <- function(vars, labels = vars, data = all, along = "country_name", special = c(), conditions = c("> 0"), on_control = T, alphabetical = FALSE) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
@@ -998,11 +998,14 @@ heatmap_table <- function(vars, labels = vars, data = all, along = "country_name
   nb_vars <- length(vars)
   
   if (length(conditions)==1) conditions <- rep(conditions[1], nb_vars)
-  table <- array(NA, dim = c(nb_vars, length(c(special, levels))), dimnames = list(vars, c(special, levels)))
-  for (c in c(special, levels)) {
+  up_labels <- c(special, levels)
+  if (any(c('non-OECD', 'Non-OECD', 'non-oecd') %in% special) & levels[15]=="Brazil") up_labels <- c(special[!special %in% c('non-OECD', 'Non-OECD', 'non-oecd')], levels[1:14], "Non-OECD", levels[15:length(levels)])
+  table <- array(NA, dim = c(nb_vars, length(c(special, levels))), dimnames = list(vars, up_labels))
+  for (c in up_labels) {
     if (c %in% levels) { df_c <- e[e[[along]]==c,]
     } else if (c %in% c('World', 'world', 'total', 'all')) { df_c <- e 
     } else if (c %in% c('OECD', 'oecd')) { df_c <- e[which(oecd[e$country]),]
+    } else if (c %in% c('non-OECD', 'Non-OECD', 'non-oecd')) { df_c <- e[which(!oecd[e$country]),]
     } else if (c %in% countries) { df_c <- e[e$country == c,] 
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {

@@ -1555,7 +1555,7 @@ relabel_and_rename_DK <- function(e) {
     "origin_asia",
     "origin_africa",
     "origin_north_america",
-    "origin_south_america", # TODO
+    "origin_south_america", # 
     "origin_other_choice",
     "origin_pnr",
     "origin_other",
@@ -1855,7 +1855,7 @@ relabel_and_rename_DE <- function(e) {
     "age",
     "zipcode",
     "urbanity",
-    "origin_country", # TODO!
+    "origin_country", 
     "origin_continent",
     "origin_other",
     "origin_pnr",
@@ -2737,7 +2737,7 @@ relabel_and_rename_SP <- function(e) {
     "should_fight_CC",
     "if_other_do_more",
     "if_other_do_less",
-    "global_quota", # TODO!
+    "global_quota", 
     "burden_share_population",
     "burden_share_emissions",
     "burden_share_historical",
@@ -3119,7 +3119,7 @@ relabel_and_rename_AU <- function(e) {
     "zipcode",
     "urbanity",
     "origin_country",
-    "origin_british", # TODO!
+    "origin_british", 
     "origin_EU",
     "origin_new_zealand",
     "origin_asian",
@@ -3429,7 +3429,7 @@ relabel_and_rename_CA <- function(e) {
     "zipcode",
     "urbanity",
     "origin_country",
-    "origin_US_EU", # TODO!
+    "origin_US_EU", 
     "origin_asian",
     "origin_other",
     "origin_pnr",
@@ -4045,7 +4045,7 @@ relabel_and_rename_ID <- function(e) {
     "zipcode",
     "area", # TODO
     "urbanity",
-    "origin_java", # TODO
+    "origin_java", 
     "origin_sunda", 
     "origin_batak", 
     "origin_bugis", 
@@ -4351,7 +4351,7 @@ relabel_and_rename_SA <- function(e) {
     "zipcode",
     "urbanity",
     "area", # TODO
-    "origin", # TODO
+    "origin", 
     "couple",
     "marital_status",
     "HH_size",
@@ -4973,7 +4973,7 @@ relabel_and_rename_IA <- function(e) {
     "age",
     "zipcode",
     "urbanity",
-    "religion", # TODO
+    "religion", 
     "couple",
     "marital_status",
     "HH_size",
