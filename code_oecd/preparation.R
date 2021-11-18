@@ -4,19 +4,26 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
-# TODO!: burden_share, car_dependency, owner, dominant_origin, share of policies approved (common vs. all policies), index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
-# TODO! (relabel_rename): origin, area (SA, ID), investments_funding_global_transfer, scale_asean/african/EU, gas_spike, ia$religion, standard_prefer, policy_ban_coal/tax_reduction_EEG_Umlage, sp$insulation_mandatory_support_progressive
+# TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
+# TODO! (relabel_rename): area (SA, ID), gas_spike, standard_prefer, (ia$religion, policy_ban_coal/tax_reduction_EEG_Umlage, investments_funding_global_transfer, scale_asean/african/EU, sp$insulation_mandatory_support_progressive)
 # TODO! list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...), complete board.xlsx with countries specificities
 # TODO: country-specific: train/coach, income, wealth, tax_transfers_progressive_fair/support, urbanity, sa$urban
 # TODO! DE: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
 # TODO: cu, standard of living (not a priority), code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
 # TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
+# TODO: From board: 3.1 add coal & district heating; 242 change to yearly; scale: countries with only 3 (SA)
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
 control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
 control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
 cov_lab_w_treatment <- c("race: White only", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center", "Climate treatment only", "Policy treatment only", "Both treatments")
+
+variables_fine_support <- c("standard_10k_fine", "standard_100k_fine") # DE, IT, PL, SP
+variables_fine_prefer <- c("standard_prefer_ban", "standard_prefer_10k_fine", "standard_prefer_100k_fine") # DE, IT, PL, SP
+variables_gas_spike <- c("gas_spike_transition_needed", "gas_spike_policies_costly", "gas_spike_higher_tax_rich", "gas_spike_not_related") # UK
+variables_policy_additional <- c("policy_ban_coal", "policy_ban_deforestation", "tax_ecological_protection", "tax_reduction_EEG_Umlage", "tax_more_commuter_allowance", "insulation_mandatory_support_progressive") # DE: coal, EEG, commuter; UA: ecological protection; SP: insulation_mandatory_support_progressive; BR, ID: policy_ban_deforestation
+# also variables_gilets_jaunes in FR
 
 qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "IT", "PL", "SP", "UK") # , "TR"
@@ -40,6 +47,8 @@ countries_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Ita
 Country_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "the U.K.", "the U.S.", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine")
 Country_Names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "UK", "USA", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine")
 country_names <- c("Australian", "Canadian", "Danish", "French", "German", "Italian", "Japanese", "Mexican", "Polish", "South Korean", "Spanish", "Turkish", "British", "American", "Brazilian", "Chinese", "Indian", "Indonesian", "South African", "Ukrainian")
+poor_countries <- c("IA", "ID", "SA", "UA") # (ie GDP pc < $6k): countries for which Country is described as receiver in policy_climate_fund. For OECD, BR or CN, the Country is described as contributor."
+tropical_countries <- c("MX", "BR", "IA", "ID") # countries for which the questions on heating and insulation were not asked. (For AU: the questions were asked with cooling instead of heating)."
 tax_price_increase <- c("AU$0.15/L", "CA$0.14/L", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "¥12/L", "Mex$2.2/L", "0.40 zł/L", "₩125/L", "0.10 €/L", "₺1/L", "£0.08/L", "$0.40/gallon", "0.60 R$/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.60/L", "3₴/L")
 adult_pop <- c(19.6, 30.3, 4.5, 50.4, 68.5, 49.7, 108, 92.8, 31.4, 43.2, 38.2, 59.8, 51.6, 246, 160, 1130, 860, 173, 36.0, 35.4)
 population <- c(26, 38, 6, 65, 84, 60, 127, 129, 38, 51, 47, 84, 68, 331, 213, 1439, 1380, 274, 59, 44) # World: 4560/7800, Asia: 3350/4600, Europe: 412/750 (UE: 300/448, euro: 256/342), Africa: 59/1300, North America: 498/580, South America: 213/420 (Northern America: 369/369, Latin America: 306/631), Oceania: 26/42 (OECD: 1154/1371). 
@@ -467,7 +476,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   if (length(grep('condition_', names(e)))>0) variables_condition <<- names(e)[grepl('condition_', names(e))]
   if (length(grep('CC_impacts_', names(e)))>0) variables_CC_impacts <<- names(e)[grepl('CC_impacts_', names(e))]
   variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
-  variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p|EEG_Umlage|commuter_allowance", names(e))]
+  variables_policy_common <<- names(e)[grepl('policy_', names(e)) & !grepl("order_|deforest|_coal", names(e))]
+  variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p", names(e))]
+  variables_tax_common <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p|EEG_Umlage|commuter_allowance|ecological_protection", names(e))]
   variables_political_identity <<- c("liberal", "conservative", "humanist", "patriot", "apolitical", "environmentalist", "feminist", "political_identity_other")
   variables_socio_demo <<- c("gender", "age", "region", "race_white", "education", "hit_by_covid", "employment_status", "income", "wealth", "urban", "nb_children", "hh_children", "hh_adults", "heating", "km_driven", "flights", "frequency_beef")
   # variables_main_controls <<- c("gender", "age", "income", "education", "hit_by_covid", "employment_status", "Left_right", "(vote == 'Biden')", "as.factor(urbanity)", "urban")
@@ -480,7 +491,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   else variables_know_treatment_policy <<- c("know_ban", "know_investments_funding")
   variables_know_treatment <<- c(variables_know_treatment_climate, variables_know_treatment_policy)
   if (length(grep('GHG_', names(e)))>0) variables_GHG <<- names(e)[grepl('GHG_', names(e))]
-  if (length(grep('investments_funding_', names(e)))>0) variables_investments_funding <<- names(e)[grepl('investments_funding_', names(e))]
+  if (length(grep('investments_funding_', names(e)))>0) variables_investments_funding <<- names(e)[grepl('investments_funding_', names(e)) & !grepl('global_', names(e))]
   if (length(grep('if_other_do_', names(e)))>0) variables_if_other_do <<- names(e)[grepl('if_other_do_', names(e))]
   if (length(grep('obstacles_insulation_', names(e)))>0) variables_obstacles_insulation <<- names(e)[grepl('obstacles_insulation_', names(e)) & !grepl('other$', names(e))]
   if (length(grep('footprint', names(e)))>0) {
@@ -995,15 +1006,21 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$insulation_disruption_variant <- ifelse(is.na(e$insulation_mandatory_support_no_priming), T, F)
     label(e$insulation_disruption_variant) <- "insulation_disruption_variant: Random priming that insulation cause disruption: 'Insulating your home can take long, may cause disruptions to your daily life during the renovation works, and may even require you to leave your home until the renovation is completed.'"
     e$insulation_support <- ifelse(e$insulation_disruption_variant, e$insulation_mandatory_support_priming, e$insulation_mandatory_support_no_priming)
+    annotation(e$insulation_support) <- "insulation_support: [with or without priming] Imagine that the [country] government makes it mandatory for all residential buildings to have insulation that meets a certain energy efficiency standard before 2040. [Priming if insulation_mandatory_support_priming] The government would subsidize half of the insulation costs to help households with the transition. Do you support or oppose such policy?"
   }
   
-  for (v in c(variables_policy , variables_tax, variables_support, "insulation_support", "global_quota")) { # TODO compatibility pilots 1, 2
+  for (v in c(variables_policy , variables_tax, variables_support, "insulation_support", "global_quota", variables_gas_spike, variables_fine_support)) { # TODO compatibility pilots 1, 2
     if (v %in% names(e)) {
       temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
       e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                                                  names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
                         missing.values=-0.1, annotation=Label(e[[v]])) 
     } }
+  annotation(e$policy_climate_fund) <- "policy_climate_fund: Do you support or oppose the following climate policies? - [depending on whether country %in% poor_countries] OECD, BR, CN: A contribution to a global climate fund to finance clean energy in low-income countries / IA, ID, SA, UA: Assistance from high-income countries to finance clean energy in [Country]"
+  # e$poor_country <- e$country %in% c("IA", "ID", "SA", "UA") # complementary: c(names(which(oecd)), "BR", "CN")
+  # label(e$poor_country) <- "poor_country: Dummy for IA, ID, SA, UA (ie GDP pc < $6k): countries for which Country is described as receiver in policy_climate_fund. For OECD, BR or CN, the Country is described as contributor."
+  # e$tropical_country <- e$country %in% c("MX", "BR", "IA", "ID")
+  # label(e$tropical_country) <- "tropical_country: Dummy for MX, BR, IA, ID: countries for which the questions on heating and insulation were not asked. (For AU: the questions were asked with cooling instead of heating)."
   
   if (country == "DK") temp <- (e$urbanity %in% text_large_town) + 2 * (e$urbanity %in% text_small_city) + 3 * (e$urbanity %in% text_medium_city) + 4 * (e$urbanity %in% text_large_city) + 5 * (e$urbanity == "Copenhagen")
   else temp <-  (e$urbanity %in% text_small_town) + 2 * (e$urbanity %in% text_large_town) + 3 * (e$urbanity %in% text_small_city) + 4 * (e$urbanity %in% text_medium_city) + 5 * (e$urbanity %in% c(text_large_city, text_megalopolis))
@@ -1147,8 +1164,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
                                                                                      names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
                                                             missing.values=-0.1, annotation=Label(e$equal_quota))
   
-  e$scale_federal_continent <- e[[variables_scale[2]]]
-  e$scale_state_national <- e[[variables_scale[3]]]
+  if (variables_scale[2] != "scale_national") e$scale_federal_continent <- e[[variables_scale[2]]]
+  else e$scale_state_national <- e$scale_national # these three lines of exception concern SK, JP for which only three possibilities were given (global/national/local)
+  if (variables_scale[3] != "scale_local") e$scale_state_national <- e[[variables_scale[3]]]
   variables_scale <<- c("scale_global", "scale_federal_continent", "scale_state_national", "scale_local")
     
   if ("burden_sharing_income" %in% names(e)) {
@@ -1607,7 +1625,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   if (!exists(all_policies)) {
     print("all_policies undefined")
-    all_policies <- c(variables_policies_support, "standard_public_transport_support", variables_policy, variables_tax, "global_quota", variables_global_policies, variables_beef) 
+    all_policies <- c(variables_policies_support, "standard_public_transport_support", "tax_transfers_progressive_support", variables_policy, variables_tax, "global_quota", variables_global_policies, "insulation_support", variables_beef, variables_policy_additional) # include also should_fight_CC, burden_share, if_other_do_less/more, variables_fine_support, variables_flight_quota ?
   }
   e$share_policies_supported <- rowMeans(e[, intersect(all_policies, names(e))] > 0, na.rm = T)
   label(e$share_policies_supported) <- "share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent."
@@ -1665,7 +1683,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$age[e$age %in% text_50_64] <- "50-64"
     e$age[e$age %in% text_65_] <- "65+" 
   }
-  
+
   e$nb_origin <- 0
   if ("race_white" %in% names(e)) {
     variables_origin <<- names(e)[grepl('race_', names(e)) & !grepl('other$', names(e))]
@@ -1679,6 +1697,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     e$dominant_origin <- e$race == "White only"
   } else if (country == "IA") {
     e$dominant_origin <- e$religion == "Hinduism"
+  } else if (country == "SA") {
+    e$dominant_origin <- e$origin == "Black"
   } else if (!"origin" %in% names(e)) {
     variables_origin <<- names(e)[grepl('origin_', names(e)) & !grepl('other$', names(e))]
     e$origin <- NA
@@ -1693,7 +1713,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   }
   else e$dominant_origin <- e$origin
   label(e$nb_origin) <- "nb_origin: Number of origins (or race) of the respondent."
-  label(e$dominant_origin) <- "dominant_origin: T/F Respondent's origin is the dominant one in their country (US: white only; Other: national)."
+  label(e$dominant_origin) <- "dominant_origin: T/F Respondent's origin is the dominant one in their country (US: white only; IA: hinduist; ID: Java; SA: Black; DK: Danish ethnic origin; Other: at least one parent's nationality = [country])."
   
   e$income_factor <- as.factor(e$income)
   
@@ -2782,10 +2802,10 @@ countries_field_treated <- c("DK", "US", "FR")
 # usp12 <- merge(usp1, usp2, all = T)
 # usp <- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
 # us_all <- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
-e <- us <- prepare(country = "US", duration_min = 686, zscores = T)# .59
-e <- dk <- prepare(country = "DK", duration_min = 686, zscores = T)# .95
-e <- fr <- prepare(country = "FR", duration_min = 686, zscores = T)# .61
-e <- de <- prepare(country = "DE", duration_min = 686, zscores = T)# .96
+# e <- us <- prepare(country = "US", duration_min = 686, zscores = T)# .59
+# e <- dk <- prepare(country = "DK", duration_min = 686, zscores = T)# .95
+# e <- fr <- prepare(country = "FR", duration_min = 686, zscores = T)# .61
+# e <- de <- prepare(country = "DE", duration_min = 686, zscores = T)# .96
 
 # e <- au <- prepare(country = "AU", duration_min = 686)
 # e <- ca <- prepare(country = "CA", duration_min = 686)
@@ -2803,30 +2823,30 @@ e <- de <- prepare(country = "DE", duration_min = 686, zscores = T)# .96
 # e <- id <- prepare(country = "ID", duration_min = 686)
 # e <- sa <- prepare(country = "SA", duration_min = 686)
 # ua <- pl # prepare(country = "UA", duration_min = 686, weighting = F, zscores = F)
-e <- it <- prepare(country = "IT", duration_min = 686, zscores = T)# .83
-e <- pl <- prepare(country = "PL", duration_min = 686, zscores = T)# .72
-e <- jp <- prepare(country = "JP", duration_min = 686, zscores = T)# .70
-e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .59
-e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .41
-e <- sa <- prepare(country = "SA", duration_min = 686, zscores = T)# .77
-e <- id <- prepare(country = "ID", duration_min = 686, zscores = T)# .99
-e <- ca <- prepare(country = "CA", duration_min = 686, zscores = T)# .68 # TODO: pb check "cor(e$index_k": SK
-e <- uk <- prepare(country = "UK", duration_min = 686, zscores = T)# .63
-e <- ia <- prepare(country = "IA", duration_min = 686, zscores = T)# .13
-e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .18
-e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .28
-e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
-e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
-e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
-e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
-e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)# .22
-current_countries <- c("DK", "US", "FR", "DE", "ID")
-ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
-All <- list()
-for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
-# # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-# all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
-e <- all <- merge_all_countries()
+# e <- it <- prepare(country = "IT", duration_min = 686, zscores = T)# .83
+# e <- pl <- prepare(country = "PL", duration_min = 686, zscores = T)# .72
+# e <- jp <- prepare(country = "JP", duration_min = 686, zscores = T)# .70
+# e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .59
+# e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .41
+# e <- sa <- prepare(country = "SA", duration_min = 686, zscores = T)# .77
+# e <- id <- prepare(country = "ID", duration_min = 686, zscores = T)# .99
+# e <- ca <- prepare(country = "CA", duration_min = 686, zscores = T)# .68 # TODO: pb check "cor(e$index_k": SK
+# e <- uk <- prepare(country = "UK", duration_min = 686, zscores = T)# .63
+# e <- ia <- prepare(country = "IA", duration_min = 686, zscores = T)# .13
+# e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .18
+# e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .28
+# e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
+# e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
+# e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
+# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
+# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)# .22
+# current_countries <- c("DK", "US", "FR", "DE", "ID")
+# ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
+# All <- list()
+# for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
+# # # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
+# # all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+# e <- all <- merge_all_countries()
 # representativity_index(all$weight)
 # representativity_index(all$weight_country)
 
@@ -2915,33 +2935,35 @@ prepare_all(zscores = FALSE)
 # Sets. A: core socio-demos + vote. At: A + treatment. B: energy characteristics. C: mechanisms. D: outcomes. Dpos: binary outcomes (> 0).
 setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
 setAt <- c(setA, "treatment")
-setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "car_dependency", "owner", "flights_agg > 1")
+setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1")
 setC <- c()
-all_policies <- c(variables_policies_support, "standard_public_transport_support", variables_policy, variables_tax, "global_quota", variables_global_policies, variables_beef) 
-setD <- common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names)))
+uncommon_questions <- c(variables_fine_support, variables_fine_prefer, variables_gas_spike, variables_policy_additional, variables_flight_quota, "investments_funding_global_transfer") # flight_quota: FR; investments_funding_global_transfer: poor_country=T (IA, ID, SA, UA)
+setD <- common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names))) # /!\ Beware, policy_order_climate_fund is considered a common policy but it was asked differently (contributor vs. receiver) depending on the country (contributor iff in poor_country)
 setDpos <- paste(setD, "> 0")
+ 
+all$share_common_policies_supported <-  rowMeans(all[, common_policies] > 0, na.rm = T)
+label(all$share_common_policies_supported) <- "share_common_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent that were asked in all countries."
                           
-                          
-## PREPARE DATA FOR STATA
-# write.csv(all,"../data/all_211110.csv", row.names=F)
-all_stata <- janitor::clean_names(all)
-names_stata <- c()
-for (i in seq_along(names(all_stata))){
-  # If more than 999 variables would need to change 29 to 28 and 28 to 27 in the line below
-  names_stata[i] <- ifelse(nchar(names(all_stata)[i]) < 29, names(all_stata)[i], paste(substr(names(all_stata)[i], 1, 28), i, sep = "_"))
-}
-names(all_stata) <- names_stata
-# Shorten string values
-for (i in c("comment_field", "comment_field_english", "cc_field", "cc_field_english")) {
-  all_stata[[i]] <- substr(all_stata[[i]], 1, 128)
-}
-
-haven::write_dta(all_stata, "../data/all.dta")
-# write.csv(all_stata, "../data/all_211102_stataNames.csv")
-
-dictionary_stata_R <- data.frame(names(all), names_stata, label(all))
-names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
-# write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
+# ## PREPARE DATA FOR STATA
+# # write.csv(all,"../data/all_211110.csv", row.names=F)
+# all_stata <- janitor::clean_names(all)
+# names_stata <- c()
+# for (i in seq_along(names(all_stata))){
+#   # If more than 999 variables would need to change 29 to 28 and 28 to 27 in the line below
+#   names_stata[i] <- ifelse(nchar(names(all_stata)[i]) < 29, names(all_stata)[i], paste(substr(names(all_stata)[i], 1, 28), i, sep = "_"))
+# }
+# names(all_stata) <- names_stata
+# # Shorten string values
+# for (i in c("comment_field", "comment_field_english", "cc_field", "cc_field_english")) {
+#   all_stata[[i]] <- substr(all_stata[[i]], 1, 128)
+# }
+# 
+# haven::write_dta(all_stata, "../data/all.dta")
+# # write.csv(all_stata, "../data/all_211102_stataNames.csv")
+# 
+# dictionary_stata_R <- data.frame(names(all), names_stata, label(all))
+# names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
+# # write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
 
 
 # all_bis <- janitor::clean_names(all)
