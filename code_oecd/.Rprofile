@@ -1016,7 +1016,7 @@ heatmap_table <- function(vars, labels = vars, data = all, along = "country_name
   row.names(table) <- labels
   return(table)
 }
-heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", special = c(), conditions = c("> 0"), df = all, width = NULL, height = NULL, alphabetical = T, on_control = T) {
+heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), conditions = c("> 0"), df = all, width = NULL, height = NULL, alphabetical = T, on_control = T) {
   # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
   # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
   # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few). 
@@ -1041,7 +1041,9 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
         pos <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = "> 0", on_control = on_control, alphabetical = alphabetical)
         neg <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = "< 0", on_control = on_control, alphabetical = alphabetical)
         if (cond == "-") temp <- pos - neg else temp <- pos / (pos + neg)
+        for (i in 1:length(vars)) if (is.logical(df[[vars[i]]])) temp[i, ] <- pos[i, ]
       } else {  temp <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical) }
+      if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along
       heatmap_plot(temp, proportion = (cond != ""))
       save_plot(filename = paste0(folder, filename, replacement_text), width = width, height = height)
     })
