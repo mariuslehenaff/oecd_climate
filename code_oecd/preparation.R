@@ -6,9 +6,9 @@ source("relabel_rename.R")
 
 # TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
 # TODO! (relabel_rename): area (SA, ID), gas_spike, standard_prefer, (ia$religion, policy_ban_coal/tax_reduction_EEG_Umlage, investments_funding_global_transfer, scale_asean/african/EU, sp$insulation_mandatory_support_progressive)
-# TODO! list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...), complete board.xlsx with countries specificities
+# TODO! complete board.xlsx with countries specificities, list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...)
 # TODO: country-specific: train/coach, income, wealth, tax_transfers_progressive_fair/support, urbanity, sa$urban
-# TODO! DE: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
+# TODO! DE plot: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
 # TODO: cu, standard of living (not a priority), code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
 # TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
 # TODO: From board: 3.1 add coal & district heating; 242 change to yearly; scale: countries with only 3 (SA)
@@ -687,6 +687,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   text_large_city <- c("US" = "A large city (more than 3 million inhabitants)", 
                        "FR" = "en région parisienne", "CN" = "A very large city or its suburbs (1,000,000 – 10,000,000 inhabitants)")
   text_megalopolis <- c("CN" = "A megalopolis or its suburbs (more than 10 million inhabitants)")
+  
+  text_area_small <- c("SA" = "In a District municipality other than the District capital", "CN" = "Xiāng", "ID" = "Kota")
+  text_area_middle <- c("SA" = "In a capital of a District municipality", "CN" = "Zhèn", "ID" = "In a Kabupaten outside of the Capital town")
+  text_area_large <- c("SA" = "In a metropolitan municipality", "CN" = "Jiēdào", "ID" = "Capital town of a Kabupaten")
   
   text_4_ <- c("US" = "4 or more", "FR" = "4 ou plus")
   text_5_ <- c("US" = "5 or more", "FR" = "5 ou plus")
@@ -1546,6 +1550,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   e$urban <- temp
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
   
+  if (country %in% c("CN", "ID", "SA")) {
+    temp <- 1*(e$area %in% text_area_middle) + 2*(e$area %in% text_area_large)
+    e$area <- as.item(temp, abels = structure(c(0:2), names=c(text_area_small[country], text_area_middle[country], text_area_large[country])), annotation=Label(e$area) )
+  } 
+  
   if ("CC_affected_2050" %in% names(e)) {
     e$CC_affected_min <- 2100
     e$CC_affected_min[e$CC_affected_2050==T] <- 2050
@@ -1623,7 +1632,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   e$rush <- e$rush_treatment | (e$duration < 15)
   label(e$rush) <- "rush: Has rushed the treatment or the survey. TRUE/FALSE" 
   
-  if (!exists(all_policies)) {
+  if (!exists("all_policies")) {
     print("all_policies undefined")
     all_policies <- c(variables_policies_support, "standard_public_transport_support", "tax_transfers_progressive_support", variables_policy, variables_tax, "global_quota", variables_global_policies, "insulation_support", variables_beef, variables_policy_additional) # include also should_fight_CC, burden_share, if_other_do_less/more, variables_fine_support, variables_flight_quota ?
   }
