@@ -5,7 +5,7 @@ library(relaimpo)
 
 ##### Specifications #####
 indices_list <- c("index_progressist", "index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
-                  "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt", "index_lose_policies_poor", "index_lose_policies_rich")
+                  "index_policies_effective", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt", "index_lose_policies_poor", "index_lose_policies_rich")
 
 
 controls_lmg <- c("dominant_origin == TRUE", "female == TRUE", "children == TRUE", "college == \"No college\"","employment_agg == \"Retired\"",
