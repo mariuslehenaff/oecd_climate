@@ -2793,8 +2793,8 @@ label(all$share_common_policies_supported) <- "share_common_policies_supported: 
 save.image(".RData")  
 
 
-# ## PREPARE DATA FOR STATA
-# # write.csv(all,"../data/all_211110.csv", row.names=F)
+## PREPARE DATA FOR STATA
+# write.csv(all,"../data/all_211110.csv", row.names=F)
 # all_stata <- janitor::clean_names(all)
 # names_stata <- c()
 # for (i in seq_along(names(all_stata))){
@@ -2812,8 +2812,8 @@ save.image(".RData")
 # 
 # dictionary_stata_R <- data.frame(names(all), names_stata, label(all))
 # names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
-# # write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
-
+# write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
+# rm(all_stata)
 
 # all_bis <- janitor::clean_names(all)
 # df = as.data.frame(apply(all_bis, 2, function(x){
