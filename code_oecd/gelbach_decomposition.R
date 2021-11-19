@@ -64,7 +64,7 @@ gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls,
 
 # List of indices to use
 indices_list <- c("index_progressist", "index_knowledge", "index_affected", "index_concerned_about_CC", "index_worried", "index_positive_economy", "index_constrained",
-                  "index_policies_efficient", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt", "index_lose_policies_poor", "index_lose_policies_rich")
+                  "index_policies_effective", "index_care_poverty", "index_altruism","index_affected_subjective","index_willing_change", "index_lose_policies_subjective", "index_fairness", "index_trust_govt", "index_lose_policies_poor", "index_lose_policies_rich")
 indices_lab <- c("Is progressist", "Has a good knowledge of climate change", "Is affected by climate change", "Is concerned about climate change", "Is worried about the future", "Climate policies have a positive effect \n on the economy",
                  "Is financially constrained","Climate policies are effective", "Cares about poverty and inequalities", "Is willing to donate to reforestation project",
                  "Believe will suffer from climate change", "Is willing to adopt climate friendly behavior", "Will personally lose from main policies", "Main policies are fair", "Trusts the governement",
