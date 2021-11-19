@@ -328,6 +328,9 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(score_GHG_US <- barres(vars = "score_GHG", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG"))
       save_plotly_new_filename(score_GHG_US, width= 550, height=140)})  # TODO? split score=3 into all but methane and others
     
+    if (!country %in% bus_countries) Labels_footprint$tr[2] <- "Train"
+    # else Labels_footprint$tr[2] <- "Bus"
+      
     try({(footprint_elec_US <- barres(vars = Variables_footprint$el[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$el[c(2,1,3)]))
       save_plotly_new_filename(footprint_elec_US, width= 400, height=220) })
     
@@ -396,7 +399,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(CC_responsible_US <- barres(vars = variables_responsible_CC, export_xls = export_xls, df = e, rev_color = T, rev = F, miss = F, showLegend=T, labels=labels_responsible, hover= label_great_deal))
       save_plotly_new_filename(CC_responsible_US, width= 720, height=300) })
     
-    try({(net_zero_feasible_US <- barres(vars = "net_zero_feasible", export_xls = export_xls, df = e, miss=F, rev = F, rev_color=T, labels=paste("Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in", toupper(country))))
+    try({(net_zero_feasible_US <- barres(vars = "net_zero_feasible", export_xls = export_xls, df = e, miss=F, rev = F, rev_color=T, labels=paste("Feasible to stop GHG emissions<br>while", ifelse(country %in% rich_countries, "maintaining", "sustaining"), "satisfactory<br>standards of living in", Country_names[country])))
       save_plotly_new_filename(net_zero_feasible_US, width= 620, height=140)})
     
     try({(CC_affects_self_US <- barres(vars = "CC_affects_self", export_xls = export_xls, df = e, rev = F, rev_color = T, miss = F, labels="Climate change will negatively affect personal life"))
@@ -408,7 +411,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     # try({(CC_attitude_US <- barres(vars = c("net_zero_feasible", "CC_affects_self", "pro_ambitious_policies"), export_xls = export_xls, df = e,rev = F, rev_color = T, sort = F, miss = F, labels=c("Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in the U.S.", "Climate change negatively affects personal life", "Ambitious public policies needed<br>to halt climate change")))
     #   save_plotly_new_filename(CC_attitude_US, width= 770, height=250)})
     
-    try({(CC_attitude_US <- barres(vars = c("net_zero_feasible", "CC_affects_self"), export_xls = export_xls, df = e,rev = F, rev_color = T, sort = F, miss = F, labels=c(paste("Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in", toupper(country)), "Climate change negatively affects personal life")))
+    try({(CC_attitude_US <- barres(vars = c("net_zero_feasible", "CC_affects_self"), export_xls = export_xls, df = e,rev = F, rev_color = T, sort = F, miss = F, labels=c(paste("Feasible to stop GHG emissions<br>while maintaining satisfactory<br>standards of living in", Country_names[country]), "Climate change negatively affects personal life")))
       save_plotly_new_filename(CC_attitude_US, width= 750, height=220)})
     
     try({(CC_will_end_US <- barres(vars = "CC_will_end", export_xls = export_xls, df = e, miss = F, labels="Likely to halt CC by the end of the century"))
@@ -433,8 +436,8 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     ##### 7. Pref 1: emission standards #####
     labels_standard_effects <- c()
     for (v in variables_standard_effect) labels_standard_effects <- c(labels_standard_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
-    labels_standard_effects[3] <- paste("have a positive effect<br>on the", toupper(country), "economy and employment")
-    labels_standard_effects[4] <- paste("have a large effect<br>on the", toupper(country), "economy and employment")
+    labels_standard_effects[3] <- paste("have a positive effect<br>on the", country_names[country], "economy and employment")
+    labels_standard_effects[4] <- paste("have a large effect<br>on the", country_names[country], "economy and employment")
     try({(standard_effect_US <- barres(vars = rev(variables_standard_effect), export_xls = export_xls, df = e, sort = F, rev_color = T , rev = F, miss = F, showLegend=T, labels=rev(labels_standard_effects), hover=labels_agree))
       save_plotly_new_filename(standard_effect_US, width= 890, height=320) })
     
@@ -481,8 +484,8 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     labels_tax_transfers_effects <- c() 
     for (v in variables_tax_transfers_effect) labels_tax_transfers_effects <- c(labels_tax_transfers_effects, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
     labels_tax_transfers_effects[3] <- "reduce the use of fossil fuels<br>and greenhouse gas emissions"
-    labels_tax_transfers_effects[6] <- paste("have a large effect<br>on the", toupper(country), "economy and employment")
-    labels_tax_transfers_effects[5] <- paste("have a positive effect<br>on the", toupper(country), "economy and employment")
+    labels_tax_transfers_effects[6] <- paste("have a large effect<br>on the", country_names[country], "economy and employment")
+    labels_tax_transfers_effects[5] <- paste("have a positive effect<br>on the", country_names[country], "economy and employment")
     try({(tax_transfers_effect_US <- barres(vars = rev(variables_tax_transfers_effect), export_xls = export_xls, df = e, sort = F, rev_color = T , rev = F, miss = F, showLegend=T, labels=rev(labels_tax_transfers_effects), hover=labels_agree))
       save_plotly_new_filename(tax_transfers_effect_US, width= 960, height=380) })
     
@@ -635,7 +638,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(scale_US <- barres(vars = variables_scale, export_xls = export_xls, df = e, rev = F, miss = T, showLegend=F, labels=labels_scale))
       save_plotly_new_filename(scale_US, width= 460, height=250) })
     
-    try({(should_fight_CC_US <- barres(vars = "should_fight_CC", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels=paste(toupper(country), "should fight CC")))
+    try({(should_fight_CC_US <- barres(vars = "should_fight_CC", export_xls = export_xls, df = e, miss=F, rev = F, rev_color = T, labels=paste(Country_names[country], "should fight CC")))
       save_plotly_new_filename(should_fight_CC_US, width= 1075, height=140)})
     
     labels_if_other_do <- c()
@@ -699,13 +702,13 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(can_trust_people_US <- barres(vars = "can_trust_people", export_xls = export_xls, df = e, miss=F, rev_color = T, rev=F, labels="Trust other people"))
       save_plotly_new_filename(can_trust_people_US, width= 1060, height=140)})
     
-    try({(can_trust_govt_US <- barres(vars = "can_trust_govt", export_xls = export_xls, df = e, miss=F, rev_color = T, rev=F, labels=paste("Trust the", toupper(country), "government <br> over the last decade to do what is right")))
+    try({(can_trust_govt_US <- barres(vars = "can_trust_govt", export_xls = export_xls, df = e, miss=F, rev_color = T, rev=F, labels=paste("Trust the", Country_names[country], "government <br> over the last decade to do what is right")))
       save_plotly_new_filename(can_trust_govt_US, width= 875, height=140)})
     
     try({(view_govt_US <- barres(vars = "view_govt", export_xls = export_xls, df = e, miss=F, rev_color = T, rev=F, labels="View on government intervention"))
       save_plotly_new_filename(view_govt_US, width= 700, height=140)})
     
-    try({(problem_inequality_US <- barres(vars = "problem_inequality", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=paste("Income inequality in", toupper(country))))
+    try({(problem_inequality_US <- barres(vars = "problem_inequality", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels=paste("Income inequality in", Country_names[country])))
       save_plotly_new_filename(problem_inequality_US, width= 950, height=140)})
     
     try({(future_richness_US <- barres(vars = "future_richness", rev = F, rev_color = T, export_xls = export_xls, df = e, miss=F, labels="In 100 years, people in the world will be..."))
