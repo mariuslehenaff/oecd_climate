@@ -1,8 +1,9 @@
 # # Tip: if you encounter a bug with the width of the bars, try to passe the argument: thin = F
 
-# TODO!: render positive/costless (e.g. standard_effect, standard_all, policies_costless), vote/left_right, wealth, burden_share (incl. opinion_)
+# TODO! render positive/costless (e.g. standard_effect, standard_all, policies_costless), vote/left_right, wealth, burden_share (incl. opinion_)
+# TODO! render figures with errors
+# TODO  area (SA, ID), gas_spike, standard_prefer, ia$religion, policy_ban_coal/tax_reduction_EEG_Umlage, investments_funding_global_transfer, scale_asean/african/EU, sp$insulation_mandatory_support_progressive
 # TODO? on_control = FALSE on some of them?
-# TODO? replace burden_share by corresponding burden_share_ing for FR, DK, US?
 # TODO: various things below to debug or improve figures (at most as important as previous line)
 # TODO: size of town (DK has not same bins), quality (know_treatment_climate, watched_climate)
 # TODO: translation (needs to be done manually), save as EMF https://www.rdocumentation.org/packages/devEMF/versions/4.0-2/topics/emf
@@ -1762,7 +1763,11 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = c("insulation_mandatory_support_no_priming", "insulation_mandatory_support_priming"), labels = c("Support for mandatory insulation\nif govt subsidizes half the cost\nNo priming", "Support for mandatory insulation\nif govt subsidizes half the cost\nWith priming about the hurdles"), name = 'insulation_support', conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     heatmap_wrapper(vars = variables_obstacles_insulation[c(5,2,1,3,4)], labels = sub("<br>", "\n", labels_obstacles_insulation[c(5,2,1,3,4)]), name = 'obstacles_insulation', conditions = "> 0", alphabetical = alphabetical, special = special)
     
-    # variables_burden_share <- variables_burden_share_ing # TODO? to avoid missing values in US, FR, DK? We'd need to ask asterisks on these countries & variables in this case
+    temp <- variables_burden_share
+    variables_burden_share <- variables_burden_share_ing 
+    labels_burden_share_ing <- c(special, countries_names)
+    if (any(c('non-OECD', 'Non-OECD', 'non-oecd') %in% special) & levels[15]=="Brazil") labels_burden_share_ing <- c(special[!special %in% c('non-OECD', 'Non-OECD', 'non-oecd')], countries_names[1:14], "Non-OECD", countries_names[15:length(countries_names)])
+    labels_burden_share_ing <- sub("France", "France*", sub("Denmark", "Denmark*", sub("United States", "United States*", labels_burden_share_ing)))
     variables_burden_share_all <<- c(variables_scale, "if_other_do_more", "if_other_do_less", "global_quota", variables_burden_share, variables_global_policies)
     variables_burden_share_main <<- c("scale_global", variables_burden_share, variables_global_policies)
     # variables_burden_sharing_few <<- variables_burden_share_all[c(1,8,11,12,14)]
@@ -1770,19 +1775,20 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # Levels: T/F; If...: >= More; burden_share: >= agree; Global..: >= somewhat support
     labels_heatmap_scale <<- paste("Level of climate policies needed:", c("global", "federal/continental", "state/national", "local"))
     labels_heatmap_burden_sharing <<- c("All countries should pay in proportion to income", "All countries should pay in proportion to current emissions", "All countries should pay in proportion to post-1990 emissions", "Richest should countries pay it all so poor ones don't pay", "Richest countries should pay even more to help vulnerable ones") # test longest (if not below)
-    labels_heatmap_burden_share <<- c("Emission share should be in proportion to population", "Emission share should be in proportion to current emissions", "Countries that have emitted more since 1990\nshould receive a lower share", "Countries that will be hurt more by CC should receive a higher share") # test longest
+    labels_heatmap_burden_share <<- c("Emission share should be in proportion to population*", "Emission share should be in proportion to current emissions", "Countries that have emitted more since 1990\nshould receive a lower share*", "Countries that will be hurt more by CC should receive a higher share*") # test longest
     labels_burden_share_all <<- c(labels_heatmap_scale, "If other do more, [country] should do more", "If other do less, [country] should do more", "Global carbon budget (+2°C) divided in tradable country shares", labels_heatmap_burden_share, sub("<br>", "", labels_global_policies))
     heatmap_wrapper(vars = variables_scale, labels = labels_heatmap_scale, conditions = "> 0", alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_burden_share, labels = labels_heatmap_burden_share, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_global_policies, labels = sub("<br>", "", labels_global_policies), conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_burden_share_all, labels = labels_burden_share_all, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_burden_share_main, labels = labels_burden_share_all[c(1,7:14)], conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_burden_share_few, labels = labels_burden_share_all[c(1,7,8,12,14)], conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_burden_share, labels = labels_heatmap_burden_share, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_global_policies, labels = sub("<br>", "", labels_global_policies), labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_burden_share_all, labels = labels_burden_share_all, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_burden_share_main, labels = labels_burden_share_all[c(1,7:14)], labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_burden_share_few, labels = labels_burden_share_all[c(1,7,8,12,14)], labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     # heatmap_wrapper(vars = variables_burden_sharing_main, labels = labels_burden_sharing_all[c(1,7:14)], conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     # heatmap_wrapper(vars = variables_burden_sharing_few, labels = labels_burden_sharing_all[c(1,8,11,12,14)], conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     # labels_burden_share_short <<- c("All pay in proportion to income", "All pay in proportion to current emissions", "All pay in proportion to post-1990 emissions", "Richest countries pay it all", "Richest pay even more to help vulnerable")
     # heatmap_wrapper(vars = variables_burden_share, labels = labels_burden_share_short, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
-    # 
+    variables_burden_share <- temp
+    
     main_variables_opinion <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", "willing_limit_driving", "standard_support", "investments_support", "tax_transfers_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "burden_sharing_emissions", "tax_1p_support")
     # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
     labels_opinion <<- c("CC exists, is anthropogenic", "CC is an important problem", "[Country] should fight CC", "Willing to limit driving", "Ban on combustion-engine cars", "Green infrastructure program", "Carbon tax with cash transfers", "Ban on intensive cattling", "Mandatory insulation of buildings", "Countries pay in proportion to emissions", "Global tax on millionaires funding LDC")
