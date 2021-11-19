@@ -5,9 +5,9 @@ source(".Rprofile")
 source("relabel_rename.R")
 
 # TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
-# TODO! (relabel_rename): area (SA, ID), gas_spike, standard_prefer, (ia$religion, policy_ban_coal/tax_reduction_EEG_Umlage, investments_funding_global_transfer, scale_asean/african/EU, sp$insulation_mandatory_support_progressive)
+# TODO! (plot): (area (SA, ID), gas_spike, standard_prefer, ia$religion, policy_ban_coal/tax_reduction_EEG_Umlage, investments_funding_global_transfer, scale_asean/african/EU, sp$insulation_mandatory_support_progressive)
 # TODO! complete board.xlsx with countries specificities, list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...)
-# TODO: country-specific: train/coach, income, wealth, tax_transfers_progressive_fair/support, urbanity, sa$urban
+# TODO: country-specific: train/coach, income, wealth, vote_agg, tax_transfers_progressive_fair/support, urbanity, sa$urban
 # TODO! DE plot: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
 # TODO: cu, standard of living (not a priority), code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
 # TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
@@ -48,8 +48,10 @@ Country_names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy
 Country_Names <- c("Australia", "Canada", "Denmark", "France", "Germany", "Italy", "Japan", "Mexico", "Poland", "South Korea", "Spain", "Turkey", "UK", "USA", "Brazil", "China", "India", "Indonesia", "South Africa", "Ukraine")
 country_names <- c("Australian", "Canadian", "Danish", "French", "German", "Italian", "Japanese", "Mexican", "Polish", "South Korean", "Spanish", "Turkish", "British", "American", "Brazilian", "Chinese", "Indian", "Indonesian", "South African", "Ukrainian")
 poor_countries <- c("IA", "ID", "SA", "UA") # (ie GDP pc < $6k): countries for which Country is described as receiver in policy_climate_fund. For OECD, BR or CN, the Country is described as contributor."
+rich_countries <- c("AU", "CA", "DK", "FR", "DE", "IT", "JP", "PL", "SK", "SP", "UK", "US") # countries for which net_zero_feasible was asked using "maintaining" instead of "sustaining" satisfactory standards of living
 tropical_countries <- c("MX", "BR", "IA", "ID") # countries for which the questions on heating and insulation were not asked. (For AU: the questions were asked with cooling instead of heating)."
 tax_price_increase <- c("AU$0.15/L", "CA$0.14/L", "2 kr./L", "0.10 €/L", "0.10 €/L", "0.10 €/L", "¥12/L", "Mex$2.2/L", "0.40 zł/L", "₩125/L", "0.10 €/L", "₺1/L", "£0.08/L", "$0.40/gallon", "0.60 R$/L", "¥0.7/L", "Rs 8/L", "Rp 1600/L", "R 1.60/L", "3₴/L")
+bus_countries <- c("AU", "CA", "MX", "TR", "US", "BR", "SA") # countries where bus/coach appear in the transport footprint question rather than train (either because train routes are lacking, or because trains are not low-carbon)
 adult_pop <- c(19.6, 30.3, 4.5, 50.4, 68.5, 49.7, 108, 92.8, 31.4, 43.2, 38.2, 59.8, 51.6, 246, 160, 1130, 860, 173, 36.0, 35.4)
 population <- c(26, 38, 6, 65, 84, 60, 127, 129, 38, 51, 47, 84, 68, 331, 213, 1439, 1380, 274, 59, 44) # World: 4560/7800, Asia: 3350/4600, Europe: 412/750 (UE: 300/448, euro: 256/342), Africa: 59/1300, North America: 498/580, South America: 213/420 (Northern America: 369/369, Latin America: 306/631), Oceania: 26/42 (OECD: 1154/1371). 
 # Under-sampled: Africa, ex-URSS, Middle East. Slightly over-sampled: North America. Slightly under-sampled: South America. Not worth it to correct the small under/over-sampling (by increasing weights of BR, MX and reducing weight of US, CA) as the total weights would be changed by only 5%. The big problem is the lack of coverage of Africa, Russia, Middle East.
@@ -1634,7 +1636,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
   
   if (!exists("all_policies")) {
     print("all_policies undefined")
-    all_policies <- c(variables_policies_support, "standard_public_transport_support", "tax_transfers_progressive_support", variables_policy, variables_tax, "global_quota", variables_global_policies, "insulation_support", variables_beef, variables_policy_additional) # include also should_fight_CC, burden_share, if_other_do_less/more, variables_fine_support, variables_flight_quota ?
+    all_policies <- c(variables_policies_support, "standard_public_transport_support", "tax_transfers_progressive_support", variables_fine_support, variables_policy, variables_tax, "global_quota", variables_global_policies, "insulation_support", variables_beef, variables_policy_additional) # include also should_fight_CC, burden_share, if_other_do_less/more, variables_flight_quota ?
   }
   e$share_policies_supported <- rowMeans(e[, intersect(all_policies, names(e))] > 0, na.rm = T)
   label(e$share_policies_supported) <- "share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent."
@@ -2088,6 +2090,19 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T) {
     }
     e$knows_beef_footprint <- e$footprint_fd_beef == 1
     label(e$knows_beef_footprint) <- "knows_beef_footprint: T/F Correctly ranks footprint of beef (or lamb for India) above chicken and pasta."
+  }
+  
+  if (country %in% c("DE", "IT", "PL", "SP")) {
+    e$variant_fine <- "prefer"
+    e$variant_fine[!is.pnr(e$standard_10k_fine)] <- "10k"
+    e$variant_fine[!is.pnr(e$standard_100k_fine)] <- "100k"
+    for (v in variables_fine_prefer) {
+      e$standard_prefer_most[e[[v]]==1] <- capitalize(sub("_", " ", sub("standard_prefer_", "", v)))
+      e$standard_prefer_middle[e[[v]]==2] <- capitalize(sub("_", " ", sub("standard_prefer_", "", v)))
+      e$standard_prefer_least[e[[v]]==3] <- capitalize(sub("_", " ", sub("standard_prefer_", "", v))) }
+    label(e$standard_prefer_most) <- "standard_prefer_most: Variant of the ban of combustion-engine cars preferred by the respondent."
+    label(e$standard_prefer_middle) <- "standard_prefer_middle: Variant of the ban of combustion-engine cars ranked in second position (among 3) by the respondent."
+    label(e$standard_prefer_least) <- "standard_prefer_least: Variant of the ban of combustion-engine cars least preferred by the respondent."
   }
   
   z_score_computation <<- function(group, df=e, weight=T){
@@ -2847,7 +2862,7 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
 # e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
 # e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
-# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
+# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F)# .22
 # e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)# .22
 # current_countries <- c("DK", "US", "FR", "DE", "ID")
 # ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
@@ -2936,6 +2951,10 @@ prepare_all <- function(weighting = T, zscores = T, pilots = FALSE) {
   # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
   all <<- merge_all_countries()
   e <<- all
+  variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
+  variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p", names(e))]
+  variables_beef <<- names(e)[grepl('beef_', names(e)) & !grepl("order_|know", names(e))]
+  all_policies <<- c(variables_policies_support, "standard_public_transport_support", "tax_transfers_progressive_support", variables_fine_support, variables_policy, variables_tax, "global_quota", variables_global_policies, "insulation_support", variables_beef, variables_policy_additional) # include also should_fight_CC, burden_share, if_other_do_less/more, variables_flight_quota ?
   print(Sys.time()-start)
 }
 
@@ -2944,8 +2963,10 @@ prepare_all(zscores = FALSE)
 # Sets. A: core socio-demos + vote. At: A + treatment. B: energy characteristics. C: mechanisms. D: outcomes. Dpos: binary outcomes (> 0).
 setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
 setAt <- c(setA, "treatment")
-setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1")
-setC <- c()
+setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1") # index_affected # TODO: affected by transport
+setCvars <- c("CC_problem", "CC_anthropogenic", "CC_affects_self", "can_trust_govt", "problem_inequality") # TODO: index_policies_efficient index_all_policies earmarking vs. taxes Pro-redistribution
+setCindices <- c("index_concerned_about_CC", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_efficient", "index_care_poverty", "index_affected_subjective", "index_willing_change", "policies_self", "policies_fair", "policies_poor", "policies_rich") # TODO: Worried, index_positive_economy, distribution critical, attentive
+setC <- c(setCvars, setCindices) 
 uncommon_questions <- c(variables_fine_support, variables_fine_prefer, variables_gas_spike, variables_policy_additional, variables_flight_quota, "investments_funding_global_transfer") # flight_quota: FR; investments_funding_global_transfer: poor_country=T (IA, ID, SA, UA)
 setD <- common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names))) # /!\ Beware, policy_order_climate_fund is considered a common policy but it was asked differently (contributor vs. receiver) depending on the country (contributor iff in poor_country)
 setDpos <- paste(setD, "> 0")
