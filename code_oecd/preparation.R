@@ -4,6 +4,7 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
+# TODO!: zscores => EFA, (automatize rep F, >0)
 # TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
 # TODO! complete board.xlsx with countries specificities, list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...)
 # TODO! DE plot: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
@@ -504,8 +505,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_wtp <<- names(e)[grepl('wtp_', names(e))]
   variables_global_policies <<- c("global_assembly_support", "global_tax_support", "tax_1p_support")
   variables_gilets_jaunes <<- c("gilets_jaunes_dedans", "gilets_jaunes_soutien", "gilets_jaunes_compris", "gilets_jaunes_oppose", "gilets_jaunes_NSP") # , "gilets_jaunes"
+  
   e$affected_transport <- (e$transport_work=="Car or Motorbike") + (e$transport_shopping=="Car or Motorbike") + (e$transport_leisure=="Car or Motorbike")
-  label(e$affected_transport) <- "affected_transport: Sum of activities for which a car or motorbike is used" # TODO: create dummy car_dependency
+  label(e$affected_transport) <- "affected_transport: Sum of activities for which a car or motorbike is used (work, leisure, shopping)."
+  e$car_dependency <- e$affected_transport > 0
+  label(e$car_dependency) <- "car_dependency: Car or motorbike is used for at least one activity (work, leisure, shopping)."
 
   variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
   negatives_knowledge <<- c(T, T, T, T, T, T, F, F, F, F, F) # For EFA
@@ -552,6 +556,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   negatives_index_positive_economy <<- rep(F, 4)
   conditions_index_positive_economy <<- rep(" > 0", 4)
   before_treatment_index_positive_economy <<- rep(F, 4)
+  
+  variables_index_distribution_critical <<- c("tax_transfer_poor", "tax_transfer_constrained_hh", "tax_1p_support", "responsible_CC_rich", "condition_rich_change", "investments_funding_wealth_tax", "policies_fair_support_same_sign", "policies_support_poor_same_sign")
+  negatives_index_distribution_critical <<- before_treatment_index_distribution_critical <<- rep(F, 8)
+  conditions_index_distribution_critical <<- c(rep(" > 0", 5), rep("== T", 3) )
+
+  variables_index_attentive <<- c("duration", "length_CC_field", "duration_burden_sharing", "duration_tax_transfers", "duration_policies") # watched_video? know_treatment?
+  negatives_index_attentive <<- before_treatment_index_attentive <<-rep(F, length(variables_index_attentive))
+  conditions_index_attentive <<- c("> 25", "> 35", "> 750", "> 650", "> 900")
   
   variables_index_constrained <<- c("condition_financial_aid", "income", "wealth")
   negatives_index_constrained <<- c(F, T, T)
@@ -642,7 +654,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   before_treatment_index_main_policies <<- c(before_treatment_index_investments_policy, before_treatment_index_tax_transfers_policy, before_treatment_index_standard_policy)
   
   variables_index_main_policies_difference <<- variables_index_main_policies_all <<- variables_index_main_policies[1:3]
-  negatives_index_main_policies_all <<- negatives_index_main_policies[1:3] # TODO: create a variable that is not an index for that 
+  negatives_index_main_policies_all <<- negatives_index_main_policies[1:3] 
   negatives_index_main_policies_difference <<- c(T, FALSE, T)
   conditions_index_main_policies_difference <<- conditions_index_main_policies_all <<- conditions_index_main_policies[1:3]
   before_treatment_index_main_policies_difference <<- before_treatment_index_main_policies_all <<- before_treatment_index_main_policies[1:3]
@@ -657,24 +669,29 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   conditions_index_international_policies <<- rep(" > 0", 3)
   before_treatment_index_international_policies <<- rep(F, 3)
   
-  #TODO: same as above policy_ban_coal not present in all countries (temporary fix : removed)
   variables_index_other_policies <<- c("insulation_support", "policy_tax_flying", "policy_ban_city_centers", "policy_subsidies", "policy_climate_fund")
   negatives_index_other_policies <<- rep(F, 5)
   conditions_index_other_policies <<- rep(" > 0", 5)
   before_treatment_index_other_policies <<- rep(F, 5) 
   
-  variables_index_all_policies <<- c(variables_index_main_policies, variables_index_beef_policies, variables_index_international_policies, variables_index_other_policies) # TODO: global_quota and variables_tax are not included, perhaps change the variables to common_policies
+  variables_index_all_policies <<- c(variables_index_main_policies, variables_index_beef_policies, variables_index_international_policies, variables_index_other_policies)
   negatives_index_all_policies <<- c(negatives_index_main_policies, negatives_index_beef_policies, negatives_index_international_policies, negatives_index_other_policies)
   conditions_index_all_policies <<- c(conditions_index_main_policies, conditions_index_beef_policies, conditions_index_international_policies, conditions_index_other_policies)
   before_treatment_index_all_policies <<- c(before_treatment_index_main_policies, before_treatment_index_beef_policies, before_treatment_index_international_policies, before_treatment_index_other_policies)
   
-  variables_index_earmarking_vs_transfers <<- c("tax_subsidies", "tax_investments", "tax_transfer_all", "tax_transfer_poor") # TODO? add tax_reduction_personal_tax tax_reduction_corporate_tax?
+  variables_index_common_policies <<- c("standard_support", "investments_support", "tax_transfers_support", "standard_public_transport_support", "policy_tax_flying", "policy_tax_fuels", "policy_ban_city_centers", 
+                                        "policy_subsidies", "policy_climate_fund", "tax_transfer_constrained_hh", "tax_transfer_poor", "tax_transfer_all", "tax_reduction_personal_tax", "tax_reduction_corporate_tax", 
+                                        "tax_rebates_affected_firms", "tax_investments", "tax_subsidies", "tax_reduction_deficit", "global_assembly_support", "global_tax_support", "tax_1p_support")
+  negatives_index_all_policies <<- before_treatment_index_all_policies <<- rep(F, length(variables_index_common_policies))
+  conditions_index_all_policies <<- rep(" > 0", length(variables_index_common_policies))
+  
+  variables_index_earmarking_vs_transfers <<- c("tax_subsidies", "tax_investments", "tax_transfer_all", "tax_transfer_poor") # add tax_reduction_personal_tax tax_reduction_corporate_tax? Would say no to have a balance in earmarking vs. transfers
   negatives_index_earmarking_vs_transfers <<- c(F, F, T, T)
   conditions_index_earmarking_vs_transfers <<- rep(" > 0", 4)
   before_treatment_index_earmarking_vs_transfers <<- rep(F, 4) 
   
   # e$know_investments_funding_tax_wealthiest == "Taxes on the wealthiest"
-  # label(e$know_investments_funding_tax_wealthiest) <- "know_investments_funding_tax_wealthiest: The respondent wrongly answers 'Taxes on the wealthiest' to the question know_investments_funding" # TODO?
+  # label(e$know_investments_funding_tax_wealthiest) <- "know_investments_funding_tax_wealthiest: The respondent wrongly answers 'Taxes on the wealthiest' to the question know_investments_funding" # let's not add this one because it complicates things given that it's defiend for only half of the sample
   variables_index_pro_redistribution <<- c("tax_transfer_poor", "tax_transfer_constrained_hh", "view_govt", "tax_1p_support", "problem_inequality", "investments_funding_wealth_tax")
   negatives_index_pro_redistribution <<- rep(F, 6)
   conditions_index_pro_redistribution <<- c(rep(" > 0", 5), "== T")
@@ -1199,6 +1216,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                  names = c("Never","Yearly","Monthly","PNR")),
                         missing.values=-0.1, annotation=Label(e$CC_talks))
   
+  e$investments_standard_minus_tax_transfers <- (e$standard_support + e$investments_support)/2 - e$tax_transfers_support
+  label(e$investments_standard_minus_tax_transfers) <- "investments_standard_minus_tax_transfers: (standard_support + investments_support)/2 - tax_transfers_support"
+  
   if ("equal_quota" %in% names(e)) temp <-  2 * (e$equal_quota %in% text_equal_quota_no_redistribution) + (e$equal_quota %in% text_equal_quota_yes) - (e$equal_quota %in% text_equal_quota_no_grand_fathering) - 2 * (e$equal_quota %in% text_equal_quota_no_restriction) - 0.1 * (e$equal_quota %in% text_pnr)
   if ("equal_quota" %in% names(e)) e$equal_quota <- as.item(temp, labels = structure(c(-2:2,-0.1),
                                                                                      names = c("No, against restriction","No, grand-fathering","No, not individual level","Yes","No, more to vulnerable","PNR")),
@@ -1557,6 +1577,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   for (v in names_policies) e$policies_rich <- e$policies_rich + e[[paste(v, text_incidence, "rich", sep="_")]]/3
   for (v in names_policies) e$policies_rural <- e$policies_rural + e[[paste(v, text_incidence, "rural", sep="_")]]/3
   if ("standard_incidence_urban" %in% names(e)) for (v in names_policies) e$policies_urban <- e$policies_urban + e[[paste(v, text_incidence, "urban", sep="_")]]/3
+  e$policies_fair_support_same_sign <- e$policies_fair * e$policies_support > 0
+  e$policies_support_poor_same_sign <- e$policies_poor * e$policies_support > 0
+  label(e$policies_fair_support_same_sign) <- "policies_fair_support_same_sign: T/F policies_fair * policies_support > 0."
+  label(e$policies_support_poor_same_sign) <- "policies_support_poor_same_sign: T/F policies_poor * policies_support > 0."
   
   if (country %in% c("FR", "IT", "UK", "DE", "MX", "SK")) {
     e$urban_category[e$urban_category == "0"] <- NA
@@ -2264,7 +2288,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   # conditions_indices <- list()
   # before_treatment_indices <- list()
   names_indices <<- c("affected", "knowledge", "concerned_about_CC", "progressist", "worried", "positive_economy", "constrained", "policies_effective", "altruism", "pro_redistribution", "earmarking_vs_transfers",
-                     "pricing_vs_norms", "affected_subjective", "lose_policies_subjective", "lose_policies_poor", "lose_policies_rich", "fairness", "trust_govt", "willing_change", 
+                     "pricing_vs_norms", "affected_subjective", "lose_policies_subjective", "lose_policies_poor", "lose_policies_rich", "fairness", "trust_govt", "willing_change", "care_poverty", "distribution_critical", "attentive", 
                      "standard_policy", "tax_transfers_policy", "investments_policy", "main_policies", "main_policies_all", "main_policies_all", "beef_policies", "international_policies", "other_policies", "all_policies")
   for (i in names_indices) {
     if (zscores) e[[paste0("index_", i)]] <- index_zscore(i, df = e, weight = weighting, dummies = FALSE, require_all_variables = TRUE)
@@ -2672,7 +2696,7 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
 # e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
 # e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
-# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F)# .22
+# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
 # e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)# .22
 # current_countries <- c("DK", "US", "FR", "DE", "ID")
 # ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
@@ -2779,8 +2803,8 @@ prepare_all(countries = FALSE) # 6 min
 setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
 setAt <- c(setA, "treatment")
 setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1") # index_affected # TODO: affected by transport
-setCvars <- c("CC_problem", "CC_anthropogenic", "CC_affects_self", "can_trust_govt", "problem_inequality") # TODO: index_common_policies earmarking vs. taxes Pro-redistribution
-setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "policies_self", "policies_fair", "policies_poor", "policies_rich") # TODO: Worried, index_positive_economy, distribution critical, attentive
+setCvars <- c("CC_problem", "CC_anthropogenic", "CC_affects_self", "can_trust_govt", "problem_inequality")
+setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "policies_self", "policies_fair", "policies_poor", "policies_rich") # TODO!: distribution_critical, attentive, add index_common_policies?
 setC <- c(setCvars, setCindices) 
 uncommon_questions <- c(variables_fine_support, variables_fine_prefer, variables_gas_spike, variables_policy_additional, variables_flight_quota, "investments_funding_global_transfer") # flight_quota: FR; investments_funding_global_transfer: poor_country=T (IA, ID, SA, UA)
 common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names))) # /!\ Beware, policy_order_climate_fund is considered a common policy but it was asked differently (contributor vs. receiver) depending on the country (contributor iff in poor_country)
@@ -2791,7 +2815,6 @@ all$share_common_policies_supported <-  rowMeans(all[, common_policies] > 0, na.
 label(all$share_common_policies_supported) <- "share_common_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent that were asked in all countries."
 
 save.image(".RData")  
-
 
 ## PREPARE DATA FOR STATA
 # write.csv(all,"../data/all_211110.csv", row.names=F)
