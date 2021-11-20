@@ -1,6 +1,4 @@
-# TODO! mean_ci_along_regressions: confidence intervals (currently probably incorrect), origin
 # TODO: for logit, code CI as in https://www.princeton.edu/~otorres/LogitR101.pdf p. 11
-# TODO! regressions_list/mean_ci_along_regressions: handle outcomes of type "future_richness" (so that they are understood as as.numeric(future_richness))
 # TODO plot_along: automatic name, conditions, automatic values when missing(legend_x), legend_y, show legend for 20 countries (display UA!) even if there is less than 4 variables, 
 # TODO mean_ci_along_regressions: determine automatically whether logit through class(regs)
 # TODO: other various things below
@@ -27,7 +25,8 @@ regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, lo
       regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, subsamples = NULL, df = df[df[[subsamples]]==s,], logit = logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
       i <- i + 1   }
   } else for (y in outcomes) {
-    formula <- as.formula(paste(y, " ~ ", paste(covariates, collapse = ' + ')))
+    if ("double.item" %in% class(df[[y]])) dependent_var <- paste0("as.numeric(", y, ")") else dependent_var <- y
+    formula <- as.formula(paste(dependent_var, " ~ ", paste(covariates, collapse = ' + ')))
     i <- i + 1
     if (logit[i]) {
       if (logit_margin) {
@@ -116,7 +115,7 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
 # Two cases: with covariates (coefficients or marginal effects are shown, depending on origin = 0 or not) or without covariates (i.e. unconditional means of subgroups)
 # Three configurations: a. one outcomes, two heterogeneities / b. and c. different outcomes, one heterogeneity (c. is invert_y_along = T)
 # a. one outcome, y: subsamples (e.g. countries), along: heterogeneity; b. y: outcomes, along; c. y: heterogeneity, along: outcomes
-mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = outcome_vars,
+mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste0(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c(" > 0"), invert_y_along = FALSE, df = e, labels = outcome_vars,
                     origin = 'others_at_mean', logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95, 
                     labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), heterogeneity_condition = "", order_y = NULL, order_along = NULL) {
   z <- qnorm(1-(1-confidence)/2)
@@ -171,7 +170,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste(outcome_var
   return(mean_ci)
 }
 
-plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c("> 0"), invert_y_along = FALSE, df = e, labels = vars,
+plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c(" > 0"), invert_y_along = FALSE, df = e, labels = vars,
                        origin = 'others_at_mean', logit = c(FALSE), atmean = T, logit_margin = T, labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), 
                        confidence = 0.95, weight = "weight", heterogeneity_condition = "", return_mean_ci = FALSE, print_name = FALSE, # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
                        legend_x = '', legend_y = '', name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T, order_y = NULL, order_along = NULL) {
@@ -229,7 +228,7 @@ plot_along(vars = "policies_support", along = "income_factor", subsamples = "cou
 plot_along(vars = "tax_transfers_support", along = "treatment", covariates = example_covariates, logit = T)
 plot_along(vars = rev(variables_all_policies_support), along = "treatment", covariates = example_covariates, logit = T)
 # mean_ci(outcome_vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"), covariates = example_covariates, logit = T)
-plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"), covariates = example_covariates, logit = T)
+plot_along(vars = c("CC_affects_self", "net_zero_feasible", "CC_will_end", "future_richness"), conditions = rep("", 4), along = "country_name", name = "future_by_country", labels = c("Feels affected by climate change", "Net zero by 2100 feasible", "Likely that climate change ends by 2100", "World in 100 years will be richer"), covariates = example_covariates)
 plot_along(vars = c("CC_affects_self"), along = "country_name", name = "CC_affects_self_by_country", labels = c("Feels affected by climate change"), covariates = example_covariates, logit = T)
 plot_along(vars = "policies_support", along = "treatment", covariates = example_covariates, logit = T)
 # Beware, only use one variable at a time with country_heterogeneity = T
