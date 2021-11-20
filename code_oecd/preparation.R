@@ -1505,6 +1505,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   e$country <- country
   e$country_name <- countries_names[country]
+  e$country_name <- factor(e$country_name, levels = countries_names)
   label(e$country) <- "country: Country of the survey."
   e$wave <- wave
   label(e$wave) <- "wave: Wave of the survey. pilot1/pilot2/full"  
@@ -2804,7 +2805,7 @@ setA <- c("female", "age", "children", "income_factor", "wealth", "employment_ag
 setAt <- c(setA, "treatment")
 setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1") # index_affected # TODO: affected by transport
 setCvars <- c("CC_problem", "CC_anthropogenic", "CC_affects_self", "can_trust_govt", "problem_inequality")
-setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "policies_self", "policies_fair", "policies_poor", "policies_rich") # TODO!: distribution_critical, attentive, add index_common_policies?
+setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "policies_self", "policies_fair", "policies_poor", "policies_rich") # TODO? add index_common_policies, distribution_critical, attentive, ...?
 setC <- c(setCvars, setCindices) 
 uncommon_questions <- c(variables_fine_support, variables_fine_prefer, variables_gas_spike, variables_policy_additional, variables_flight_quota, "investments_funding_global_transfer") # flight_quota: FR; investments_funding_global_transfer: poor_country=T (IA, ID, SA, UA)
 common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names))) # /!\ Beware, policy_order_climate_fund is considered a common policy but it was asked differently (contributor vs. receiver) depending on the country (contributor iff in poor_country)
