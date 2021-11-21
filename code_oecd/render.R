@@ -19,10 +19,10 @@ update_constant <- function(data = all) {
     replacement_text <<- paste0("_", toupper(country))
   }
   alphabetical <<- FALSE
-  heatmap_conditions <<- c("", "> 0", "/") # c("/") # c("", "> 0", "/")
+  heatmap_conditions <<- c("", ">= 1", "/") # c("/") # c("", ">= 1", "/")
   along <<- "country_name"
   nb_levels <<- length(Levels(e[[along]]))
-  cond <<- "> 0"
+  cond <<- ">= 1"
   parentheses <<- FALSE
   nolabel <<- T
   on_control <<- T
@@ -940,7 +940,7 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
 }
 
 # /!\ open the Plots pane at its maximum before running the function
-render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", "> 0", "/"), alphabetical = FALSE, special = c("World", "OECD", "Non-OECD")) { # c("", "> 0", "< 0", ">= 0", "<= 0", "== 2", "== -2")
+render_country_comparison <- function(data = all, along = "country_name", parentheses = F, nolabel = T, on_control = T, export_xls = F, folder_country = F, name_country = T, figures = T, tables = T, heatmap_conditions = c("", ">= 1", "/"), alphabetical = FALSE, special = c("World", "OECD", "Non-OECD")) { # c("", ">= 1", "<= -1", ">= 0", "<= 0", "== 2", "== -2")
   start <- Sys.time()
   
   e <- data
@@ -1697,18 +1697,18 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     labels_main_socio <<- c("Most people can be trusted", "Interested in politics", "Voted in last election", "Government could be trusted in last 10 years", "Government should do more", "Left-right on economics", "HH member lost income or job due to pandemic", "Works in a polluting sector", "Availability of public transport", "Urban")
     heatmap_wrapper(vars = main_variables_socio, labels = labels_main_socio, conditions = heatmap_conditions, name = "socio", alphabetical = alphabetical, special = special, alphabetical = alphabetical, special = special)
     
-    heatmap_wrapper(vars = c("should_act_CC_field", "measure_proposed_CC_field", "CC_field_no_worry", "CC_field_do_not_know", "CC_field_na"), labels = c("Action needed", "Measure proposed", "No action needed", "Do not know", "Empty"), name = "CC_field_mentions", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = c("should_act_CC_field", "measure_proposed_CC_field", "CC_field_no_worry", "CC_field_do_not_know", "CC_field_na"), labels = c("Action needed", "Measure proposed", "No action needed", "Do not know", "Empty"), name = "CC_field_mentions", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
     
-    heatmap_wrapper(vars = var_CC_field_names[6:18], labels = as.character(CC_field_names_names[6:18]), name = "CC_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = var_CC_field_names[9:14], labels = as.character(CC_field_names_names[9:14]), name = "CC_field_sectors", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = var_CC_field_names[c(8,15:18)], labels = as.character(CC_field_names_names[c(8,15:18)]), name = "CC_field_instruments", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_CC_field_contains, labels = sub("_", " ", sub("CC_field_contains_", "", variables_CC_field_contains)), name = "CC_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = var_CC_field_names[6:18], labels = as.character(CC_field_names_names[6:18]), name = "CC_field_mentions_raw", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = var_CC_field_names[9:14], labels = as.character(CC_field_names_names[9:14]), name = "CC_field_sectors", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = var_CC_field_names[c(8,15:18)], labels = as.character(CC_field_names_names[c(8,15:18)]), name = "CC_field_instruments", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_CC_field_contains, labels = sub("_", " ", sub("CC_field_contains_", "", variables_CC_field_contains)), name = "CC_field_contains", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
     
     variables_feedback <<- c("survey_biased_yes", "survey_biased_left", "survey_biased_right", "non_empty_comment_field", "comment_field_good", "critic_comment_field")
     labels_feedback <<- c("Survey biased", "Left-wing biased", "Right-wing biased", "Comment: non empty", "Comment: liked", "Comment: disliked")
-    heatmap_wrapper(vars = variables_feedback, labels = labels_feedback, name = "feedback", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_comment_field_contains, labels = sub("_", " ", sub("comment_field_contains_", "", variables_comment_field_contains)), name = "comment_field_contains", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = var_comment_field_names, labels = comment_field_names, name = "comment_field_mentions_raw", conditions = "> 0", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_feedback, labels = labels_feedback, name = "feedback", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_comment_field_contains, labels = sub("_", " ", sub("comment_field_contains_", "", variables_comment_field_contains)), name = "comment_field_contains", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = var_comment_field_names, labels = comment_field_names, name = "comment_field_mentions_raw", conditions = ">= 1", df = e[e$country %in% countries_field_treated,], alphabetical = alphabetical, special = special)
     # unused: nb_actions_CC_field, nb_elements_CC_field
     
     main_variables_affected <<- c(variables_affected_index[c(1,2,5:7)], "index_affected")
@@ -1723,7 +1723,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_plot(temp, proportion = (cond != ""))
     save_plot(filename = paste0(folder, "behavior", replacement_text), width = 800, height = 400)})
     
-    heatmap_wrapper(vars = c("car_work", "car_shopping", "car_leisure"), labels = paste("Uses own vehicle to", c("go to work", "go shopping", "leisure")), conditions = c("> 0"), name = "transport", alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = c("car_work", "car_shopping", "car_leisure"), labels = paste("Uses own vehicle to", c("go to work", "go shopping", "leisure")), conditions = c(">= 1"), name = "transport", alphabetical = alphabetical, special = special)
     variables_scores_footprint <<- c("score_footprint_elec", "score_footprint_food", "score_footprint_transport", "score_footprint_pc", "score_footprint_region")
     labels_scores_footprint <<- c("Electricity", "Food", "Transport", "Countries per capita", "Countries in absolute") 
     labels_scores_footprint_long <<- c("Electricity: coal > gas > nuclear", "Food: beef > chicken > pasta", "Transport: plane > car > coach/train", "Countries per capita: US > EU > China > India", "Countries in absolute: China > US > EU > India") 
@@ -1761,7 +1761,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     heatmap_wrapper(vars = variables_willingness_all, labels = labels_willingness_all, name = 'willingness_all', conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     
     heatmap_wrapper(vars = c("insulation_mandatory_support_no_priming", "insulation_mandatory_support_priming"), labels = c("Support for mandatory insulation\nif govt subsidizes half the cost\nNo priming", "Support for mandatory insulation\nif govt subsidizes half the cost\nWith priming about the hurdles"), name = 'insulation_support', conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_obstacles_insulation[c(5,2,1,3,4)], labels = sub("<br>", "\n", labels_obstacles_insulation[c(5,2,1,3,4)]), name = 'obstacles_insulation', conditions = "> 0", alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_obstacles_insulation[c(5,2,1,3,4)], labels = sub("<br>", "\n", labels_obstacles_insulation[c(5,2,1,3,4)]), name = 'obstacles_insulation', conditions = ">= 1", alphabetical = alphabetical, special = special)
     
     temp <- variables_burden_share
     variables_burden_share <- variables_burden_share_ing 
@@ -1777,7 +1777,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     labels_heatmap_burden_sharing <<- c("All countries should pay in proportion to income", "All countries should pay in proportion to current emissions", "All countries should pay in proportion to post-1990 emissions", "Richest should countries pay it all so poor ones don't pay", "Richest countries should pay even more to help vulnerable ones") # test longest (if not below)
     labels_heatmap_burden_share <<- c("Emission share should be in proportion to population*", "Emission share should be in proportion to current emissions", "Countries that have emitted more since 1990\nshould receive a lower share*", "Countries that will be hurt more by CC should receive a higher share*") # test longest
     labels_burden_share_all <<- c(labels_heatmap_scale, "If other do more, [country] should do more", "If other do less, [country] should do more", "Global carbon budget (+2°C) divided in tradable country shares", labels_heatmap_burden_share, sub("<br>", "", labels_global_policies))
-    heatmap_wrapper(vars = variables_scale, labels = labels_heatmap_scale, conditions = "> 0", alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_scale, labels = labels_heatmap_scale, conditions = ">= 1", alphabetical = alphabetical, special = special)
     heatmap_wrapper(vars = variables_burden_share, labels = labels_heatmap_burden_share, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     heatmap_wrapper(vars = variables_global_policies, labels = sub("<br>", "", labels_global_policies), labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     heatmap_wrapper(vars = variables_burden_share_all, labels = labels_burden_share_all, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
@@ -1789,16 +1789,21 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # heatmap_wrapper(vars = variables_burden_share, labels = labels_burden_share_short, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     variables_burden_share <- temp
     
-    main_variables_opinion <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", "willing_limit_driving", "standard_support", "investments_support", "tax_transfers_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "burden_sharing_emissions", "tax_1p_support")
+    main_variables_opinion <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", "willing_limit_driving", "standard_support", "investments_support", "tax_transfers_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "burden_share_population", "tax_1p_support")
     # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
-    labels_opinion <<- c("CC exists, is anthropogenic", "CC is an important problem", "[Country] should fight CC", "Willing to limit driving", "Ban on combustion-engine cars", "Green infrastructure program", "Carbon tax with cash transfers", "Ban on intensive cattling", "Mandatory insulation of buildings", "Countries pay in proportion to emissions", "Global tax on millionaires funding LDC")
-    heatmap_wrapper(vars = main_variables_opinion, labels = labels_opinion, conditions = heatmap_conditions, name = "opinion", alphabetical = alphabetical, special = special)
+    labels_opinion <<- c("CC exists, is anthropogenic", "CC is an important problem", "[Country] should fight CC", "Willing to limit driving", "Ban on combustion-engine cars", "Green infrastructure program", "Carbon tax with cash transfers", "Ban on intensive cattling", "Mandatory insulation of buildings", "Emission share should be in proportion to population*", "Global tax on millionaires funding LDC")
+    heatmap_wrapper(vars = main_variables_opinion, labels = labels_opinion, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, name = "opinion", alphabetical = alphabetical, special = special)
     heatmap_wrapper(vars = c("frequency_beef", "knows_beef_footprint", "willing_limit_beef", variables_beef), labels = c("Eats beef at least once a week", "Knows that beef has high GHG footprint", "Willing to limit beef consumption", "Support for tax on cattle products\nthat would double beef price", "Support for subsidies on organic and local\nvegetables, fruits, and nuts", "Support for removal of subsidies\nfor cattle farming", "Support for ban of intensive cattle farming"), conditions = heatmap_conditions, name = "beef", alphabetical = alphabetical, special = special)
+
+    variables_main_policies <<- c("tax_transfers_support", "standard_support", "standard_public_transport_support", "investments_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "policy_tax_flying", "policy_ban_city_centers", "global_quota", "burden_share_population", "global_tax_support", "global_assembly_support", "tax_1p_support")
+    # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
+    labels_main_policies <<- c("Carbon tax with cash transfers", "Ban on combustion-engine cars", "Ban on combustion-engine cars\nwhere alternatives made available", "Green infrastructure program", "Ban on intensive cattling", "Mandatory insulation of buildings", "A tax on flying (raising price by 20%)", "A ban of polluting vehicles in city centers", "Global carbon budget (+2°C)\ndivided in tradable country shares", "Emission share should be in proportion to population*", "Global tax on GHG financing a global basic income", "Global democratic assembly on climate change", "Global tax on millionaires funding LDC")
+    heatmap_wrapper(vars = variables_main_policies, labels = labels_main_policies, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, name = "main_policies", alphabetical = alphabetical, special = special)
     
-    main_variables_burden_sharing_inferred <<- variables_burden_sharing_inferred[c(1:4,6)]
-    labels_burden_sharing_inferred <<- c("Polluter pay", "Rich countries pay it all", "Grand-fathering", "Polluter pay & Rich pay it all", "Pay with emissions & Rich pay it all", "Polluter pay & Vulnerable receive", "Pay with emissions & Vulnerable receive")
-    heatmap_wrapper(vars = main_variables_burden_sharing_inferred, labels = labels_burden_sharing_inferred[c(1:4,6)], conditions = "> 0", alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_burden_sharing_inferred, labels = labels_burden_sharing_inferred, conditions = "> 0", alphabetical = alphabetical, special = special)
+    # main_variables_burden_sharing_inferred <<- variables_burden_sharing_inferred[c(1:4,6)]
+    # labels_burden_sharing_inferred <<- c("Polluter pay", "Rich countries pay it all", "Grand-fathering", "Polluter pay & Rich pay it all", "Pay with emissions & Rich pay it all", "Polluter pay & Vulnerable receive", "Pay with emissions & Vulnerable receive")
+    # heatmap_wrapper(vars = main_variables_burden_sharing_inferred, labels = labels_burden_sharing_inferred[c(1:4,6)], conditions = ">= 1", alphabetical = alphabetical, special = special)
+    # heatmap_wrapper(vars = variables_burden_sharing_inferred, labels = labels_burden_sharing_inferred, conditions = ">= 1", alphabetical = alphabetical, special = special)
     labels_standard_effects_short <<- c("Reduce car emissions", "Reduce air pollution", "Positive economic effect", "Large economic effect", "Costless way to fight CC")
     heatmap_wrapper(vars = variables_standard_effect, labels = labels_standard_effects_short, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     heatmap_wrapper(vars = variables_standard_win_lose, labels = labels_standard_win_lose, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
@@ -1852,8 +1857,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
                     name = "policies_effects", labels = c("A ban on combustion-engine cars\nReduces CO2 emissions from cars", "A green infrastructure program\nIncreases the use of public transport", "A green infrastructure program\nMakes electricity production greener", "A carbon tax with cash transfers\nReduces GHG emissions", "A carbon tax with cash transfers\nEncourages insulation of buildings", "A carbon tax with cash transfers\n>Encourages people to drive less"), conditions = heatmap_conditions)
 
     # TODO: GHG_correct instead of GHG; 2 in subscript
-    heatmap_wrapper(vars = c("GHG_CO2", "GHG_methane", "GHG_H2", "GHG_particulates"), name = "GHG", labels = c("CO2 (Yes)", "Methane (Yes)", "Hydrogen (No)", "Particulates (No)"), conditions = "> 0", alphabetical = alphabetical, special = special)
-    heatmap_wrapper(vars = variables_home, name = "home", labels = labels_home, conditions = "> 0", alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = c("GHG_CO2", "GHG_methane", "GHG_H2", "GHG_particulates"), name = "GHG", labels = c("CO2 (Yes)", "Methane (Yes)", "Hydrogen (No)", "Particulates (No)"), conditions = ">= 1", alphabetical = alphabetical, special = special)
+    heatmap_wrapper(vars = variables_home, name = "home", labels = labels_home, conditions = ">= 1", alphabetical = alphabetical, special = special)
     
     labels_responsible_CC <<- c("Each of us", "The high income earners", "The government", "Companies", "Previous generations")
     # paste("Responsible:", labels_responsible_CC) # T/F
