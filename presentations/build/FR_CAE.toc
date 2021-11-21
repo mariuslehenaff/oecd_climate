@@ -1,0 +1,25 @@
+\babel@toc {english}{}
+\beamer@sectionintoc {1}{Questionnaire (for France)}{8}{0}{1}
+\beamer@sectionintoc {2}{Sample quality -- France}{28}{0}{2}
+\beamer@sectionintoc {3}{Descriptive statistics \\ \hskip 1em\relax \\ on the control group}{31}{0}{3}
+\beamer@subsectionintoc {3}{1}{Households characteristics}{32}{0}{3}
+\beamer@subsectionintoc {3}{2}{Climate Knowledge}{36}{0}{3}
+\beamer@subsectionintoc {3}{3}{Climate Attitudes}{44}{0}{3}
+\beamer@subsectionintoc {3}{4}{Comparison across the 3 Policies:}{52}{0}{3}
+\beamer@subsectionintoc {3}{5}{Other Climate Policies}{64}{0}{3}
+\beamer@subsectionintoc {3}{6}{International Burden-Sharing}{69}{0}{3}
+\beamer@subsectionintoc {3}{7}{Housing/Preferences for Bans vs. Incentives}{74}{0}{3}
+\beamer@subsectionintoc {3}{8}{Heterogeneity Analysis}{80}{0}{3}
+\beamer@subsubsectionintoc {3}{8}{1}{By positive answers}{81}{0}{3}
+\beamer@subsectionintoc {3}{9}{Treatment Effects}{94}{0}{3}
+\beamer@sectionintoc {4}{Appendix}{98}{1}{4}
+\beamer@subsectionintoc {4}{1}{Socio-Demographics}{99}{1}{4}
+\beamer@subsectionintoc {4}{2}{Household Composition and Energy Characteristics}{106}{1}{4}
+\beamer@subsectionintoc {4}{3}{Essay}{109}{1}{4}
+\beamer@subsectionintoc {4}{4}{Treatments}{112}{1}{4}
+\beamer@subsectionintoc {4}{5}{Policy 1: A ban on combustion-engine Cars}{114}{1}{4}
+\beamer@subsectionintoc {4}{6}{Policy 2: Green Infrastructure Program}{120}{1}{4}
+\beamer@subsectionintoc {4}{7}{Policy 3: Carbon Tax with Cash Transfers}{126}{1}{4}
+\beamer@subsectionintoc {4}{8}{Willingness to Pay}{131}{1}{4}
+\beamer@subsectionintoc {4}{9}{Trust and institutions}{134}{1}{4}
+\beamer@subsectionintoc {4}{10}{Feedback}{137}{1}{4}
