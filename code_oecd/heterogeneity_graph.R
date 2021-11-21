@@ -278,6 +278,28 @@ e <- fr
 # str(summary(logit_margins_all))
 
 
+##### Prez CAE #####
+regressors_names <- rev(c("femaleTRUE" = "Gender: Female", "age65+" = "Age: > 64", "age50-64" = "Age: 50 – 64", "age35-49" = "Age: 35 – 49", "age25-34" = "Age: 25 – 34",
+                      "childrenTRUE" = "Lives with child(ren) < 14", "income_factorQ4" = "Household income: Q4 (top 25%)", "income_factorQ3" = "Household income: Q3", "income_factorQ2" = "Household income: Q2", "wealth" = "Individual wealth", 
+                      "employment_aggWorking" = "Employment status: Working", "employment_aggStudent" = "Employment status: Student", "employment_aggRetired" = "Employment status: Retired", "collegeNo college" = "Diploma: below college", "collegeCollege Degree" = "College degree",
+                      "dominant_originTRUE" = "Origin: country's dominant one", "vote_agg == 0TRUE" = "Vote: Center", "vote_agg < 0TRUE" = "Vote: Left or Far left", "vote_agg <= -1TRUE" = "Vote: Left or Far left", "vote_agg >= 1TRUE" = "Vote: Right or Far right",
+                      "(Intercept)" = "Intercept", "urbanTRUE" = "Urban", "gas_expenses" = "Gasoline expenses", "heating_expenses" = "Heating expenses", "polluting_sectorTRUE" = "Polluting sector", "availability_transport" = "Availability of public transport",
+                      "(gas_expenses > 50)" = "High gasoline expenses", "(heating_expenses > 500)" = "High heating expenses", "(availability_transport >= 1)" = "Public transport available", "car_dependency" = "Uses car", 
+                      "ownerTRUE" = "Home owner or landlord", "flights_agg > 1TRUE" = "Flies more than once a year", "treatmentNone" = "Treatment: None", "treatmentClimate" = "Treatment: Climate", "treatmentPolicy" = "Treatment: Policy", "treatmentBoth" = "Treatment: Both",
+                      "(standard_support >= 1)", "(investments_support >= 1)", "(tax_transfers_support >= 1)", "(standard_public_transport_support >= 1)", 
+                      "(policy_tax_flying >= 1)", "(policy_tax_fuels >= 1)", "(policy_ban_city_centers >= 1)", "(policy_subsidies >= 1)", "(policy_climate_fund >= 1)", 
+                      "(tax_transfer_constrained_hh >= 1)", "(tax_transfer_poor >= 1)", "(tax_transfer_all >= 1)", "(tax_reduction_personal_tax >= 1)", "(tax_reduction_corporate_tax >= 1)", 
+                      "(tax_rebates_affected_firms >= 1)", "(tax_investments >= 1)", "(tax_subsidies >= 1)", "(tax_reduction_deficit >= 1)", 
+                      "(global_assembly_support >= 1)", "(global_tax_support >= 1)", "(tax_1p_support >= 1)", "(should_fight_CC >= 1)"))
+(reg_anthropogenic_A <- modelplot(list(lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight)), 
+                                  coef_omit = "Intercept", # coef_map = cov_lab_fairness_mod, 
+                                background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = '', title = 'CC anthropogenic'))
+
+(reg_anthropogenic_knowledge_A <- modelplot(list("CC anthropogenic" = lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(rev(setC), collapse = ' + '))), data = e, weights = e$weight),
+                                                 "Index knowledge" = lm(as.formula(paste("index_knowledge ~ ", paste(rev(setC), collapse = ' + '))), data = e, weights = e$weight)), 
+                                  coef_omit = "Intercept", #coef_map = regressors_names, 
+                                  background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = '', title = 'Knowledge about CC'))
+
 ##### Old functions #####
 # Nb: condition is > 0. Might be different for other variables
 # Return a df with mean and CI for each sub-group

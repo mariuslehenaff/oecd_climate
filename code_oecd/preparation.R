@@ -471,7 +471,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_investments <<- c("investments_support", "investments_trust", "investments_effective", "investments_employment", "investments_side_effects", variables_investments_incidence, variables_investments_win_lose)
   variables_tax_transfers <<- c("tax_transfers_support", "tax_transfers_trust", "tax_transfers_effective", "tax_transfers_employment", "tax_transfers_side_effects", variables_tax_transfers_incidence, variables_tax_transfers_win_lose)
   variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
-  variables_employment <<- names(e)[grepl('_employment', names(e))]
+  variables_willing <<- names(e)[grepl('willing_', names(e))]
   variables_employment <<- names(e)[grepl('_employment', names(e))]
   variables_condition <<- names(e)[grepl('condition_', names(e))]
   variables_CC_impacts <<- names(e)[grepl('CC_impacts_', names(e))]
@@ -1067,10 +1067,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   for (v in c(variables_policy , variables_tax, variables_support, "insulation_support", "global_quota", variables_gas_spike, variables_fine_support)) { # TODO compatibility pilots 1, 2
     if (v %in% names(e)) {
-      temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
+      temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr) # | is.na(e[[v]]))
+      temp[is.na(e[[v]])] <- NA
       e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
                                                  names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
-                        missing.values=-0.1, annotation=Label(e[[v]])) 
+                        missing.values=c(-0.1,NA), annotation=Label(e[[v]])) 
     } }
   annotation(e$policy_climate_fund) <- "policy_climate_fund: Do you support or oppose the following climate policies? - [depending on whether country %in% poor_countries] OECD, BR, CN: A contribution to a global climate fund to finance clean energy in low-income countries / IA, ID, SA, UA: Assistance from high-income countries to finance clean energy in [Country]"
   # e$poor_country <- e$country %in% c("IA", "ID", "SA", "UA") # complementary: c(names(which(oecd)), "BR", "CN")
@@ -1731,7 +1732,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   e$college <- "No college"
   e[e$education >= 5, "college"] <- "College Degree"
-  e$college <- as.factor(e$college)
+  e$college <- factor(e$college, levels = c("No college", "College Degree"))
   
   if ("age_exact" %in% names(e)) {
     e$age_agg <- NULL
@@ -2800,17 +2801,22 @@ save.image(".RData")
 prepare_all(countries = FALSE) # 6 min 
 
 # Sets. A: core socio-demos + vote. At: A + treatment. B: energy characteristics. C: mechanisms. D: outcomes. Dpos: binary outcomes (> 0).
-setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
-setAt <- c(setA, "treatment")
-setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1") # index_affected # TODO: affected by transport
-setCvars <- c("CC_problem", "CC_anthropogenic", "CC_affects_self", "can_trust_govt", "problem_inequality")
-setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "policies_self", "policies_fair", "policies_poor", "policies_rich") # TODO? add index_common_policies, distribution_critical, attentive, ...?
+setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "(vote_agg >= 1)", "(vote_agg == 0)", "(vote_agg <= -1)") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
+setAt <- c(setA, "treatment") # TODO: heating_expenses -0.1 change to average
+setB <- c("urban", "(gas_expenses > 50)", "(heating_expenses > 500)", "polluting_sector", "(availability_transport >= 1)", "car_dependency", "owner", "(flights_agg > 1)") # index_affected # TODO: affected by transport
+setCvars <- c("(CC_problem >= 1)", "(CC_anthropogenic >= 1)", "(CC_affects_self >= 1)", "(can_trust_govt >= 1)", "(problem_inequality >= 1)")
+setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "(policies_self >= 1)", "(policies_fair >= 1)", "(policies_poor >= 1)", "(policies_rich >= 1)") # TODO? add index_common_policies, distribution_critical, attentive, ...?
 setC <- c(setCvars, setCindices) 
 uncommon_questions <- c(variables_fine_support, variables_fine_prefer, variables_gas_spike, variables_policy_additional, variables_flight_quota, "investments_funding_global_transfer") # flight_quota: FR; investments_funding_global_transfer: poor_country=T (IA, ID, SA, UA)
 common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names))) # /!\ Beware, policy_order_climate_fund is considered a common policy but it was asked differently (contributor vs. receiver) depending on the country (contributor iff in poor_country)
 setD <- c(common_policies, "should_fight_CC") # also: variables_burden_share (not common to all countries), if_other_do_less/more
-setDpos <- paste(setD, "> 0")
- 
+setDpos <- paste0("(", setD, " >= 1)")
+# setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
+# setAt <- c(setA, "treatment")
+# setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1") # index_affected # TODO: affected by transport
+# setCvars <- c("CC_problem", "CC_anthropogenic", "CC_affects_self", "can_trust_govt", "problem_inequality")
+# setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "policies_self", "policies_fair", "policies_poor", "policies_rich") # TODO? add index_common_policies, distribution_critical, attentive, ...?
+
 all$share_common_policies_supported <-  rowMeans(all[, common_policies] > 0, na.rm = T)
 label(all$share_common_policies_supported) <- "share_common_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent that were asked in all countries."
 
