@@ -46,6 +46,39 @@ OECD/CAE \\
 
 \end{frame}
 
+% Section Survey and Data: 
+% Need to describe i) sample ii) survey blocks —> refer to online Appendix for questionnaires in original language (we would need them all nicely formatted) + survey link if available (but not the one we are actually using to collect data, rather we need a mock one)
+
+% Section Knowledge: 
+
+% Split into: What are key things that people misperceive? 
+% What are things that they are relatively well aware of?
+
+% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
+
+% Policy message of this section 
+% Who knows more? Where is key info lacking (that policy makers should fix).  
+
+% Section on who supports climate change policies. 
+
+% Regress Outcomes on set A and set B. Identify main patterns. 
+% In Appendix: Full regression tables. 
+% In paper: 4-5 of they key heterogeneities, shown in graphical format. For instance, Tobias already identified that driving and relying on energy was important; Adrien pointed to age. 
+
+% LDA analysis to identify “types” of respondents. Perhaps in Appendix by country, in main paper all countries pooled? 
+
+% Section on what makes people support climate change policies
+
+% A. Mechanisms. 
+% Regress Outcomes on set C + set A (—> answers the question of what type of thinking needs to changed 
+% (We already did nice figures like this, but we needed to reorganize what was a mechanism and what was an outcome) 
+
+% B. Gelbach decompositions of the key heterogeneities (e.g.: what makes people of different ages support different policies) into the mechanisms of set C. 
+
+% C. Provide description of Treatments with screen shots. 
+% Regress Outcomes on treatment indicators + set A. 
+
+
 \begin{frame}{Motivation}
 \bbs
 \ip Climate policies have been difficult to pass.
@@ -76,11 +109,11 @@ OECD/CAE \\
 \ip \textcolor{blue}{Large-scale cross-country survey} to analyse attitudes on climate change and climate policies.
 \ip Wide country coverage:
 \bbvs
-\ip \textcolor{blue}{16 countries} in all world regions, low-income as well as high-income, 
-\ip \textcolor{blue}{covering two-thirds of global CO$_\text{2}$ emissions}, including 18 out of the 21 largest polluters.
+\ip \textcolor{blue}{20 countries} in all world regions, low-income as well as high-income, 
+\ip \textcolor{blue}{covering 72\% of global CO$_\text{2}$ emissions}, including 18 out of the 21 largest polluters.
 \ee
 \ee
-\makebox[\textwidth][c]{ \includegraphics[width=.75\textwidth]{"../figures/Country_coverage"}}
+\makebox[\textwidth][c]{ \includegraphics[width=.6\textwidth]{"../figures/Country_coverage"}}
 \end{frame}
 
 \begin{frame}{Method: Large-scale Social Economics Surveys and Experiments}
@@ -214,6 +247,223 @@ format) and how it translates into policy support.
 \end{frame}
 
 \begin{framefont}{\small}
+
+
+\section{Knowledge}
+
+\begin{frame}{Climate change acknowledged as serious problem but overlooked}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{Do you agree or disagree with the following statement: ``Climate change is an important problem."}
+	\includegraphics[width=.78\paperwidth]{../figures/FR/CC_problem_FR.png}
+	\caption{How often do you think or talk with people about climate change?}
+	\includegraphics[width=.61\paperwidth]{../figures/FR/CC_talks_FR.png}\\
+	\centering
+	% \caption{In your opinion, is climate change real?} \\
+	% \includegraphics[width=.43\paperwidth]{../figures/FR/CC_real_FR.png} \\
+	% \centering
+	% \caption{\textit{If answered yes to previous question:} What part of climate change do you think is due to human activity?}
+	% \includegraphics[width=.52\paperwidth]{../figures/FR/CC_anthropogenic_non_deniers_FR.png} # TOOD choose
+	\caption{How knowledgeable do you consider yourself about climate change?}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/CC_knowledgeable_FR.png}
+	\\
+	\end{figure}
+\end{frame}
+
+\subsection{What are people relatively well aware of?}
+% \begin{frame}{What are people relatively well aware of?} % Key Knowledge	
+% \end{frame}
+
+\begin{frame}{Impacts of climate change: Credit a lot of effects}%\addtocounter{framenumber}{-1}
+\begin{figure}[h!]
+\centering
+%\caption{Impacts of climate change}
+%\vspace{2mm}
+\caption{If nothing is done to limit climate change, how likely do you think it is that climate change will lead to the following events?
+\newline\footnotesize{\textit{Right answer: Very likely: Severe droughts and heatwaves; Rising sea levels \\ \quad \quad \quad \quad \quad \quad Very unlikely: More frequent volcanic eruptions (No scientific certainty on the other items)}}}
+\includegraphics[width=.74\paperwidth]{../figures/FR/CC_impacts_FR.png} \\
+%\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Not so many mistakes on the factors of climate change}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{Which of the following elements contribute to climate change? (Multiple answers are possible) \newline \footnotesize{\textit{Right answer: CO$_\text{2}$; Methane}}}
+	\centering
+	\includegraphics[width=.30\paperwidth]{../figures/FR/GHG_FR.png}
+	\vspace{.2cm} \\
+	\includegraphics[width=.61\paperwidth]{../figures/FR/score_GHG_FR.png}
+	
+	\textit{Score on GHG = CO$_\text{2}$ + methane + }not\textit{ hydrogen + }not\textit{ particulates}
+	%\caption{Which of the following elements contribute to climate change? (Multiple answers are possible))}
+	\end{figure}
+\end{frame}
+	
+	
+\begin{frame}{}%Climate change knowledge: Know relative emissions}
+	\begin{columns}
+	\begin{column}{0.5\textwidth}
+	\begin{figure}
+	\caption{Which dish emits the most greenhouse gases? We consider that each dish weighs 200g.
+	Please rank the items from 1 (most) to 3 (least).
+	\newline \footnotesize{\textit{Right answer: Beef (1), Chicken (2), Pasta (3)}}}
+	\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_food_FR.png}
+	\end{figure}
+	\end{column}
+	\begin{column}{0.5\textwidth}
+	\begin{figure}
+	\caption{If a family of 4 travels 800 km from Bordeaux to Nice, with which mode of transportation do they emit the most greenhouse gases? 
+	Please rank the items from 1 (most) to 3 (least).
+	\newline \footnotesize{\textit{Right answer: Plane (1), Car (2), Train (3)}}} % TODO:other_countries Coach, towns
+	\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_transport_FR.png}
+	\end{figure}
+	\end{column}
+	\end{columns}
+\end{frame}
+	
+\begin{frame}{}%Climate change knowledge: Understand role of coal but misinformed about nuclear}%\addtocounter{framenumber}{-1}
+	\begin{figure}
+	\caption{Which source of electric energy emits the most greenhouse gases to provide power for a house?
+	\newline \footnotesize{\textit{Right answer: Coal (1), Gas (2), Nuclear (3)}}}
+	\includegraphics[width=.43\paperwidth]{../figures/FR/footprint_elec_FR.png}
+	\end{figure}
+\end{frame}
+	
+\subsection{What do people misperceive?}
+\begin{frame}{Underestimation of EU emissions}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[b]{0.425\paperwidth}
+	\centering
+	\caption{Which region contributes most to global greenhouse gas emissions?
+	\newline \footnotesize{\textit{Right answer: China (1), US (2), EU (3), India (4)}}} % True ranking: China>US>EU>India. 
+	\includegraphics[width=.425\paperwidth]{../figures/FR/footprint_region_no_miss_FR.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.425\paperwidth}
+	\centering
+	\caption{In which region does the consumption of an average person contribute most to climate change?
+	\newline \footnotesize{\textit{Right answer: US (1), EU (2), China (3), India (4)}}} % True ranking: US>EU>China>India. 
+	\includegraphics[width=.425\paperwidth]{../figures/FR/footprint_pc_no_miss_FR.png}
+	\end{subfigure}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Limited understanding of climate science}%\addtocounter{framenumber}{-1}
+	\begin{figure}%[h!]
+	\centering
+	\caption{What part of climate change do you think is due to human activity? \footnotesize{\textit{Right answer: Most}}}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/CC_anthropogenic_FR.png} 
+	\\
+	%\centering
+	%\centering
+	\caption{Do you think that cutting global greenhouse gas emissions by half would be sufficient to eventually stop temperatures from rising? \footnotesize{\textit{Right answer: No}}}
+	\includegraphics[width=.6\paperwidth]{../figures/FR/CC_dynamic_FR.png}
+	
+	\end{figure}
+\end{frame}
+% \begin{frame}{What do people misperceive?} % Key Misperceptions
+	
+% \end{frame}
+
+\begin{frame}{Incidence: Carbon tax with cash transfers}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{In your view, would the following groups win or lose under a carbon tax with cash transfers?}
+	\includegraphics[width=.87\paperwidth]{../figures/FR/tax_transfers_win_lose_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Incidence: Green infrastructure program}%\addtocounter{framenumber}{-1}
+	\begin{figure}[h!]
+	\centering
+	\caption{In your view, would the following groups win or lose with a green infrastructure program?}
+	\includegraphics[width=.87\paperwidth]{../figures/FR/investments_win_lose_FR.png}
+	%\caption{}
+	\end{figure}
+\end{frame}
+	
+	% \begin{frame}{Incidence: Ban on combustion-engine cars}%\addtocounter{framenumber}{-1}
+% 	\begin{figure}[h!]
+% 	\centering % TODO! harmonize order
+% 	\caption{In your view, would the following groups win or lose if a ban on combustion-engine cars was implemented in France?}
+% 	\includegraphics[width=.87\paperwidth]{../figures/FR/standard_win_lose_FR.png}
+% 	%\caption{}
+% 	\end{figure}
+% \end{frame}
+
+\begin{frame}{Who has better knowledge?}
+	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
+% TODO! CC_anthropogenic / index_knowledge ~ setA (+B)
+% Policy message of this section 
+% Who knows more? Where is key info lacking (that policy makers should fix).  
+\end{frame}
+
+\section{Who supports what?}% Who supportes climate policies % Support for climate policies
+
+\begin{frame}{France is in the OECD average, global policies strongly supported}
+	% TODO: main policies heatmap
+\end{frame}
+
+
+\begin{frame}{How support varies by socio-demographics}
+	% Regress Outcomes on set A and set B. Identify main patterns. 
+% In Appendix: Full regression tables. 
+% In paper: 4-5 of they key heterogeneities, shown in graphical format. For instance, Tobias already identified that driving and relying on energy was important; Adrien pointed to age. 
+% TODO: support_policies/index_policies ~ setA + B; heterogeneity by children, age, diploma, urban/rural, availability transport, YV, vote, gas expenses, 
+\end{frame}
+
+\begin{frame}{What are the different \textit{types} of people?}
+	% LDA analysis to identify “types” of respondents. Perhaps in Appendix by country, in main paper all countries pooled? 
+% TODO! 
+\end{frame}
+
+
+\section{What ideas can explain support for climate policies?}
+
+\begin{frame}{Main mechanisms}
+	% A. Mechanisms. 
+% Regress Outcomes on set C + set A (—> answers the question of what type of thinking needs to changed 
+% (We already did nice figures like this, but we needed to reorganize what was a mechanism and what was an outcome) 
+% TODO! support_policies/index_policies ~ setA + B + C; variance decomposition support_policies/index_policies
+\end{frame}
+
+\begin{frame}{The distributional dimension}
+	% TODO: variance_decomp with fairness, desc stats on investments_funding, condition(_rich_change)...
+\end{frame}
+
+\begin{frame}{What ideas explain differentiated support among social groups?}
+	% B. Gelbach decompositions of the key heterogeneities (e.g.: what makes people of different ages support different policies) into the mechanisms of set C. 
+	% TODO! Gelbach vote (also age, diploma)
+\end{frame}
+
+\begin{frame}{Can information change attitudes?}
+	% C. Provide description of Treatments with screen shots. 
+% Regress Outcomes on treatment indicators + set A. 
+% TODO! heterogeneity policies_support ~ treatment (also perhaps CC_anthropogenic, index_policies)
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}{Key take-home messages for policy-making}
+\bbvs
+\ip Widespread concern for climate change and large support for global climate policies.
+\ip Majority support for a green infrastructure program
+\ip Mixed support for a carbon tax with cash transfers and a ban of combustion-engine cars. % people want it to be clear that the rich pay for the provision of new infrastructure rather than having to pay for themselves and compensated ex post 
+%\ip Majority support for different norms and regulations.
+\ip Attitudes are largely idiosyncratic.
+\ip Availability of decarbonized alternatives like public transport is key. 
+\ip The distributional fairness of the policy packge is critical for the acceptance of many people. \\ $\Rightarrow$ Make sure the policy package is progressive, and that people understand that.
+%\ip Knowledge that climate change is anthropogenic and trust in government are key beliefs to support climate policies.
+\ip Information can improve understanding of a carbon tax with cash transfers, and thereby increase support.
+\ee
+\end{frame}
+
+\appendix
+\section{Appendix}
+
 \section{Descriptive statistics \\ \quad \\ on the control group}
 
 
@@ -517,7 +767,7 @@ To what extent would you be willing to adopt the following behaviors?}
 \begin{figure}[h!]
 \centering
 \caption{Average answer on different questions recoded as [-2;+2].}
-\includegraphics[height=.8\paperheight]{../figures/country_comparison/future_mean_countries.png}
+\includegraphics[width=\paperwidth]{../figures/country_comparison/future_mean_countries.png}
 \end{figure}
 \end{frame}
 
@@ -653,7 +903,7 @@ What sources of funding do you find appropriate for a green infrastructure progr
 \begin{figure}[h!]
 \centering
 \caption{Average answer on different questions recoded as [-2;+2].}
-\includegraphics[height=.8\paperheight]{../figures/country_comparison/policies_all_support_mean_countries.png}
+\includegraphics[width=\paperwidth]{../figures/country_comparison/policies_all_support_mean_countries.png}
 \end{figure}
 \end{frame}
 \subsection{Other Climate Policies}
@@ -690,7 +940,7 @@ What sources of funding do you find appropriate for a green infrastructure progr
 \centering
 \caption{Average answer on different questions recoded as [-2;+2].}
 \vspace{2mm}
-\includegraphics[height=.78\paperheight]{../figures/country_comparison/policy_mean_countries.png}
+\includegraphics[width=\paperwidth]{../figures/country_comparison/policy_mean_countries.png}
 %\caption{}
 \end{figure}
 \end{frame}
@@ -712,7 +962,7 @@ What sources of funding do you find appropriate for a green infrastructure progr
 \centering
 
 \caption{Percentage of somewhat/strongly support for carbon tax depending on revenue use.}
-\includegraphics[height=.8\paperheight]{../figures/country_comparison/tax_all_positive_countries.png}
+\includegraphics[width=\paperwidth]{../figures/country_comparison/tax_all_positive_countries.png}
 %\caption{}
 \end{figure}
 \end{frame}
@@ -811,7 +1061,7 @@ Do you support or oppose the following options?}
 \begin{frame}{Beef restrictions rejected in Denmark, US}%\addtocounter{framenumber}{-1}
 \begin{figure}[h!]
 \caption{Percentage of positive answers on different questions recoded as [-2;+2].}
-\includegraphics[width=.5\paperwidth]{../figures/country_comparison/beef_positive_countries.png} 
+\includegraphics[width=\paperwidth]{../figures/country_comparison/beef_positive_countries.png} 
 \end{figure}
 \end{frame}  % TODO: add summary: opinion_mean_countries
 
@@ -819,7 +1069,7 @@ Do you support or oppose the following options?}
 \begin{figure}[h!]
 \caption{Percentage of Yes answers to the WTP question: \\
 (...) Are you willing to pay [random amount] annually through an additional individual contribution to limit global warming to safe levels (less than 2 \degree{}C)?}
-\includegraphics[height=.7\paperheight]{../figures/country_comparison/wtp_positive_countries.png} 
+\includegraphics[width=\paperwidth]{../figures/country_comparison/wtp_positive_countries.png} 
 \end{figure}
 \end{frame} 
 
@@ -1033,13 +1283,13 @@ Do you support or oppose the following options?}
 % \end{figure}
 % \end{frame}
 
-\begin{frame}{}%\addtocounter{framenumber}{-1}
-\begin{figure}[h!]
-\caption{Support for all policies -- Regression results}
-\includegraphics[width=.45\paperwidth]{../figures/FR/coef_support_indices_FR.png} \\
-\tiny{Note: Variables used in the analysis but not displayed:  origin, gender, and income. The policy support for all variable is an indicator variable equal to one if on average among the three policies the respondent somewhat or strongly support the policies (i.e., it is a dummy that the average support across policies is positive).}
-\end{figure}
-\end{frame}
+% \begin{frame}{}%\addtocounter{framenumber}{-1}
+% \begin{figure}[h!]
+% \caption{Support for all policies -- Regression results}
+% %\includegraphics[width=.45\paperwidth]{../figures/FR/coef_support_indices_FR.png} \\ % TODO create figure, put back
+% \tiny{Note: Variables used in the analysis but not displayed:  origin, gender, and income. The policy support for all variable is an indicator variable equal to one if on average among the three policies the respondent somewhat or strongly support the policies (i.e., it is a dummy that the average support across policies is positive).}
+% \end{figure}
+% \end{frame}
 
 \subsection{Treatment Effects}
 
@@ -1119,12 +1369,11 @@ Do you support or oppose the following options?}
 %\end{footnotesize}
 %\end{frame}
 
-\appendix
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Appendix}
+%\section{Appendix}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
