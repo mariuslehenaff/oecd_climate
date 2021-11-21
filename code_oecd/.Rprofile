@@ -1009,8 +1009,8 @@ heatmap_table <- function(vars, labels = vars, data = all, along = "country_name
     } else if (c %in% countries) { df_c <- e[e$country == c,] 
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {
-      var_c <- df_c[[vars[v]]]
-      table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight)"))) 
+      var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
+      table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])"))) 
     }
   }
   row.names(table) <- labels
@@ -1028,7 +1028,9 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
     filename <- paste(sub("variables_", "", name), 
                       case_when(cond == "" ~ "mean", 
                                 cond == "> 0" ~ "positive", 
+                                cond == ">= 1" ~ "positive", 
                                 cond == "< 0" ~ "negative", 
+                                cond == "<= -1" ~ "negative", 
                                 cond == ">= 0" ~ "non-negative", 
                                 cond == "<= 0" ~ "non-positive", 
                                 cond == "== 2" ~ "max", 
@@ -1038,8 +1040,8 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
                                 TRUE ~ "unknown"), sep = "_")
     try({
       if (cond %in% c("/", "-")) {
-        pos <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = "> 0", on_control = on_control, alphabetical = alphabetical)
-        neg <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = "< 0", on_control = on_control, alphabetical = alphabetical)
+        pos <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = ">= 1", on_control = on_control, alphabetical = alphabetical)
+        neg <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = "<= -1", on_control = on_control, alphabetical = alphabetical)
         if (cond == "-") temp <- pos - neg else temp <- pos / (pos + neg)
         for (i in 1:length(vars)) if (is.logical(df[[vars[i]]])) temp[i, ] <- pos[i, ]
       } else {  temp <- heatmap_table(vars = vars, labels = labels, data = df, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical) }
