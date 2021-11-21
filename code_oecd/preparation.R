@@ -437,23 +437,23 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_race <<- names(e)[grepl('race_', names(e))]
   variables_home <<- names(e)[grepl('home_', names(e))]
   variables_transport <<- names(e)[grepl('transport_', names(e))]
-  if (length(grep('CC_factor_', names(e)))>0) variables_CC_factor <<- names(e)[grepl('CC_factor_', names(e))]
-  if (length(grep('CC_responsible_', names(e)))>0) variables_CC_responsible <<- names(e)[grepl('CC_responsible_', names(e)) & !grepl("order_", names(e))]
-  if (length(grep('responsible_CC_', names(e)))>0) variables_responsible_CC <<- names(e)[grepl('responsible_CC_', names(e)) & !grepl("order_", names(e))]
-  if (length(grep('CC_affected_', names(e)))>0) variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
-  if (length(grep('change_condition_', names(e)))>0) variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
-  if (length(grep('effect_policies_', names(e)))>0) variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
-  if (length(grep('effect_halt_CC_', names(e)))>0) variables_effect_policies <<- names(e)[grepl('effect_halt_CC_', names(e))]
-  if (length(grep('kaya_', names(e)))>0) variables_kaya <<- names(e)[grepl('kaya_', names(e))]
+  variables_CC_factor <<- names(e)[grepl('CC_factor_', names(e))]
+  variables_CC_responsible <<- names(e)[grepl('CC_responsible_', names(e)) & !grepl("order_", names(e))]
+  variables_responsible_CC <<- names(e)[grepl('responsible_CC_', names(e)) & !grepl("order_", names(e))]
+  variables_CC_affected <<- names(e)[grepl('CC_affected_', names(e))]
+  variables_change_condition <<- names(e)[grepl('change_condition_', names(e))]
+  variables_effect_policies <<- names(e)[grepl('effect_policies_', names(e))]
+  variables_effect_policies <<- names(e)[grepl('effect_halt_CC_', names(e))]
+  variables_kaya <<- names(e)[grepl('kaya_', names(e))]
   variables_scale <<- names(e)[grepl('scale_', names(e))]
   variables_beef <<- names(e)[grepl('beef_', names(e)) & !grepl("order_", names(e))]
   variables_burden_sharing <<- names(e)[grepl('burden_sharing_', names(e))] # TODO! manage four first
   variables_burden_share <<- names(e)[grepl('burden_share_', names(e))]
-  if ('standard_cost_effective' %in% names(e)) variables_standard_effect <<- names(e)[grepl('standard_', names(e)) & grepl('_effect', names(e))]
-  if ('standard_cost_effective' %in% names(e)) variables_investments_effect <<- names(e)[grepl('investments_', names(e)) & grepl('_effect', names(e))]
-  if ('standard_cost_effective' %in% names(e)) variables_tax_transfers_effect <<- names(e)[grepl('tax_transfers_', names(e)) & grepl('_effect', names(e))]
-  if ('standard_cost_effective' %in% names(e)) variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
-  if ("standard_fair" %in% names(e)) variables_policies_fair  <<- names(e)[grepl('_fair', names(e))]
+  variables_standard_effect <<- names(e)[grepl('standard_', names(e)) & grepl('_effect', names(e))]
+  variables_investments_effect <<- names(e)[grepl('investments_', names(e)) & grepl('_effect', names(e))]
+  variables_tax_transfers_effect <<- names(e)[grepl('tax_transfers_', names(e)) & grepl('_effect', names(e))]
+  variables_policies_effect <<- c(variables_standard_effect, variables_investments_effect, variables_tax_transfers_effect)
+  variables_policies_fair  <<- names(e)[grepl('_fair', names(e))]
   variables_policies_support <<- c("standard_support", "investments_support", "tax_transfers_support")
   # variables_policies_attitudes <<- paste0("policies_", c("negative_effect", "large_effect", "cost_effective", "poor", "middle", "rich", "rural", "self", "fair"))
   variables_policies_attitudes <<- paste0("policies_", c("positive_negative", "large_effect", "costless_costly", "poor", "middle", "rich", "rural", "self", "fair"))
@@ -475,12 +475,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_employment <<- names(e)[grepl('_employment', names(e))]
   variables_condition <<- names(e)[grepl('condition_', names(e))]
   variables_CC_impacts <<- names(e)[grepl('CC_impacts_', names(e))]
-  # if (length(grep('_side_effects', names(e)))>0) variables_side_effects <<- names(e)[grepl('_side_effects', names(e))]
-  # else variables_side_effects <- c()
-  # if (length(grep('_employment', names(e)))>0) variables_employment <<- names(e)[grepl('_employment', names(e))]
-  # if (length(grep('willing_', names(e)))>0) variables_willing <<- names(e)[grepl('willing_', names(e))]
-  # if (length(grep('condition_', names(e)))>0) variables_condition <<- names(e)[grepl('condition_', names(e))]
-  # if (length(grep('CC_impacts_', names(e)))>0) variables_CC_impacts <<- names(e)[grepl('CC_impacts_', names(e))]
   variables_policy <<- names(e)[grepl('policy_', names(e)) & !grepl("order_", names(e))]
   variables_policy_common <<- names(e)[grepl('policy_', names(e)) & !grepl("order_|deforest|_coal", names(e))]
   variables_tax <<- names(e)[grepl('^tax_', names(e)) & !grepl("order_|transfers_|1p", names(e))]
@@ -496,10 +490,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   if ("know_standard" %in% names(e)) variables_know_treatment_policy <<- c("know_standard", "know_investments_jobs")
   else variables_know_treatment_policy <<- c("know_ban", "know_investments_funding")
   variables_know_treatment <<- c(variables_know_treatment_climate, variables_know_treatment_policy)
-  if (length(grep('GHG_', names(e)))>0) variables_GHG <<- names(e)[grepl('GHG_', names(e))]
-  if (length(grep('investments_funding_', names(e)))>0) variables_investments_funding <<- names(e)[grepl('investments_funding_', names(e)) & !grepl('global_', names(e))]
-  if (length(grep('if_other_do_', names(e)))>0) variables_if_other_do <<- names(e)[grepl('if_other_do_', names(e))]
-  if (length(grep('obstacles_insulation_', names(e)))>0) variables_obstacles_insulation <<- names(e)[grepl('obstacles_insulation_', names(e)) & !grepl('other$', names(e))]
+  variables_GHG <<- names(e)[grepl('GHG_', names(e))]
+  variables_investments_funding <<- names(e)[grepl('investments_funding_', names(e)) & !grepl('global_', names(e))]
+  variables_if_other_do <<- names(e)[grepl('if_other_do_', names(e))]
+  variables_obstacles_insulation <<- names(e)[grepl('obstacles_insulation_', names(e)) & !grepl('other$', names(e))]
   if (length(grep('footprint', names(e)))>0) {
     Variables_footprint <<- Labels_footprint <<- list()
     for (v in c("el", "fd", "tr", "reg", "pc")) {
