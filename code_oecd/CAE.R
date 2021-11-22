@@ -205,26 +205,28 @@ setC_indices_label <- c("Trusts the governement", "Is concerned about climate ch
 
 ## Prepare the Graphs
 # Vote
-# unexplained: 0.23; coef Partial: 0.26; coef Full: 0.06
-gelbach_vote_agg_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "pol_left",
+# unexplained: .423; coef Partial:0.257 ; coef Full: 0.110
+gelbach_vote_agg_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "pol_left",
                                                               controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
-                                                              indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
-barres(data = t(matrix(gelbach_vote_agg_index_main_policies$shareExplained/100)), labels = gelbach_vote_agg_index_main_policies$n,legend = "% Partisan gap explained", rev = F)
+                                                              indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
+
+barres(data = t(matrix(gelbach_vote_agg_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_vote_agg_no_fairness_index_main_policies$n,legend = "% Partisan gap explained", rev = F)
 
 # Age
 e$young <-e$age %in% c("18-24", "25-34")
-# share unexplained: 0; coef Partial: 0.0935 coef Full: 0.005
-gelbach_young_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "young",
+# share unexplained: 0; coef Partial: .094 coef Full: .001
+gelbach_young_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "young",
                                                            controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
-                                                           indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
-barres(data = t(matrix(gelbach_young_index_main_policies$shareExplained/100)), labels = gelbach_young_index_main_policies$n,legend = "% Age gap explained", rev = F)
+                                                           indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
+barres(data = t(matrix(gelbach_young_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_young_no_fairness_index_main_policies$n,legend = "% Age gap explained", rev = F)
 
 # College
-# share unexplained: .2; coef Partial: -.150 coef Full: -.026
-gelbach_college_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "college",
+# share unexplained: .33; coef Partial: -.150 coef Full: -.050
+gelbach_college_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "college",
                                                              controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)]), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
-                                                             indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
-barres(data = t(matrix(gelbach_college_index_main_policies$shareExplained/100)), labels = gelbach_college_index_main_policies$n,legend = "% Diploma gap explained", rev = F)
+                                                             indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
+barres(data = t(matrix(gelbach_college_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_college_no_fairness_index_main_policies$n,legend = "% Diploma gap explained", rev = F)
+
 ##### Explanatory ideas: treatments #####
 plot_along(vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), name = "policies_support_by_treatment", covariates = setAt, df = fr)
 # plot_along(vars = c("policies_support", "share_policies_supported", "CC_anthropogenic"), name = "support_knowledge_by_treatment", along = "treatment", labels = c("Average support for main policies", "Share of climate policies supported", "CC is anthropogenic"), covariates = setAt, df = fr) 
@@ -238,5 +240,5 @@ plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treat
 
 
 ##### %% Sandbox %% #####
-summary(lm(as.formula("index_main_policies ~ ", paste(setAt, collapse = ' + '), data = fr, weights = fr$weight))
+summary(lm(as.formula("index_main_policies ~ ", paste(setAt, collapse = ' + '), data = fr, weights = fr$weight)))
         plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment", covariates = setAt, df = fr)
