@@ -193,28 +193,15 @@ format) and how it translates into policy support.
 %}
 \end{frame}
 
-\begin{frame}{Video screenshots}
-\vspace{.2cm}
-%\makebox[\textwidth][c]{
-%\begin{itemize}[<+>]
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-4.pdf}}}
-%\end{itemize}
-%}
-\end{frame}
-\begin{frame}{Questionnaire}
-\vspace{.2cm}
-%\makebox[\textwidth][c]{
-%\begin{itemize}[<+>]
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-5.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-6.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-7.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-8.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-9.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-10.pdf}}}
-\only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-11.pdf}}}
-%\end{itemize}
-%}
-\end{frame}
+% \begin{frame}{Video screenshots}
+% \vspace{.2cm}
+% %\makebox[\textwidth][c]{
+% %\begin{itemize}[<+>]
+% \only<+>{\makebox[\textwidth][c]{ \includegraphics[width=.9\textwidth]{../figures/survey_flow/survey_flow_new-4.pdf}}}
+% %\end{itemize}
+% %}
+% \end{frame}
+
 
 \section{Sample quality -- France}
 
@@ -405,7 +392,7 @@ format) and how it translates into policy support.
 % Who knows more? Where is key info lacking (that policy makers should fix).  
 \end{frame}
 
-\begin{frame}{Who has better knowledge? -- Climate characteristics}
+\begin{frame}{Who has better knowledge? -- Energy characteristics}
 
 \begin{figure}
 	\includegraphics[width=.9\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_AB_FR.png}
@@ -447,7 +434,7 @@ format) and how it translates into policy support.
 % Who knows more? Where is key info lacking (that policy makers should fix).  
 \end{frame}
 
-\begin{frame}{How support varies by climat characteristics}
+\begin{frame}{How support varies by energy characteristics}
 
 \begin{figure}
 	\includegraphics[width=.9\paperwidth]{../figures/FR/reg_support_policies_AB_FR.png}
@@ -466,9 +453,10 @@ format) and how it translates into policy support.
 \begin{frame}{Zooming on regression results}
 \begin{figure}[h!]	
 	\caption{Effects of living with child(ren) < 14, age, and having a college degree, on support for main policies, conditional on socio-demographics (set A) and energy characteristics (B).}
-	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_children.png}
-	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_age.png}
-	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_college.png}
+	\vspace{-0.3cm}
+	\includegraphics[width=.63\textwidth]{../figures/FR/policies_support_by_children.png}
+	\includegraphics[width=.63\textwidth]{../figures/FR/policies_support_by_age.png}
+	\includegraphics[width=.63\textwidth]{../figures/FR/policies_support_by_college.png}
 \end{figure}
 \end{frame}
 
@@ -476,8 +464,9 @@ format) and how it translates into policy support.
 \begin{figure}[h!]	
 	\caption{Effects of living in an urban ``Grand Pôle'' and position on the Yellow Vests, on support for main policies, conditional on socio-demographics (set A) and energy characteristics (B).}
 	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_urban.png}
-	\vspace{0.8cm}
+	\vspace{0.6cm}
 	\caption{Yellow Vests positioning:}
+	\vspace{-0.3cm}
 	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_Gilets_jaunes_agg.png}
 	%\includegraphics[width=.7\textwidth]{../figures/FR/vote_agg.png}
 \end{figure}
@@ -492,7 +481,7 @@ format) and how it translates into policy support.
 % \end{figure}
 % \end{frame}
 
-\begin{frame}{What are the different \textit{types} of people?}
+\begin{frame}{What are the different \textit{types} of people? \\ Latent Dirichlet Allocation}
 	% LDA analysis to identify “types” of respondents. 
 % TODO!
 \begin{itemize}
@@ -503,7 +492,7 @@ format) and how it translates into policy support.
 		\item Think a carbon tax with dividend is neother fair nor unfair and that it won't affect high-income earners
 	\end{itemize}
 
-\ip \textcolor{blue}{Worried about the effects of climate change and that France should be fought.} \textit{(17.1\% of the sample)}
+\ip \textcolor{blue}{Worried about the effects of climate change; think that France should fight CC.} \textit{(17.1\% of the sample)}
 	\begin{itemize}
 		\item Climate change is real and will have negative impacts (droughts, rising sea levels, drop in standards of living, migration, wars, lower agricultural production)
 		\item France should take measure to fight climate change, and countries should pay in proportion to their current emissions
@@ -521,7 +510,7 @@ format) and how it translates into policy support.
 		\item A carbon tax with dividends would harm: their own household, the middle class, and people living in rural areas
 		\item A ban on combustion engine cars would harm: the middle class and people living in rural areas
 	\end{itemize}
-\ip \textcolor{blue}{Support most of the climate policies and believe in their effectiveness. Willingness to make some changes} \textit{(33.5\% of the sample)}
+\ip \textcolor{blue}{Support most of the climate policies and believe in their effectiveness. Willing to make some changes} \textit{(33.5\% of the sample)}
 	\begin{itemize}
 		\item Support: a green investment program (+ is fair); a ban on combustion-engine where alternatives are made available; a ban of polluting vehicles in dense areas
 		\item Efficiency: a carbon tax with dividends ($\downarrow$ drive); ban on combustion engine cars ($\downarrow$ CO$_\text{2}$ emissions from cars); green infrastructure program ($\uparrow$ green electricity production)
@@ -579,35 +568,33 @@ format) and how it translates into policy support.
 \end{figure}
 \end{frame}
 
-\begin{frame}{What ideas explain differentiated support among social groups?}
 	% B. Gelbach decompositions of the key heterogeneities (e.g.: what makes people of different ages support different policies) into the mechanisms of set C. 
 	% TODO! Gelbach vote (also age, diploma)
-\end{frame}
 
-\begin{frame}{Gelbach decomposition of the partisan gap (left voters vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
-\vspace{-.2cm}
+\begin{frame}{What ideas explain differentiated support among social groups? \\ Gelbach decomposition of the partisan gap (left voters vs. the rest)}%\addtocounter{framenumber}{-1}
+% \vspace{-.2cm}
 \begin{figure}[h!]
-\caption{… main climate policies}
+% \caption{… main climate policies}
 \includegraphics[width=.7\textwidth]{../figures/FR/gelbach_vote_agg_index_main_policies} \\
 %\caption{Could you trust the federal goverment to implement the following policies}
 {\tiny \textit{Notes:} Each bar indicates the share of the partisan gap explained by each of the factors. The unexplained share is 23\%. Coefficient of partial model is .257, coefficient of full model is .056}
 \end{figure}
 \end{frame}
 
-\begin{frame}{Gelbach decomposition of the age gap ( below 35 vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
-\vspace{-.2cm}
+\begin{frame}{What ideas explain differentiated support among social groups? \\ Gelbach decomposition of the age gap (below 35 vs. the rest)}%\addtocounter{framenumber}{-1}
+%\vspace{-.2cm}
 \begin{figure}[h!]
-\caption{… main climate policies}
+%\caption{… main climate policies}
 \includegraphics[width=.7\textwidth]{../figures/FR/gelbach_young_index_main_policies} \\
 %\caption{Could you trust the federal goverment to implement the following policies}
 {\tiny \textit{Notes:} Each bar indicates the share of the age gap explained by each of the factors. The unexplained share is 0\%. Coefficient of partial model is .094, coefficient of full model is .005}
 \end{figure}
 \end{frame}
 
-\begin{frame}{Gelbach decomposition of the diploma gap (college education vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
+\begin{frame}{What ideas explain differentiated support among social groups? \\ Gelbach decomposition of the diploma gap (college degree vs. the rest)}%\addtocounter{framenumber}{-1}
 \vspace{-.2cm}
 \begin{figure}[h!]
-\caption{… main climate policies}
+%\caption{… main climate policies}
 \includegraphics[width=.65\textwidth]{../figures/FR/gelbach_college_index_main_policies} \\
 %\caption{Could you trust the federal goverment to implement the following policies}
 {\tiny \textit{Notes:} Each bar indicates the share of the diploma gap explained by each of the factors. The unexplained share is 20\%. Coefficient of partial model is .113, coefficient of full model is .017}
