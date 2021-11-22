@@ -78,7 +78,7 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
     } else if (origin == 'control_mean') {
       dependent_var <- if (logit[i] & logit_margin) reg$y else reg$model[[1]]
       origin_value <- wtd.mean(dependent_var[data_s[[along]] == levels_along[1]], weights = data_s$weight[data_s[[along]] == levels_along[1]])
-    }
+    } else origin_value <- 0
     if (logit[i] & logit_margin) {
       # if ("lm" %in% class(reg)) warning("Logit margins should be provided: logitmfx(..)")
       coefs <- origin_value + c(0, regmxf[names_levels[2:k],1])
@@ -162,6 +162,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste0(outcome_va
   #   names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
   #   names(mean_ci)[which(names(mean_ci) == "temp")] <- "y"  }
   
+  mean_ci$along <- labels_along[as.character(mean_ci$along)]
   if (exists("countries_names")) {
     if (Levels(mean_ci$along)==sort(countries_names)) mean_ci$along <- factor(mean_ci$along, levels = countries_names)
     if (Levels(mean_ci$y)==sort(countries_names)) mean_ci$y <- factor(mean_ci$y, levels = rev(countries_names))
@@ -187,7 +188,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
     if (missing(along)) along <- ""
     if (grepl('["\']', potential_name)) warning("(file)name should be provided, or mean_ci should have a name.")
     name <- ifelse(invert_y_along, paste0(along, "_by_", mean_ci), paste0(mean_ci, "_by_", along))
-  } else name <- "temp"
+  } else if (missing(name)) name <- "temp"
   name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
   if (print_name) print(name) # TODO: name with subsamples
   
