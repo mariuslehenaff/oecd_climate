@@ -1022,7 +1022,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
   # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few). 
   # special can be c("World", "OECD")
   if (is.null(width)) width <- ifelse(length(labels) <= 3, 1000, 1770) # TODO! more precise than <= 3 vs. > 3
-  if (is.null(height)) height <- ifelse(length(labels) <= 3, 163, 400)
+  if (is.null(height)) height <- ifelse(length(labels) <= 3, 163, ifelse(length(labels) <= 8, 400, 600))
   
   for (cond in conditions) {
     filename <- paste(sub("variables_", "", name), 
