@@ -353,7 +353,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 
 convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE) {
   text_pnr <- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
-                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
+                "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
                 "FR" = "Je ne sais pas", "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Préfère ne pas le dire",
                 "UK" = "I don't know", "CN" = "我不知道", "DE" = "Ich weiß es nicht", "CA" = "I don't know", "AU" = "I don't know", "SA" = "I don't know", "DK" = "Jeg ved det ikke", "IT" = "Non lo so", "UA" = "Не знаю", "TR" = "Bilmiyorum", "SP" = "No lo sé", "MX" = "No lo sé", "JP" = "わからない", "PL" = "Nie wiem", "ZU" = "Angazi", "SK" = "잘 모르겠습니다")
   text_yes <- c("US" = "Yes", 
@@ -509,7 +509,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   label(e$affected_transport) <- "affected_transport: Sum of activities for which a car or motorbike is used (work, leisure, shopping)."
   e$car_dependency <- e$affected_transport > 0
   label(e$car_dependency) <- "car_dependency: Car or motorbike is used for at least one activity (work, leisure, shopping)."
-
+  
   variables_knowledge <<- c("score_footprint_transport", "score_footprint_elec", "score_footprint_food", "score_footprint_pc", "score_footprint_region", "CC_dynamic", "CC_anthropogenic", "CC_real", "score_CC_impacts", "CC_knowledgeable", "score_GHG")
   negatives_knowledge <<- c(T, T, T, T, T, T, F, F, F, F, F) # For EFA
   
@@ -532,7 +532,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   negatives_index_pricing_vs_norms_all <<- c(F, F, T, T)
   conditions_index_pricing_vs_norms_all <<- rep("> 0", 4)
   before_treatment_index_pricing_vs_norms_all <<- c(F, F, F, F)
-
+  
   variables_index_concerned_about_CC <<- c("CC_talks", "CC_problem", "should_fight_CC", "member_environmental_orga")
   negatives_index_concerned_about_CC <<- rep(F, 4)
   conditions_index_concerned_about_CC <<- rep("> 0", 4)
@@ -559,7 +559,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_index_distribution_critical <<- c("tax_transfer_poor", "tax_transfer_constrained_hh", "tax_1p_support", "responsible_CC_rich", "condition_rich_change", "investments_funding_wealth_tax", "policies_fair_support_same_sign", "policies_support_poor_same_sign")
   negatives_index_distribution_critical <<- before_treatment_index_distribution_critical <<- rep(F, 8)
   conditions_index_distribution_critical <<- c(rep(" > 0", 5), rep("== T", 3) )
-
+  
   variables_index_attentive <<- c("duration", "length_CC_field", "duration_burden_sharing", "duration_tax_transfers", "duration_policies") # watched_video? know_treatment?
   negatives_index_attentive <<- before_treatment_index_attentive <<-rep(F, length(variables_index_attentive))
   conditions_index_attentive <<- c("> 25", "> 35", "> 750", "> 650", "> 900")
@@ -809,7 +809,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   text_gas_expenses_300 <- c("EN" = "More than $225", "US" = "More than $225", "EU" = "More than €250", "DK" = "Mere end 1.400 kr.", "DE" = "Über €250", "AU" = "More than $200",  "CN" = "人民币800元以上", "ID" = "Lebih dari Rp 2.000.000,00",
                              "UA" = "Понад 2000₴", "UK" = "More than £200", "TR" = "2,000 ₺'den fazla", "SP" = "Más de 200 €", "SK" = "200,000원 이상", "SA" = "More than R2,000", "ZU" = "Ngaphezulu kuka R2,000", "PL" = "Więcej niż 800 złotych", "BR" = "Mais de R$800,00", "CA" = "More than $200", "FR" = "Plus de 185€", "IT" = "Più di 200 €", "JP" = "20,000円以上", "MX" = "Más de 2000 pesos")
   
- 
+  
   text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 35,000€/mois", "AU" = "less than $51,000",
                       "CA" = "less than CA$22,000", "IA" = "less than ₹50,000", "SA" = "less than R35,000 per month", "UK" = "less than £35,000")
   text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 35,000 et 70,000€/mois", "AU" = "between $51,000 and $80,000",
@@ -1228,7 +1228,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   else e$scale_state_national <- e$scale_national # these three lines of exception concern SK, JP for which only three possibilities were given (global/national/local)
   if (variables_scale[3] != "scale_local") e$scale_state_national <- e[[variables_scale[3]]]
   variables_scale <<- c("scale_global", "scale_federal_continent", "scale_state_national", "scale_local")
-    
+  
   if ("burden_sharing_income" %in% names(e)) {
     e$pro_polluter_pay <- (e$burden_sharing_income > 0 | e$burden_sharing_emissions > 0 | e$burden_sharing_cumulative > 0)
     label(e$pro_polluter_pay) <- "pro_polluter_pay: In favor of a burden_sharing option where polluter pay: agree to _income, _emissions or _cumulative."
@@ -1341,19 +1341,19 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   # if ("gas_expenses" %in% names(e)) temp <-  15*(e$gas_expenses %in% text_gas_expenses_15) + 50*(e$gas_expenses %in% text_gas_expenses_50) + 100*(e$gas_expenses %in% text_gas_expenses_100) + 150*(e$gas_expenses %in% text_gas_expenses_150) + 200*(e$gas_expenses %in% text_gas_expenses_200) + 250*(e$gas_expenses %in% text_gas_expenses_250)
   # if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 15, 50, 100, 150, 200, 250), names = c("< 5","5-25","26-75", "76-125","126-175", "176-225", "> 225")),
   #                                                             annotation=Label(e$gas_expenses))
-
+  
   if ("heating_expenses" %in% names(e)) temp <- 125*(e$heating_expenses %in% c(text_heating_expenses_125[c("EN", country)], text_heating_expenses_10["US"])) + 600*(e$heating_expenses %in% c(text_heating_expenses_600[c("EN", country)], text_heating_expenses_50["US"])) + 1250*(e$heating_expenses %in% c(text_heating_expenses_1250[c("EN", country)], text_heating_expenses_100["US"])) + 
     2000*(e$heating_expenses %in% c(text_heating_expenses_2000[c("EN", country)], text_heating_expenses_167["US"])) + 3000*(e$heating_expenses %in% c(text_heating_expenses_3000[c("EN", country)], text_heating_expenses_225["US"], text_heating_expenses_275["US"], text_heating_expenses_350["US"])) - 0.1*((e$heating_expenses %in% text_pnr) | is.na(e$heating_expenses))
   if ("heating_expenses" %in% names(e)) e$heating_expenses <- as.item(temp, labels = structure(c(-0.1, 125, 600, 1250, 2000, 3000), names = c("Don't know","< 250","251-1,000", "1,001-1,500","1,501-2,500", "> 2,500")), missing.values=-0.1, annotation=Label(e$heating_expenses))
   if ("heating_expenses" %in% names(e)) e$heating_expenses_country <- as.item(temp, labels = structure(c(-0.1, 125, 600, 1250, 2000, 3000), 
-      names = c(text_pnr[country], text_heating_expenses_125[country], text_heating_expenses_600[country], text_heating_expenses_1250[country], text_heating_expenses_2000[country], text_heating_expenses_3000[country])), missing.values=-0.1, annotation=Label(e$heating_expenses))
+                                                                                                       names = c(text_pnr[country], text_heating_expenses_125[country], text_heating_expenses_600[country], text_heating_expenses_1250[country], text_heating_expenses_2000[country], text_heating_expenses_3000[country])), missing.values=-0.1, annotation=Label(e$heating_expenses))
   
   # /!\ For India, there was a mistake and we have no data on gas_expenses (heating_expenses were asked instead, with everyone in the lowest category).
   if ("gas_expenses" %in% names(e)) temp <-  0*(e$gas_expenses %in% c(text_gas_expenses_0[c("EN", country)], text_gas_expenses_0["US"])) + 20*(e$gas_expenses %in% c(text_gas_expenses_20[c("EN", country)], text_gas_expenses_15["US"])) + 60*(e$gas_expenses %in% c(text_gas_expenses_60[c("EN", country)], text_gas_expenses_50["US"])) + 
     120*(e$gas_expenses %in% c(text_gas_expenses_120[c("EN", country)], text_gas_expenses_100["US"])) + 200*(e$gas_expenses %in% c(text_gas_expenses_200[c("EN", country)], text_gas_expenses_150["US"], text_gas_expenses_201["US"])) + 300*(e$gas_expenses %in% c(text_gas_expenses_300[c("EN", country)], text_gas_expenses_220["US"]))
   if ("gas_expenses" %in% names(e)) e$gas_expenses <- as.item(temp, labels = structure(c(0, 20, 60, 120, 200, 300), names = c("< 5","5-30","31-90", "91-150", "151-250", "> 250")), annotation=Label(e$gas_expenses))
   if ("gas_expenses" %in% names(e) & country != "IA") e$gas_expenses_country <- as.item(temp, labels = structure(c(0, 20, 60, 120, 200, 300), 
-      names = c(text_gas_expenses_0[country], text_gas_expenses_20[country], text_gas_expenses_60[country], text_gas_expenses_120[country], text_gas_expenses_200[country], text_gas_expenses_300[country])), annotation=Label(e$gas_expenses))
+                                                                                                                 names = c(text_gas_expenses_0[country], text_gas_expenses_20[country], text_gas_expenses_60[country], text_gas_expenses_120[country], text_gas_expenses_200[country], text_gas_expenses_300[country])), annotation=Label(e$gas_expenses))
   
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_mandatory] <- "Mandatory"
   if ("insulation_compulsory" %in% names(e)) e$insulation_compulsory[e$insulation_compulsory %in% text_insulation_voluntary] <- "Voluntary"
@@ -1753,7 +1753,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$age[e$age %in% text_50_64] <- "50-64"
     e$age[e$age %in% text_65_] <- "65+" 
   }
-
+  
   e$nb_origin <- 0
   if ("race_white" %in% names(e)) {
     variables_origin <<- names(e)[grepl('race_', names(e)) & !grepl('other$', names(e))]
@@ -2237,7 +2237,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       return(zscores)
     } else browser(expr = FALSE) # Interrupts the execution without returning an error
   }
-
+  
   # cronbach_index_zscore <<- function(variables, negatives, conditions = rep("", max(seq_along(variables))), before_treatment = rep(F, max(seq_along(variables))), df=e, weight=T) {
   #   groups <- list() # If uncomment, maybe use index_zscore or copy the new code from it?
   #   for (i in seq_along(variables)) groups <- c(groups, list(c(variables[i], negatives[i], conditions[i], before_treatment[i])))
@@ -2247,7 +2247,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   #   
   #   return(unlist(cronbach(zscores)))
   # }
-
+  
   if (all(variables_knowledge %in% names(e))) { # Explanatory factor analysis
     if ("weight" %in% names(e)) {
       weights <- e$weight
@@ -2282,26 +2282,26 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     # correlogram("knowledge")
     # cor(e$knowledge_efa, e$knowledge_unitary, use = "complete.obs") # 0.837
   }
-
+  
   
   # variables_indices <- list()
   # negatives_indices <- list()
   # conditions_indices <- list()
   # before_treatment_indices <- list()
   names_indices <<- c("affected", "knowledge", "concerned_about_CC", "progressist", "worried", "positive_economy", "constrained", "policies_effective", "altruism", "pro_redistribution", "earmarking_vs_transfers",
-                     "pricing_vs_norms", "affected_subjective", "lose_policies_subjective", "lose_policies_poor", "lose_policies_rich", "fairness", "trust_govt", "willing_change", "care_poverty", "distribution_critical", "attentive", 
-                     "standard_policy", "tax_transfers_policy", "investments_policy", "main_policies", "main_policies_all", "main_policies_all", "beef_policies", "international_policies", "other_policies", "all_policies")
+                      "pricing_vs_norms", "affected_subjective", "lose_policies_subjective", "lose_policies_poor", "lose_policies_rich", "fairness", "trust_govt", "willing_change", "care_poverty", "distribution_critical", "attentive", 
+                      "standard_policy", "tax_transfers_policy", "investments_policy", "main_policies", "main_policies_all", "main_policies_all", "beef_policies", "international_policies", "other_policies", "all_policies")
   for (i in names_indices) {
     if (zscores) e[[paste0("index_", i)]] <- index_zscore(i, df = e, weight = weighting, dummies = FALSE, require_all_variables = TRUE)
     if (zscores_dummies) e[[paste0("index_", i, "_dummies")]] <- index_zscore(i, df = e, weight = weighting, dummies = TRUE, require_all_variables = TRUE)
     # if (zscores) e[[paste0("index_", i)]] <- index_zscore(as.name(paste0("variables_index_", i)), as.name(paste0("negatives_index_", i)), conditions = as.name(paste0("conditions_index_", i)), before_treatment = as.name(paste0("before_treatment_index_", i)), df = e, weight = weighting, dummies = FALSE, require_all_variables = TRUE)
     # if (zscores_dummies) e[[paste0("index_", i, "_dummies")]] <- index_zscore(variables_indices[[i]], negatives_indices[[i]], conditions = conditions_indices[[i]], before_treatment = before_treatment_indices[[i]], df = e, weight = weighting, dummies = TRUE, require_all_variables = TRUE)
-
-        # if (FALSE) e[[paste0("index_", i, "_cronbach")]] <- cronbach_index_zscore(variables_indices[[i]], negatives_indices[[i]], conditions = conditions_indices[[i]], before_treatment = before_treatment_indices[[i]], df = e, weight = weighting)
+    
+    # if (FALSE) e[[paste0("index_", i, "_cronbach")]] <- cronbach_index_zscore(variables_indices[[i]], negatives_indices[[i]], conditions = conditions_indices[[i]], before_treatment = before_treatment_indices[[i]], df = e, weight = weighting)
   }
   # if (zscores) for (i in names_indices) e[[paste0("index_", i)]] <- index_zscore(variables_indices[[i]], negatives_indices[[i]], conditions = conditions_indices[[i]], before_treatment = before_treatment_indices[[i]], df = e, weight = weighting, dummies = FALSE, require_all_variables = TRUE)
   # if (zscores_dummies) for (i in names_indices) e[[paste0("index_", i, "_dummies")]] <- index_zscore(variables_indices[[i]], negatives_indices[[i]], conditions = conditions_indices[[i]], before_treatment = before_treatment_indices[[i]], df = e, weight = weighting, dummies = TRUE, require_all_variables = TRUE)
-
+  
   if ("beef_tax_support" %in% names(e)) { e$pricing_vs_norms <- rowMeans(e[, c("tax_transfers_support", "beef_tax_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "beef_ban_intensive_support", "policy_ban_city_centers")])
   } else e$pricing_vs_norms <- rowMeans(e[, c("tax_transfers_support", "policy_tax_flying")]) - rowMeans(e[, c("standard_support", "policy_ban_city_centers")])
   
@@ -2698,13 +2698,35 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
 # e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
 # e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
-# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)# .22
+# e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- dea <- prepare(country = "DE", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- ita <- prepare(country = "IT", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- pla <- prepare(country = "PL", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- jpa <- prepare(country = "JP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- spa <- prepare(country = "SP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- aua <- prepare(country = "AU", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- saa <- prepare(country = "SA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- ida <- prepare(country = "ID", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- caa <- prepare(country = "CA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- uka <- prepare(country = "UK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- iaa <- prepare(country = "IA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- tra <- prepare(country = "TR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- bra <- prepare(country = "BR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- mxa <- prepare(country = "MX", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- cna <- prepare(country = "CN", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- ska <- prepare(country = "SK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# alla <- Reduce(function(df1, df2) { rbind(df1, df2) }, lapply(countries, function(s) eval(parse(text = paste0(tolower(s), "a")))))
+
 # current_countries <- c("DK", "US", "FR", "DE", "ID")
 # ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
 # All <- list()
 # for (c in c(ongoing_countries, current_countries)) All[[c]] <- eval(parse(text = tolower(c)))
 # # # e <- current <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(current_countries, function(s) eval(parse(text = tolower(s)))))
-# # all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
+# all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, lapply(countries, function(s) eval(parse(text = tolower(s)))))
 # e <- all <- merge_all_countries()
 # representativity_index(all$weight)
 # representativity_index(all$weight_country)
@@ -2875,10 +2897,18 @@ save.image(".RData")
 # write_dta(df, "all.dta")
 # write.csv(all, "../data/all.csv") # bug: quotes are not put around items so that messes things up as there are "," and ";" in some of them.
 
-uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, exclude_screened = F)
-uab <- uaa[135:362,] # Those after the recoding of zipcodes
-uac <- uab[which(uab$age != "Below 18" & uab$attention_test == "A little" & uab$duration > 686/60),]
-nrow(uac) # Those after the recoding of zipcodes that shouldn't be screened out
-mean(is.na(uac$urban_category)) # 10%
-sum(is.na(uac$urban_category)) # 0
-uac$zipcode[is.na(uac$urban_category)]
+# uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, exclude_screened = F)
+# uab <- uaa[135:362,] # Those after the recoding of zipcodes
+# uac <- uab[which(uab$age != "Below 18" & uab$attention_test == "A little" & uab$duration > 686/60),]
+# nrow(uac) # Those after the recoding of zipcodes that shouldn't be screened out
+# mean(is.na(uac$urban_category)) # 10%
+# sum(is.na(uac$urban_category)) # 0
+# uac$zipcode[is.na(uac$urban_category)]
+# c("progress", "finished", "excluded", "duration", "attention_test")
+# decrit(as.numeric(alla$progress))
+# decrit(alla$finished)
+# decrit(is.na(alla$excluded))
+# decrit(as.numeric(alla$duration))
+# sort(table(alla$progress))
+# alla$valid <- as.numeric(alla$duration) > 686 & (alla$attention_test == "A little" | is.na(alla$attention_test)) & is.na(alla$excluded)
+# mean(alla$finished[alla$valid == T] == "1")
