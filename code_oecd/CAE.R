@@ -10,16 +10,19 @@ update_constant(fr) # To restrict the data to FR and defines constant for FR ana
 
 ##### Knowledge: Socio-demographic determinants #####
 # TODO? replace OLS by logit for binary outcomes?
-(reg_anthropogenic_A <- modelplot(list(lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(rev(setAt), collapse = ' + '))), data = e, weights = e$weight)), 
-                                  coef_omit = c("Intercept|treatment"), coef_map = regressors_names, background = list(geom_vline(xintercept = 0, color = "grey"))) + 
-   labs(x = 'Coefficients', y = '', title = 'CC is anthropogenic'))
-save_plot(filename = paste0(folder, "reg_anthropogenic_A", replacement_text), width = 400, height = 500)
-
-(reg_anthropogenic_knowledge_A <- modelplot(list("CC anthropogenic" = lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(rev(setAt), collapse = ' + '))), data = e, weights = e$weight),
-                                                 "Index knowledge" = lm(as.formula(paste("index_knowledge ~ ", paste(rev(setAt), collapse = ' + '))), data = e, weights = e$weight)), 
-                                            coef_omit = "Intercept|treatment", coef_map = regressors_names, background = list(geom_vline(xintercept = 0, color = "grey"))) + 
-    labs(x = 'Coefficients', y = '', title = 'Knowledge about CC'))
+folder <- "../figures/FR/"
+replacement_text <- "_FR"
+(reg_anthropogenic_knowledge_A <- modelplot(list("CC anthropogenic" = lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight),
+                                                 "Index knowledge" = lm(as.formula(paste("index_knowledge ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight)), 
+                                            coef_omit = "Intercept", coef_map = regressors_names, background = list(geom_vline(xintercept = 0, color = "grey"))) + 
+    labs(x = 'Coefficients', y = '', title = 'Knowledge about Climate change'))
 save_plot(filename = paste0(folder, "reg_anthropogenic_knowledge_A", replacement_text), width = 400, height = 500)
+
+(reg_anthropogenic_knowledge_AB <- modelplot(list("CC anthropogenic" = lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight),
+                                                 "Index knowledge" = lm(as.formula(paste("index_knowledge ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight)), 
+                                            coef_map = regressors_names[c(45:55)], background = list(geom_vline(xintercept = 0, color = "grey"))) + 
+    labs(x = 'Coefficients', y = '', title = 'Knowledge about Climate change'))
+save_plot(filename = paste0(folder, "reg_anthropogenic_knowledge_AB", replacement_text), width = 400, height = 500)
 
 
 ##### Support among social groups: Descriptive stats #####
@@ -29,6 +32,32 @@ variables_main_policies <<- c("tax_transfers_support", "standard_support", "stan
 labels_main_policies <<- c("Carbon tax with cash transfers", "Ban on combustion-engine cars", "Ban on combustion-engine cars\nwhere alternatives made available", "Green infrastructure program", "Ban on intensive cattling", "Mandatory insulation of buildings", "A tax on flying (raising price by 20%)", "A ban of polluting vehicles in city centers", "Global carbon budget (+2°C)\ndivided in tradable country shares", "Emission share should be in proportion to population*", "Global tax on GHG financing a global basic income", "Global democratic assembly on climate change", "Global tax on millionaires funding LDC")
 heatmap_wrapper(vars = variables_main_policies, labels = labels_main_policies, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, name = "main_policies", alphabetical = alphabetical, special = special)
 update_constant(fr) 
+
+
+
+# Simple OLS
+(reg_support_policies_A <- modelplot(list("Average support" = lm(as.formula(paste("policies_support > 0 ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight),
+                                 "Index main policies" = lm(as.formula(paste("index_main_policies ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight),
+                                 "Index all policies" = lm(as.formula(paste("index_all_policies ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight)), 
+                                            coef_omit = "Intercept", coef_map = regressors_names, background = list(geom_vline(xintercept = 0, color = "grey"))) + 
+    labs(x = 'Coefficients', y = '', title = 'Support Policies'))
+save_plot(filename = paste0(folder, "reg_support_policies_A", replacement_text), width = 400, height = 500)
+
+(reg_support_policies_AB <- modelplot(list("Average support" = lm(as.formula(paste("policies_support > 0 ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight),
+                                  "Index main policies" = lm(as.formula(paste("index_main_policies ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight),
+                                  "Index all policies" = lm(as.formula(paste("index_all_policies ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight)), 
+                                             coef_map = regressors_names[c(45:55)], background = list(geom_vline(xintercept = 0, color = "grey"))) + 
+    labs(x = 'Coefficients', y = '', title = 'Support Policies'))
+save_plot(filename = paste0(folder, "reg_support_policies_AB", replacement_text), width = 400, height = 500)
+
+map_setC <- setC_indices_label
+names(map_setC) <- setC_indices
+(reg_support_policies_ABC <- modelplot(list("Average support" = lm(as.formula(paste("policies_support > 0 ~ ", paste(c(rev(setA), setB, setC_indices), collapse = ' + '))), data = e, weights = e$weight),
+                                           "Index main policies" = lm(as.formula(paste("index_main_policies ~ ", paste(c(rev(setA), setB, setC_indices), collapse = ' + '))), data = e, weights = e$weight),
+                                           "Index all policies" = lm(as.formula(paste("index_all_policies ~ ", paste(c(rev(setA), setB, setC_indices), collapse = ' + '))), data = e, weights = e$weight)), 
+                                      coef_map = map_setC[-6], background = list(geom_vline(xintercept = 0, color = "grey"))) + 
+    labs(x = 'Coefficients', y = '', title = 'Support Policies'))
+save_plot(filename = paste0(folder, "reg_support_policies_ABC", replacement_text), width = 400, height = 200)
 
 # labels_investments_funding <- c()
 # for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
