@@ -42,7 +42,6 @@ update_constant(fr)
 
 
 ##### Support among social groups: Socio-demographic determinants #####
-#  plot_along (with only one outcome on the y axis) by children, age, diploma, urban/rural, availability transport, YV, vote, gas expenses
 plot_along(vars = c("policies_support"), along = "children", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr)
 plot_along(vars = c("policies_support"), along = "urban", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr)
 plot_along(vars = c("policies_support"), along = "college", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr)
@@ -69,7 +68,6 @@ plot_along(vars = c("policies_support"), along = "gas_expenses", labels = c("Ave
 
 
 ##### Explanatory ideas: treatments #####
-# plot_along policies_support ~ treatment (also perhaps CC_anthropogenic, index_policies)
 plot_along(vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), name = "policies_support_by_treatment", covariates = setAt, df = fr)
 # plot_along(vars = c("policies_support", "share_policies_supported", "CC_anthropogenic"), name = "support_knowledge_by_treatment", along = "treatment", labels = c("Average support for main policies", "Share of climate policies supported", "CC is anthropogenic"), covariates = setAt, df = fr) 
 # plot_along(vars = c("CC_anthropogenic"), along = "treatment", labels = c("CC is anthropogenic"), covariates = setAt, df = fr)
