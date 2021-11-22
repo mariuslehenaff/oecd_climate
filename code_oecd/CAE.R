@@ -16,13 +16,13 @@ replacement_text <- "_FR"
                                                  "Index knowledge" = lm(as.formula(paste("index_knowledge ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight)), 
                                             coef_omit = "Intercept", coef_map = regressors_names, background = list(geom_vline(xintercept = 0, color = "grey"))) + 
     labs(x = 'Coefficients', y = '', title = 'Knowledge about Climate change'))
-save_plot(filename = paste0(folder, "reg_anthropogenic_knowledge_A", replacement_text), width = 400, height = 500)
+save_plot(filename = paste0(folder, "reg_anthropogenic_knowledge_A", replacement_text), width = 701, height = 394)
 
 (reg_anthropogenic_knowledge_AB <- modelplot(list("CC anthropogenic" = lm(as.formula(paste("CC_anthropogenic > 0 ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight),
                                                  "Index knowledge" = lm(as.formula(paste("index_knowledge ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight)), 
                                             coef_map = regressors_names[c(45:55)], background = list(geom_vline(xintercept = 0, color = "grey"))) + 
     labs(x = 'Coefficients', y = '', title = 'Knowledge about Climate change'))
-save_plot(filename = paste0(folder, "reg_anthropogenic_knowledge_AB", replacement_text), width = 400, height = 500)
+save_plot(filename = paste0(folder, "reg_anthropogenic_knowledge_AB", replacement_text), width = 701, height = 394)
 
 
 ##### Support among social groups: Descriptive stats #####
@@ -41,23 +41,23 @@ update_constant(fr)
                                  "Index all policies" = lm(as.formula(paste("index_all_policies ~ ", paste(rev(setA), collapse = ' + '))), data = e, weights = e$weight)), 
                                             coef_omit = "Intercept", coef_map = regressors_names, background = list(geom_vline(xintercept = 0, color = "grey"))) + 
     labs(x = 'Coefficients', y = '', title = 'Support Policies'))
-save_plot(filename = paste0(folder, "reg_support_policies_A", replacement_text), width = 400, height = 500)
+save_plot(filename = paste0(folder, "reg_support_policies_A", replacement_text), width = 701, height = 394)
 
 (reg_support_policies_AB <- modelplot(list("Average support" = lm(as.formula(paste("policies_support > 0 ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight),
                                   "Index main policies" = lm(as.formula(paste("index_main_policies ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight),
                                   "Index all policies" = lm(as.formula(paste("index_all_policies ~ ", paste(c(rev(setA), setB), collapse = ' + '))), data = e, weights = e$weight)), 
                                              coef_map = regressors_names[c(45:55)], background = list(geom_vline(xintercept = 0, color = "grey"))) + 
     labs(x = 'Coefficients', y = '', title = 'Support Policies'))
-save_plot(filename = paste0(folder, "reg_support_policies_AB", replacement_text), width = 400, height = 500)
+save_plot(filename = paste0(folder, "reg_support_policies_AB", replacement_text), width = 701, height = 394)
 
 map_setC <- setC_indices_label
 names(map_setC) <- setC_indices
-(reg_support_policies_ABC <- modelplot(list("Average support" = lm(as.formula(paste("policies_support > 0 ~ ", paste(c(rev(setA), setB, setC_indices), collapse = ' + '))), data = e, weights = e$weight),
-                                           "Index main policies" = lm(as.formula(paste("index_main_policies ~ ", paste(c(rev(setA), setB, setC_indices), collapse = ' + '))), data = e, weights = e$weight),
-                                           "Index all policies" = lm(as.formula(paste("index_all_policies ~ ", paste(c(rev(setA), setB, setC_indices), collapse = ' + '))), data = e, weights = e$weight)), 
+(reg_support_policies_ABC <- modelplot(list("Average support" = lm(as.formula(paste("policies_support > 0 ~ ", paste(c(rev(setA), setB, setC_indices[c(-6,-10,-12)]), collapse = ' + '))), data = e, weights = e$weight),
+                                           "Index main policies" = lm(as.formula(paste("index_main_policies ~ ", paste(c(rev(setA), setB, setC_indices[c(-6,-10,-12)]), collapse = ' + '))), data = e, weights = e$weight),
+                                           "Index all policies" = lm(as.formula(paste("index_all_policies ~ ", paste(c(rev(setA), setB, setC_indices[c(-6,-10,-12)]), collapse = ' + '))), data = e, weights = e$weight)), 
                                       coef_map = map_setC[-6], background = list(geom_vline(xintercept = 0, color = "grey"))) + 
     labs(x = 'Coefficients', y = '', title = 'Support Policies'))
-save_plot(filename = paste0(folder, "reg_support_policies_ABC", replacement_text), width = 400, height = 200)
+save_plot(filename = paste0(folder, "reg_support_policies_ABC", replacement_text), width = 701, height = 394)
 
 # labels_investments_funding <- c()
 # for (v in variables_investments_funding) labels_investments_funding <- c(labels_investments_funding, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
@@ -98,11 +98,11 @@ controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "urban", "urbanity", 
 end_formula_treatment_socio_demographics <- paste(c(setA, setB), collapse = ') + (')
 end_formula_treatment_socio_demographics <- paste(c("(", end_formula_treatment_socio_demographics), collapse = "")
 end_formula_treatment_socio_demographics <- paste(c(end_formula_treatment_socio_demographics, ")"), collapse = "")
-end_formula_treatment_indices <- paste(c(setC_indices[-6]), collapse = ') + (')
+end_formula_treatment_indices <- paste(c(setC_indices[c(-6,-10,-12)]), collapse = ') + (')
 end_formula_treatment_indices <- paste(c("(", end_formula_treatment_indices), collapse = "")
 end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), collapse = "")
 # Alphabetical order of variables matters here
-controls_labels_lm <- c("Age", "Income", "Employment", "Gender", "Parenthood", "Wealth", "Education", "Origin/Ethnicity", "Right", "Center", "Left", "Urban", "Gas expenses", "Heating expenses", "Polluting sector",
+controls_labels_lm <- c("Age", "Income", "Wealth", "Employment", "Gender", "Parenthood", "Education", "Origin/Ethnicity", "Right", "Center", "Left", "Urban", "Gas expenses", "Heating expenses", "Polluting sector",
                         "Availability of Public Transport", "Car dependency", "Owner", "Flights")
 
 formulas <- models <- list()
@@ -114,7 +114,7 @@ main_policies_indices_non_standardized <- calc.relimp(models[[2]], type = c("lmg
 
 # Graphs
 lmg_main_policies_socio_non_standardized <- barres(data = t(as.matrix(main_policies_socio_non_standardized@lmg)), labels = controls_labels_lm,legend = "% of response variances", rev = F)
-lmg_main_policies_indices_non_standardized <- barres(data = t(as.matrix(main_policies_indices_non_standardized@lmg)), labels = setC_indices_label[-6],legend = "% of response variances", rev = F)
+lmg_main_policies_indices_non_standardized <- barres(data = t(as.matrix(main_policies_indices_non_standardized@lmg)), labels = setC_indices_label[c(-6,-10,-12)],legend = "% of response variances", rev = F)
 
 ##### Explanatory ideas: Gelbach decompositions #####
 # /!\ This need to be changed if you're note using STATA SE 17 or a Mac
