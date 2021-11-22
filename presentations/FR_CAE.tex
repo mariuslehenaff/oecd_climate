@@ -178,6 +178,15 @@ format) and how it translates into policy support.
 \ee
 \end{frame}
 
+\begin{frame}{Proposed Outline for the Paper}
+	\begin{enumerate}
+		\ip I. Methodology of the surveys
+		\ip II. Knowledge and misperceptions. Who knows more and where information is lacking
+		\ip III. Who supports climate policies? Key heterogeneities and respondents' profiles
+		\ip IV. The underlying mechanisms of support. Mechanisms and information treatments
+	\end{enumerate}
+\end{frame}
+
 \section{Questionnaire (for France)}
 
 \begin{frame}{Questionnaire}
@@ -390,7 +399,7 @@ format) and how it translates into policy support.
 \begin{frame}{Who has better knowledge? -- Demographics}
 
 \begin{figure}
-	\includegraphics[width=.9\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_A_FR.png}
+	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_A_FR.png}
 \end{figure}
 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
 % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
@@ -401,7 +410,7 @@ format) and how it translates into policy support.
 \begin{frame}{Who has better knowledge? -- Energy characteristics}
 
 \begin{figure}
-	\includegraphics[width=.9\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_AB_FR.png}
+	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_AB_FR.png}
 \end{figure}
 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
 % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
@@ -432,7 +441,7 @@ format) and how it translates into policy support.
 \begin{frame}{How support varies by socio-demographics}
 
 \begin{figure}
-	\includegraphics[width=.9\paperwidth]{../figures/FR/reg_support_policies_A_FR.png}
+	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_support_policies_A_FR.png}
 \end{figure}
 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
 % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
@@ -443,7 +452,7 @@ format) and how it translates into policy support.
 \begin{frame}{How support varies by energy characteristics}
 
 \begin{figure}
-	\includegraphics[width=.9\paperwidth]{../figures/FR/reg_support_policies_AB_FR.png}
+	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_support_policies_AB_FR.png}
 \end{figure}
 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
 % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
@@ -556,20 +565,20 @@ format) and how it translates into policy support.
 
 \begin{frame}{Variance Decomposition of Policy Support -- Individual Characteristics}%\addtocounter{framenumber}{-1}
 \vspace{-.1cm}
-{\footnotesize $R^2$ = 12.53\%}
+{\footnotesize $R^2$ = 12.85\%}
 \begin{figure}[h!]
 \vspace{-.1cm}
-\includegraphics[width=.62\textwidth]{../figures/FR/lmg_main_policies_socio_non_standardized} \\
+\includegraphics[width=.7\textwidth]{../figures/FR/lmg_main_policies_socio_non_standardized} \\
 %\caption{Could you trust the federal goverment to implement the following policies}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Variance Decomposition of Policy Support -- Mechanisms}%\addtocounter{framenumber}{-1}
 \vspace{-.1cm}
-{\footnotesize $R^2$ = 75.91\%}
+{\footnotesize $R^2$ = 60.94\%}
 \begin{figure}[h!]
 \vspace{-.1cm}
-\includegraphics[width=.62\textwidth]{../figures/FR/lmg_main_policies_indices_non_standardized} \\
+\includegraphics[width=.7\textwidth]{../figures/FR/lmg_main_policies_indices_non_standardized} \\
 %\caption{Could you trust the federal goverment to implement the following policies}
 \end{figure}
 \end{frame}
@@ -577,33 +586,35 @@ format) and how it translates into policy support.
 	% B. Gelbach decompositions of the key heterogeneities (e.g.: what makes people of different ages support different policies) into the mechanisms of set C. 
 	% TODO! Gelbach vote (also age, diploma)
 
-\begin{frame}{What ideas explain differentiated support among social groups? \\ Gelbach decomposition of the partisan gap (left voters vs. the rest)}%\addtocounter{framenumber}{-1}
-% \vspace{-.2cm}
-\begin{figure}[h!]
-% \caption{… main climate policies}
-\includegraphics[width=.7\textwidth]{../figures/FR/gelbach_vote_agg_index_main_policies} \\
-%\caption{Could you trust the federal goverment to implement the following policies}
-{\tiny \textit{Notes:} Each bar indicates the share of the partisan gap explained by each of the factors. The unexplained share is 23\%. Coefficient of partial model is .257, coefficient of full model is .056}
-\end{figure}
-\end{frame}
 
-\begin{frame}{What ideas explain differentiated support among social groups? \\ Gelbach decomposition of the age gap (below 35 vs. the rest)}%\addtocounter{framenumber}{-1}
-%\vspace{-.2cm}
-\begin{figure}[h!]
-%\caption{… main climate policies}
-\includegraphics[width=.7\textwidth]{../figures/FR/gelbach_young_index_main_policies} \\
-%\caption{Could you trust the federal goverment to implement the following policies}
-{\tiny \textit{Notes:} Each bar indicates the share of the age gap explained by each of the factors. The unexplained share is 0\%. Coefficient of partial model is .094, coefficient of full model is .005}
-\end{figure}
-\end{frame}
-
-\begin{frame}{What ideas explain differentiated support among social groups? \\ Gelbach decomposition of the diploma gap (college degree vs. the rest)}%\addtocounter{framenumber}{-1}
+\begin{frame}{Gelbach decomposition of the partisan gap (left voters vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
 \vspace{-.2cm}
 \begin{figure}[h!]
-%\caption{… main climate policies}
-\includegraphics[width=.65\textwidth]{../figures/FR/gelbach_college_index_main_policies} \\
+\caption{… main climate policies}
+\includegraphics[width=.7\textwidth]{../figures/FR/gelbach_vote_agg_no_fairness_index_main_policies} \\
 %\caption{Could you trust the federal goverment to implement the following policies}
-{\tiny \textit{Notes:} Each bar indicates the share of the diploma gap explained by each of the factors. The unexplained share is 20\%. Coefficient of partial model is .113, coefficient of full model is .017}
+{\tiny \textit{Notes:} Each bar indicates the share of the partisan gap explained by each of the factors. The unexplained share is 42\%. Coefficient of partial model is .257, coefficient of full model is .110}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Gelbach decomposition of the age gap ( below 35 vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
+\vspace{-.2cm}
+\begin{figure}[h!]
+\caption{… main climate policies}
+\includegraphics[width=.7\textwidth]{../figures/FR/gelbach_young_no_fairness_index_main_policies} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} Each bar indicates the share of the age gap explained by each of the factors. The unexplained share is 0\%. Coefficient of partial model is .094, coefficient of full model is .001}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Gelbach decomposition of the diploma gap (college education vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
+\vspace{-.2cm}
+\begin{figure}[h!]
+\caption{… main climate policies}
+\includegraphics[width=.65\textwidth]{../figures/FR/gelbach_college_no_fairness_index_main_policies} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} Each bar indicates the share of the diploma gap explained by each of the factors. The unexplained share is 33\%. Coefficient of partial model is -.150, coefficient of full model is -.050}
 \end{figure}
 \end{frame}
 
