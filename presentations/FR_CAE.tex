@@ -407,11 +407,19 @@ format) and how it translates into policy support.
 	\begin{figure}[h!]
 		\centering		
 		\caption{Share of support (somewhat or strongly) to the main policies.}
-		\includegraphics[width=\paperwidth]{../figures/country_comparison/main_policies_positive_countries.png}
+		\includegraphics[width=\textwidth]{../figures/country_comparison/main_policies_positive_countries.png}
 		%\caption{}
 		\end{figure}
 \end{frame}
 
+\begin{frame}{France is in the OECD average, global policies strongly supported}
+	\begin{figure}[h!]
+		\centering		
+		\caption{Share of support to the main policies among non-Indifferent.}
+		\includegraphics[width=\textwidth]{../figures/country_comparison/main_policies_share_countries.png}
+		%\caption{}
+		\end{figure}
+\end{frame}
 
 \begin{frame}{How support varies by socio-demographics}
 	% Regress Outcomes on set A and set B. Identify main patterns. 
@@ -419,6 +427,35 @@ format) and how it translates into policy support.
 % In paper: 4-5 of they key heterogeneities, shown in graphical format. For instance, Tobias already identified that driving and relying on energy was important; Adrien pointed to age. 
 % TODO!	 support_policies/index_policies ~ setA + B; plot_along (with only one outcome on the y axis) by children, age, diploma, urban/rural, availability transport, YV, vote, gas expenses
 \end{frame}
+
+\begin{frame}{Zooming on regression results}
+\begin{figure}[h!]	
+	\caption{Effects of living with child(ren) < 14, age, and having a college degree, on support for main policies, conditional on socio-demographics (set A) and energy characteristics (B).}
+	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_children.png}
+	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_age.png}
+	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_college.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Zooming on regression results}
+\begin{figure}[h!]	
+	\caption{Effects of living in an urban ``Grand Pôle'' and position on the Yellow Vests, on support for main policies, conditional on socio-demographics (set A) and energy characteristics (B).}
+	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_urban.png}
+	\vspace{0.8cm}
+	\caption{Yellow Vests positioning:}
+	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_Gilets_jaunes_agg.png}
+	%\includegraphics[width=.7\textwidth]{../figures/FR/vote_agg.png}
+\end{figure}
+\end{frame}
+
+% \begin{frame}{Zooming on regression results}
+% \begin{figure}[h!]	
+% 	\caption{Effects of the availability of public transport and gas expenses, on support for main policies, conditional on socio-demographics (set A) and energy characteristics (B).}
+% 	\includegraphics[width=.7\textwidth]{../figures/FR/availability_transport.png}
+% 	\includegraphics[width=.7\textwidth]{../figures/FR/gas_expenses.png}
+% 	%\includegraphics[width=.7\textwidth]{../figures/FR/vote_agg.png}
+% \end{figure}
+% \end{frame}
 
 \begin{frame}{What are the different \textit{types} of people?}
 	% LDA analysis to identify “types” of respondents. 
@@ -436,6 +473,16 @@ format) and how it translates into policy support.
 \end{frame}
 
 \begin{frame}{The distributional dimension}
+\begin{figure}
+	\vspace{-.2cm}
+	\caption{%Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.\\
+	What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible)}
+	\vspace{-.4cm}
+	\includegraphics[width=.45\paperwidth]{../figures/FR/investments_funding_FR.png}
+	\caption{How important are the factors below in order for you to adopt a sustainable lifestyle (i.e. limit driving, flying, and consumption, cycle more, etc.)?}
+	\vspace{-.4cm}
+	\includegraphics[width=.7\paperwidth]{../figures/FR/condition_FR.png}
+\end{figure}
 	% TODO!: variance_decomp with fairness in the regressors, desc stats on investments_funding, condition(_rich_change)...
 \end{frame}
 
@@ -447,7 +494,12 @@ format) and how it translates into policy support.
 \begin{frame}{Can information change attitudes?}
 	% C. Provide description of Treatments with screen shots. 
 % Regress Outcomes on treatment indicators + set A. 
-% TODO! plot_along policies_support ~ treatment (also perhaps CC_anthropogenic, index_policies)
+\begin{figure}
+	\caption{Treatment effects in regressions of support indices on the set (A) of socio-demographics.}
+	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_treatment.png}
+	%\caption{How important are the factors below in order for you to adopt a sustainable lifestyle (i.e. limit driving, flying, and consumption, cycle more, etc.)?}
+	\includegraphics[width=.7\textwidth]{../figures/FR/indices_policies_by_treatment_origin0.png}
+\end{figure}
 \end{frame}
 
 \section{Conclusion}

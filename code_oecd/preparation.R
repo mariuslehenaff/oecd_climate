@@ -2868,10 +2868,10 @@ save.image(".RData")
 # write_dta(df, "all.dta")
 # write.csv(all, "../data/all.csv") # bug: quotes are not put around items so that messes things up as there are "," and ";" in some of them.
 
-# uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, exclude_screened = F)
-# uab <- uaa[135:362,] # Those after the recoding of zipcodes
-# uac <- uab[which(uab$age != "Below 18" & uab$attention_test == "A little" & uab$duration > 686/60),]
-# nrow(uac) # Those after the recoding of zipcodes that shouldn't be screened out
-# mean(is.na(uac$urban_category)) # 10%
-# mean(is.na(uac$urban_category)) # 0
-# uac$zipcode[is.na(uac$urban_category)]
+uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, exclude_screened = F)
+uab <- uaa[135:362,] # Those after the recoding of zipcodes
+uac <- uab[which(uab$age != "Below 18" & uab$attention_test == "A little" & uab$duration > 686/60),]
+nrow(uac) # Those after the recoding of zipcodes that shouldn't be screened out
+mean(is.na(uac$urban_category)) # 10%
+sum(is.na(uac$urban_category)) # 0
+uac$zipcode[is.na(uac$urban_category)]
