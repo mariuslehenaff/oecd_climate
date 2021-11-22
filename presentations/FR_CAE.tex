@@ -459,7 +459,41 @@ format) and how it translates into policy support.
 
 \begin{frame}{What are the different \textit{types} of people?}
 	% LDA analysis to identify “types” of respondents. 
-% TODO! 
+% TODO!
+\begin{itemize}
+\ip \textcolor{blue}{Uncertain about the economic and distributive consequences of climate policies} \textit{(23.3\% of the sample)}
+	\begin{itemize}
+		\item Uncertain about the effects of the main policies on the economy and employment
+		\item Think their own households would neither win nor lose from a green investment program and a ban on combustion engine
+		\item Think a carbon tax with dividend is neother fair nor unfair and that it won't affect high-income earners
+	\end{itemize}
+
+\ip \textcolor{blue}{Worried about the effects of climate change and that France should be fought.} \textit{(17.1\% of the sample)}
+	\begin{itemize}
+		\item Climate change is real and will have negative impacts (droughts, rising sea levels, drop in standards of living, migration, wars, lower agricultural production)
+		\item France should take measure to fight climate change, and countries should pay in proportion to their current emissions
+		\item An increase in taxes on the wealthiest is appropriate to fund public investments in green infrastructures
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{What are the different \textit{types} of people? 'ed}
+\begin{itemize}
+\ip \textcolor{blue}{Oppose climate policies and think they will have negative distributive consequences} \textit{(26.1\% of the sample)}
+	\begin{itemize}
+		\item Oppose tax policies (high tax on cattle products, national tax on fossil fuels) and ban on combustion engine cars
+		\item A green investment program would harm: low-income earners and the middle class
+		\item A carbon tax with dividends would harm: their own household, the middle class, and people living in rural areas
+		\item A ban on combustion engine cars would harm: the middle class and people living in rural areas
+	\end{itemize}
+\ip \textcolor{blue}{Support most of the climate policies and believe in their effectiveness. Willingness to make some changes} \textit{(33.5\% of the sample)}
+	\begin{itemize}
+		\item Support: a green investment program (+ is fair); a ban on combustion-engine where alternatives are made available; a ban of polluting vehicles in dense areas
+		\item Efficiency: a carbon tax with dividends ($\downarrow$ drive); ban on combustion engine cars ($\downarrow$ CO$_\text{2}$ emissions from cars); green infrastructure program ($\uparrow$ green electricity production)
+		\item Is willing to have an eletric vehicle and need ambitious policies to adopt a sustainable lifestyle
+		\item France should do more if other countries do less
+	\end{itemize}
+\end{itemize}
 \end{frame}
 
 
@@ -487,9 +521,59 @@ format) and how it translates into policy support.
 	% TODO!: variance_decomp with fairness in the regressors
 \end{frame}
 
+\begin{frame}{Variance Decomposition of Policy Support -- Individual Characteristics}%\addtocounter{framenumber}{-1}
+\vspace{-.1cm}
+{\footnotesize $R^2$ = 12.53\%}
+\begin{figure}[h!]
+\vspace{-.1cm}
+\includegraphics[width=.62\textwidth]{../figures/FR/lmg_main_policies_socio_non_standardized} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Variance Decomposition of Policy Support -- Mechanisms}%\addtocounter{framenumber}{-1}
+\vspace{-.1cm}
+{\footnotesize $R^2$ = 75.91\%}
+\begin{figure}[h!]
+\vspace{-.1cm}
+\includegraphics[width=.62\textwidth]{../figures/FR/lmg_main_policies_indices_non_standardized} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+\end{figure}
+\end{frame}
+
 \begin{frame}{What ideas explain differentiated support among social groups?}
 	% B. Gelbach decompositions of the key heterogeneities (e.g.: what makes people of different ages support different policies) into the mechanisms of set C. 
 	% TODO! Gelbach vote (also age, diploma)
+\end{frame}
+
+\begin{frame}{Gelbach decomposition of the partisan gap (left voters vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
+\vspace{-.2cm}
+\begin{figure}[h!]
+\caption{… main climate policies}
+\includegraphics[width=.7\textwidth]{../figures/FR/gelbach_vote_agg_index_main_policies} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} Each bar indicates the share of the partisan gap explained by each of the factors. The unexplained share is 23\%. Coefficient of partial model is .257, coefficient of full model is .056}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Gelbach decomposition of the age gap ( below 35 vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
+\vspace{-.2cm}
+\begin{figure}[h!]
+\caption{… main climate policies}
+\includegraphics[width=.7\textwidth]{../figures/FR/gelbach_young_index_main_policies} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} Each bar indicates the share of the age gap explained by each of the factors. The unexplained share is 0\%. Coefficient of partial model is .094, coefficient of full model is .005}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Gelbach decomposition of the diploma gap (college education vs. the rest) in support for…}%\addtocounter{framenumber}{-1}
+\vspace{-.2cm}
+\begin{figure}[h!]
+\caption{… main climate policies}
+\includegraphics[width=.65\textwidth]{../figures/FR/gelbach_college_index_main_policies} \\
+%\caption{Could you trust the federal goverment to implement the following policies}
+{\tiny \textit{Notes:} Each bar indicates the share of the diploma gap explained by each of the factors. The unexplained share is 20\%. Coefficient of partial model is .113, coefficient of full model is .017}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Can information change attitudes?}

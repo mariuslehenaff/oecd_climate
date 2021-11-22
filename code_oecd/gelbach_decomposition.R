@@ -11,7 +11,7 @@ if (Sys.info()[7] == "Bluebii") {
 # var_to_decompose and group_of_interest: you need to input only one variable as a character
 # controls and indices, can be a character vector
 # Factor variables from control need to be in controls_factor
-gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, df=e, weight=T) {
+gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, indices_labels, df=e, weight=T) {
   # We restrict the df to the variables we'll use, since there can be some incompatibilities
   # in using R dataframes in Stata
   df <- df %>%
@@ -59,6 +59,8 @@ gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls,
   # We input df, and obtain the data frame with the share explained by each indice
   final <- stata(stata_cmd, data.in = df, data.out = T)
   
+  final[,1] <- indices_labels
+  
   return(final)
 }
 
@@ -77,10 +79,100 @@ indices_list[c(2,4:6,8,9,11,13:length(indices_list))]
 paste(indices_non_left_right, "_dummies", sep = "")
 paste(indices_non_left_right, "_dummies2SD", sep = "")
 
-# Create dummy for left_right
-e$right_pol <- e$left_right > 0
-e$young <- e$age < 3
-#TODO replace right_pol with left_right >=1 and add left_right == 0 in the control
+# Need to create dummies for Stata
+  # Set A
+e$pol_right <- e$vote_agg >= 1
+e$pol_center <- e$vote_agg == 0
+e$pol_pnr <- e$vote_agg == -0.1
+e$pol_left <- e$vote_agg <= -1
+
+e$lf_right <- e$left_right >= 1
+e$lf_center <- e$left_right == 0
+e$lf_pnr <- e$left_right == -0.1
+e$lf_left <- e$left_right <= -1
+  # Set B
+e$gas_expenses_dum <- e$gas_expenses > 50
+e$heating_expenses_dum <- e$heating_expenses > 500
+e$availability_transport_dum <- e$availability_transport >= 1
+e$flights_agg_dum <- e$flights_agg > 1
+
+setB_dum <- c(setB[1], "gas_expenses_dum", "heating_expenses_dum", setB[4], "availability_transport_dum", setB[c(6,7)], "flights_agg_dum")
+  # Set C
+setC_indices <- c("index_trust_govt", setC[c(6:14)], "index_lose_policies_subjective", "index_fairness", "index_lose_policies_poor", "index_lose_policies_rich")
+
+setC_indices_label <- c("Trusts the governement", "Is concerned about climate change", "Is worried about the future", "Has a good knowledge of climate change", "Climate policies have a positive effect \n on the economy",
+                        "Is financially constrained","Climate policies are effective", "Cares about poverty and inequalities", "Believes will suffer from climate change",
+                        "Is willing to adopt climate friendly behavior", "Will personally lose from main policies", "Main policies are fair",
+                        "Poor people will lose from main policies", "Rich people will lose from main policies")
+
+# unexplained: 0.23; coef Partial: 0.26; coef Full: 0.06
+gelbach_vote_agg_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "pol_left",
+                                                    controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                    indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: 0.25; coef Partial: 0.24; coef Full: 0.06
+gelbach_vote_agg_standard_support <- gelbach_decomposition(var_to_decompose = "standard_support", group_of_interest = "pol_left",
+                                                              controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                              indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: 0.23; coef Partial: 0.26; coef Full: 0.06
+gelbach_vote_agg_investments_support <- gelbach_decomposition(var_to_decompose = "investments_support", group_of_interest = "pol_left",
+                                                              controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                              indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: 0.05; coef Partial: 0.21; coef Full: 0.013
+gelbach_vote_agg_tax_transfers_support <- gelbach_decomposition(var_to_decompose = "tax_transfers_support", group_of_interest = "pol_left",
+                                                              controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                              indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+barres(data = t(matrix(gelbach_vote_agg_index_main_policies$shareExplained/100)), labels = gelbach_vote_agg_index_main_policies$n,legend = "% Partisan gap explained", rev = F)
+barres(data = t(matrix(gelbach_vote_agg_standard_support$shareExplained/100)), labels = gelbach_vote_agg_standard_support$n,legend = "% Partisan gap explained", rev = F)
+barres(data = t(matrix(gelbach_vote_agg_investments_support$shareExplained/100)), labels = gelbach_vote_agg_investments_support$n,legend = "% Partisan gap explained", rev = F)
+barres(data = t(matrix(gelbach_vote_agg_tax_transfers_support$shareExplained/100)), labels = gelbach_vote_agg_tax_transfers_support$n,legend = "% Partisan gap explained", rev = F)
+
+# Age
+e$young <-e$age %in% c("18-24", "25-34")
+# share unexplained: 0; coef Partial: 0.0935 coef Full: 0.005
+gelbach_young_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "young",
+                                                              controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
+                                                              indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: 0.25; coef Partial: 0.16 coef Full: 0.04
+gelbach_young_standard_support <- gelbach_decomposition(var_to_decompose = "standard_support", group_of_interest = "young",
+                                                           controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
+                                                           indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: -1; coef Partial: 0.031 coef Full: -.027
+gelbach_young_investments_support <- gelbach_decomposition(var_to_decompose = "investments_support", group_of_interest = "young",
+                                                              controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
+                                                              indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: 0.18; coef Partial: 0.113; coef Full: 0.017
+gelbach_young_tax_transfers_support <- gelbach_decomposition(var_to_decompose = "tax_transfers_support", group_of_interest = "young",
+                                                                controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
+                                                                indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+barres(data = t(matrix(gelbach_young_index_main_policies$shareExplained/100)), labels = gelbach_young_index_main_policies$n,legend = "% Age gap explained", rev = F)
+barres(data = t(matrix(gelbach_young_standard_support$shareExplained/100)), labels = gelbach_young_standard_support$n,legend = "% Age gap explained", rev = F)
+barres(data = t(matrix(gelbach_young_investments_support$shareExplained/100)), labels = gelbach_young_investments_support$n,legend = "% Age gap explained", rev = F)
+barres(data = t(matrix(gelbach_young_tax_transfers_support$shareExplained/100)), labels = gelbach_young_tax_transfers_support$n,legend = "% Age gap explained", rev = F)
+
+# College
+
+# share unexplained: .2; coef Partial: -.150 coef Full: -.026
+gelbach_college_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "college",
+                                                           controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)]), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                           indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: -.2; coef Partial: -0.053 coef Full: 0.009
+gelbach_college_standard_support <- gelbach_decomposition(var_to_decompose = "standard_support", group_of_interest = "college",
+                                                        controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                        indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: -2.33; coef Partial: -0.034 coef Full: 0.072
+gelbach_college_investments_support <- gelbach_decomposition(var_to_decompose = "investments_support", group_of_interest = "college",
+                                                           controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                           indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+# unexplained: 0.54; coef Partial: -.132; coef Full: -.071
+gelbach_college_tax_transfers_support <- gelbach_decomposition(var_to_decompose = "tax_transfers_support", group_of_interest = "college",
+                                                             controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                             indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+barres(data = t(matrix(gelbach_college_index_main_policies$shareExplained/100)), labels = gelbach_college_index_main_policies$n,legend = "% Diploma gap explained", rev = F)
+barres(data = t(matrix(gelbach_college_standard_support$shareExplained/100)), labels = gelbach_college_standard_support$n,legend = "% Diploma gap explained", rev = F)
+barres(data = t(matrix(gelbach_college_investments_support$shareExplained/100)), labels = gelbach_college_investments_support$n,legend = "% Diploma gap explained", rev = F)
+barres(data = t(matrix(gelbach_college_tax_transfers_support$shareExplained/100)), labels = gelbach_college_tax_transfers_support$n,legend = "% Diploma gap explained", rev = F)
+
+-#TODO replace right_pol with left_right >=1 and add left_right == 0 in the control
 # Creation of Graphs
 
 # Gelbach decomposition of the partisan gap in the policy view index for a ban on combustion_engine
