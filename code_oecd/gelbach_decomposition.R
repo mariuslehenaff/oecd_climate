@@ -56,7 +56,7 @@ gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls,
   stata_cmd[12] <- "do gelbach_stata.do"
   
   stata_cmd <- paste(stata_cmd, collapse = "\n")
-  # We input df, and obtain the data frame with the share explained by each indice
+  # We input df, and obtain the data frame with the share explained by each index
   final <- stata(stata_cmd, data.in = df, data.out = T)
   
   final[,1] <- indices_labels
