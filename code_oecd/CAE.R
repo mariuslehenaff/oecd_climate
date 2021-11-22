@@ -206,3 +206,8 @@ plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treat
 # plot_along(vars = c("policies_support", "index_main_policies", "index_all_policies"), along = "treatment", labels = c("Average support for main policies", "Index of support to main policies", "Index of support to all policies"), name = "support_indices_policies_by_treatment", covariates = setAt, df = fr)
 # TODO: order along like e$treatment, CC_anthropogenic CI, save width/height
 # TODO! origin in indices
+
+
+##### %% Sandbox %% #####
+summary(lm(as.formula("index_main_policies ~ ", paste(setAt, collapse = ' + '), data = fr, weights = fr$weight))
+        plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment", covariates = setAt, df = fr)
