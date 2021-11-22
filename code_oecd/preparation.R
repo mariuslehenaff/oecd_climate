@@ -2807,6 +2807,13 @@ setB <- c("urban", "(gas_expenses > 50)", "(heating_expenses > 500)", "polluting
 setCvars <- c("(CC_problem >= 1)", "(CC_anthropogenic >= 1)", "(CC_affects_self >= 1)", "(can_trust_govt >= 1)", "(problem_inequality >= 1)")
 setCindices <- c("index_concerned_about_CC", "index_worried", "index_knowledge", "index_positive_economy", "index_constrained", "index_policies_effective", "index_care_poverty", "index_affected_subjective", "index_willing_change", "(policies_self >= 1)", "(policies_fair >= 1)", "(policies_poor >= 1)", "(policies_rich >= 1)") # TODO? add index_common_policies, distribution_critical, attentive, ...?
 setC <- c(setCvars, setCindices) 
+setC_indices <- c("index_trust_govt", setC[c(6:14)], "index_lose_policies_subjective", "index_fairness", "index_lose_policies_poor", "index_lose_policies_rich")
+
+setC_indices_label <- c("Trusts the governement", "Is concerned about climate change", "Is worried about the future", "Has a good knowledge of climate change", "Climate policies have a positive effect \n on the economy",
+                        "Is financially constrained","Climate policies are effective", "Cares about poverty and inequalities", "Believes will suffer from climate change",
+                        "Is willing to adopt climate friendly behavior", "Will personally lose from main policies", "Main policies are fair",
+                        "Poor people will lose from main policies", "Rich people will lose from main policies")
+
 uncommon_questions <- c(variables_fine_support, variables_fine_prefer, variables_gas_spike, variables_policy_additional, variables_flight_quota, "investments_funding_global_transfer") # flight_quota: FR; investments_funding_global_transfer: poor_country=T (IA, ID, SA, UA)
 common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names))) # /!\ Beware, policy_order_climate_fund is considered a common policy but it was asked differently (contributor vs. receiver) depending on the country (contributor iff in poor_country)
 setD <- c(common_policies, "should_fight_CC") # also: variables_burden_share (not common to all countries), if_other_do_less/more
