@@ -61,12 +61,141 @@ plot_along(vars = c("policies_support"), along = "gas_expenses", labels = c("Ave
 ##### Explanatory ideas: Regressions #####
 
 
-##### Explanatory ideas: Variance decompositions #####
 
+##### Explanatory ideas: Variance decompositions #####
+# Specifications 
+controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "urban", "urbanity", "as.character(left_right)","treatment == \"Climate\"",
+                  "treatment == \"Policy\"", "treatment == \"Both\"","as.factor(country)")
+end_formula_treatment_socio_demographics <- paste(c(setA, setB), collapse = ') + (')
+end_formula_treatment_socio_demographics <- paste(c("(", end_formula_treatment_socio_demographics), collapse = "")
+end_formula_treatment_socio_demographics <- paste(c(end_formula_treatment_socio_demographics, ")"), collapse = "")
+end_formula_treatment_indices <- paste(c(setC_indices[-6]), collapse = ') + (')
+end_formula_treatment_indices <- paste(c("(", end_formula_treatment_indices), collapse = "")
+end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), collapse = "")
+# Alphabetical order of variables matters here
+controls_labels_lm <- c("Age", "Income", "Employment", "Gender", "Parenthood", "Wealth", "Education", "Origin/Ethnicity", "Right", "Center", "Left", "Urban", "Gas expenses", "Heating expenses", "Polluting sector",
+                        "Availability of Public Transport", "Car dependency", "Owner", "Flights")
+
+formulas <- models <- list()
+formulas[["Main policies Index - Socio-demographics"]] <- as.formula(paste("index_main_policies ~ ", paste(c(end_formula_treatment_socio_demographics), collapse = ' + ')))
+formulas[["Main policies Index - Indices"]] <- as.formula(paste("index_main_policies ~ ", paste(c(end_formula_treatment_indices), collapse = ' + ')))
+for (i in names(formulas)) models[[i]] <- lm(formulas[[i]], data = e, weights = e$weight)
+main_policies_socio_non_standardized <- calc.relimp(models[[1]], type = c("lmg"), rela = F, rank= F)
+main_policies_indices_non_standardized <- calc.relimp(models[[2]], type = c("lmg"), rela = F, rank= F)
+
+# Graphs
+lmg_main_policies_socio_non_standardized <- barres(data = t(as.matrix(main_policies_socio_non_standardized@lmg)), labels = controls_labels_lm,legend = "% of response variances", rev = F)
+lmg_main_policies_indices_non_standardized <- barres(data = t(as.matrix(main_policies_indices_non_standardized@lmg)), labels = setC_indices_label[-6],legend = "% of response variances", rev = F)
 
 ##### Explanatory ideas: Gelbach decompositions #####
+# /!\ This need to be changed if you're note using STATA SE 17 or a Mac
+if (Sys.info()[7] == "Bluebii") {
+  options("RStata.StataPath" = '/Applications/Stata/StataSE17.app/Contents/MacOS/stata-se')
+  options("RStata.StataVersion" = 17)  
+} else if (Sys.info()[7] == "Ana") {
+  options("RStata.StataPath" = 'C:/Program Files/Stata/StataSE17')
+  options("RStata.StataVersion" = 17)  
+}
 
 
+# var_to_decompose and group_of_interest: you need to input only one variable as a character
+# controls and indices, can be a character vector
+# Factor variables from control need to be in controls_factor
+gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, indices_labels, df=e, weight=T) {
+  # We restrict the df to the variables we'll use, since there can be some incompatibilities
+  # in using R dataframes in Stata
+  df <- df %>%
+    select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices))
+  
+  # Rename var because problem with Stata for variables with names too long
+  indices_short <- c()
+  for (i in seq_along(indices)){
+    indices_short[i] <- paste("index_", i, sep = "")
+  }
+  df <- df %>%
+    rename_with(~ indices_short[which(indices == .x)], .cols = indices)
+  df <- df %>%
+    rename("var_to_decompose" = var_to_decompose)
+  
+  
+  # First, we prepare the options for the analysis
+  option_b1x2 <- ""
+  for (i in seq_along(indices)){
+    option_b1x2 <- paste(option_b1x2,"g", i, " = ", indices_short[i], " : ", sep = "")
+  }
+  option_b1x2 <- substr(option_b1x2, 1, nchar(option_b1x2)-3)
+  nbr_indices <- length(indices)
+  
+  # We stock the different lines of codes for Stata into a vector
+  # Each element corresponds to a different line of code to run in Stata
+  # We will then collapse those commands altogether to run them w/ RStata
+  stata_cmd <- c()
+  stata_cmd[1] <- "
+  set more off
+  ssc install b1x2, replace"
+  stata_cmd[2] <- paste("global indices", paste('"', paste(indices_short, collapse = " "), '"', sep =""), sep = " ")
+  stata_cmd[3] <- paste("global controls", paste('"', paste(controls, collapse = " "), '"', sep = ""), sep = " ")
+  stata_cmd[4] <- paste("global controls_factor", paste('"', paste(controls_factor, collapse = " "), '"', sep = ""), sep = " ")
+  stata_cmd[5] <- paste("global option_b1x2", paste('"', option_b1x2, '"', sep = ""), sep = " ")
+  stata_cmd[6] <- paste("global nbr_indices", paste(nbr_indices), sep = " ")
+  stata_cmd[7] <- paste("global nbr_plus_one_indices", paste(nbr_indices+1), sep = " ")
+  stata_cmd[8] <- paste("global var_to_decompose", paste("var_to_decompose"), sep = " ")
+  stata_cmd[9] <- paste("local var_to_decompose", paste("var_to_decompose"), sep = " ")
+  stata_cmd[10] <- paste("global group_of_interest", paste(group_of_interest), sep = " ")
+  stata_cmd[11] <- paste("local group_of_interest", paste(group_of_interest), sep = " ")
+  stata_cmd[12] <- "do gelbach_stata.do"
+  
+  stata_cmd <- paste(stata_cmd, collapse = "\n")
+  # We input df, and obtain the data frame with the share explained by each indice
+  final <- stata(stata_cmd, data.in = df, data.out = T)
+  
+  final[,1] <- indices_labels
+  
+  return(final)
+}
+# Need to create dummies for Stata
+# Set A
+e$pol_right <- e$vote_agg >= 1
+e$pol_center <- e$vote_agg == 0
+e$pol_pnr <- e$vote_agg == -0.1
+e$pol_left <- e$vote_agg <= -1
+# Set B
+e$gas_expenses_dum <- e$gas_expenses > 50
+e$heating_expenses_dum <- e$heating_expenses > 500
+e$availability_transport_dum <- e$availability_transport >= 1
+e$flights_agg_dum <- e$flights_agg > 1
+
+setB_dum <- c(setB[1], "gas_expenses_dum", "heating_expenses_dum", setB[4], "availability_transport_dum", setB[c(6,7)], "flights_agg_dum")
+# Set C
+setC_indices <- c("index_trust_govt", setC[c(6:14)], "index_lose_policies_subjective", "index_fairness", "index_lose_policies_poor", "index_lose_policies_rich")
+
+setC_indices_label <- c("Trusts the governement", "Is concerned about climate change", "Is worried about the future", "Has a good knowledge of climate change", "Climate policies have a positive effect \n on the economy",
+                        "Is financially constrained","Climate policies are effective", "Cares about poverty and inequalities", "Believes will suffer from climate change",
+                        "Is willing to adopt climate friendly behavior", "Will personally lose from main policies", "Main policies are fair",
+                        "Poor people will lose from main policies", "Rich people will lose from main policies")
+
+## Prepare the Graphs
+# Vote
+# unexplained: 0.23; coef Partial: 0.26; coef Full: 0.06
+gelbach_vote_agg_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "pol_left",
+                                                              controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                              indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+barres(data = t(matrix(gelbach_vote_agg_index_main_policies$shareExplained/100)), labels = gelbach_vote_agg_index_main_policies$n,legend = "% Partisan gap explained", rev = F)
+
+# Age
+e$young <-e$age %in% c("18-24", "25-34")
+# share unexplained: 0; coef Partial: 0.0935 coef Full: 0.005
+gelbach_young_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "young",
+                                                           controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
+                                                           indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+barres(data = t(matrix(gelbach_young_index_main_policies$shareExplained/100)), labels = gelbach_young_index_main_policies$n,legend = "% Age gap explained", rev = F)
+
+# College
+# share unexplained: .2; coef Partial: -.150 coef Full: -.026
+gelbach_college_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "college",
+                                                             controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)]), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
+                                                             indices = setC_indices[-6], indices_labels = setC_indices_label[-6])
+barres(data = t(matrix(gelbach_college_index_main_policies$shareExplained/100)), labels = gelbach_college_index_main_policies$n,legend = "% Diploma gap explained", rev = F)
 ##### Explanatory ideas: treatments #####
 plot_along(vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), name = "policies_support_by_treatment", covariates = setAt, df = fr)
 # plot_along(vars = c("policies_support", "share_policies_supported", "CC_anthropogenic"), name = "support_knowledge_by_treatment", along = "treatment", labels = c("Average support for main policies", "Share of climate policies supported", "CC is anthropogenic"), covariates = setAt, df = fr) 
