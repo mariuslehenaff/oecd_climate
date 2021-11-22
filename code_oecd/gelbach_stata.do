@@ -10,7 +10,7 @@ foreach var in $controls_factor{
 }
 
 foreach var in $var_to_decompose{
-	reg ${var_to_decompose} $group_of_interest $controls
+	reg ${var_to_decompose} $group_of_interest $controls $controls_factor_vlist
 	local b_`group_of_interest'_part_`var_to_decompose': display %4.2f _b[${group_of_interest}]
 	local se_`group_of_interest'_`var_to_decompose': display %4.2f _se[${group_of_interest}]
 

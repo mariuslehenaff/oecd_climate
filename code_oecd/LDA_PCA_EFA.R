@@ -141,9 +141,9 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
   e$concat_response <- ""
   for (v in variables_lda) {
     if (is.numeric(e[[v]])){
-      e$concat_response <- case_when(e[[v]] == 2 ~ paste(e$concat_response, paste0(v, "__1")),
-                                     e[[v]] == -2 ~ paste(e$concat_response, paste0(v, "__-1")),
-                                     abs(e[[v]]) != 2 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
+      e$concat_response <- case_when(e[[v]] >= 1 ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] <= -1 ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     abs(e[[v]]) < 1 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
     } else {
       e$concat_response <- paste(e$concat_response, paste(v, gsub(" ", "_", gsub("[[:punct:]]", "", e[[v]])), sep="__"))
     }
@@ -213,14 +213,19 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
 
 ##### Treatment LDA ####  
 # variables_lda <- names(e)[72:272][!grepl("_field|^winner$|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[72:272])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
-variables_lda <- names(e)[45:272][!grepl("_field|^winner$|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[45:272])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+variables_lda_no_obstacle_footprint <- names(e)[38:285][!grepl("_field|^winner$|footprint|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+variables_lda <- names(e)[38:285][!grepl("_field|^winner$|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+
 
 variables_lda <- c(variables_lda, "wtp", "country")
 start <- Sys.time()
-lda_no_knowledge <- create_lda(variables_lda, data = e)
+lda <- create_lda(variables_lda, data = e, nb_topic = 2)
+lda_no_obstacle_footprint <- create_lda(variables_lda_no_obstacle_footprint, data = fr)
+
 (duration_lda <- Sys.time() - start) # 42min for all with optimization / 30 seconds without, all without weighted probas
 (terms <- terms(lda[[1]], 20)) # terms(lda_out, 20) lda_out <- lda[[1]]
 (lda_topics <- lda[[2]]) # lda_topics <- lda[[2]] lda_gamma <- lda[[3]]
+## TODO: if we don't select all the variables for the LDA, are they still in lda[[4]]?
 e <- lda[[4]]
 
 decrit("topic", data = e)
@@ -251,7 +256,7 @@ describe_profiles <- function(lda, nb_terms = 6) {
 }
 
 describe_profiles(lda, nb_terms = 6)
-write_clip(describe_profiles(lda, nb_terms = 6))
+write_clip(describe_profiles(lda_no_knowledge_no_obstacle, nb_terms = 10))
 
 
 # control_variables, etc. are defined in preparation.R
