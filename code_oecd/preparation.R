@@ -2720,6 +2720,8 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- ska <- prepare(country = "SK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
 # e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
 # alla <- Reduce(function(df1, df2) { rbind(df1, df2) }, lapply(countries, function(s) eval(parse(text = paste0(tolower(s), "a")))))
+# Alla <- list()
+# for (c in c(countries)) Alla[[c]] <- eval(parse(text = paste0(tolower(c), "a")))
 
 # current_countries <- c("DK", "US", "FR", "DE", "ID")
 # ongoing_countries <- c("IT", "PL", "JP", "SP", "AU", "SA", "CA", "UK", "IA", "TR", "BR", "MX", "CN", "SK", "UA")
@@ -2913,6 +2915,12 @@ save.image(".RData")
 # decrit(is.na(alla$excluded))
 # decrit(as.numeric(alla$duration))
 # sort(table(alla$progress))
-alla$valid <- as.numeric(alla$duration) > 686 & (alla$attention_test == "A little" | is.na(alla$attention_test)) & is.na(alla$excluded)
-mean(alla$finished[alla$valid == T] == "1")
-mean(alla$finished[is.na(alla$excluded)] == "1")
+# alla$valid <- as.numeric(alla$duration) > 686 & (alla$attention_test == "A little" | is.na(alla$attention_test)) & is.na(alla$excluded)
+# mean(alla$finished[alla$valid == T] == "1")
+# mean(alla$finished[is.na(alla$excluded)] == "1")
+# 
+# mean(alla$finished[alla$valid == T] != "1") # proportion of dropout
+# sapply(countries, function(c) print(paste(c, round(mean(Alla[[c]]$finished[as.numeric(Alla[[c]]$duration) > 686 & (Alla[[c]]$attention_test == "A little" | is.na(Alla[[c]]$attention_test)) & is.na(Alla[[c]]$excluded)] != "1"), 3))))
+# mean(!is.na(alla$excluded) & alla$excluded == "Screened") # proportion of screened out
+# sapply(countries, function(c) print(paste(c, round(mean(!is.na(Alla[[c]]$excluded) & Alla[[c]]$excluded == "Screened"), 3))))
+
