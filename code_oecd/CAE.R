@@ -81,7 +81,7 @@ plot_along(vars = c("policies_support"), along = "age", labels = c("Average supp
 plot_along(vars = c("policies_support"), along = "availability_transport", labels = c("Average support for main policies"), covariates = c(setAt, setB, "availability_transport"), df = fr)  # TODO!
 plot_along(vars = c("policies_support"), along = "vote_agg", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr) # TODO!
 plot_along(vars = c("policies_support"), along = "gas_expenses", labels = c("Average support for main policies"), covariates = c(setAt, setB, "gas_expenses"), df = fr) # TODO!
-# TODO: choose x-axis limits, reg in automatic name
+# TODO: choose x-axis limits, reg, cond in automatic name
 
 
 ##### Support among social groups: LDA #####
@@ -229,6 +229,8 @@ barres(data = t(matrix(gelbach_college_no_fairness_index_main_policies$shareExpl
 
 ##### Explanatory ideas: treatments #####
 plot_along(vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), name = "policies_support_by_treatment", covariates = setAt, df = fr)
+plot_along(vars = c("policies_support", variables_policies_support), along = "treatment", labels = c("The three main policies", labels_policies), name = "all_main_policies_support_by_treatment", covariates = setAt, df = fr)
+plot_along(vars = variables_policies_support, along = "treatment", labels = labels_policies, name = "main_policies_support_by_treatment", covariates = setAt, df = fr)
 # plot_along(vars = c("policies_support", "share_policies_supported", "CC_anthropogenic"), name = "support_knowledge_by_treatment", along = "treatment", labels = c("Average support for main policies", "Share of climate policies supported", "CC is anthropogenic"), covariates = setAt, df = fr) 
 # plot_along(vars = c("CC_anthropogenic"), along = "treatment", labels = c("CC is anthropogenic"), covariates = setAt, df = fr)
 plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", origin = 0, labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment_origin0", covariates = setAt, df = fr)
