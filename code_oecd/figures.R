@@ -943,4 +943,10 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # p.matc <- cor.mtest(knowledge_all)
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
-# TODO BP: LDA avec toutes variables
+# TODO BP: Variance/Gelbach: remove wealth, as.factor(vote); sample vs. pop tables, marital status; LDA: avec toutes variables, do something about multiple answers questions for the LDA, as well as variables that are not on a [-2;+2] scale; 
+#          create a function (within a new file e.g. country_appendix.R) that automatically create all the figures/tables we need for a country appendix (and then we'll call the function for all countries). 
+#          The idea is to add the plot_along, Gelbach, variances, regressions graphs to render_figures_tables_country. Perhaps the easiest is to create a new function for these new graphs. Then we'll call render_figures_tables_country + the new function to generate the graphs for the country-specific PDF.
+# TODO AF: no => college; robust standard errors; coach vs. train; (decimale 0% barres)
+# TODO ASC: use regressors_names; debug R; define variables in preparation; 
+#           Appendix: All questionnaires in original language (as noted above); More details on the sampling and survey company (including dates at which the surveys done in each country).; 
+#                     Sample characteristics country by country, as compared to national characteristics.; Full regression tables for the parts outlined above, so that the text can focus on nice figures.V
