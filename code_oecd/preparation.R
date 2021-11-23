@@ -2685,8 +2685,8 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- it <- prepare(country = "IT", duration_min = 686, zscores = T)# .83
 # e <- pl <- prepare(country = "PL", duration_min = 686, zscores = T)# .72
 # e <- jp <- prepare(country = "JP", duration_min = 686, zscores = T)# .70
-# e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .59
-# e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .41
+# e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .61
+# e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .43!
 # e <- sa <- prepare(country = "SA", duration_min = 686, zscores = T)# .77
 # e <- id <- prepare(country = "ID", duration_min = 686, zscores = T)# .99
 # e <- ca <- prepare(country = "CA", duration_min = 686, zscores = T)# .68 # TODO: pb check "cor(e$index_k": SK
@@ -2694,10 +2694,10 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- ia <- prepare(country = "IA", duration_min = 686, zscores = T)# .13
 # e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .18
 # e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .28
-# e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .31
+# e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .42!
 # e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .21
-# e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .41
-# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .22
+# e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .66
+# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .10
 # e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
 # e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
 # e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
