@@ -244,7 +244,7 @@ OECD/CAE \\
 \ip 2,006 respondents selected through quotas that  \textcolor{blue}{ensure representativeness} along: \\ \textcolor{magenta}{gender, age, income, region, diploma, urban/rural}.
 \ip \textcolor{blue}{All results are re-weighted} along quota variables (except rural/urban) to increase representativeness even further.
 \ip \textcolor{blue}{Screening question} in the middle of the survey. 
-\ip Appeal to people's social responsibility. 
+\ip Appeal to people's social responsibility by insisting they should answer carefully and honestly, for the sake of science. 
 \ip Warn that ``incoherent and \textcolor{blue}{rushed responses'' (< 11 min) are dismissed} and disqualified for monetary compensation.
 \ip Record time spent on separate questions \& overall survey (median: 27 min).
 \ip Ask for feedback post survey, whether felt survey was biased (\textcolor{magenta}{78\% find it unbiased}).
@@ -416,10 +416,13 @@ OECD/CAE \\
 
 
 
-\begin{frame}{Who has better knowledge? -- Demographics}
+\begin{frame}{Who has better knowledge?% -- Demographics
+	}
 
-\begin{figure}
-	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_A_FR.png}
+\begin{figure}	
+	\includegraphics[width=.88\paperwidth]{../figures/FR/Coefplot_SetAB_index_knowledge.png}
+%	\includegraphics[width=.88\paperwidth]{../figures/FR/Coefplot_SetA_PlotA_index_knowledge.png}
+	%\includegraphics[width=.88\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_A_FR.png}
 \end{figure}
 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
 % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
@@ -427,16 +430,16 @@ OECD/CAE \\
 % Who knows more? Where is key info lacking (that policy makers should fix).  
 \end{frame}
 
-\begin{frame}{Who has better knowledge? -- Energy characteristics}
+% \begin{frame}{Who has better knowledge? -- Energy characteristics}
 
-\begin{figure}
-	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_AB_FR.png}
-\end{figure}
-	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
-% TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
-% Policy message of this section 
-% Who knows more? Where is key info lacking (that policy makers should fix).  
-\end{frame}
+% \begin{figure}
+% 	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_anthropogenic_knowledge_AB_FR.png}
+% \end{figure}
+% 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
+% % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
+% % Policy message of this section 
+% % Who knows more? Where is key info lacking (that policy makers should fix).  
+% \end{frame}
 
 \section{Which respondents support policies to fight climate change?}% Who supportes climate policies % Support for climate policies
 
@@ -472,7 +475,8 @@ OECD/CAE \\
 \begin{frame}{How support varies by socio-demographics}
 
 \begin{figure}
-	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_support_policies_A_FR.png}
+	\includegraphics[width=.88\paperwidth]{../figures/FR/Coefplot_SetAB_index_main_policies.png}
+	%\includegraphics[width=.88\paperwidth]{../figures/FR/reg_support_policies_A_FR.png}
 \end{figure}
 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
 % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
@@ -480,16 +484,16 @@ OECD/CAE \\
 % Who knows more? Where is key info lacking (that policy makers should fix).  
 \end{frame}
 
-\begin{frame}{How support varies by energy characteristics}
+% \begin{frame}{How support varies by energy characteristics}
 
-\begin{figure}
-	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_support_policies_AB_FR.png}
-\end{figure}
-	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
-% TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
-% Policy message of this section 
-% Who knows more? Where is key info lacking (that policy makers should fix).  
-\end{frame}
+% \begin{figure}
+% 	\includegraphics[width=.88\paperwidth]{../figures/FR/reg_support_policies_AB_FR.png}
+% \end{figure}
+% 	% One section on “Who has better knowledge?” Just a regression of some summary measure of knowledge on individual characteristics. 
+% % TODO! CC_anthropogenic / index_knowledge ~ setA (+B) AnaSC
+% % Policy message of this section 
+% % Who knows more? Where is key info lacking (that policy makers should fix).  
+% \end{frame}
 
 	% Regress Outcomes on set A and set B. Identify main patterns. 
 % In Appendix: Full regression tables. 
@@ -607,7 +611,9 @@ OECD/CAE \\
 	% TODO!: variance_decomp with fairness in the regressors
 \end{frame}
 
-\begin{frame}{Incidence: Carbon tax with cash transfers}%\addtocounter{framenumber}{-1}
+\begin{frame}{Carbon tax with cash transfers viewed as regressive
+	%Incidence: Carbon tax with cash transfers
+	}%\addtocounter{framenumber}{-1}
 	\begin{figure}[h!]
 	\centering
 	\caption{In your view, would the following groups win or lose under a carbon tax with cash transfers?}
@@ -616,7 +622,9 @@ OECD/CAE \\
 	\end{figure}
 \end{frame}
 
-\begin{frame}{Incidence: Green infrastructure program}%\addtocounter{framenumber}{-1}
+\begin{frame}{Green infrastructure program viewed as regressive
+	%Incidence: Green infrastructure program
+	}%\addtocounter{framenumber}{-1}
 	\begin{figure}[h!]
 	\centering
 	\caption{In your view, would the following groups win or lose with a green infrastructure program?}
@@ -675,7 +683,7 @@ OECD/CAE \\
 	% C. Provide description of Treatments with screen shots. 
 % Regress Outcomes on treatment indicators + set A. 
 \begin{figure}
-	\caption{Treatment effects in regressions of support indices on the set (A) of socio-demographics.}
+	\caption{Treatment effects (of watching informational videos) in regressions of \\support indices on the set (A) of socio-demographics.}
 	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_treatment.png}
 	%\caption{How important are the factors below in order for you to adopt a sustainable lifestyle (i.e. limit driving, flying, and consumption, cycle more, etc.)?}
 	\includegraphics[width=.7\textwidth]{../figures/FR/indices_policies_by_treatment_origin0.png}
