@@ -1,31 +1,32 @@
 \babel@toc {english}{}
-\beamer@sectionintoc {1}{Questionnaire (for France)}{9}{0}{1}
-\beamer@sectionintoc {2}{Sample quality -- France}{21}{0}{2}
-\beamer@sectionintoc {3}{Knowledge}{24}{0}{3}
-\beamer@subsectionintoc {3}{1}{What are people relatively well aware of?}{26}{0}{3}
-\beamer@subsectionintoc {3}{2}{What do people misperceive?}{31}{0}{3}
-\beamer@sectionintoc {4}{Who supports what?}{38}{0}{4}
-\beamer@sectionintoc {5}{What ideas can explain support for climate policies?}{47}{0}{5}
-\beamer@sectionintoc {6}{Conclusion}{56}{0}{6}
-\beamer@sectionintoc {7}{Appendix}{58}{1}{7}
-\beamer@sectionintoc {8}{Descriptive statistics \\ \hskip 1em\relax \\ on the control group}{59}{1}{8}
-\beamer@subsectionintoc {8}{1}{Households characteristics}{60}{1}{8}
-\beamer@subsectionintoc {8}{2}{Climate Knowledge}{64}{1}{8}
-\beamer@subsectionintoc {8}{3}{Climate Attitudes}{72}{1}{8}
-\beamer@subsectionintoc {8}{4}{Comparison across the 3 Policies:}{80}{1}{8}
-\beamer@subsectionintoc {8}{5}{Other Climate Policies}{92}{1}{8}
-\beamer@subsectionintoc {8}{6}{International Burden-Sharing}{97}{1}{8}
-\beamer@subsectionintoc {8}{7}{Housing/Preferences for Bans vs. Incentives}{102}{1}{8}
-\beamer@subsectionintoc {8}{8}{Heterogeneity Analysis}{108}{1}{8}
-\beamer@subsubsectionintoc {8}{8}{1}{By positive answers}{109}{1}{8}
-\beamer@subsectionintoc {8}{9}{Treatment Effects}{121}{1}{8}
-\beamer@subsectionintoc {8}{10}{Socio-Demographics}{125}{1}{8}
-\beamer@subsectionintoc {8}{11}{Household Composition and Energy Characteristics}{132}{1}{8}
-\beamer@subsectionintoc {8}{12}{Essay}{135}{1}{8}
-\beamer@subsectionintoc {8}{13}{Treatments}{138}{1}{8}
-\beamer@subsectionintoc {8}{14}{Policy 1: A ban on combustion-engine Cars}{140}{1}{8}
-\beamer@subsectionintoc {8}{15}{Policy 2: Green Infrastructure Program}{146}{1}{8}
-\beamer@subsectionintoc {8}{16}{Policy 3: Carbon Tax with Cash Transfers}{152}{1}{8}
-\beamer@subsectionintoc {8}{17}{Willingness to Pay}{157}{1}{8}
-\beamer@subsectionintoc {8}{18}{Trust and institutions}{160}{1}{8}
-\beamer@subsectionintoc {8}{19}{Feedback}{163}{1}{8}
+\beamer@sectionintoc {1}{Questionnaire (for France)}{4}{0}{1}
+\beamer@sectionintoc {2}{Sample quality -- France}{16}{0}{2}
+\beamer@sectionintoc {3}{Knowledge}{19}{0}{3}
+\beamer@subsectionintoc {3}{1}{What are people relatively well aware of?}{21}{0}{3}
+\beamer@subsectionintoc {3}{2}{What do people misperceive?}{26}{0}{3}
+\beamer@sectionintoc {4}{Which respondents support policies to fight climate change?}{31}{0}{4}
+\beamer@sectionintoc {5}{What ideas can explain support for climate policies?}{39}{0}{5}
+\beamer@sectionintoc {6}{Conclusion}{49}{0}{6}
+\beamer@sectionintoc {7}{Appendix}{51}{1}{7}
+\beamer@sectionintoc {8}{Descriptive statistics \\ \hskip 1em\relax \\ on the control group}{52}{1}{8}
+\beamer@subsectionintoc {8}{1}{Households characteristics}{53}{1}{8}
+\beamer@subsectionintoc {8}{2}{Climate Knowledge}{57}{1}{8}
+\beamer@subsectionintoc {8}{3}{Climate Attitudes}{65}{1}{8}
+\beamer@subsectionintoc {8}{4}{Comparison across the 3 Policies:}{73}{1}{8}
+\beamer@subsectionintoc {8}{5}{Other Climate Policies}{85}{1}{8}
+\beamer@subsectionintoc {8}{6}{International Burden-Sharing}{90}{1}{8}
+\beamer@subsectionintoc {8}{7}{Housing/Preferences for Bans vs. Incentives}{95}{1}{8}
+\beamer@subsectionintoc {8}{8}{Heterogeneity Analysis}{101}{1}{8}
+\beamer@subsubsectionintoc {8}{8}{1}{By positive answers}{102}{1}{8}
+\beamer@subsectionintoc {8}{9}{Treatment Effects}{114}{1}{8}
+\beamer@subsectionintoc {8}{10}{Socio-Demographics}{118}{1}{8}
+\beamer@subsectionintoc {8}{11}{Household Composition and Energy Characteristics}{125}{1}{8}
+\beamer@subsectionintoc {8}{12}{Essay}{128}{1}{8}
+\beamer@subsectionintoc {8}{13}{Treatments}{131}{1}{8}
+\beamer@subsectionintoc {8}{14}{Policy 1: A ban on combustion-engine Cars}{133}{1}{8}
+\beamer@subsectionintoc {8}{15}{Policy 2: Green Infrastructure Program}{139}{1}{8}
+\beamer@subsectionintoc {8}{16}{Policy 3: Carbon Tax with Cash Transfers}{145}{1}{8}
+\beamer@subsectionintoc {8}{17}{Willingness to Pay}{150}{1}{8}
+\beamer@subsectionintoc {8}{18}{Trust and institutions}{153}{1}{8}
+\beamer@subsectionintoc {8}{19}{Feedback}{156}{1}{8}
+\beamer@subsectionintoc {8}{20}{Variable Definitions}{158}{1}{8}
