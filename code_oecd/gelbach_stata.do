@@ -16,17 +16,17 @@ foreach var in $controls_factor{
 foreach var in $var_to_decompose{
 
 	// Obtain coefficient+SE from Partial regression
-	reg ${var_to_decompose} $group_of_interest $controls $controls_factor_vlist
+	reg ${var_to_decompose} $group_of_interest $controls $controls_factor_vlist $local_weight
 	local b_`group_of_interest'_part_`var_to_decompose': display %4.2f _b[${group_of_interest}]
 	local se_`group_of_interest'_`var_to_decompose': display %4.2f _se[${group_of_interest}]
 
 	// Obtain coefficient+SE from Full regression
-	reg ${var_to_decompose} $group_of_interest $controls $controls_factor_vlist $indices
+	reg ${var_to_decompose} $group_of_interest $controls $controls_factor_vlist $indices $local_weight
 	local b_`group_of_interest'_full_`var_to_decompose': display %4.2f _b[${group_of_interest}]
 	local se_`group_of_interest'_full_`var_to_decompose': display %4.2f _se[${group_of_interest}]
 
 	// Run Gelbach decomposition
-	b1x2 ${var_to_decompose}, x1all($group_of_interest ${controls} ${controls_factor_vlist}) x2all(${indices}) x1only(${group_of_interest}) x2delta(${option_b1x2})
+	b1x2 ${var_to_decompose} $local_weight, x1all($group_of_interest ${controls} ${controls_factor_vlist}) x2all(${indices}) x1only(${group_of_interest}) x2delta(${option_b1x2})
 
 	// Save the coefficient+SE for each index from the Delta matrix
 	forvalues i=1/$nbr_plus_one_indices{
