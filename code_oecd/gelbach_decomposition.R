@@ -11,11 +11,11 @@ if (Sys.info()[7] == "Bluebii") {
 # var_to_decompose and group_of_interest: you need to input only one variable as a character
 # controls and indices, can be a character vector
 # Factor variables from control need to be in controls_factor
-gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, indices_labels, df=e, weight=T) {
+gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, indices_labels, df=e, weights = "weight") {
   # We restrict the df to the variables we'll use, since there can be some incompatibilities
   # in using R dataframes in Stata
   df <- df %>%
-    select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices))
+    select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices, weights))
   
   # Rename var because problem with Stata for variables with names too long
   indices_short <- c()
@@ -53,10 +53,11 @@ gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls,
   stata_cmd[9] <- paste("local var_to_decompose", paste("var_to_decompose"), sep = " ")
   stata_cmd[10] <- paste("global group_of_interest", paste(group_of_interest), sep = " ")
   stata_cmd[11] <- paste("local group_of_interest", paste(group_of_interest), sep = " ")
-  stata_cmd[12] <- "do gelbach_stata.do"
+  stata_cmd[12] <- paste("global local_weight [aw=", paste(weights), paste("]"), sep = "")
+  stata_cmd[13] <- "do gelbach_stata.do"
   
   stata_cmd <- paste(stata_cmd, collapse = "\n")
-  # We input df, and obtain the data frame with the share explained by each index
+  # We input df, and obtain the data frame with the share explained by each indice
   final <- stata(stata_cmd, data.in = df, data.out = T)
   
   final[,1] <- indices_labels

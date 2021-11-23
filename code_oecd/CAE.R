@@ -104,6 +104,9 @@ end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), co
 # Alphabetical order of variables matters here
 controls_labels_lm <- c("Age", "Income", "Wealth", "Employment", "Gender", "Parenthood", "Education", "Origin/Ethnicity", "Right", "Center", "Left", "Urban", "Gas expenses", "Heating expenses", "Polluting sector",
                         "Availability of Public Transport", "Car dependency", "Owner", "Flights")
+controls_labels_lm_signs <- c("Age (-)", "Income (-)", "Wealth (+)", "Employment (+)", "Gender (+)", "Parenthood (+)", "No Education (-)", "Origin/Ethnicity (-)", "Right (-)", "Center (-)", "Others or PNR (-)", "Urban (+)", "Gas expenses (-)", "Heating expenses (+)", "Polluting sector (+)",
+                              "Availability of Public Transport (+)" , "Car dependency (-)", "Owner (-)", "Flights (+)")
+setC_indices_label_signs <- paste(setC_indices_label, c(rep("(+)", 5), "NA", rep("(+)", 3), "NA", "(-)", "NA", "(-)", "(+)"), sep = " ")
 
 formulas <- models <- list()
 formulas[["Main policies Index - Socio-demographics"]] <- as.formula(paste("index_main_policies ~ ", paste(c(end_formula_treatment_socio_demographics), collapse = ' + ')))
@@ -113,8 +116,8 @@ main_policies_socio_non_standardized <- calc.relimp(models[[1]], type = c("lmg")
 main_policies_indices_non_standardized <- calc.relimp(models[[2]], type = c("lmg"), rela = F, rank= F)
 
 # Graphs
-lmg_main_policies_socio_non_standardized <- barres(data = t(as.matrix(main_policies_socio_non_standardized@lmg)), labels = controls_labels_lm,legend = "% of response variances", rev = F)
-lmg_main_policies_indices_non_standardized <- barres(data = t(as.matrix(main_policies_indices_non_standardized@lmg)), labels = setC_indices_label[c(-6,-10,-12)],legend = "% of response variances", rev = F)
+lmg_main_policies_socio_non_standardized <- barres(data = t(as.matrix(main_policies_socio_non_standardized@lmg)), labels = controls_labels_lm_signs,legend = "% of response variances", rev = F)
+lmg_main_policies_indices_non_standardized <- barres(data = t(as.matrix(main_policies_indices_non_standardized@lmg)), labels = setC_indices_label_signs[c(-6,-10,-12)],legend = "% of response variances", rev = F)
 
 ##### Explanatory ideas: Gelbach decompositions #####
 # /!\ This need to be changed if you're note using STATA SE 17 or a Mac
@@ -130,11 +133,11 @@ if (Sys.info()[7] == "Bluebii") {
 # var_to_decompose and group_of_interest: you need to input only one variable as a character
 # controls and indices, can be a character vector
 # Factor variables from control need to be in controls_factor
-gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, indices_labels, df=e, weight=T) {
+gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, indices_labels, df=e, weights = "weight") {
   # We restrict the df to the variables we'll use, since there can be some incompatibilities
   # in using R dataframes in Stata
   df <- df %>%
-    select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices))
+    select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices, weights))
   
   # Rename var because problem with Stata for variables with names too long
   indices_short <- c()
@@ -172,7 +175,8 @@ gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls,
   stata_cmd[9] <- paste("local var_to_decompose", paste("var_to_decompose"), sep = " ")
   stata_cmd[10] <- paste("global group_of_interest", paste(group_of_interest), sep = " ")
   stata_cmd[11] <- paste("local group_of_interest", paste(group_of_interest), sep = " ")
-  stata_cmd[12] <- "do gelbach_stata.do"
+  stata_cmd[12] <- paste("global local_weight [aw=", paste(weights), paste("]"), sep = "")
+  stata_cmd[13] <- "do gelbach_stata.do"
   
   stata_cmd <- paste(stata_cmd, collapse = "\n")
   # We input df, and obtain the data frame with the share explained by each indice
@@ -205,7 +209,7 @@ setC_indices_label <- c("Trusts the governement", "Is concerned about climate ch
 
 ## Prepare the Graphs
 # Vote
-# unexplained: .423; coef Partial:0.257 ; coef Full: 0.110
+# unexplained: .435; coef Partial:0.235 ; coef Full: 0.103
 gelbach_vote_agg_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "pol_left",
                                                               controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
                                                               indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
@@ -214,14 +218,14 @@ barres(data = t(matrix(gelbach_vote_agg_no_fairness_index_main_policies$shareExp
 
 # Age
 e$young <-e$age %in% c("18-24", "25-34")
-# share unexplained: 0; coef Partial: .094 coef Full: .001
+# share unexplained: 0.125; coef Partial: .165 coef Full: .023
 gelbach_young_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "young",
                                                            controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
                                                            indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
 barres(data = t(matrix(gelbach_young_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_young_no_fairness_index_main_policies$n,legend = "% Age gap explained", rev = F)
 
 # College
-# share unexplained: .33; coef Partial: -.150 coef Full: -.050
+# share unexplained: 0; coef Partial: -.111 coef Full: -.003
 gelbach_college_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "college",
                                                              controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)]), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
                                                              indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
