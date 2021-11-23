@@ -228,12 +228,12 @@ gelbach_college_no_fairness_index_main_policies <- gelbach_decomposition(var_to_
 barres(data = t(matrix(gelbach_college_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_college_no_fairness_index_main_policies$n,legend = "% Diploma gap explained", rev = F)
 
 ##### Explanatory ideas: treatments #####
-plot_along(vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), name = "policies_support_by_treatment", covariates = setAt, df = fr)
+plot_along(vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), plot_origin_line = T, name = "policies_support_by_treatment", covariates = setAt, df = fr)
 plot_along(vars = c("policies_support", variables_policies_support), along = "treatment", labels = c("The three main policies", labels_policies), name = "all_main_policies_support_by_treatment", covariates = setAt, df = fr)
 plot_along(vars = variables_policies_support, along = "treatment", labels = labels_policies, name = "main_policies_support_by_treatment", covariates = setAt, df = fr)
 # plot_along(vars = c("policies_support", "share_policies_supported", "CC_anthropogenic"), name = "support_knowledge_by_treatment", along = "treatment", labels = c("Average support for main policies", "Share of climate policies supported", "CC is anthropogenic"), covariates = setAt, df = fr) 
 # plot_along(vars = c("CC_anthropogenic"), along = "treatment", labels = c("CC is anthropogenic"), covariates = setAt, df = fr)
-plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", origin = 0, labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment_origin0", covariates = setAt, df = fr)
+plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", origin = 0, labels = c("Index of support to main policies", "Index of support to all policies"), plot_origin_line = T, name = "indices_policies_by_treatment_origin0", covariates = setAt, df = fr)
 # plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment", covariates = setAt, df = fr)
 # plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", origin = "control_mean", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment_originControl", covariates = setAt, df = fr)
 # plot_along(vars = c("policies_support", "index_main_policies", "index_all_policies"), along = "treatment", labels = c("Average support for main policies", "Index of support to main policies", "Index of support to all policies"), name = "support_indices_policies_by_treatment", covariates = setAt, df = fr)
@@ -244,3 +244,6 @@ plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treat
 ##### %% Sandbox %% #####
 summary(lm(as.formula("index_main_policies ~ ", paste(setAt, collapse = ' + ')), data = fr, weights = fr$weight))
 plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment", covariates = setAt, df = fr)
+
+# plot_along(plot_origin_line = T, vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), name = "temp", covariates = setAt, df = fr, save = F)
+# plot_along(plot_origin_line = T, vars = variables_policies_support, along = "treatment", labels = labels_policies, name = "temp", covariates = setAt, df = fr, save = F)
