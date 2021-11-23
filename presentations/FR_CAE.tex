@@ -393,23 +393,25 @@ OECD/CAE \\
 
 \begin{frame}{Who has better knowledge? -- Definition}
  \begin{center}
-     {\scriptsize \textcolor{blue}{Index knowledge:} average of following variables transformed in z-scores:}
+     {\textcolor{blue}{Index knowledge:} average of following variables transformed in z-scores:}
 \begin{multicols}{2}
 \begin{itemize}
-	\ip {\tiny \textit{Score footprint transport:} respondent's Kendall distance with true ranking on knowledge questions about transport emissions.}
-	\ip  {\tiny  \textit{Score footprint electricty:} respondent's Kendall distance with true ranking on knowledge questions about electricty production emissions.}
-	\ip  {\tiny \textit{Score footprint food:} respondent's Kendall distance with true ranking on knowledge questions about food emissions.}
-	\ip {\tiny  \textit{Score footprint countries per capita:} respondent's Kendall distance with true ranking on knowledge questions about countries' emissions per capita.}
-	\ip  {\tiny \textit{Score footprint countries total:} respondent's Kendall distance with true ranking on knowledge questions about total countries' emissions.}
-	\ip  {\tiny \textit{Heating expenses:} respondent's yearly heating or cooling expenses.}
-	\ip  {\tiny \textit{Climate change real:} respondent indicates that climate change is real.}
-	\ip  {\tiny \textit{Dynamic of Climate change:} respondent indicates that halving global emissions would not be sufficient to stop temperatures from rising.}
-	\ip  {\tiny \textit{Climate change anthropogenic:} respondent indicates that ``a lot'' or ``most'' of climate change is due to human activity.}
-	\ip {\tiny \textit{Score impacts of climate change:} respondent's number of good responses on questions related to the impacts of climate change. Where we add 1 if the respondent indicates that it is ``somewhat likely'' or ``very likely'' that climate change will lead to severe droughts and heatwaves, and 1 if the respondent indicates that it is ``somewhat likely'' or ``very likely'' that it will lead to rising sea levels, and 1 if the respondent indicates that it is  ``somewhat unlikely'' that climate change will lead to more frequent volcanic eruptions, and 2 if the respondent indicates that it is  ``very unlikely'' that climate change will lead to more frequent volcanic eruptions.).}
-	\ip {\tiny \textit{Score greenhouse gases:} respondent's number of good responses minus wrong responses scaled up on [0,4] regarding whether CO$_\text{2}$, methane, hydrogen and particulate matter are greenhouse gases.}
+	\item {\scriptsize \textit{Score footprint transport}}
+	\item  {\scriptsize  \textit{Score footprint electricty}}
+	\item  {\scriptsize \textit{Score footprint food}}
+	\item {\scriptsize  \textit{Score footprint countries per capita}}
+	\item  {\scriptsize \textit{Score footprint countries total}}
+	\item  {\scriptsize \textit{Heating expenses}}
+	\item  {\scriptsize \textit{Climate change real}}
+	\item  {\scriptsize \textit{Dynamic of Climate change}}
+	\item  {\scriptsize \textit{Climate change anthropogenic}}
+	\item {\scriptsize \textit{Score impacts of climate change}}
+	\item {\scriptsize \textit{Score greenhouse gases}}
 \end{itemize}
 \end{multicols}
+\vspace{1.5cm}
  \end{center}
+{\scriptsize \textit{See Appendix for the definition of variables}}
 \end{frame}
 
 
@@ -459,17 +461,10 @@ OECD/CAE \\
 \begin{frame}{How support varies -- Definitions}
 
 \bbs
-\ip \textcolor{blue}{Average Support} 
-\bbs 
-\ip Average of responses in [-2;+2] to questions on support for a ban on combustion-engine cars, a green infrastructure program, and a carbon tax with cash transfers
-\ee
-\ip \textcolor{blue}{Inde all policies} % factual, but also about magnitude and importance of 
-\bbs 
-\ip Average of all support variables transformed in z-scores
-\ee
 \ip \textcolor{blue}{Index main policies}
 \bbs
 \ip Average of support variables for main policies ( ban on combustion-engine cars, a green infrastructure program, and a carbon tax with cash transfers) transformed in z-scores
+%\ip  Variables are transformed into z-scores by subtracting the control group mean and dividing by the control group standard deviation, so that each z-score has mean 0 and standard deviation 1 for the control group. To further ease interpretation, the resulting index is itself standardized by subtracting the mean in the control group and dividing by the standard deviation, so that each index has mean zero and standard deviation one.
 \ee
 \ee
 \end{frame}
@@ -558,8 +553,9 @@ OECD/CAE \\
 \ip \textcolor{blue}{Worried about the effects of climate change; think that France should fight CC.} \textit{(17.1\% of the sample)}
 	\begin{itemize}
 		\item Climate change is real and will have negative impacts (droughts, rising sea levels, drop in standards of living, migration, wars, lower agricultural production)
-		\item France should take measure to fight climate change, and countries should pay in proportion to their current emissions
-		\item An increase in taxes on the wealthiest is appropriate to fund public investments in green infrastructures
+		\item Pessimistic about the chances to halt climate change and the future of society as a whole
+		\item Low trust in the government and others.
+		\item Support climate policies to a limited extent
 	\end{itemize}
 \end{itemize}
 \end{frame}
@@ -573,12 +569,12 @@ OECD/CAE \\
 		\item A carbon tax with dividends would harm: their own household, the middle class, and people living in rural areas
 		\item A ban on combustion engine cars would harm: the middle class and people living in rural areas
 	\end{itemize}
-\ip \textcolor{blue}{Support most of the climate policies and believe in their effectiveness. Willing to make some changes} \textit{(33.5\% of the sample)}
+\ip \textcolor{blue}{Strong support for climate policies and believe in their effectiveness. Willing to make some changes} \textit{(33.5\% of the sample)}
 	\begin{itemize}
-		\item Support: a green investment program (+ is fair); a ban on combustion-engine where alternatives are made available; a ban of polluting vehicles in dense areas
+		\item Lot of support for climate policies (including a carbon tax with dividends)
 		\item Efficiency: a carbon tax with dividends ($\downarrow$ drive); ban on combustion engine cars ($\downarrow$ CO$_\text{2}$ emissions from cars); green infrastructure program ($\uparrow$ green electricity production)
-		\item Is willing to have an eletric vehicle and need ambitious policies to adopt a sustainable lifestyle
-		\item France should do more if other countries do less
+		\item Believe climate change will have strong consequences, but optimistic about the future
+		\item Higher trust in the government and other than other profiles. Believe France should do more if other countries do less
 	\end{itemize}
 \end{itemize}
 \end{frame}
@@ -1998,6 +1994,27 @@ Which come closer to your own view? }
 \end{figure}
 \end{frame}
 
+\subsection{Variable Definitions}
+\begin{frame}{Knowledge Index}%\addtocounter{framenumber}{-1}
+ \begin{center}
+     {\scriptsize \textcolor{blue}{Index knowledge:} average of following variables transformed in z-scores:}
+\begin{multicols}{2}
+\begin{itemize}
+	\ip {\tiny \textit{Score footprint transport:} respondent's Kendall distance with true ranking on knowledge questions about transport emissions.}
+	\ip  {\tiny  \textit{Score footprint electricty:} respondent's Kendall distance with true ranking on knowledge questions about electricty production emissions.}
+	\ip  {\tiny \textit{Score footprint food:} respondent's Kendall distance with true ranking on knowledge questions about food emissions.}
+	\ip {\tiny  \textit{Score footprint countries per capita:} respondent's Kendall distance with true ranking on knowledge questions about countries' emissions per capita.}
+	\ip  {\tiny \textit{Score footprint countries total:} respondent's Kendall distance with true ranking on knowledge questions about total countries' emissions.}
+	\ip  {\tiny \textit{Heating expenses:} respondent's yearly heating or cooling expenses.}
+	\ip  {\tiny \textit{Climate change real:} respondent indicates that climate change is real.}
+	\ip  {\tiny \textit{Dynamic of Climate change:} respondent indicates that halving global emissions would not be sufficient to stop temperatures from rising.}
+	\ip  {\tiny \textit{Climate change anthropogenic:} respondent indicates that ``a lot'' or ``most'' of climate change is due to human activity.}
+	\ip {\tiny \textit{Score impacts of climate change:} respondent's number of good responses on questions related to the impacts of climate change. Where we add 1 if the respondent indicates that it is ``somewhat likely'' or ``very likely'' that climate change will lead to severe droughts and heatwaves, and 1 if the respondent indicates that it is ``somewhat likely'' or ``very likely'' that it will lead to rising sea levels, and 1 if the respondent indicates that it is  ``somewhat unlikely'' that climate change will lead to more frequent volcanic eruptions, and 2 if the respondent indicates that it is  ``very unlikely'' that climate change will lead to more frequent volcanic eruptions.).}
+	\ip {\tiny \textit{Score greenhouse gases:} respondent's number of good responses minus wrong responses scaled up on [0,4] regarding whether CO$_\text{2}$, methane, hydrogen and particulate matter are greenhouse gases.}
+\end{itemize}
+\end{multicols}
+ \end{center}
+\end{frame}
 
 \end{framefont}
 
