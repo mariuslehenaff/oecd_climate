@@ -44,7 +44,7 @@ package("survey")
 Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "/home/adrien/anaconda3/bin", sep = .Platform$path.sep))
 Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/afabre/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
 Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/ProgramData/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep))
-package("plotly")
+package("plotly") # If bug, it's because orca or kaleido should be installed on Python
 package('gdata')
 package("Hmisc")
 package("quantreg")
