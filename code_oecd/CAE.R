@@ -244,7 +244,8 @@ plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treat
 # TODO: order along like e$treatment, CC_anthropogenic CI, save width/height
 # TODO! origin in indices
 
-
+# TODO! I suggest at least showing treatment effects on the policies separately. 
+# TODO! Was there any effect of the treatment on willingness to make changes? —> could show those outcomes. (In which case also add a slide showing the heatmap across countries of “willingness to make changes to own behavior”)
 ##### %% Sandbox %% #####
 summary(lm(as.formula("index_main_policies ~ ", paste(setAt, collapse = ' + ')), data = fr, weights = fr$weight))
 plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment", covariates = setAt, df = fr)
