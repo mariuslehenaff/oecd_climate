@@ -140,14 +140,20 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
   # if nb_topic = NULL, the number of topics is optimized
   e$concat_response <- ""
   for (v in variables_lda) {
-    if (is.numeric(e[[v]])){
+    if (is.numeric(e[[v]]) & !grepl("^investments_funding", v)){
       e$concat_response <- case_when(e[[v]] >= 1 ~ paste(e$concat_response, paste0(v, "__1")),
                                      e[[v]] <= -1 ~ paste(e$concat_response, paste0(v, "__-1")),
                                      abs(e[[v]]) < 1 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
-    } else {
+    } else !grepl("^investments_funding", v){
       e$concat_response <- paste(e$concat_response, paste(v, gsub(" ", "_", gsub("[[:punct:]]", "", e[[v]])), sep="__"))
+      
     }
   }
+  names(e)[38:285][grepl("^investments_funding", names(e)[38:285])]
+  e$concat_response <- case_when(e[[v]] >= 1 ~ paste(e$concat_response, paste0(v, "__1")),
+                                 e[[v]] <= -1 ~ paste(e$concat_response, paste0(v, "__-1")),
+                                 abs(e[[v]]) < 1 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
+  
   e$concat_response <- tolower(e$concat_response)
   
   # e$WC_lda_var <- lengths(strsplit(e$concat_response, "\\W+")) # " "
@@ -217,7 +223,7 @@ variables_lda_no_obstacle_footprint <- names(e)[38:285][!grepl("_field|^winner$|
 variables_lda <- names(e)[38:285][!grepl("_field|^winner$|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 
 
-variables_lda <- c(variables_lda, "wtp", "country")
+variables_lda <- c("dominant_origin",variables_lda, "wtp", "country")
 start <- Sys.time()
 lda <- create_lda(variables_lda, data = e, nb_topic = 2)
 lda_no_obstacle_footprint <- create_lda(variables_lda_no_obstacle_footprint, data = fr)
