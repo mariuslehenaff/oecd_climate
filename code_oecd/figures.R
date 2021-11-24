@@ -948,8 +948,8 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 #          LDA: avec toutes variables, do something about multiple answers questions for the LDA, as well as variables that are not on a [-2;+2] scale; 
 #          create a function (within a new file e.g. country_appendix.R) that automatically create all the figures/tables we need for a country appendix (and then we'll call the function for all countries). 
 #          The idea is to add the plot_along, Gelbach, variances, regressions graphs to render_figures_tables_country. Perhaps the easiest is to create a new function for these new graphs. Then we'll call render_figures_tables_country + the new function to generate the graphs for the country-specific PDF.
-# TODO AF: main_policies_support split; showing treatment effects on the policies separately; Was there any effect of the treatment on willingness to make changes? —> could show those outcomes. (In which case also add a slide showing the heatmap across countries of “willingness to make changes to own behavior”); no => college; 
-#          robust standard errors; coach vs. train; add Gilets_jaunes analysis (they support more climate policies, except for the carbon tax with cash transfers); (decimale 0% barres)
+# TODO AF: no => college; 
+#          robust standard errors; add Gilets_jaunes analysis (they support more climate policies, except for the carbon tax with cash transfers); (decimale 0% barres)
 #          À propos LDA, Bluebery writes: Profile 2 is more worried than Profile 4 which may explains why they support less climate policies maybe un à quoi bon?. While for Profile 4, this worry translates into strong support (maybe also because they trust more the government to implement policies).
 #          Explore interrelation between worry/trust in govt/support: do those who think that CC is unsolvable support less climate policies? etc. Hypothesis: that the sign of worried on support for climate policies is reversed between Profile 2 and 4.
 # TODO ASC: graph Main mechanisms; 

@@ -442,25 +442,72 @@ OECD/CAE \\
 % % Who knows more? Where is key info lacking (that policy makers should fix).  
 % \end{frame}
 
-\section{Which respondents support policies to fight climate change?}% Who supportes climate policies % Support for climate policies
+\section{Which respondents support climate action?
+%policies to fight climate change?
+}% Who supportes climate policies % Support for climate policies
 
-\begin{frame}{France is in the OECD average, global policies strongly supported}
+% \begin{frame}{France is in the OECD average, global policies strongly supported}
+% 	\begin{figure}[h!]
+% 		\centering		
+% 		\caption{Share of support (somewhat or strongly) for the main policies.}
+% 		\includegraphics[width=\textwidth]{../figures/country_comparison/main_policies_positive_countries.png}
+% 		%\caption{}
+% 		\end{figure}
+% \end{frame}
+
+% \begin{frame}{France is in the OECD average, global policies strongly supported}
+% 	\begin{figure}[h!]
+% 		\centering		
+% 		\caption{Share of support for the main policies among non-Indifferent.}
+% 		\includegraphics[width=\textwidth]{../figures/country_comparison/main_policies_share_countries.png}
+% 		%\caption{}
+% 		\end{figure}
+% \end{frame}
+
+\begin{frame}{Most people support climate action and about half are willing to change their lifestyle.}
 	\begin{figure}[h!]
 		\centering		
-		\caption{Share of support (somewhat or strongly) for the main policies.}
-		\includegraphics[width=\textwidth]{../figures/country_comparison/main_policies_positive_countries.png}
+		\caption{Share of support (somewhat or strongly) for the main national policies.}
+		\includegraphics[width=\textwidth]{../figures/country_comparison/opinion_willing_positive_countries.png}
 		%\caption{}
 		\end{figure}
 \end{frame}
 
-\begin{frame}{France is in the OECD average, global policies strongly supported}
+\begin{frame}{France support climate policies less than the OECD average.}
 	\begin{figure}[h!]
 		\centering		
-		\caption{Share of support for the main policies among non-Indifferent.}
-		\includegraphics[width=\textwidth]{../figures/country_comparison/main_policies_share_countries.png}
+		\caption{Share of support (somewhat or strongly) for the main national policies.}
+		\includegraphics[width=\textwidth]{../figures/country_comparison/main_national_policies_positive_countries.png}
 		%\caption{}
 		\end{figure}
 \end{frame}
+
+\begin{frame}{Most policies receive a relative majority support.}
+	\begin{figure}[h!]
+		\centering		
+		\caption{Share of support for the main national policies among non-Indifferent.}
+		\includegraphics[width=\textwidth]{../figures/country_comparison/main_national_policies_share_countries.png}
+		%\caption{}
+		\end{figure}
+\end{frame}
+
+\begin{frame}{Global policies are strongly supported.}
+	\begin{figure}[h!]
+		\centering		
+		\caption{Share of support (somewhat or strongly) for the main global policies.}
+		\includegraphics[width=\textwidth]{../figures/country_comparison/main_international_policies_positive_countries.png}
+		%\caption{}
+		\end{figure}
+\end{frame}
+
+% \begin{frame}{France is in the OECD average, global policies strongly supported}
+% 	\begin{figure}[h!]
+% 		\centering		
+% 		\caption{Share of support for the main policies among non-Indifferent.}
+% 		\includegraphics[width=\textwidth]{../figures/country_comparison/main_policies_share_countries.png}
+% 		%\caption{}
+% 		\end{figure}
+% \end{frame}
 
 \begin{frame}{How support varies -- Definitions}
 
@@ -590,18 +637,19 @@ OECD/CAE \\
 
 \section{What ideas can explain support for climate policies?}
 
-\begin{frame}{Main mechanisms}
+\begin{frame}{Beliefs in effectiveness and self-interest are key for policy support.}
 	% A. Mechanisms. 
 % Regress Outcomes on set C + set A (—> answers the question of what type of thinking needs to changed 
 % (We already did nice figures like this, but we needed to reorganize what was a mechanism and what was an outcome) 
 % TODO! support_policies/index_main_policies/index_all_policies ~ setA + B + C AnaSC
 % TODO! variance decomposition support_policies/index_main_policies/index_all_policies
 \begin{figure}
-	\includegraphics[width=.9\paperwidth]{../figures/FR/reg_support_policies_ABC_FR.png}
+	%\includegraphics[width=.9\paperwidth]{../figures/FR/reg_support_policies_ABC_FR.png}
+	\includegraphics[height=.95\paperheight]{../figures/FR/Coefplot_SetABC_PlotC_index_main_policies.png}
 \end{figure}
 \end{frame}
 
-\begin{frame}{The distributional dimension}
+\begin{frame}{The distributional dimension is critical.}
 \begin{figure}
 	\vspace{-.2cm}
 	\caption{%Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.\\
@@ -688,10 +736,21 @@ OECD/CAE \\
 	% C. Provide description of Treatments with screen shots. 
 % Regress Outcomes on treatment indicators + set A. 
 \begin{figure}
-	\caption{Treatment effects (of watching informational videos) in regressions of \\support indices on the set (A) of socio-demographics.}
-	\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_treatment.png}
+	\centering 
+	\caption{Treatment effects (of watching informational videos) in regressions of \\support for the main policies on the set (A) of socio-demographics.}
+	\includegraphics[width=.7\textwidth]{../figures/FR/main_policies_support_by_treatment.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Can information change attitudes?}
+	% C. Provide description of Treatments with screen shots. 
+% Regress Outcomes on treatment indicators + set A. 
+\begin{figure}
+	\centering 
+	\caption{Treatment effects (of watching informational videos) in regressions of \\indices of support and willingness to change on the set (A) of socio-demographics.}
+	%\includegraphics[width=.7\textwidth]{../figures/FR/policies_support_by_treatment.png}
 	%\caption{How important are the factors below in order for you to adopt a sustainable lifestyle (i.e. limit driving, flying, and consumption, cycle more, etc.)?}
-	\includegraphics[width=.7\textwidth]{../figures/FR/indices_policies_by_treatment_origin0.png}
+	\includegraphics[width=.7\textwidth]{../figures/FR/indices_policies_willing_by_treatment_origin0.png}
 \end{figure}
 \end{frame}
 

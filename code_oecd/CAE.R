@@ -26,11 +26,19 @@ save_plot(filename = paste0(folder, "reg_anthropogenic_knowledge_AB", replacemen
 
 
 ##### Support among social groups: Descriptive stats #####
-update_constant(all) # TODO! can we split into 2 slides: 1) policies 2) burden-sharing
-variables_main_policies <<- c("tax_transfers_support", "standard_support", "standard_public_transport_support", "investments_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "policy_tax_flying", "policy_ban_city_centers", "global_quota", "burden_share_ing_population", "global_tax_support", "global_assembly_support", "tax_1p_support")
+update_constant(all) # TODO automatic width/height
+main_variables_opinion_willing <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", variables_willing)
 # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
+labels_opinion_willing <<- c("CC exists, is anthropogenic", "CC is an important problem", "[Country] should fight CC", labels_willingness)
+heatmap_wrapper(vars = main_variables_opinion_willing, labels = labels_opinion_willing, conditions = heatmap_conditions, name = "opinion_willing", alphabetical = alphabetical, special = special)
+
+variables_main_policies <<- c("tax_transfers_support", "standard_support", "standard_public_transport_support", "investments_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "policy_tax_flying", "policy_ban_city_centers", "global_quota", "burden_share_ing_population", "global_tax_support", "global_assembly_support", "tax_1p_support")
+# # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
 labels_main_policies <<- c("Carbon tax with cash transfers", "Ban on combustion-engine cars", "Ban on combustion-engine cars\nwhere alternatives made available", "Green infrastructure program", "Ban on intensive cattling", "Mandatory insulation of buildings", "A tax on flying (raising price by 20%)", "A ban of polluting vehicles in city centers", "Global carbon budget (+2°C)\ndivided in tradable country shares", "Emission share should be in proportion to population*", "Global tax on GHG financing a global basic income", "Global democratic assembly on climate change", "Global tax on millionaires funding LDC")
-heatmap_wrapper(vars = variables_main_policies, labels = labels_main_policies, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, name = "main_policies", alphabetical = alphabetical, special = special)
+# heatmap_wrapper(vars = variables_main_policies, labels = labels_main_policies, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, name = "main_policies", alphabetical = alphabetical, special = special)
+heatmap_wrapper(vars = variables_main_policies[1:8], labels = labels_main_policies[1:8], conditions = heatmap_conditions, name = "main_national_policies", alphabetical = alphabetical, special = special)
+heatmap_wrapper(vars = variables_main_policies[9:13], labels = labels_main_policies[9:13], labels_along = labels_burden_share_ing, conditions = heatmap_conditions, name = "main_international_policies", alphabetical = alphabetical, special = special)
+
 update_constant(fr) 
 
 
@@ -238,6 +246,7 @@ plot_along(vars = variables_policies_support, along = "treatment", labels = labe
 # plot_along(vars = c("policies_support", "share_policies_supported", "CC_anthropogenic"), name = "support_knowledge_by_treatment", along = "treatment", labels = c("Average support for main policies", "Share of climate policies supported", "CC is anthropogenic"), covariates = setAt, df = fr) 
 # plot_along(vars = c("CC_anthropogenic"), along = "treatment", labels = c("CC is anthropogenic"), covariates = setAt, df = fr)
 plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", origin = 0, labels = c("Index of support to main policies", "Index of support to all policies"), plot_origin_line = T, name = "indices_policies_by_treatment_origin0", covariates = setAt, df = fr)
+plot_along(vars = c("index_main_policies", "index_all_policies", "index_willing_change"), along = "treatment", origin = 0, labels = c("Index of support to main policies", "Index of support to all policies", "Index of willingness to adopt green behavior"), plot_origin_line = T, name = "indices_policies_willing_by_treatment_origin0", covariates = setAt, df = fr)
 # plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment", covariates = setAt, df = fr)
 # plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treatment", origin = "control_mean", labels = c("Index of support to main policies", "Index of support to all policies"), name = "indices_policies_by_treatment_originControl", covariates = setAt, df = fr)
 # plot_along(vars = c("policies_support", "index_main_policies", "index_all_policies"), along = "treatment", labels = c("Average support for main policies", "Index of support to main policies", "Index of support to all policies"), name = "support_indices_policies_by_treatment", covariates = setAt, df = fr)
