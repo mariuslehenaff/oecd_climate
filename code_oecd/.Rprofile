@@ -126,6 +126,7 @@ package("missMDA") # PCA
 package("maps")
 package("forcats")
 package("modi")
+package("estimatr")
 
 # package("quanteda")
 # package("haven")
@@ -1639,7 +1640,7 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
       dependent_var <- if (logit[i] & logit_margin) reg$y else reg$model[[1]]
       origin_value <- wtd.mean(dependent_var[data_s[[along]] == levels_along[1]], weights = data_s$weight[data_s[[along]] == levels_along[1]])
     } else origin_value <- 0
-    if (logit[i] & logit_margin) {
+    if (logit[i] & logit_margin) { # logit margins
       # if ("lm" %in% class(reg)) warning("Logit margins should be provided: logitmfx(..)")
       coefs <- origin_value + c(0, regmxf[names_levels[2:k],1])
       
@@ -1652,7 +1653,7 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
       sigma <- sqrt(wtd.mean((reg$y - reg$fitted.values)^2, weights = data_s$weight))
       SDs <- sapply(levels_along, function(i) return(sqrt(wtd.mean(((data_s[[along]] == i) - wtd.mean(data_s[[along]] == i, weights = data_s$weight))^2, weights = data_s$weight))))
       CI <- cbind(coefs - t*sqrt(1/n)*sigma/SDs, coefs + t*sqrt(1/n)*sigma/SDs) # CIs approximated as if the results were that of a linear regression. Stata uses a more appropriate method: the Delta method (which also have some issues: CIs can be outside [0; 1]), not easily implementable in R (despite msm::deltamethod)
-    } else {
+    } else { # OLS
       if (logit[i]) warning("Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
       #   mean_ci_origin <- binconf(x = sum(data_s[[weight]][data_s[[along]] == levels_along[1]], na.rm=T), n = sum(data_s[[weight]], na.rm=T), alpha = 1-confidence) # WRONG! This is the CI for the group mean, not the CI for the regression coefficient!
       #   CI_origin <- mean_ci_origin[2:3] - (origin_value == 0) * mean_ci_origin[1] # c(0, 0) # TODO! check that this confidence interval at the origin is correct (I doubt it)
@@ -1663,7 +1664,9 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
       SD <- sqrt(wtd.mean(((data_s[[along]] == levels_along[1]) - wtd.mean(data_s[[along]] == levels_along[1], weights = data_s$weight))^2, weights = data_s$weight))
       CI_origin <- c(-1, 1)*t*sqrt(1/n)*sigma/SD # This computation is very close to confint(...), which we can't use for the omitted variable.
       coefs <- origin_value + c(0, reg$coefficients[names_levels[2:k]]) # what about emmeans(reg, ~ 1 | along) to compute e.g. CI_origin?
-      CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) 
+      CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) # if simple OLS
+      # robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1"))
+      # CI <- origin_value + rbind(CI_origin, robust_SEs[names_levels[2:k], 1] + c(1, -1)*t*robust_SEs[names_levels[2:k], 2])
     }
     mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
     mean_ci <- rbind(mean_ci, mean_ci_reg)    
