@@ -1681,11 +1681,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$treatment_climate <- ifelse(e$treatment_climate > sqrt(5/17), 1, 0)
   e$treatment_policy <- ifelse(e$treatment_policy > sqrt(5/17), 1, 0)
   e$treatment <- "None"
-  e$treatment[e$treatment_climate == 1 & e$treatment_policy == 0] <- "Climate"
-  e$treatment[e$treatment_climate == 0 & e$treatment_policy == 1] <- "Policy"
+  e$treatment[e$treatment_climate == 1 & e$treatment_policy == 0] <- "Climate impacts"
+  e$treatment[e$treatment_climate == 0 & e$treatment_policy == 1] <- "Climate policy"
   e$treatment[e$treatment_climate == 1 & e$treatment_policy == 1] <- "Both"
-  e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Policy"), "Climate"), "None")
-  label(e$treatment) <- "treatment: Treatment received: Climate/Policy/Both/None" 
+  e$treatment <- relevel(relevel(relevel(as.factor(e$treatment), "Climate policy"), "Climate impacts"), "None")
+  label(e$treatment) <- "treatment: Treatment received: Climate impacts/Climate policy/Both/None" 
   
   e$rush_treatment <- e$duration_treatment_climate < duration_climate_video[country] | e$duration_treatment_policy < duration_policy_video[country]
   e$rush_treatment[is.na(e$rush_treatment)] <- F
@@ -2194,8 +2194,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
         
         # replace missing values with its group mean
         df[[variable_name_zscore]][df$treatment == "None"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,1]-mean_sd[1,1])/mean_sd[2,1]
-        df[[variable_name_zscore]][df$treatment == "Climate"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,2]-mean_sd[1,1])/mean_sd[2,1]
-        df[[variable_name_zscore]][df$treatment == "Policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
+        df[[variable_name_zscore]][df$treatment == "Climate impacts"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,2]-mean_sd[1,1])/mean_sd[2,1]
+        df[[variable_name_zscore]][df$treatment == "Climate policy"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,3]-mean_sd[1,1])/mean_sd[2,1]
         df[[variable_name_zscore]][df$treatment == "Both"  &  is.pnr(df[[variable_name]])] <- (mean_sd[1,4]-mean_sd[1,1])/mean_sd[2,1]
       }
       
