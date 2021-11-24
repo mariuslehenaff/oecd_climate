@@ -50,7 +50,7 @@ Date: 		Nov 2021
 		global p9 ="255 212 0"
 		global p10 ="107 189 69"
 		
-	global ft "wmf"
+	global ft "pdf"
 	
 
 
