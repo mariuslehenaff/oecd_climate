@@ -1664,9 +1664,9 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
       SD <- sqrt(wtd.mean(((data_s[[along]] == levels_along[1]) - wtd.mean(data_s[[along]] == levels_along[1], weights = data_s$weight))^2, weights = data_s$weight))
       CI_origin <- c(-1, 1)*t*sqrt(1/n)*sigma/SD # This computation is very close to confint(...), which we can't use for the omitted variable.
       coefs <- origin_value + c(0, reg$coefficients[names_levels[2:k]]) # what about emmeans(reg, ~ 1 | along) to compute e.g. CI_origin?
-      CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) # if simple OLS
-      # robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1"))
-      # CI <- origin_value + rbind(CI_origin, robust_SEs[names_levels[2:k], 1] + c(1, -1)*t*robust_SEs[names_levels[2:k], 2])
+      # CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) # if simple OLS
+      robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1"))
+      CI <- origin_value + rbind(CI_origin, cbind(robust_SEs[names_levels[2:k], 1] - c(1, -1)*t*robust_SEs[names_levels[2:k], 2], robust_SEs[names_levels[2:k], 1] + c(1, -1)*t*robust_SEs[names_levels[2:k], 2]))
     }
     mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
     mean_ci <- rbind(mean_ci, mean_ci_reg)    
