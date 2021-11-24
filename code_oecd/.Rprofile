@@ -821,6 +821,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     value <- c()
     for (i in 1:length(hover)) { 
       hover[i] <- paste(hover[i], "<br>Choisi dans ", round(100*data[1, i]), "% des réponses", sep="")
+      value[i] <- paste(ifelse(data[1, i] > 0.01, round(100*data[1, i]), round(100*data[1, i], 1)), '%', sep='') 
       value[i] <- paste(round(100*data[1, i]), '%', sep='') } # '%  '
     hovers <- matrix(hover, nrow=length(hover))
     values <- matrix(value, nrow=length(hover))
