@@ -2826,7 +2826,7 @@ save.image(".RData")
 prepare_all(countries = FALSE) # 6 min 
 
 # Sets. A: core socio-demos + vote. At: A + treatment. B: energy characteristics. C: mechanisms. D: outcomes. Dpos: binary outcomes (> 0).
-setA <- c("female", "age", "children", "income_factor", "as.factor(wealth)", "employment_agg", "college", "dominant_origin", "(vote_agg >= 1)", "(vote_agg == 0)", "(vote_agg == -.1)") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
+setA <- c("female", "age", "children", "income_factor", "employment_agg", "college", "dominant_origin", "vote_agg_factor") # left_right may be better than vote: we have answers for CN, it is less  country-specific, there is less PNR
 setAt <- c(setA, "treatment") # TODO: heating_expenses -0.1 change to average
 setB <- c("urban", "(gas_expenses > 50)", "(heating_expenses > 500)", "polluting_sector", "(availability_transport >= 1)", "car_dependency", "owner", "(flights_agg > 1)") # index_affected # TODO: affected by transport
 setCvars <- c("(CC_problem >= 1)", "(CC_anthropogenic >= 1)", "(CC_affects_self >= 1)", "(can_trust_govt >= 1)", "(problem_inequality >= 1)")
@@ -2857,7 +2857,8 @@ regressors_names <- rev(c("femaleTRUE" = "Gender: Female", "age65+" = "Age: > 64
                           "childrenTRUE" = "Lives with child(ren) < 14", "income_factorQ4" = "Household income: Q4 (top 25%)", "income_factorQ3" = "Household income: Q3", "income_factorQ2" = "Household income: Q2", "wealth" = "Individual wealth", 
                           "as.factor(wealth)Q5" = "Individual Wealth : Q5", "as.factor(wealth)Q4" = "Individual Wealth : Q4", "as.factor(wealth)Q3" = "Individual Wealth : Q3", "as.factor(wealth)Q2" = "Individual Wealth : Q2",
                           "employment_aggWorking" = "Employment status: Working", "employment_aggStudent" = "Employment status: Student", "employment_aggRetired" = "Employment status: Retired", "collegeNo college" = "Diploma: below college", "collegeCollege Degree" = "College degree",
-                          "dominant_originTRUE" = "Origin: country's dominant one", "vote_agg == -0.1TRUE" = "Vote: Others or PNR","vote_agg == 0TRUE" = "Vote: Center", "vote_agg < 0TRUE" = "Vote: Left or Far left", "vote_agg <= -1TRUE" = "Vote: Left or Far left", "vote_agg >= 1TRUE" = "Vote: Right or Far right",
+                          "dominant_originTRUE" = "Origin: country's dominant one", "vote_agg_factorPNR or other" = "Vote: Others or PNR","vote_agg_factorCenter" = "Vote: Center", "vote_agg_factorLeft" = "Vote: Left or Far left", "vote_agg_factorRight" = "Vote: Right or Far right",
+                          "vote_agg == -0.1TRUE" = "Vote: Others or PNR","vote_agg == 0TRUE" = "Vote: Center", "vote_agg < 0TRUE" = "Vote: Left or Far left", "vote_agg <= -1TRUE" = "Vote: Left or Far left", "vote_agg >= 1TRUE" = "Vote: Right or Far right",
                           "(Intercept)" = "Intercept", "urbanTRUE" = "Urban", "gas_expenses" = "Gasoline expenses", "heating_expenses" = "Heating expenses", "polluting_sectorTRUE" = "Polluting sector", "availability_transport" = "Availability of public transport",
                           "gas_expenses > 50TRUE" = "High gasoline expenses", "heating_expenses > 500TRUE" = "High heating expenses", "availability_transport >= 1TRUE" = "Public transport available", "car_dependencyTRUE" = "Uses car", 
                           "ownerTRUE" = "Home owner or landlord", "flights_agg > 1TRUE" = "Flies more than once a year", "treatmentNone" = "Treatment: None", "treatmentClimate" = "Treatment: Climate", "treatmentPolicy" = "Treatment: Policy", "treatmentBoth" = "Treatment: Both",
