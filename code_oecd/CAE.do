@@ -48,8 +48,9 @@ Date: 		Nov 2021
 		global p7 ="0 115 162"
 		global p8 ="229 64 96"
 		global p9 ="255 212 0"
-		global p10 ="107 189 69"	
+		global p10 ="107 189 69"
 		
+	global ft "wmf"
 	
 
 
@@ -184,7 +185,7 @@ loc title_index_main_policies "Support policies"
 			legend(order(2) label(2 "``var't'") pos(12) size(small)) ///
 			xtitle("Coefficients", col(gs8) size(small)) ///
 			 name(gA, replace) 
-			 graph export "${output}\\Coefplot_SetA_PlotA_`var'.png", replace 	
+			 graph export "${output}\\Coefplot_SetA_PlotA_`var'.${ft}", replace 	
 	
 	reg `var'  $setA $setB [w=weight] , robust 
 	estimates store `var'AB
@@ -207,11 +208,11 @@ loc title_index_main_policies "Support policies"
 			legend(order(2) label(2 "``var't'") pos(12) size(small)) ///
 			xtitle("Coefficients", col(gs8) size(small)) ///
 			 name(gB, replace) 
-			 graph export "${output}\\Coefplot_SetAB_PlotB_`var'.png", replace 
+			 graph export "${output}\\Coefplot_SetAB_PlotB_`var'.${ft}", replace 
 			 
 	gr combine gA gB , xcommon title("`title_`var''", size(small) color(black)) ///
 	note("{it: Note}: The figures show the results of standard OLS regression on socio-demographic covariates (LHS) and on energy characteristics (RHS)." "The RHS specification also controls for the socio-demographic variables.", size(vsmall) col(gs8)) 
-	graph export "${output}\\Coefplot_SetAB_`var'.png", replace
+	graph export "${output}\\Coefplot_SetAB_`var'.${ft}", replace
 	}
 	
 
@@ -269,7 +270,7 @@ loc title_index_main_policies "Support policies"
 			xtitle("Coefficients", col(gs8) size(small)) ///
 			 name(gC, replace) ///
 			note("{it: Note}: The figure show the results of standard OLS regression. Other socio-demographic and energy characteristics" "also included (not shown): female, gender, children <14, majority origin, employment status, education, income," "voting, urban, availability of public transport, heating and gasoline expenses, car dependency, flies at least once a year,"  "works in polluting sector, is homeowner.", size(vsmall) col(gs8)) 
-			 graph export "${output}\\Coefplot_SetABC_PlotC_`var'.png", replace 
+			 graph export "${output}\\Coefplot_SetABC_PlotC_`var'.${ft}", replace 
 			 
 	}
 	
@@ -338,7 +339,7 @@ loc title_index_main_policies "Support policies"
 			legend(order(2) label(2 "``var't'") pos(12) size(small)) ///
 			xtitle("Coefficients", col(gs8) size(small)) ///
 			 name(gA, replace) 
-			 *graph export "${output}\\Coefplot_SetAinc_PlotA_`var'.png", replace 		
+			 *graph export "${output}\\Coefplot_SetAinc_PlotA_`var'.${ft}", replace 		
 	
 	
 	reg `var'  $setAinc  [w=weight], robust 
@@ -366,7 +367,7 @@ loc title_index_main_policies "Support policies"
 			legend(order(2) label(2 "``var't'") pos(12) size(small)) ///
 			xtitle("Coefficients", col(gs8) size(small)) ///
 			 name(gAinc, replace) 
-			 *graph export "${output}\\Coefplot_SetAinc_PlotA_`var'.png", replace 	
+			 *graph export "${output}\\Coefplot_SetAinc_PlotA_`var'.${ft}", replace 	
 			 
 	reg `var'  $setAw  [w=weight], robust 
 	estimates store `var'Aw			 
@@ -392,11 +393,11 @@ loc title_index_main_policies "Support policies"
 			legend(order(2) label(2 "``var't'") pos(12) size(small)) ///
 			xtitle("Coefficients", col(gs8) size(small)) ///
 			 name(gAw, replace) 
-			 *graph export "${output}\\Coefplot_SetAw_PlotA_`var'.png", replace 	
+			 *graph export "${output}\\Coefplot_SetAw_PlotA_`var'.${ft}", replace 	
 			 
 	gr combine gA gAinc gAw , xcommon title("`title_`var''", size(small) color(black)) col(3) 
 	/// note("{it: Note}: Other covariates included in all specifications: female, gender, children <14, majority origin, employment status, education, voting.", size(vsmall) col(gs8)) /// 
-	graph export "${output}\\Coefplot_SetAincw_`var'_all.png", replace
+	graph export "${output}\\Coefplot_SetAincw_`var'_all.${ft}", replace
 	
 	}
 
