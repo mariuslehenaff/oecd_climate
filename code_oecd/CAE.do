@@ -269,7 +269,7 @@ loc title_index_main_policies "Support policies"
 			legend(order(2) label(2 "``var't'") pos(12) size(small)) ///
 			xtitle("Coefficients", col(gs8) size(small)) ///
 			 name(gC, replace) ///
-			note("{it: Note}: The figure show the results of standard OLS regression. Other socio-demographic and energy characteristics" "also included (not shown): female, gender, children <14, majority origin, employment status, education, income," "voting, urban, availability of public transport, heating and gasoline expenses, car dependency, flies at least once a year,"  "works in polluting sector, is homeowner.", size(vsmall) col(gs8)) 
+			note("{it: Note}: The figure show the results of standard OLS regression. Other socio-demographic and energy" "characteristics also included (not shown): female, gender, children <14, majority origin, employment status, education," "income, voting, urban, availability of public transport, heating and gasoline expenses, car dependency, flies at least" "once a year, works in polluting sector, is homeowner.", size(vsmall) col(gs8)) 
 			 graph export "${output}\\Coefplot_SetABC_PlotC_`var'.${ft}", replace 
 			 
 	}
