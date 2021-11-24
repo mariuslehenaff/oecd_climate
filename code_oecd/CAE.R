@@ -101,9 +101,14 @@ plot_along(vars = c("policies_support"), along = "gas_expenses", labels = c("Ave
 
 ##### Explanatory ideas: Variance decompositions #####
 # Specifications 
+temp <-  -1*(e$vote_agg %in% c("Far left", "Left")) -0*(e$vote_agg %in% c("Center")) + 1*(e$vote_agg %in% c("Right", "Far right")) -0.1*(e$vote_agg == -.1)
+e$vote_agg_factor <- as.factor(as.item(temp, labels = structure(c(-1,0,1,-0.1), names = c("Left", "Center", "Right","PNR or other")),
+                     annotation="vote_agg_factor: Vote or hypothetical vote in last election aggregated into 3 categories. Left/Center/Right"))
+
+
 controls_lmg <- c(control_variables_w_treatment[c(1:5,7)], "urban", "urbanity", "as.character(left_right)","treatment == \"Climate\"",
                   "treatment == \"Policy\"", "treatment == \"Both\"","as.factor(country)")
-end_formula_treatment_socio_demographics <- paste(c(setA, setB), collapse = ') + (')
+end_formula_treatment_socio_demographics <- paste(c(setA[c(1:7)], "vote_agg_factor", setB), collapse = ') + (')
 end_formula_treatment_socio_demographics <- paste(c("(", end_formula_treatment_socio_demographics), collapse = "")
 end_formula_treatment_socio_demographics <- paste(c(end_formula_treatment_socio_demographics, ")"), collapse = "")
 end_formula_treatment_indices <- paste(c(setC_indices[c(-6,-10,-12)]), collapse = ') + (')
@@ -112,7 +117,7 @@ end_formula_treatment_indices <- paste(c(end_formula_treatment_indices, ")"), co
 # Alphabetical order of variables matters here
 controls_labels_lm <- c("Age", "Income", "Wealth", "Employment", "Gender", "Parenthood", "Education", "Origin/Ethnicity", "Right", "Center", "Left", "Urban", "Gas expenses", "Heating expenses", "Polluting sector",
                         "Availability of Public Transport", "Car dependency", "Owner", "Flights")
-controls_labels_lm_signs <- c("Age (-)", "Income (-)", "Wealth (+)", "Employment (+)", "Gender (+)", "Parenthood (+)", "No Education (-)", "Origin/Ethnicity (-)", "Right (-)", "Center (-)", "Others or PNR (-)", "Urban (+)", "Gas expenses (-)", "Heating expenses (+)", "Polluting sector (+)",
+controls_labels_lm_signs <- c("Age (-)", "Income (-)","Employment (+)", "Vote (-)", "Gender (+)", "Parenthood (+)", "No Education (-)", "Origin (-)", "Urban (+)", "Gas expenses (-)", "Heating expenses (+)", "Polluting sector (+)",
                               "Availability of Public Transport (+)" , "Car dependency (-)", "Owner (-)", "Flights (+)")
 setC_indices_label_signs <- paste(setC_indices_label, c(rep("(+)", 5), "NA", rep("(+)", 3), "NA", "(-)", "NA", "(-)", "(+)"), sep = " ")
 
@@ -141,7 +146,7 @@ if (Sys.info()[7] == "Bluebii") {
 # var_to_decompose and group_of_interest: you need to input only one variable as a character
 # controls and indices, can be a character vector
 # Factor variables from control need to be in controls_factor
-gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, indices_labels, df=e, weights = "weight") {
+gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, df=e, weights = "weight") {
   # We restrict the df to the variables we'll use, since there can be some incompatibilities
   # in using R dataframes in Stata
   df <- df %>%
@@ -190,8 +195,6 @@ gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls,
   # We input df, and obtain the data frame with the share explained by each indice
   final <- stata(stata_cmd, data.in = df, data.out = T)
   
-  final[,1] <- indices_labels
-  
   return(final)
 }
 # Need to create dummies for Stata
@@ -212,32 +215,49 @@ setC_indices <- c("index_trust_govt", setC[c(6:14)], "index_lose_policies_subjec
 
 setC_indices_label <- c("Trusts the governement", "Is concerned about climate change", "Is worried about the future", "Has a good knowledge of climate change", "Climate policies have a positive effect \n on the economy",
                         "Is financially constrained","Climate policies are effective", "Cares about poverty and inequalities", "Believes will suffer from climate change",
-                        "Is willing to adopt climate friendly behavior", "Will personally lose from main policies", "Main policies are fair",
+                        "Is willing to adopt climate friendly behavior", "Believes will personally lose from main policies", "Main policies are fair",
                         "Poor people will lose from main policies", "Rich people will lose from main policies")
 
+# For Gelbach labels need to check correlation (if positive correlation have a negative sentence (IF on Latex we say "other category support less because…"), if negative have a Do-sentence)
+# Therefore check with cor(e[,setC_indices[c(-6,-10,-12)]], e$pol_left == 1) / cor(e[,setC_indices[c(-6,-10,-12)]], e$young == 1) / cor(e[,setC_indices[c(-6,-10,-12)]], e$college_dum == 1)
+setC_indices_label_gelbach_vote <- c("Trust the governement", "Are not concerned about climate change", "Are not worried about the future", "Do not have a good knowledge of climate change", "Think climate policies have a positive effect \n on the economy",
+                        "Are not financially constrained","Do not think climate policies are effective", "Do not care about poverty and inequalities", "Do not believe they will suffer from climate change",
+                        "Are not willing to adopt climate friendly behavior", "Believe they will personally lose from main policies", "Do not think main policies are fair",
+                        "Believe poor people will lose from main policies", "Believe rich people will lose from main policies")
+
+setC_indices_label_gelbach_young <- c("Do not trust the governement", "Are not concerned about climate change", "Are worried about the future", "Have a good knowledge of climate change", "Do not think climate policies have a positive effect \n on the economy",
+                                     "Are not financially constrained","Do not think climate policies are effective", "Care about poverty and inequalities", "Do not believe they will suffer from climate change",
+                                     "Are not willing to adopt climate friendly behavior", "Believe they will personally lose from main policies", "Do not think main policies are fair",
+                                     "Believe poor people will lose from main policies", "Do not believe rich people will lose from main policies")
+
+setC_indices_label_gelbach_college <- c("Do no trust the governement", "Are not concerned about climate change", "Are not worried about the future", "Do not have a good knowledge of climate change", "Do not think climate policies have a positive effect \n on the economy",
+                                     "Are not financially constrained","Do not think climate policies are effective", "Care about poverty and inequalities", "Do not believe they will suffer from climate change",
+                                     "Are not willing to adopt climate friendly behavior", "Believe they will personally lose from main policies", "Do not think main policies are fair",
+                                     "Believe poor people will lose from main policies", "Do not believe rich people will lose from main policies")
 ## Prepare the Graphs
 # Vote
-# unexplained: .435; coef Partial:0.235 ; coef Full: 0.103
+# unexplained: .435; coef Partial:0.229 ; coef Full: 0.104
 gelbach_vote_agg_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "pol_left",
-                                                              controls = c(setA[c(1,3,7,8)], setB_dum), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
-                                                              indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
+                                                              controls = c(setA[c(1,3,6,7)], setB_dum), controls_factor = c("age", "income_factor", "employment_agg"),
+                                                              indices = setC_indices[c(-6,-10,-12)])
 
-barres(data = t(matrix(gelbach_vote_agg_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_vote_agg_no_fairness_index_main_policies$n,legend = "% Partisan gap explained", rev = F)
+barres(data = t(matrix(gelbach_vote_agg_no_fairness_index_main_policies$shareExplained/100)), labels = setC_indices_label_gelbach_vote[c(-6,-10,-12)],legend = "% Partisan gap explained", rev = F)
 
 # Age
 e$young <-e$age %in% c("18-24", "25-34")
-# share unexplained: 0.125; coef Partial: .165 coef Full: .023
+# share unexplained: 0.167; coef Partial: .176 coef Full: .031
 gelbach_young_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "young",
-                                                           controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,7,8)], setB_dum), controls_factor = c("income_factor", "wealth", "employment_agg"),
-                                                           indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
-barres(data = t(matrix(gelbach_young_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_young_no_fairness_index_main_policies$n,legend = "% Age gap explained", rev = F)
+                                                           controls = c(setA[c(1,3,6,7)], setB_dum), controls_factor = c("income_factor", "vote_agg_factor", "employment_agg"),
+                                                           indices = setC_indices[c(-6,-10,-12)])
+barres(data = t(matrix(gelbach_young_no_fairness_index_main_policies$shareExplained/100)), labels = setC_indices_label_gelbach_young[c(-6,-10,-12)],legend = "% Age gap explained", rev = F)
 
 # College
-# share unexplained: 0; coef Partial: -.111 coef Full: -.003
-gelbach_college_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "college",
-                                                             controls = c("pol_left", "pol_center", "pol_pnr", setA[c(1,3,8)]), controls_factor = c("age", "income_factor", "wealth", "employment_agg"),
-                                                             indices = setC_indices[c(-6,-10,-12)], indices_labels = setC_indices_label[c(-6,-10,-12)])
-barres(data = t(matrix(gelbach_college_no_fairness_index_main_policies$shareExplained/100)), labels = gelbach_college_no_fairness_index_main_policies$n,legend = "% Diploma gap explained", rev = F)
+# share unexplained: 0; coef Partial: .128 coef Full: .004
+e$college_dum <- e$college == "College Degree"
+gelbach_college_no_fairness_index_main_policies <- gelbach_decomposition(var_to_decompose = "index_main_policies", group_of_interest = "college_dum",
+                                                             controls = c(setA[c(1,3,7)]), controls_factor = c("age", "income_factor", "vote_agg_factor", "employment_agg"),
+                                                             indices = setC_indices[c(-6,-10,-12)])
+barres(data = t(matrix(gelbach_college_no_fairness_index_main_policies$shareExplained/100)), labels = setC_indices_label_gelbach_college[c(-6,-10,-12)],legend = "% Diploma gap explained", rev = F)
 
 ##### Explanatory ideas: treatments #####
 plot_along(vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), plot_origin_line = T, name = "policies_support_by_treatment", covariates = setAt, df = fr)
