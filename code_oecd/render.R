@@ -329,14 +329,14 @@ render_figures_tables_country <- function(data, country, on_control = T, export_
     try({(score_GHG_US <- barres(vars = "score_GHG", export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, labels="Knowledge score on GHG"))
       save_plotly_new_filename(score_GHG_US, width= 550, height=140)})  # TODO? split score=3 into all but methane and others
     
-    if (!country %in% bus_countries) Labels_footprint$tr[2] <- "Train"
-    # else Labels_footprint$tr[2] <- "Bus"
-      
     try({(footprint_elec_US <- barres(vars = Variables_footprint$el[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$el[c(2,1,3)]))
       save_plotly_new_filename(footprint_elec_US, width= 400, height=220) })
     
+    if (!country %in% bus_countries) Labels_footprint$tr[2] <- "Train"
+    # else Labels_footprint$tr[2] <- "Bus"
+    
     try({(footprint_transport_US <- barres(vars = Variables_footprint$tr[c(2,1,3)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$tr[c(2,1,3)]))
-      save_plotly_new_filename(footprint_transport_US, width= 400, height=220) }) # TODO: train for some countries, including barresN
+      save_plotly_new_filename(footprint_transport_US, width= 400, height=220) }) 
     
     try({(footprint_food_US <- barres(vars = Variables_footprint$fd[c(2,3,1)], export_xls = export_xls, df = e, rev = F, rev_color = T, miss=F, sort = F, legend = c("1 Most", "2", "3 Least"), labels=Labels_footprint$fd[c(2,3,1)]))
       save_plotly_new_filename(footprint_food_US, width= 400, height=220) }) # TODO India no beef
