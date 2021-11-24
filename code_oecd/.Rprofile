@@ -1666,7 +1666,7 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
       coefs <- origin_value + c(0, reg$coefficients[names_levels[2:k]]) # what about emmeans(reg, ~ 1 | along) to compute e.g. CI_origin?
       # CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) # if simple OLS
       robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1"))
-      CI <- origin_value + rbind(CI_origin, cbind(robust_SEs[names_levels[2:k], 1] - c(1, -1)*t*robust_SEs[names_levels[2:k], 2], robust_SEs[names_levels[2:k], 1] + c(1, -1)*t*robust_SEs[names_levels[2:k], 2]))
+      CI <- origin_value + rbind(CI_origin, cbind(robust_SEs[names_levels[2:k], 1] - t*robust_SEs[names_levels[2:k], 2], robust_SEs[names_levels[2:k], 1] + t*robust_SEs[names_levels[2:k], 2]))
     }
     mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
     mean_ci <- rbind(mean_ci, mean_ci_reg)    
@@ -1674,6 +1674,7 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
   row.names(mean_ci) <- NULL
   return(mean_ci)
 }
+
 
 # Two cases: with covariates (coefficients or marginal effects are shown, depending on origin = 0 or not) or without covariates (i.e. unconditional means of subgroups)
 # Three configurations: a. one outcomes, two heterogeneities / b. and c. different outcomes, one heterogeneity (c. is invert_y_along = T)
