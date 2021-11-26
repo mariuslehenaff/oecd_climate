@@ -126,7 +126,7 @@ package("missMDA") # PCA
 package("maps")
 package("forcats")
 package("modi")
-package("estimatr")
+# package("estimatr")
 
 # package("quanteda")
 # package("haven")
