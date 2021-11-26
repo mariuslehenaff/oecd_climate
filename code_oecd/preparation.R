@@ -95,7 +95,7 @@ loadings_efa <- list()
     "ID_region" = c("Western Java", "Eastern Java", "Northern Islands", "Eastern Islands", "Sumatra"),
     "SA_region" = c("Gauteng", "West", "Center", "North-East", "South-East"),
     "CN_region" = c("North", "Northeast", "East", "South Central", "West"),
-    "CN_urban_category" = c("Rural", "Small_Urban", "Urban"),
+    "CN_urban_category" = c("Xiang", "Zhèn", "Jiedào"),# "CN_urban_category" = c("Rural", "Small_Urban", "Urban"),
     "BR_region" = c("North", "North-East", "South-East", "South", "Central-West"),
     "MX_region" = c("Central-Western", "Central-Eastern", "North-East", "North-West", "South"),
     "MX_urban_category" = c("Rural", "Semiurbano", "Urbano"),
@@ -743,7 +743,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   text_area_small <- c("SA" = "In a District municipality other than the District capital", "CN" = "Xiāng", "ID" = "Kota")
   text_area_middle <- c("SA" = "In a capital of a District municipality", "CN" = "Zhèn", "ID" = "In a Kabupaten outside of the Capital town")
-  text_area_large <- c("SA" = "In a metropolitan municipality", "CN" = "Jiēdào", "ID" = "Capital town of a Kabupaten")
+  text_area_large <- c("SA" = "In a metropolitan municipality", "CN" = "Jiedào", "ID" = "Capital town of a Kabupaten")
   
   text_4_ <- c("US" = "4 or more", "FR" = "4 ou plus")
   text_5_ <- c("US" = "5 or more", "FR" = "5 ou plus")
@@ -1587,6 +1587,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   if (country %in% c("FR", "IT", "UK", "DE", "MX", "SK")) {
     e$urban_category[e$urban_category == "0"] <- NA
   }
+  if (country == "CN") e$urban_category <- e$area
   
   if (country=="US") {
     e$urban <- e$core_metropolitan <- as.numeric(as.vector(e$urban_category))==1
@@ -1613,8 +1614,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
   
   if (country %in% c("CN", "ID", "SA")) {
-    temp <- 1*(e$area %in% text_area_middle) + 2*(e$area %in% text_area_large)
-    e$area <- as.item(temp, abels = structure(c(0:2), names=c(text_area_small[country], text_area_middle[country], text_area_large[country])), annotation=Label(e$area) )
+    temp <- 1*(e$area %in% text_area_middle) + 2*(e$area %in% text_area_large) # TODO pb here
+    e$area <- as.item(temp, labels = structure(c(0:2), names=c(text_area_small[country], text_area_middle[country], text_area_large[country])), annotation=Label(e$area) )
   } 
   
   if ("CC_affected_2050" %in% names(e)) {

@@ -1789,7 +1789,7 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # heatmap_wrapper(vars = variables_burden_share, labels = labels_burden_share_short, conditions = heatmap_conditions, alphabetical = alphabetical, special = special)
     variables_burden_share <- temp
     
-    main_variables_opinion <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", "willing_limit_driving", "standard_support", "investments_support", "tax_transfers_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "burden_share_population", "tax_1p_support")
+    main_variables_opinion <<- c("CC_anthropogenic", "CC_problem", "should_fight_CC", "willing_limit_driving", "standard_support", "investments_support", "tax_transfers_support", "beef_ban_intensive_support", "insulation_mandatory_support_no_priming", "burden_share_ing_population", "tax_1p_support")
     # anthropogenic, willing limit driving: >= A lot; problem, should fight, burden_sharing_emissions: >= agree; support: >= somewhat support
     labels_opinion <<- c("CC exists, is anthropogenic", "CC is an important problem", "[Country] should fight CC", "Willing to limit driving", "Ban on combustion-engine cars", "Green infrastructure program", "Carbon tax with cash transfers", "Ban on intensive cattling", "Mandatory insulation of buildings", "Emission share should be in proportion to population*", "Global tax on millionaires funding LDC")
     heatmap_wrapper(vars = main_variables_opinion, labels = labels_opinion, labels_along = labels_burden_share_ing, conditions = heatmap_conditions, name = "opinion", alphabetical = alphabetical, special = special)
