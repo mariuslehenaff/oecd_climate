@@ -101,8 +101,8 @@ loadings_efa <- list()
     "MX_urban_category" = c("Rural", "Semiurbano", "Urbano"),
     "SK_region" = c("Seoul", "North", "West", "East"),
     "SK_urban_category" = c("District", "Town", "City"),
-    "AU_region" = c("West_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
-    "CA_region" = c("North-West", "Central", "Ontario", "Quebec", "East"),
+    "AU_region" = c("Western_Australia", "Queensland", "Broad_NSW", "South_Australia", "Victoria_Tasmania"),
+    "CA_region" = c("North_West", "Central", "Ontario", "Quebec", "East"),
     "TR_region" = c("Marmara", "West", "Central", "East"),
     "UA_region" = c("Center", "East", "South", "West")
     
@@ -733,12 +733,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                        "FR" = "dans une petite ville (entre 5 000 et 20 000 habitants)", "CN" = "A small town (10,000 – 50,000 inhabitants)")
   text_large_town <- c("US" = "A large town (between 20,000 and 50,000 inhabitants)", "US" = "A large town (20,000 – 50,000 inhabitants)", 
                        "FR" = "dans une ville moyenne (entre 20 000 et 50 000 habitants)", "CN" = "A large town (50,000 – 100,000 inhabitants)")
-  text_small_city <- c("US" = "A small city (between 50,000 and 250,000 inhabitants)", "US" = "A small city (50,000 – 250,000 inhabitants)", 
-                       "FR" = "dans une grande ville (entre 50 000 et 250 000 habitants)", "CN" = "A small city or its suburbs (100,000 – 500,000 inhabitants)")
-  text_medium_city <- c("US" = " A medium-size city (between 250,000 and 3,000,000 inhabitants)", "US" = "A medium-sized city (250,000 – 3,000,000 inhabitants)", 
-                        "FR" = "dans une métropole (plus de 250 000 habitants, hors Paris)", "CN" = "A large city or its suburbs (500,000 – 1,000,000 inhabitants)")
-  text_large_city <- c("US" = "A large city (more than 3 million inhabitants)", 
-                       "FR" = "en région parisienne", "CN" = "A very large city or its suburbs (1,000,000 – 10,000,000 inhabitants)")
+  text_small_city <- c("US" = "A small city (between 50,000 and 250,000 inhabitants)", "US" = "A small city (50,000 – 250,000 inhabitants)", "CA" = "A small city or its suburbs (50,000 – 250,000 inhabitants)",
+                       "FR" = "dans une grande ville (entre 50 000 et 250 000 habitants)", "CN" = "A small city or its suburbs (100,000 – 500,000 inhabitants)", "IA" = "A small city or its suburbs (50,000 – 2,50,000 inhabitants)")
+  text_medium_city <- c("US" = " A medium-size city (between 250,000 and 3,000,000 inhabitants)", "US" = "A medium-sized city (250,000 – 3,000,000 inhabitants)", "PL" = "A large city (250,000 – 3,000,000 inhabitants)", "CA" = "A large city or its suburbs (250,000 – 2,000,000 inhabitants)",
+                        "FR" = "dans une métropole (plus de 250 000 habitants, hors Paris)", "CN" = "A large city or its suburbs (500,000 – 1,000,000 inhabitants)", "SA" = "A large city or its suburbs (250,000 – 3,000,000 inhabitants)", "IA" = "A large city or its suburbs (2,50,000 – 30,00,000 inhabitants)")
+  text_large_city <- c("US" = "A large city (more than 3 million inhabitants)", "PL" = "A very large city (more than 3 million inhabitants)", "SA" = "A very large city or its suburbs (more than 3 million inhabitants)", "IA" = "A very large city or its suburbs (more than 30 lakh inhabitants)",
+                       "FR" = "en région parisienne", "CN" = "A very large city or its suburbs (1,000,000 – 10,000,000 inhabitants)", "CA" = "A very large city or its suburbs (more than 2 million inhabitants)")
   text_megalopolis <- c("CN" = "A megalopolis or its suburbs (more than 10 million inhabitants)")
   
   text_area_small <- c("SA" = "In a District municipality other than the District capital", "CN" = "Xiāng", "ID" = "Kota")
@@ -1605,7 +1605,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                     e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
                     e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                     e$country == "BR" ~ e$urbanity > 2,# >50k
-                    e$country == "CN" ~ e$urbanity > 2, #e$urban_category %in% c("Urban", "Small_Urban"), # i.e. > 10k: probably better to define it using urbanity
+                    e$country == "CN" ~ e$urbanity > 2, # >500k; otherwise: e$urban_category %in% c("Urban", "Small_Urban"), i.e. > 10k: probably better to define it using urbanity
                     e$country == "ID" ~ e$urban %in% c("Kota", "Capital town of a Kabupaten"),
                     e$country == "SA" ~ e$urban %in% c("In a capital of a District municipality", "In a metropolitan municipality"), # BUG TODO!
                     # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
@@ -2534,13 +2534,13 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
     e[[v]] <- as.character(e[[v]])
     e[[v]][is.na(e[[v]])] <- "NA"
     var <- ifelse(v %in% names(levels_quotas), v, paste(country, v, sep="_"))
-    levels_v <- as.character(levels_quotas[[var]])
     if (!(var %in% names(levels_quotas))) warning(paste(var, "not in levels_quotas"))
+    levels_v <- as.character(levels_quotas[[var]])
     missing_levels <- setdiff(levels(as.factor(e[[v]])), levels_v)
     present_levels <- which(levels_v %in% levels(as.factor(e[[v]])))
-    # cat(v, missing_levels, '\n')
+    if (length(present_levels) != length(levels_v)) warning(paste0("Following levels are missing from data: ", var, ": ", paste(levels_v[!1:length(levels_v) %in% present_levels], collapse = ', '), " (for ", country, "). Weights are still computed, neglecting this category."))
     prop_v <- pop_freq[[country]][[var]][present_levels]
-    if (min_weight_for_missing_level) freq_missing <- rep(0.000001, length(missing_levels))
+    if (min_weight_for_missing_level) freq_missing <- rep(0.000001, length(missing_levels)) # imputes 0 weight for levels present in data but not in the weight's definitio
     else freq_missing <- vapply(missing_levels, function(x) sum(e[[v]]==x), FUN.VALUE = c(0))
     freq_v <- c(prop_v*(nrow(e)-sum(freq_missing)), freq_missing)
     df <- data.frame(c(levels_v[present_levels], missing_levels), freq_v)
@@ -2554,7 +2554,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   
   if (printWeights) {    print(summary(weights(raked))  )
     print(paste("(mean w)^2 / (n * mean w^2): ", representativity_index(weights(raked)), " (pb if < 0.5)")) # <0.5 : problématique
-    print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3)))
+    print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3), "Nb obs. in sample: ", nrow(e)))
   }
   return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
   
@@ -2685,21 +2685,21 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- sa <- prepare(country = "SA", duration_min = 686)
 # ua <- pl # prepare(country = "UA", duration_min = 686, weighting = F, zscores = F)
 # e <- it <- prepare(country = "IT", duration_min = 686, zscores = T)# .92
-# e <- pl <- prepare(country = "PL", duration_min = 686, zscores = T)# .80
+# e <- pl <- prepare(country = "PL", duration_min = 686, zscores = T)# .89
 # e <- jp <- prepare(country = "JP", duration_min = 686, zscores = T)# .91
 # e <- sp <- prepare(country = "SP", duration_min = 686, zscores = T)# .61
 # e <- au <- prepare(country = "AU", duration_min = 686, zscores = T)# .44!
 # e <- sa <- prepare(country = "SA", duration_min = 686, zscores = T)# .74
-# e <- id <- prepare(country = "ID", duration_min = 686, zscores = T)# .99
+# e <- id <- prepare(country = "ID", duration_min = 686, zscores = T)# .99 
 # e <- ca <- prepare(country = "CA", duration_min = 686, zscores = T)# .90 # TODO: pb check "cor(e$index_k": SK
 # e <- uk <- prepare(country = "UK", duration_min = 686, zscores = T)# .65
-# e <- ia <- prepare(country = "IA", duration_min = 686, zscores = T)# .12!
+# e <- ia <- prepare(country = "IA", duration_min = 686, zscores = T)# .12! 
 # e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .36!
-# e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .26!
+# e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .83
 # e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .42!
-# e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .18!
+# e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .18! TODO region
 # e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .66
-# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .48!
+# e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .48! 
 # e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
 # e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
 # e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
@@ -2734,6 +2734,11 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- all <- merge_all_countries()
 # representativity_index(all$weight)
 # representativity_index(all$weight_country)
+
+# for (c in countries) {
+#   print(c)
+#   temp <- weighting(All[[c]], c)
+# }
 
 merge_all_countries <- function(df = All, weight_adult = T, weight_oecd = F) {
   all <- Reduce(function(df1, df2) { merge(df1, df2, all = T) }, df)
