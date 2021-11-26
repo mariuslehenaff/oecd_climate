@@ -1605,7 +1605,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                     e$country == "SK" ~ e$urban_category %in% c("Town", "City"),
                     e$country == "UK" ~ e$urban_category %in% c("Large_urban", "City_Town"),
                     e$country == "BR" ~ e$urbanity > 2,# >50k
-                    e$country == "CN" ~ e$urbanity > 3, #e$urban_category %in% c("Urban", "Small_Urban"), # i.e. > 10k: probably better to define it using urbanity
+                    e$country == "CN" ~ e$urbanity > 2, #e$urban_category %in% c("Urban", "Small_Urban"), # i.e. > 10k: probably better to define it using urbanity
                     e$country == "ID" ~ e$urban %in% c("Kota", "Capital town of a Kabupaten"),
                     e$country == "SA" ~ e$urban %in% c("In a capital of a District municipality", "In a metropolitan municipality"), # BUG TODO!
                     # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
@@ -2697,7 +2697,7 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- tr <- prepare(country = "TR", duration_min = 686, zscores = T)# .36!
 # e <- br <- prepare(country = "BR", duration_min = 686, zscores = T)# .26!
 # e <- mx <- prepare(country = "MX", duration_min = 686, zscores = T)# .42!
-# e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .22
+# e <- cn <- prepare(country = "CN", duration_min = 686, zscores = T)# .18!
 # e <- sk <- prepare(country = "SK", duration_min = 686, zscores = T)# .66
 # e <- ua <- prepare(country = "UA", duration_min = 686, zscores = T)# .48!
 # e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
