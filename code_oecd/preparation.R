@@ -1597,7 +1597,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   temp <- case_when(e$country %in% c("US") ~ e$urban == T,
                     e$country %in% c("AU", "CA", "JP", "TR", "UA") ~ e$urban_category %in% c("Urban", '"Urban'),
                     e$country %in% c("DK") ~ e$urbanity > 2, # >20k
-                    e$country %in% c("PL", "SP", "IA") ~ e$urbanity > 1, # >20k
+                    e$country %in% c("PL", "SP", "IA") ~ e$urbanity > 1, # >20k TODO check pb with rural
                     e$country == "MX" ~ e$urban_category %in% c("Urbano"),
                     e$country == "FR" ~ e$urban_category == "GP",
                     e$country == "DE" ~ e$urban_category %in% c("Towns_and_Suburbs", "Cities"),
@@ -1610,11 +1610,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                     e$country == "SA" ~ e$urban %in% c("In a capital of a District municipality", "In a metropolitan municipality"), # BUG TODO!
                     # e$country == "IA" ~ e$urban_category %in% c("20k_50k", "50k_250k", "250k_3M", "more_3M"),
                     TRUE ~ NA)
-  e$urban <- temp
+  e$urban <- temp # TODO! weight by college as well
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
   
   if (country %in% c("CN", "ID", "SA")) {
-    temp <- 1*(e$area %in% text_area_middle) + 2*(e$area %in% text_area_large) # TODO pb here
+    temp <- 1*(e$area %in% text_area_middle) + 2*(e$area %in% text_area_large) # TODO pb here because Jiedào is not recognized
     e$area <- as.item(temp, labels = structure(c(0:2), names=c(text_area_small[country], text_area_middle[country], text_area_large[country])), annotation=Label(e$area) )
   } 
   
