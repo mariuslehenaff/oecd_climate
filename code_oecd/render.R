@@ -1204,6 +1204,9 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     try({(CC_impacts_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = variables_CC_impacts, export_xls = export_xls, df = e, miss=F, rev_color=T, labels=labels_CC_impacts))
       save_plotly_new_filename(CC_impacts_US, width= 800, height=fig_height(5*nb_levels)) })
     
+    try({for (i in 1:length(variables_CC_impacts)) { (temp <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = variables_CC_impacts[i], export_xls = export_xls, df = e, miss=F, rev_color=T, labels=labels_CC_impacts[i]))
+      save_plotly_new_filename(temp, filename = paste0(variables_CC_impacts[i], replacement_text), width= 900, height=fig_height(1*nb_levels))  }})
+    
     ##### 6. Climate Change (attitudes and risks) ##### 
     labels_responsible <- c()
     for (v in variables_responsible_CC) labels_responsible <- c(labels_responsible, sub('.* - ', '', sub('.*: ', '', Label(e[[v]]))))
