@@ -4,6 +4,7 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
+# TODO! adapt new income to AU, MX, TR, CN, UA
 # TODO!: dominant => majority origin
 # TODO!: zscores => EFA, (automatize rep F, >0)
 # TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
