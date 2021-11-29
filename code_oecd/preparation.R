@@ -1614,7 +1614,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   label(e$urban) <- "urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
   
   if (country %in% c("CN", "ID", "SA")) {
-    temp <- 1*(e$area %in% text_area_middle) + 2*(e$area %in% text_area_large) # TODO pb here because Jiedào is not recognized
+    temp <- 1*(e$area %in% text_area_middle) + 2*(e$area %in% text_area_large) 
     e$area <- as.item(temp, labels = structure(c(0:2), names=c(text_area_small[country], text_area_middle[country], text_area_large[country])), annotation=Label(e$area) )
   } 
   
