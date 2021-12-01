@@ -1,0 +1,46 @@
+\documentclass{article}
+\input{draft_preamble.tex}
+\usepackage{amsmath}
+
+
+
+\begin{document}
+\def\fillandplacepagenumbersecond{%
+	\par\pagestyle{empty}%
+	\vbox to 0pt{\vss}
+	\vbox to 0pt{\baselineskip0pt
+		\hbox to\linewidth{\hss}%
+		\hbox to\linewidth{%
+			\hfil\normalsize{\thepage}\hfil}\vss}}
+
+\begin{landscape}
+\begin{table}[h!]
+\caption{Summary Statistics OECD Countries -- 1}
+	\begin{center}
+		\scalebox{0.6}{\input{"education_stat_all_OECD_1.tex"}}
+	\end{center}
+\end{table}
+
+\begin{table}[h!]
+\caption{Summary Statistics OECD Countries -- 2}
+	\begin{center}
+		\scalebox{0.6}{\input{"education_stat_all_OECD_2.tex"}}
+	\end{center}
+\end{table}
+
+\begin{table}[h!]
+\caption{Summary Statistics OECD Countries -- 3}
+	\begin{center}
+		\scalebox{0.6}{\input{"education_stat_all_OECD_3.tex"}}
+	\end{center}
+\end{table}
+
+\begin{table}[h!]
+\caption{Summary Statistics non-OECD Countries}
+	\begin{center}
+		\scalebox{0.55}{\input{"education_stat_all_non_OECD.tex"}}
+	\end{center}
+\end{table}
+\end{landscape}
+
+\end{document}
