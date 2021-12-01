@@ -4,6 +4,7 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
+# TODO! DK bug the way diploma is coded (order is inverted, cf. "uddannelsesniveau" in signal)
 # TODO! adapt new income to AU, MX, TR, CN, UA
 # TODO!: dominant => majority origin
 # TODO!: zscores => EFA, (automatize rep F, >0)
@@ -1094,8 +1095,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                             annotation=Label(e$speaks_well))
   
   temp <-  (e$education %in% text_education_primary) + 2 * (e$education %in% text_education_secondary) + 3 * (e$education %in% text_education_vocational) + 4 * (e$education %in% text_education_high) + 5 * (e$education %in% text_education_college) + 6 * (e$education %in% text_education_master)
-  e$education <- as.item(temp, labels = structure(c(0:6),
-                                                  names = c("None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
+  e$education <- as.item(temp, labels = structure(c(0:6), names = c("None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
                          annotation=Label(e$education))
   
   temp <- case_when(e$education < 3 ~ 0, e$education == 3 ~ 1,  e$education == 4 ~ 2, e$education > 4 ~ 3) 
