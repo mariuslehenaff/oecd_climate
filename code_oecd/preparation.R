@@ -2758,22 +2758,24 @@ merge_all_countries <- function(df = All, weight_adult = T, weight_oecd = F) {
     else all$weight <- all$weight_pop    
   }
   
-  all$knows_anthropogenic <- all$CC_anthropogenic == 2
-  variables_knowledge_efa <- variables_knowledge
-  negatives_knowledge_efa <- negatives_knowledge
-  # variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
-  # negatives_knowledge_efa <- c(negatives_knowledge, F)
-  temp <- all[,c("weight", "treatment", variables_knowledge_efa)]
-  for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
-  # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
-  loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
-  names(loadings) <- variables_knowledge_efa
-  loadings_efa[["all"]] <- loadings
-  # print(loadings_z)
-  all$index_knowledge_efa_global <- 0
-  for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
-  all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weight, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weight, na.rm = T))
-  label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+  try({
+    all$knows_anthropogenic <- all$CC_anthropogenic == 2
+    variables_knowledge_efa <- variables_knowledge
+    negatives_knowledge_efa <- negatives_knowledge
+    # variables_knowledge_efa <- c(variables_knowledge, "knows_anthropogenic")
+    # negatives_knowledge_efa <- c(negatives_knowledge, F)
+    temp <- all[,c("weight", "treatment", variables_knowledge_efa)]
+    for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]] <- z_score_computation(group = c(variables_knowledge_efa[i], negatives_knowledge_efa[i], "", "F"), df = temp, weight = T) # impute mean of same treatment group to missings
+    # for (i in seq_along(variables_knowledge_efa)) temp[[variables_knowledge_efa[i]]][is.pnr(temp[[variables_knowledge_efa[i]]])] <- wtd.mean(temp[[variables_knowledge_efa[i]]], weights = temp$weight, na.rm=T) # impute sample mean to missings
+    loadings <- as.numeric(factanal(temp[,variables_knowledge_efa], 1)$loadings)
+    names(loadings) <- variables_knowledge_efa
+    loadings_efa[["all"]] <- loadings
+    # print(loadings_z)
+    all$index_knowledge_efa_global <- 0
+    for (v in variables_knowledge_efa) all$index_knowledge_efa_global <- all$index_knowledge_efa_global + loadings[v]*temp[[v]]
+    all$index_knowledge_efa_global <- (all$index_knowledge_efa_global - wtd.mean(all$index_knowledge_efa_global, weights = all$weight, na.rm = T))/sqrt(wtd.var(all$index_knowledge_efa, weights = all$weight, na.rm = T))
+    label(all$index_knowledge_efa_global) <- "index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values."
+  })
   
   return(all)
 }
