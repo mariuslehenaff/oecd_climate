@@ -379,7 +379,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                         "statist", "trust_people", "flights", "km_driven", "hh_adults", "hh_children", "hh_size", "nb_children", "zipcode", "donation"#, "age"
   ), names(e))) {
     lab <- label(e[[i]])
-    e[[i]] <- as.numeric(as.vector( gsub("[^0-9]", "", e[[i]])))
+    e[[i]] <- as.numeric(as.vector( gsub("[^0-9]\\.", "", e[[i]]))) # /!\ this may create an issue with UK zipcodes as it removes letters
     label(e[[i]]) <- lab
   }
   for (v in variables_duration) e[[v]] <- e[[v]]/60

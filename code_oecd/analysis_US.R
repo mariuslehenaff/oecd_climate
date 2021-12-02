@@ -15,6 +15,13 @@ for (c in ongoing_countries) print(paste(c, round(mean(All[[c]]$duration),1)))
 for (c in current_countries) print(paste(c, round(median(All[[c]]$duration),1)))
 for (c in ongoing_countries) print(paste(c, All[[c]]$date[1]))
 for (c in ongoing_countries) print(paste(c, All[[c]]$date[7]))
+decrit(e$duration_CC_field[e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 9
+decrit(e$duration_CC_field[!e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[!e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 2
+decrit(e$length_CC_field[e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 105
+decrit(e$length_CC_field[!e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[!e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 29
+decrit(e$duration_CC_field[e$duration > 30], weights = e$weight[e$duration > 30]) # 6 
+decrit(e$duration_CC_field[e$duration < 30], weights = e$weight[e$duration < 30]) # 2 
+decrit(e$duration - e$duration_CC_field) # 13
 mean(grepl("Windows|Mac|Linux", e$OS))
 mean(grepl("Android|iPhone", e$OS))
 decrit("finished", data = e)
