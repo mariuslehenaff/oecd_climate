@@ -21,7 +21,7 @@ decrit(e$length_CC_field[e$country %in% c("SA", "IT", "MX", "SP", "BR")], weight
 decrit(e$length_CC_field[!e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[!e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 29
 decrit(e$duration_CC_field[e$duration > 30], weights = e$weight[e$duration > 30]) # 6 
 decrit(e$duration_CC_field[e$duration < 30], weights = e$weight[e$duration < 30]) # 2 
-decrit(e$duration - e$duration_CC_field) # 13
+decrit(e$duration - e$duration_CC_field)
 mean(grepl("Windows|Mac|Linux", e$OS))
 mean(grepl("Android|iPhone", e$OS))
 decrit("finished", data = e)
