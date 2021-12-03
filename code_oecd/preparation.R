@@ -4,8 +4,10 @@
 source(".Rprofile")
 source("relabel_rename.R")
 
+# TODO check who drops out
 # TODO! DK bug the way diploma is coded (order is inverted, cf. "uddannelsesniveau" in signal)
-# TODO! adapt new income to AU, MX, TR, CN, UA
+# TODO! adapt new income to AU, MX, TR, CN, UA + IT, CA, JP, SK, SP, US
+# TODO! adapt new diploma to AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA
 # TODO!: dominant => majority origin
 # TODO!: zscores => EFA, (automatize rep F, >0)
 # TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
@@ -32,8 +34,8 @@ euro_countries <- c("DK", "FR", "DE", "IT", "PL", "SP", "UK") # , "TR"
 euro_countries_names <- c("Denmark", "France", "Germany", "Italy", "Poland", "Spain", "United Kingdom") # , "Turkey"
 year_countries <- c(2020, 2019, 2019, 2019, 2019, 2019, 2018) # , 2019
 names(year_countries) <- euro_countries
-inc_deciles <- matrix(NA, nrow = 7, ncol = 9, dimnames = list(euro_countries, 1:9)) # equivalised disposable income deciles in LCU
-for (i in 1:9) for (c in euro_countries) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", year_countries[c])]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)]))
+inc_deciles <- matrix(NA, nrow = 2, ncol = 9, dimnames = list(c("IT", "ES"), 1:9)) # nrow = 7, euro_countries  equivalised disposable income deciles in LCU
+for (i in 1:9) for (c in c("IT", "ES")) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", 2019)]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)])) # euro_countries / year_countries[c]
 inc_quartiles <- matrix(NA, nrow = 7, ncol = 3, dimnames = list(euro_countries, c("Q1", "Q2", "Q3")))
 for (c in euro_countries) {
   inc_quartiles[c,1] <- round((inc_deciles[c,2]+inc_deciles[c,3])/2)
@@ -2701,27 +2703,30 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- cn <- prepare(country = "CN", duration_min = 686, zscores = F)# .22! 
 # e <- sk <- prepare(country = "SK", duration_min = 686, zscores = F)# .66
 # e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F)# .23! 
-# e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- dea <- prepare(country = "DE", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- ita <- prepare(country = "IT", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- pla <- prepare(country = "PL", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- jpa <- prepare(country = "JP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- spa <- prepare(country = "SP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- aua <- prepare(country = "AU", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- saa <- prepare(country = "SA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- ida <- prepare(country = "ID", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- caa <- prepare(country = "CA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- uka <- prepare(country = "UK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- iaa <- prepare(country = "IA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- tra <- prepare(country = "TR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- bra <- prepare(country = "BR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- mxa <- prepare(country = "MX", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- cna <- prepare(country = "CN", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- ska <- prepare(country = "SK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
-# e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,c("progress", "finished", "excluded", "duration", "attention_test")]
+# variables_include <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "income", "urbanity")
+# variables_include_os <- c(variables_include, "OS")
+# e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include] # TODO! add quotas, OS
+# e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
+# e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
+# e <- dea <- prepare(country = "DE", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
+# e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- ita <- prepare(country = "IT", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- pla <- prepare(country = "PL", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- jpa <- prepare(country = "JP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- spa <- prepare(country = "SP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- aua <- prepare(country = "AU", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- saa <- prepare(country = "SA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- ida <- prepare(country = "ID", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- caa <- prepare(country = "CA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- uka <- prepare(country = "UK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- iaa <- prepare(country = "IA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- tra <- prepare(country = "TR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- bra <- prepare(country = "BR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- mxa <- prepare(country = "MX", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- cna <- prepare(country = "CN", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- ska <- prepare(country = "SK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# usa$OS <- dea$OS <- dka$OS <- fra$OS <- NA
 # alla <- Reduce(function(df1, df2) { rbind(df1, df2) }, lapply(countries, function(s) eval(parse(text = paste0(tolower(s), "a")))))
 # Alla <- list()
 # for (c in c(countries)) Alla[[c]] <- eval(parse(text = paste0(tolower(c), "a")))
@@ -2920,7 +2925,7 @@ save.image(".RData")
 # mean(is.na(uac$urban_category)) # 10%
 # sum(is.na(uac$urban_category)) # 0
 # uac$zipcode[is.na(uac$urban_category)]
-# c("progress", "finished", "excluded", "duration", "attention_test")
+# variables_include
 # decrit(as.numeric(alla$progress))
 # decrit(alla$finished)
 # decrit(is.na(alla$excluded))
