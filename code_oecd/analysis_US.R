@@ -15,6 +15,9 @@ for (c in ongoing_countries) print(paste(c, round(mean(All[[c]]$duration),1)))
 for (c in current_countries) print(paste(c, round(median(All[[c]]$duration),1)))
 for (c in ongoing_countries) print(paste(c, All[[c]]$date[1]))
 for (c in ongoing_countries) print(paste(c, All[[c]]$date[7]))
+for (c in ongoing_countries) print(paste(c, round(median(All[[c]]$share_all_same), 3)))
+for (c in ongoing_countries) print(paste(c, round(mean(All[[c]]$share_all_same > 0.5, na.rm = T), 3)))
+decrit(e$share_all_same)
 decrit(e$duration_CC_field[e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 9
 decrit(e$duration_CC_field[!e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[!e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 2
 decrit(e$length_CC_field[e$country %in% c("SA", "IT", "MX", "SP", "BR")], weights = e$weight[e$country %in% c("SA", "IT", "MX", "SP", "BR")]) # 105
