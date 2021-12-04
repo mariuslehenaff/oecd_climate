@@ -510,6 +510,22 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_global_policies <<- c("global_assembly_support", "global_tax_support", "tax_1p_support")
   variables_gilets_jaunes <<- c("gilets_jaunes_dedans", "gilets_jaunes_soutien", "gilets_jaunes_compris", "gilets_jaunes_oppose", "gilets_jaunes_NSP") # , "gilets_jaunes"
   
+  variables_matrices <<- list("CC_impacts" = variables_CC_impacts, 
+                             "responsible_CC" = variables_responsible_CC, 
+                             "willing" = variables_willing, 
+                             "condition" = variables_condition, 
+                             "standard_win_lose" = variables_standard_win_lose, 
+                             "tax_transfers_win_lose" = variables_tax_transfers_win_lose, 
+                             "investments_win_lose" = variables_investments_win_lose, 
+                             "standard_effect" = variables_standard_effect, 
+                             "tax_transfers_effect" = variables_tax_transfers_effect, 
+                             "investments_effect" = variables_investments_effect, 
+                             "policy" = variables_policy, 
+                             "tax" = variables_tax, 
+                             "burden_share" = variables_burden_share, 
+                             "beef" = variables_beef
+                            )
+  
   e$affected_transport <- (e$transport_work=="Car or Motorbike") + (e$transport_shopping=="Car or Motorbike") + (e$transport_leisure=="Car or Motorbike")
   label(e$affected_transport) <- "affected_transport: Sum of activities for which a car or motorbike is used (work, leisure, shopping)."
   e$car_dependency <- e$affected_transport > 0
@@ -2024,6 +2040,20 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$score_CC_impacts <- (e$CC_impacts_droughts>0) + (e$CC_impacts_sea_rise>0) + (e$CC_impacts_volcanos==-2) + (e$CC_impacts_volcanos<=-1)
     label(e$score_CC_impacts) <- "score_CC_impacts: Score of knowledge of impacts from CC. Droughts > 0 (somewhat/very likely) + sea-level rise > 0 + volcanos <= -1 (somewhat unlikely) + volcanos == -2 (very unlikely)"
   }
+  
+  for (i in seq_along(variables_matrices)) if (length(intersect(variables_matrices[[i]], names(e))) > 0) {
+    e[[paste0("spread_", names(variables_matrices)[i])]] <- apply(X = e[, intersect(variables_matrices[[i]], names(e))], MARGIN = 1, FUN = function(v) return(max(v, na.rm = T) - min(v, na.rm = T)))
+    e[[paste0("all_same_", names(variables_matrices)[i])]] <- e[[paste0("spread_", names(variables_matrices)[i])]] == 0
+    label(e[[paste0("spread_", names(variables_matrices)[i])]]) <- paste0("spread_", names(variables_matrices)[i], ": Spread between max and min value in the respondent's answers to the matrix ", names(variables_matrices)[i])
+    label(e[[paste0("all_same_", names(variables_matrices)[i])]]) <- paste0("all_same_", names(variables_matrices)[i], ": T/F Indicator that all answers to the matrix ", names(variables_matrices)[i], " are identical.")
+  }
+  variables_spread <<- intersect(paste0("spread_", names(variables_matrices)), names(e))
+  variables_all_same <<- intersect(paste0("all_same_", names(variables_matrices)), names(e))
+  names_matrices <<- gsub("all_same_", "", variables_all_same)
+  e$mean_spread <- rowMeans(e[, variables_spread], na.rm = T)
+  e$share_all_same <- rowMeans(e[, variables_all_same], na.rm = T)
+  label(e$mean_spread) <- paste0("mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: ", paste(names_matrices, collapse = ", "), "). -Inf indicates that all answers were NA.")
+  label(e$share_all_same) <- paste0("mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: ",  paste(names_matrices, collapse = ", "), ").")
   
   
   if ("footprint_reg_US" %in% names(e)) { # manages ties in ranking
