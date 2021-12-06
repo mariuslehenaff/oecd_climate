@@ -33,7 +33,7 @@ qinc <- read.csv("../data/equivalised_income_deciles.tsv", sep = "\t")
 euro_countries <- c("DK", "FR", "DE", "IT", "PL", "SP", "UK") # , "TR"
 euro_countries_names <- c("Denmark", "France", "Germany", "Italy", "Poland", "Spain", "United Kingdom") # , "Turkey"
 year_countries <- c(2020, 2019, 2019, 2019, 2019, 2019, 2018) # , 2019
-names(year_countries) <- euro_countries
+names(year_countries) <- euro_countries # /!\ inc_deciles in US are not deciles because we need to account for differentiated household size per income bracket
 inc_deciles <- matrix(NA, nrow = 2, ncol = 9, dimnames = list(c("IT", "ES"), 1:9)) # nrow = 7, euro_countries  equivalised disposable income deciles in LCU
 for (i in 1:9) for (c in c("IT", "ES")) inc_deciles[c,i] <- as.numeric(gsub(" b", "", qinc[[paste0("X", 2019)]][qinc[[1]]==paste0("D", i, ",TC,NAC,", c)])) # euro_countries / year_countries[c]
 inc_quartiles <- matrix(NA, nrow = 7, ncol = 3, dimnames = list(euro_countries, c("Q1", "Q2", "Q3")))
