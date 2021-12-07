@@ -1981,6 +1981,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$vote_agg_number <- as.numeric(e$vote_agg)
     label(e$vote_agg_number) <- "vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other"
     
+    temp <-  -1*(e$vote_agg %in% c("Far left", "Left")) -0*(e$vote_agg %in% c("Center")) + 1*(e$vote_agg %in% c("Right", "Far right")) -0.1*(e$vote_agg == -.1)
+    e$vote_agg_factor <- as.factor(as.item(temp, labels = structure(c(-1,0,1,-0.1), names = c("Left", "Center", "Right","PNR or other")),
+                                           annotation="vote_agg_factor: Vote or hypothetical vote in last election aggregated into 3 categories. Left/Center/Right"))
+    
     if (country == "US") {
       e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
       e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
