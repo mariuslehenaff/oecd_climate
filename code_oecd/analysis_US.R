@@ -78,6 +78,11 @@ e$zipcode[is.na(e$region)]
 sum(is.na(e$region))
 
 
+##### Education #####
+decrit("college", e, which = e$college_border == T) # Favorable to us if 100% College.
+table(e$education_good)
+
+
 ##### Durations ######
 decrit("duration", data = e) # median 19 min / mean 23.5
 decrit(e$duration < 8) # 11%

@@ -1755,6 +1755,15 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e[e$education >= 5, "college"] <- "College Degree"
   e$college <- factor(e$college, levels = c("No college", "College Degree"))
   
+  if ("education_good" %in% names(e)) {
+    if (country == "US") e$college_border <- e$education_good %in% c("Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)")
+    if (country == "US") e$college_strict <- e$education_good %in% c("Bachelor's degree (for example: BA, BS)", "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "Doctorate degree (for example, PhD, EdD)")
+    if (country == "US") e$college_broad <- e$college_strict | e$college_border 
+    if ("college_border" %in% names(e)) label(e$college_border) <- "college_border: T/F Indicator that the respondent has some college education (in the broad sense) but no college degree (in the strict sense); i.e. college_strict == F & college_broad == T."
+    if ("college_strict" %in% names(e)) label(e$college_strict) <- "college_strict: T/F Indicator that the respondent has a college degree (in the strict sense)."
+    if ("college_broad" %in% names(e)) label(e$college_broad) <- "college_broad: T/F Indicator that the respondent has some college education (in the broad sense)."
+  }
+  
   if ("age_exact" %in% names(e)) {
     e$age_agg <- NULL
     e$age_agg[e$age_exact %in% 18:29] <- "18-29"
@@ -2739,7 +2748,8 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F)# .23! 
 # variables_include <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "income", "urbanity")
 # variables_include_os <- c(variables_include, "OS")
-# e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include] # TODO! add quotas, OS
+# variables_include_all <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "education_good", "income", "urbanity") # , "college", "college_strict", "college_broad"
+# e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_all] # TODO! add quotas, OS
 # e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
 # e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
 # e <- dea <- prepare(country = "DE", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]

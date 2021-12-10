@@ -951,6 +951,10 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # TODO AF: desc_table: logit, robust standard errors; add Gilets_jaunes analysis (they support more climate policies, except for the carbon tax with cash transfers); (decimale 0% barres)
 #          À propos LDA, Bluebery writes: Profile 2 is more worried than Profile 4 which may explains why they support less climate policies maybe un à quoi bon?. While for Profile 4, this worry translates into strong support (maybe also because they trust more the government to implement policies).
 #          Explore interrelation between worry/trust in govt/support: do those who think that CC is unsolvable support less climate policies? etc. Hypothesis: that the sign of worried on support for climate policies is reversed between Profile 2 and 4.
+# ask Dynata share of college in online rep: BR, MX, IA..
+# restrict rural/urban to countries where we are good on it
+# rebalance education on middle-income
+# stop BR, IA
 # TODO ASC: graph Main mechanisms; 
 #           use regressors_names; debug R (memisc from binary); define variables in preparation; 
 #           Appendix: All questionnaires in original language (as noted above); More details on the sampling and survey company (including dates at which the surveys done in each country).; 
