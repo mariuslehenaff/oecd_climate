@@ -944,6 +944,7 @@ relabel_and_rename_US <- function(e) {
     "HH_size",
     "income",
     "wealth",
+    "education_good",
     "education", 
     "employment_status",
     "polluting_sector_active", 
