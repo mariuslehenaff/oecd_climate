@@ -140,19 +140,54 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
   # if nb_topic = NULL, the number of topics is optimized
   e$concat_response <- ""
   for (v in variables_lda) {
-    if (is.numeric(e[[v]]) & !grepl("^investments_funding", v)){
+    if (v %in% c("vote_participation")) {
+      e$concat_response <- case_when(e[[v]] == "Yes" ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] == "No" ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     e[[v]] == "No right to vote" | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    } else if (v %in% c("heating")) {
+      e$concat_response <- case_when(e[[v]] %in%  c("Wood, solar, geothermal, or heat pump", "Electricity") ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] %in% c("Gas", "Heating oil") ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    } else if (v %in% c("heating_expenses")) {
+      e$concat_response <- case_when(e[[v]] > 500 ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] <= 500 ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    } else if (v %in% c("gas_expenses")) {
+      e$concat_response <- case_when(e[[v]] > 50 ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] <= 50 ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    }  else if (v %in% c("flights_3y")) {
+      e$concat_response <- case_when(e[[v]] > 1 ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] <= 1 ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    }   else if (v %in% c("frequency_beef")) {
+      e$concat_response <- case_when(e[[v]] > 0 ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] <= 0 ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    }  else if (grepl("^transport_", v)) {
+      e$concat_response <- case_when(e[[v]] == "Car or Motorbike" ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] %in% c("Public Transport", "Walking or Cycling") ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     e[[v]] %in% c("Not Applicable", "Other") ~ paste(e$concat_response, paste0(v, "__0")))   
+    } else if (v == "donation") {
+      e$concat_response <- case_when(e[[v]] > median(e[[v]]) ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] <= median(e[[v]])  ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    } else if (v == "survey_biased") {
+      e$concat_response <- case_when(e[[v]] == "Yes, left" ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] == "Yes, right"  ~ paste(e$concat_response, paste0(v, "__-1")),
+                                     e[[v]] == "No" | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))   
+    }  else if (v %in% footprint_variables) {
+      e$concat_response <- case_when(e[[v]] == correct_answers_df$true_rank[correct_answers_df$type == sub("_(.*)", "",sub("footprint_", "", v)) & correct_answers_df$cat == sub("(.*)_", "",sub("footprint_", "", v))] ~ paste(e$concat_response, paste0(v, "__1")),
+                                     e[[v]] != correct_answers_df$true_rank[correct_answers_df$type == sub("_(.*)", "",sub("footprint_", "", v)) & correct_answers_df$cat == sub("(.*)_", "",sub("footprint_", "", v))]  ~ paste(e$concat_response, paste0(v, "__-1")))
+    } else if (is.numeric(e[[v]])){
       e$concat_response <- case_when(e[[v]] >= 1 ~ paste(e$concat_response, paste0(v, "__1")),
                                      e[[v]] <= -1 ~ paste(e$concat_response, paste0(v, "__-1")),
                                      abs(e[[v]]) < 1 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
-    } else !grepl("^investments_funding", v){
+    } else{
       e$concat_response <- paste(e$concat_response, paste(v, gsub(" ", "_", gsub("[[:punct:]]", "", e[[v]])), sep="__"))
       
     }
   }
-  names(e)[38:285][grepl("^investments_funding", names(e)[38:285])]
-  e$concat_response <- case_when(e[[v]] >= 1 ~ paste(e$concat_response, paste0(v, "__1")),
-                                 e[[v]] <= -1 ~ paste(e$concat_response, paste0(v, "__-1")),
-                                 abs(e[[v]]) < 1 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
   
   e$concat_response <- tolower(e$concat_response)
   
@@ -217,22 +252,30 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
 }
 
 
-##### Treatment LDA ####  
+##### Treatment LDA ####
+
 # variables_lda <- names(e)[72:272][!grepl("_field|^winner$|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[72:272])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 variables_lda_no_obstacle_footprint <- names(e)[38:285][!grepl("_field|^winner$|footprint|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
-variables_lda <- names(e)[38:285][!grepl("_field|^winner$|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+variables_lda <- names(e)[38:285][!grepl("_field|^insulation_mandatory_support_|^winner$|will_insulate|_voters|^watched|^know|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 
 
 variables_lda <- c("dominant_origin",variables_lda, "wtp", "country")
+variables_lda <- c("dominant_origin",variables_lda, "wtp", "vote_agg", "insulation_support")
+# TODO: robustness remove vote_agg, left_right
+# TODO: remove variables of setB, setC : robustness 
 start <- Sys.time()
 lda <- create_lda(variables_lda, data = e, nb_topic = 2)
 lda_no_obstacle_footprint <- create_lda(variables_lda_no_obstacle_footprint, data = fr)
+
+lda <- create_lda(variables_lda, data = fr)
+
 
 (duration_lda <- Sys.time() - start) # 42min for all with optimization / 30 seconds without, all without weighted probas
 (terms <- terms(lda[[1]], 20)) # terms(lda_out, 20) lda_out <- lda[[1]]
 (lda_topics <- lda[[2]]) # lda_topics <- lda[[2]] lda_gamma <- lda[[3]]
 ## TODO: if we don't select all the variables for the LDA, are they still in lda[[4]]?
-e <- lda[[4]]
+e <- lda_no_obstacle_footprint[[4]]
+e$topic_factor <- as.factor(e$topic)
 
 decrit("topic", data = e)
 
