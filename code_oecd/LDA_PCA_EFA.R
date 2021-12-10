@@ -179,6 +179,8 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
     }  else if (v %in% footprint_variables) {
       e$concat_response <- case_when(e[[v]] == correct_answers_df$true_rank[correct_answers_df$type == sub("_(.*)", "",sub("footprint_", "", v)) & correct_answers_df$cat == sub("(.*)_", "",sub("footprint_", "", v))] ~ paste(e$concat_response, paste0(v, "__1")),
                                      e[[v]] != correct_answers_df$true_rank[correct_answers_df$type == sub("_(.*)", "",sub("footprint_", "", v)) & correct_answers_df$cat == sub("(.*)_", "",sub("footprint_", "", v))]  ~ paste(e$concat_response, paste0(v, "__-1")))
+    }  else if (grepl("^investments_funding_|^GHG_|^obstacles_insulation_")) { # handle multiple answers questions
+      e$concat_response <- case_when(e[[v]] == 1 ~ paste(e$concat_response, paste0(v, "__1")))
     } else if (is.numeric(e[[v]])){
       e$concat_response <- case_when(e[[v]] >= 1 ~ paste(e$concat_response, paste0(v, "__1")),
                                      e[[v]] <= -1 ~ paste(e$concat_response, paste0(v, "__-1")),
@@ -188,6 +190,10 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
       
     }
   }
+  # For multiple answers if no response create a nothing "word"
+  e$concat_response <- case_when( (!grepl("investments_funding_", e$concat_response)) ~ paste(e$concat_response, "investments_funding__none"))
+  e$concat_response <- case_when( (!grepl("GHG_", e$concat_response)) ~ paste(e$concat_response, "GHG__none"))
+  e$concat_response <- case_when( (!grepl("obstacles_insulation_", e$concat_response)) ~ paste(e$concat_response, "obstacles_insulation__none"))
   
   e$concat_response <- tolower(e$concat_response)
   
