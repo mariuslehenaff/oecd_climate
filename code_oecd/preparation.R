@@ -2921,6 +2921,28 @@ regressors_names <- rev(c("femaleTRUE" = "Gender: Female", "age65+" = "Age: > 64
                           "policies_self >= 1TRUE" = "Self wins from main policies: Agree", "policies_fair >= 1TRUE" = "Main policies are fair: Agree", "policies_poor >= 1TRUE" = "Poor win from main policies: Agree", "policies_rich >= 1TRUE" = "Rich win from main policies: Agree"))
 
 
+# Create df of correct answers for footprint variables. Used in LDA
+footprint_variables <- c("footprint_tr_car",
+                         "footprint_tr_coach",
+                         "footprint_tr_plane",
+                         "footprint_fd_beef",
+                         "footprint_fd_pasta",
+                         "footprint_fd_chicken",
+                         "footprint_el_gas",
+                         "footprint_el_nuclear",
+                         "footprint_el_coal",
+                         "footprint_reg_US",
+                         "footprint_reg_EU",
+                         "footprint_reg_china",
+                         "footprint_reg_india",
+                         "footprint_pc_US",
+                         "footprint_pc_EU",
+                         "footprint_pc_china",
+                         "footprint_pc_india")
+type <- sub("_(.*)", "",sub("footprint_", "", footprint_variables))
+cat <- sub("(.*)_", "",sub("footprint_", "", footprint_variables))
+true_rank <- c(2, 3, 1, 1, 3, 2, 2, 3, 1, 2, 3, 1, 4, 1, 2, 3, 4)
+correct_answers_df <- data.frame(type, cat, true_rank)
 
 save.image(".RData")  
 
