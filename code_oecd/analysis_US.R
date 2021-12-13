@@ -89,6 +89,8 @@ decrit(e$education)
 decrit(e$region[!is.na(e$education_good)])
 decrit(e$urban_category[!is.na(e$education_good) & e$college_strict == F])
 e$zipcode[!is.na(e$education_good) & e$college_strict == F & is.na(e$region) & e$finished == 1] # weird thing happening with zipcode 58601: many people from this village in North Dakota, and their region/urban_category are not identified
+decrit(e$attention_test[!is.na(e$education_good)] != "A little")
+decrit(e$college_strict[!is.na(e$education_good)] == F)
 
 
 ##### Durations ######
