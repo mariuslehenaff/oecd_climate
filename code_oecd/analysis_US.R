@@ -79,8 +79,16 @@ sum(is.na(e$region))
 
 
 ##### Education #####
+decrit(e$college_border)
 decrit("college", e, which = e$college_border == T) # Favorable to us if 100% College.
 table(e$education_good)
+table(e$education_good[e$college_border == T])
+table(e$education[e$college_border == T])
+decrit(e$education)
+
+decrit(e$region[!is.na(e$education_good)])
+decrit(e$urban_category[!is.na(e$education_good) & e$college_strict == F])
+e$zipcode[!is.na(e$education_good) & e$college_strict == F & is.na(e$region) & e$finished == 1] # weird thing happening with zipcode 58601: many people from this village in North Dakota, and their region/urban_category are not identified
 
 
 ##### Durations ######
