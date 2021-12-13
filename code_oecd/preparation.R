@@ -1112,8 +1112,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                                                      names = c("Cannot speak","Somewhat well","Well or very well","Native")),
                                                             annotation=Label(e$speaks_well))
   
-  temp <-  (e$education %in% text_education_primary) + 2 * (e$education %in% text_education_secondary) + 3 * (e$education %in% text_education_vocational) + 4 * (e$education %in% text_education_high) + 5 * (e$education %in% text_education_college) + 6 * (e$education %in% text_education_master)
-  e$education <- as.item(temp, labels = structure(c(0:6), names = c("None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
+  temp <-  (e$education %in% text_education_primary) + 2 * (e$education %in% text_education_secondary) + 3 * (e$education %in% text_education_vocational) + 4 * (e$education %in% text_education_high) + 5 * (e$education %in% text_education_college) + 6 * (e$education %in% text_education_master) - 0.1*is.pnr(e$education)
+  e$education <- as.item(temp, missing.values = -0.1, labels = structure(c(-0.1, 0:6), names = c(NA, "None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
                          annotation=Label(e$education))
   
   temp <- case_when(e$education < 3 ~ 0, e$education == 3 ~ 1,  e$education == 4 ~ 2, e$education > 4 ~ 3) 
@@ -1751,8 +1751,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$HH_size[e$HH_size %in% text_5_] <- 5
     e$HH_size <- as.item(as.numeric(e$HH_size), labels = structure(c(1:5), names = c("1", "2", "3", "4", "5 or more")), annotation=attr(e$HH_size, "label"))  }
   
-  e$college <- "No college"
-  e[e$education >= 5, "college"] <- "College Degree"
+  e$college <- NA
+  e$college[e$education < 5 & e$education >= 0] <- "No college"
+  e$college[e$education >= 5] <- "College Degree"
   e$college <- factor(e$college, levels = c("No college", "College Degree"))
   
   if ("education_good" %in% names(e)) {
@@ -2691,6 +2692,42 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
     # e$left_right_na <- as.numeric(e$left_right)
     # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
   } else {
+    text_education_no <- c("US" = "No schooling completed", 
+                           "FR" = "Aucun")
+    text_education_primary <- c("US" = "Primary school", 
+                                "FR" = "École primaire")
+    text_education_secondary <- c("US" = "Lower secondary school", 
+                                  "FR" = "Brevet")
+    text_education_vocational <- c("US" = "Vocational degree", 
+                                   "FR" = "CAP ou BEP")
+    text_education_high <- c("US" = "High school", 
+                             "FR" = "Baccalauréat")
+    text_education_college <- c("US" = "College degree", 
+                                "FR" = "Bac +2 ou Bac +3 (licence, BTS, DUT, DEUG...)")
+    text_education_master <- c("US" = "Master's degree or above", 
+                               "FR" = "Bac +5 ou plus (master, école d'ingénieur ou de commerce, doctorat, médecine, maîtrise, DEA, DESS...)")
+    
+    e$education_original <- e$education
+    temp <-  (e$education %in% text_education_primary) + 2 * (e$education %in% text_education_secondary) + 3 * (e$education %in% text_education_vocational) + 4 * (e$education %in% text_education_high) + 5 * (e$education %in% text_education_college) + 6 * (e$education %in% text_education_master) - 0.1*is.pnr(e$education)
+    e$education <- as.item(temp, missing.values = -0.1, labels = structure(c(-0.1, 0:6), names = c(NA, "None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
+                           annotation=Label(e$education))
+    
+    temp <- case_when(e$education < 3 ~ 0, e$education == 3 ~ 1,  e$education == 4 ~ 2, e$education > 4 ~ 3) 
+    e$diploma <- as.item(temp, labels = structure(c(0:3), names = c("No secondary", "Vocational", "High school", "College")), annotation="diploma: recoded from education - What is the highest level of education you have completed?")
+    
+    e$college <- NA
+    e$college[e$education < 5 & e$education >= 0] <- "No college"
+    e$college[e$education >= 5] <- "College Degree"
+    e$college <- factor(e$college, levels = c("No college", "College Degree"))
+    
+   if ("education_good" %in% names(e)) {
+     if (country == "US") e$college_border <- e$education_good %in% c("Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)")
+     if (country == "US") e$college_strict <- e$education_good %in% c("Bachelor's degree (for example: BA, BS)", "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "Doctorate degree (for example, PhD, EdD)")
+     if (country == "US") e$college_broad <- e$college_strict | e$college_border 
+     if ("college_border" %in% names(e)) label(e$college_border) <- "college_border: T/F Indicator that the respondent has some college education (in the broad sense) but no college degree (in the strict sense); i.e. college_strict == F & college_broad == T."
+     if ("college_strict" %in% names(e)) label(e$college_strict) <- "college_strict: T/F Indicator that the respondent has a college degree (in the strict sense)."
+     if ("college_broad" %in% names(e)) label(e$college_broad) <- "college_broad: T/F Indicator that the respondent has some college education (in the broad sense)."
+   }
   }
   
   # e$sample <- "a"
@@ -2748,8 +2785,8 @@ countries_field_treated <- c("DK", "US", "FR")
 # e <- ua <- prepare(country = "UA", duration_min = 686, zscores = F)# .23! 
 # variables_include <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "income", "urbanity")
 # variables_include_os <- c(variables_include, "OS")
-# variables_include_all <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "education_good", "income", "urbanity") # , "college", "college_strict", "college_broad"
-# e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_all] # TODO! add quotas, OS
+# variables_include_all <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "education_good", "education_original", "college_border", "college", "college_strict", "college_broad", "income", "urbanity") # , "college", "college_strict", "college_broad"
+e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F) #[,c(variables_include_all, "region", "urban_category", "zipcode")] # TODO! add quotas, OS
 # e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
 # e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
 # e <- dea <- prepare(country = "DE", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
