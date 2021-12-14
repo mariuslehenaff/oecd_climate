@@ -79,6 +79,9 @@ sum(is.na(e$region))
 
 
 ##### Education #####
+e <- ita
+e <- usa
+e <- aua
 decrit(e$college_border)
 decrit("college", e, which = e$college_border == T) # Favorable to us if 100% College.
 table(e$education_good)
@@ -89,9 +92,16 @@ decrit(e$education)
 decrit(e$region[!is.na(e$education_good)])
 decrit(e$urban_category[!is.na(e$education_good) & e$college_strict == F])
 e$zipcode[!is.na(e$education_good) & e$college_strict == F & is.na(e$region) & e$finished == 1] # weird thing happening with zipcode 58601: many people from this village in North Dakota, and their region/urban_category are not identified
-decrit(e$attention_test[!is.na(e$education_good)] != "A little")
+decrit(e$attention_test[!is.na(e$education_good)] != "A little") # are there 6 respondents counted in excess in US?
 decrit(e$college_strict[!is.na(e$education_good)] == F)
 
+nrow(e)
+which(is.na(e$region) & e$finished == 1 & as.numeric(e$duration)>686 & is.na(e$excluded) & !e$college)
+e$zipcode[c(12642, 12662, 12663, 12664, 12704, 12731)]
+e$duration[c(12642, 12662, 12663, 12664, 12704, 12731)]
+decrit(it$region) # In Italy there is some issue in the qualtrics count but none in the data; what about US region, urban?
+which(is.na(au$region)) # In AU there is a missing region/urban_category but it was in September
+decrit(us$income)
 
 ##### Durations ######
 decrit("duration", data = e) # median 19 min / mean 23.5

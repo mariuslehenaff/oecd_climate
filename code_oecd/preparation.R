@@ -831,13 +831,17 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                              "UA" = "Понад 2000₴", "UK" = "More than £200", "TR" = "2,000 ₺'den fazla", "SP" = "Más de 200 €", "SK" = "200,000원 이상", "SA" = "More than R2,000", "ZU" = "Ngaphezulu kuka R2,000", "PL" = "Więcej niż 800 złotych", "BR" = "Mais de R$800,00", "CA" = "More than $200", "FR" = "Plus de 185€", "IT" = "Più di 200 €", "JP" = "20,000円以上", "MX" = "Más de 2000 pesos")
   
   
-  text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 35,000€/mois", "AU" = "less than $51,000",
+  text_income_q1 <- c("US" = "less than $35,000", "FR" = "Moins de 35,000€/mois", "AU" = "less than $51,000", "less than $10,000", "between $10,000 and $20,000", "between $20,000 and $25,000", "15", "22",
+                      "US" = "less than $16,000", "US" = "between $16,000 and $28,000", "US" = "between $28,000 and $35,000", 
                       "CA" = "less than CA$22,000", "IA" = "less than ₹50,000", "SA" = "less than R35,000 per month", "UK" = "less than £35,000")
-  text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 35,000 et 70,000€/mois", "AU" = "between $51,000 and $80,000",
+  text_income_q2 <- c("US" = "between $35,000 and $70,000", "FR" = "Entre 35,000 et 70,000€/mois", "AU" = "between $51,000 and $80,000", "between $25,000 and $30,000", "between $30,000 and $40,000", "between $40,000 and $50,000", "35", "45",
+                      "US" = "between $35,000 and $41,000", "US" = "between $41,000 and $54,000", "US" = "between $54,000 and $70,000", 
                       "CA" = "between CA$22,000 and CA$39,000", "IA" = "between ₹50,000 and ₹100,000", "SA" = "between R35,000 and R70,000 per month")
-  text_income_q3 <- c("US" = "between $70,000 and $120,000", "FR" = "Entre 70,000 et 120,000€/mois", "AU" = "between $80,000 and $122,000",
+  text_income_q3 <- c("US" = "between $70,000 and $120,000", "FR" = "Entre 70,000 et 120,000€/mois", "AU" = "between $80,000 and $122,000", "between $50,000 and $60,000", "between $60,000 and $70,000", "between $70,000 and $75,000", "65", "72",
+                      "US" = "between $70,000 and $87,000", "US" = "between $87,000 and $110,000", "US" = "between $110,000 and $120,000", 
                       "CA" = "between CA$39,000 and CA$74,000", "IA" = "between ₹100,000 and ₹200,000", "SA" = "between R70,000 and R120,000 per month")
-  text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 120,000€/mois", "AU" = "more than $122,000", 
+  text_income_q4 <- c("US" = "more than $120,000", "FR" = "Plus de 120,000€/mois", "AU" = "more than $122,000", "between $75,000 and $80,000", "between $80,000 and $90,000", "more than $90,000", "85", "95", # TODO! check income missing
+                      "US" = "between $120,000 and $143,000", "US" = "between $143,000 and $200,000", "US" = "more than $200,000", 
                       "CA" = "more than CA$74,000", "IA" = "more than ₹200,000", "SA" = "more than R120,000 per month")
   
   text_wealth_q1 <- c("US" = "Less than $0 (I have a net debt)", "FR" = "Moins de 10 000€", "CA" = "Less than CA$20,000",
@@ -1759,7 +1763,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   if ("education_good" %in% names(e)) {
     if (country == "US") e$college_border <- e$education_good %in% c("Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)")
     if (country == "US") e$college_strict <- e$education_good %in% c("Bachelor's degree (for example: BA, BS)", "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "Doctorate degree (for example, PhD, EdD)")
-    if (country == "US") e$college_broad <- e$college_strict | e$college_border 
+    if (country == "AU") e$college_border <- e$education_good %in% c("Certificate IV")
+    if (country == "AU") e$college_strict <- e$education_good %in% c("Advanced Diploma, Diploma, Associate Degree", "Bachelor's Degree", "Graduate Diploma, Graduate Certificate", "Postgraduate Degree (Honours, Master's or Doctoral Degree)")
+    if (country %in% c("US", "AU")) e$college_broad <- e$college_strict | e$college_border 
+    if ("college_border" %in% names(e)) e$college_border[is.na(e$education_good)] <- e$college_strict[is.na(e$education_good)] <- e$college_border[is.na(e$education_good)] <- NA
     if ("college_border" %in% names(e)) label(e$college_border) <- "college_border: T/F Indicator that the respondent has some college education (in the broad sense) but no college degree (in the strict sense); i.e. college_strict == F & college_broad == T."
     if ("college_strict" %in% names(e)) label(e$college_strict) <- "college_strict: T/F Indicator that the respondent has a college degree (in the strict sense)."
     if ("college_broad" %in% names(e)) label(e$college_broad) <- "college_broad: T/F Indicator that the respondent has some college education (in the broad sense)."
@@ -2723,7 +2730,10 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
    if ("education_good" %in% names(e)) {
      if (country == "US") e$college_border <- e$education_good %in% c("Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)")
      if (country == "US") e$college_strict <- e$education_good %in% c("Bachelor's degree (for example: BA, BS)", "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "Doctorate degree (for example, PhD, EdD)")
-     if (country == "US") e$college_broad <- e$college_strict | e$college_border 
+     if (country == "AU") e$college_border <- e$education_good %in% c("Certificate IV")
+     if (country == "AU") e$college_strict <- e$education_good %in% c("Advanced Diploma, Diploma, Associate Degree", "Bachelor's Degree", "Graduate Diploma, Graduate Certificate", "Postgraduate Degree (Honours, Master's or Doctoral Degree)")
+     if (country %in% c("US", "AU")) e$college_broad <- e$college_strict | e$college_border 
+     if ("college_border" %in% names(e)) e$college_border[is.na(e$education_good)] <- e$college_strict[is.na(e$education_good)] <- e$college_border[is.na(e$education_good)] <- NA
      if ("college_border" %in% names(e)) label(e$college_border) <- "college_border: T/F Indicator that the respondent has some college education (in the broad sense) but no college degree (in the strict sense); i.e. college_strict == F & college_broad == T."
      if ("college_strict" %in% names(e)) label(e$college_strict) <- "college_strict: T/F Indicator that the respondent has a college degree (in the strict sense)."
      if ("college_broad" %in% names(e)) label(e$college_broad) <- "college_broad: T/F Indicator that the respondent has some college education (in the broad sense)."
@@ -2786,16 +2796,16 @@ countries_field_treated <- c("DK", "US", "FR")
 # variables_include <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "income", "urbanity")
 # variables_include_os <- c(variables_include, "OS")
 # variables_include_all <- c("progress", "finished", "excluded", "duration", "attention_test", "age", "education", "education_good", "education_original", "college_border", "college", "college_strict", "college_broad", "income", "urbanity") # , "college", "college_strict", "college_broad"
-e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F) #[,c(variables_include_all, "region", "urban_category", "zipcode")] # TODO! add quotas, OS
+# e <- usa <- prepare(country = "US", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F) #[,c(variables_include_all, "region", "urban_category", "zipcode")] # TODO! add quotas, OS
 # e <- dka <- prepare(country = "DK", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
 # e <- fra <- prepare(country = "FR", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
 # e <- dea <- prepare(country = "DE", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include]
 # e <- uaa <- prepare(country = "UA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
-# e <- ita <- prepare(country = "IT", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- ita <- prepare(country = "IT", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)#[,variables_include_os]
 # e <- pla <- prepare(country = "PL", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
 # e <- jpa <- prepare(country = "JP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
 # e <- spa <- prepare(country = "SP", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
-# e <- aua <- prepare(country = "AU", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
+# e <- aua <- prepare(country = "AU", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)#[,variables_include_os]
 # e <- saa <- prepare(country = "SA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
 # e <- ida <- prepare(country = "ID", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
 # e <- caa <- prepare(country = "CA", duration_min = 686, zscores = F, exclude_speeder = F, only_finished = F, remove_id = T, exclude_screened = F)[,variables_include_os]
