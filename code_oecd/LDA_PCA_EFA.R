@@ -179,13 +179,13 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
     }  else if (v %in% footprint_variables) {
       e$concat_response <- case_when(e[[v]] == correct_answers_df$true_rank[correct_answers_df$type == sub("_(.*)", "",sub("footprint_", "", v)) & correct_answers_df$cat == sub("(.*)_", "",sub("footprint_", "", v))] ~ paste(e$concat_response, paste0(v, "__1")),
                                      e[[v]] != correct_answers_df$true_rank[correct_answers_df$type == sub("_(.*)", "",sub("footprint_", "", v)) & correct_answers_df$cat == sub("(.*)_", "",sub("footprint_", "", v))]  ~ paste(e$concat_response, paste0(v, "__-1")))
-    }  else if (grepl("^investments_funding_|^GHG_|^obstacles_insulation_")) { # handle multiple answers questions
+    }  else if (grepl("investments_funding_|GHG_|obstacles_insulation_", v)) {
       e$concat_response <- case_when(e[[v]] == 1 ~ paste(e$concat_response, paste0(v, "__1")))
     } else if (is.numeric(e[[v]])){
       e$concat_response <- case_when(e[[v]] >= 1 ~ paste(e$concat_response, paste0(v, "__1")),
                                      e[[v]] <= -1 ~ paste(e$concat_response, paste0(v, "__-1")),
                                      abs(e[[v]]) < 1 | is.pnr(e[[v]]) ~ paste(e$concat_response, paste0(v, "__0")))
-    } else{
+    } else {
       e$concat_response <- paste(e$concat_response, paste(v, gsub(" ", "_", gsub("[[:punct:]]", "", e[[v]])), sep="__"))
       
     }
@@ -262,19 +262,22 @@ create_lda <- function(variables_lda, data = e, nb_topic = NULL, compute_wtd_pro
 
 # variables_lda <- names(e)[72:272][!grepl("_field|^winner$|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[72:272])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 variables_lda_no_obstacle_footprint <- names(e)[38:285][!grepl("_field|^winner$|footprint|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
-variables_lda <- names(e)[38:285][!grepl("_field|^insulation_mandatory_support_|^winner$|will_insulate|_voters|^watched|^know|obstacles_insulation|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+variables_lda <- names(e)[38:285][!grepl("_field|^insulation_mandatory_support_|^winner$|obstacles_insulation|will_insulate|_voters|^watched|^know|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
+variables_lda_w_obstacles <- names(e)[38:285][!grepl("_field|^insulation_mandatory_support_|^winner$|will_insulate|_voters|^watched|^know|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 
 
 variables_lda <- c("dominant_origin",variables_lda, "wtp", "country")
 variables_lda <- c("dominant_origin",variables_lda, "wtp", "vote_agg", "insulation_support")
+variables_lda_w_obstacles <- c("dominant_origin",variables_lda_w_obstacles, "wtp", "vote_agg", "insulation_support")
+
 # TODO: robustness remove vote_agg, left_right
 # TODO: remove variables of setB, setC : robustness 
 start <- Sys.time()
 lda <- create_lda(variables_lda, data = e, nb_topic = 2)
 lda_no_obstacle_footprint <- create_lda(variables_lda_no_obstacle_footprint, data = fr)
 
-lda <- create_lda(variables_lda, data = fr)
-
+lda <- create_lda(variables_lda, data = e)
+lda_w_obstacles <- create_lda(variables_lda_w_obstacles, data = e)
 
 (duration_lda <- Sys.time() - start) # 42min for all with optimization / 30 seconds without, all without weighted probas
 (terms <- terms(lda[[1]], 20)) # terms(lda_out, 20) lda_out <- lda[[1]]
