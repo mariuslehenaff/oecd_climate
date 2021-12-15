@@ -98,10 +98,13 @@ decrit(e$college_strict[!is.na(e$education_good)] == F)
 nrow(e)
 which(is.na(e$region) & e$finished == 1 & as.numeric(e$duration)>686 & is.na(e$excluded) & !e$college)
 e$zipcode[c(12642, 12662, 12663, 12664, 12704, 12731)]
-e$duration[c(12642, 12662, 12663, 12664, 12704, 12731)]
-decrit(it$region) # In Italy there is some issue in the qualtrics count but none in the data; what about US region, urban?
+e$duration[c(12642, 12662, 12663, 12664, 12704, 12731)] # 15 US region/urban are missing (5 in extra resp.), don't know why (bug?)
+decrit(it$region) # In Italy there is some issue in the qualtrics count but none in the data
 which(is.na(au$region)) # In AU there is a missing region/urban_category but it was in September
 decrit(us$income)
+which(is.na(us$region))
+us$zipcode[is.na(us$region)]
+
 
 ##### Durations ######
 decrit("duration", data = e) # median 19 min / mean 23.5
