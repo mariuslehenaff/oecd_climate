@@ -86,9 +86,9 @@ plot_along(vars = c("policies_support"), along = "college", labels = c("Average 
 # plot_along(vars = c("policies_support"), along = "diploma", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr)
 plot_along(vars = c("policies_support"), along = "Gilets_jaunes_agg", labels = c("Average support for main policies"), covariates = c(setAt, setB, "Gilets_jaunes_agg"), df = fr)
 plot_along(vars = c("policies_support"), along = "age", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr)
-plot_along(vars = c("policies_support"), along = "availability_transport", labels = c("Average support for main policies"), covariates = c(setAt, setB, "availability_transport"), df = fr)  # TODO!
-plot_along(vars = c("policies_support"), along = "vote_agg", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr) # TODO!
-plot_along(vars = c("policies_support"), along = "gas_expenses", labels = c("Average support for main policies"), covariates = c(setAt, setB, "gas_expenses"), df = fr) # TODO!
+plot_along(vars = c("policies_support"), along = "availability_transport", factor_along = T, labels = c("Average support for main policies"), covariates = c(setAt, setB[-5], "as.factor(availability_transport)"), df = fr) 
+plot_along(vars = c("policies_support"), along = "vote_agg_factor", labels = c("Average support for main policies"), covariates = c(setAt, setB), df = fr)
+plot_along(vars = c("policies_support"), along = "gas_expenses", factor_along = T,labels = c("Average support for main policies"), covariates = c(setAt, setB[-2], "as.factor(gas_expenses)"), df = fr) 
 # TODO: choose x-axis limits, reg, cond in automatic name
 
 
