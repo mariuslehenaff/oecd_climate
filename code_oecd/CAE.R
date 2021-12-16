@@ -129,8 +129,11 @@ main_policies_socio_non_standardized <- calc.relimp(models[[1]], type = c("lmg")
 main_policies_indices_non_standardized <- calc.relimp(models[[2]], type = c("lmg"), rela = F, rank= F)
 
 # Graphs
-lmg_main_policies_socio_non_standardized <- barres(data = t(as.matrix(main_policies_socio_non_standardized@lmg)), labels = controls_labels_lm_signs,legend = "% of response variances", rev = F)
-lmg_main_policies_indices_non_standardized <- barres(data = t(as.matrix(main_policies_indices_non_standardized@lmg)), labels = setC_indices_label_signs[c(-6,-10,-12)],legend = "% of response variances", rev = F)
+(lmg_main_policies_socio_non_standardized <- barres(data = t(as.matrix(main_policies_socio_non_standardized@lmg)), labels = controls_labels_lm_signs,legend = "% of response variances", rev = F))
+(lmg_main_policies_indices_non_standardized <- barres(data = t(as.matrix(main_policies_indices_non_standardized@lmg)), labels = setC_indices_label_signs[c(-6,-10,-12)],legend = "% of response variances", rev = F))
+save_plotly(lmg_main_policies_socio_non_standardized, width = 701, height = 394)
+save_plotly(lmg_main_policies_indices_non_standardized, width = 701, height = 394)
+
 
 ##### Explanatory ideas: Gelbach decompositions #####
 # /!\ This need to be changed if you're note using STATA SE 17 or a Mac
@@ -282,3 +285,8 @@ plot_along(vars = c("index_main_policies", "index_all_policies"), along = "treat
 
 # plot_along(plot_origin_line = T, vars = c("policies_support"), along = "treatment", labels = c("Average support for main policies"), name = "temp", covariates = setAt, df = fr, save = F)
 # plot_along(plot_origin_line = T, vars = variables_policies_support, along = "treatment", labels = labels_policies, name = "temp", covariates = setAt, df = fr, save = F)
+
+
+##### Appendix: representativity by vote #####
+# e <- eval(parse(text = tolower(country)))
+sum(fr$vote_participation == "Yes" & !(fr$vote %in% c("PNR", "Preferisco non dirlo", "Prefiero no decirlo")))/NROW(fr)
