@@ -1983,9 +1983,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Vatan Partisi; Left: Cumhuriyet Halk Partisi|Halkların Demokratik Partisi; Center: İYİ Parti; Right: Adalet ve Kalkınma Partisi; Far right: Milliyetçi Hareket Partisi|Saadet Partisi|Hür Dava Partisi")
       
     } else if (country == "BR") { # Automatic classification is the same except that Far right parties are then considered Right
-      rm(temp_2)
-      temp_2 < -1*(e$vote %in% c("Fernando Haddad", "Marina Silva")) -0*(e$vote %in% c("Ciro Gomes", "Geraldo Alckmin", "Henrique Meirelles")) + 1*(e$vote %in% c("João Amoêdo")) + 2*(e$vote %in% c("Jair Bolsonaro", "Cabo Daciolo")) -0.1*(e$vote %in% c("Other", "PNR"))
-      e$vote_agg <- as.item(temp_2, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
+      #rm(temp_2)
+      temp <- -1*(e$vote %in% c("Fernando Haddad", "Marina Silva")) -0*(e$vote %in% c("Ciro Gomes", "Geraldo Alckmin", "Henrique Meirelles")) + 1*(e$vote %in% c("João Amoêdo")) + 2*(e$vote %in% c("Jair Bolsonaro", "Cabo Daciolo")) -0.1*(e$vote %in% c("Other", "PNR"))
+      e$vote_agg <- as.item(temp, labels = structure(c(-2,-1,0,1,2,-0.1), names = c("Far left","Left", "Center", "Right","Far right","PNR or other")),
                             missing.values=-0.1, annotation="vote_agg: Vote or hypothetical vote in last election aggregated into 5 categories. Far left: Guilherme Boulos; Left: Fernando Haddad|Marina Silva; Center: Ciro Gomes|Geraldo Alckmin|Henrique Meirelles|Alvaro Dias; Right: João Amoêdo; Far right: Jair Bolsonaro|Cabo Daciolo")
       
     } else if (country == "UK") { # Automatic classification is the same except that Far right parties are then considered Right
@@ -2003,6 +2003,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$vote_agg_factor <- as.factor(as.item(temp, labels = structure(c(-1,0,1,-0.1), names = c("Left", "Center", "Right","PNR or other")),
                                            annotation="vote_agg_factor: Vote or hypothetical vote in last election aggregated into 3 categories. Left/Center/Right"))
     
+
     if (country == "US") {
       e$vote_2020 <- "Other/Non-voter" # What respondent voted in 2020. But vote, vote_2016 is what candidate they support (i.e. what they voted or what they would have voted if they had voted)
       e$vote_2020[e$vote_participation %in% c("No right to vote", "PNR") | e$vote_voters=="PNR"] <- "PNR/no right"
@@ -3005,27 +3006,28 @@ correct_answers_df <- data.frame(type, cat, true_rank)
 save.image(".RData")  
 
 ## PREPARE DATA FOR STATA
-write.csv(all,"../data/all_211215.csv", row.names=F)
-all_stata <- janitor::clean_names(all)
-names_stata <- c()
-for (i in seq_along(names(all_stata))){
-  # If more than 999 variables would need to change 29 to 28 and 28 to 27 in the line below
-  names_stata[i] <- ifelse(nchar(names(all_stata)[i]) < 29, names(all_stata)[i], paste(substr(names(all_stata)[i], 1, 28), i, sep = "_"))
-}
-names(all_stata) <- names_stata
-# Shorten string values
-for (i in c("comment_field", "comment_field_english", "cc_field", "cc_field_english")) {
-  all_stata[[i]] <- substr(all_stata[[i]], 1, 128)
-}
+# write.csv(all,"../data/all_211215.csv", row.names=F)
+# all_stata <- janitor::clean_names(all)
+# names_stata <- c()
+# for (i in seq_along(names(all_stata))){
+#   # If more than 999 variables would need to change 29 to 28 and 28 to 27 in the line below
+#   names_stata[i] <- ifelse(nchar(names(all_stata)[i]) < 29, names(all_stata)[i], paste(substr(names(all_stata)[i], 1, 28), i, sep = "_"))
+# }
+# names(all_stata) <- names_stata
+# # Shorten string values
+# for (i in c("comment_field", "comment_field_english", "cc_field", "cc_field_english")) {
+#   all_stata[[i]] <- substr(all_stata[[i]], 1, 128)
+# }
+# 
+# haven::write_dta(all_stata, "../data/all.dta")
+# # write.csv(all_stata, "../data/all_211102_stataNames.csv")
+# 
+# dictionary_stata_R <- data.frame(names(all), names_stata, label(all))
+# names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
+# write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
+# rm(all_stata)
 
-haven::write_dta(all_stata, "../data/all.dta")
-# write.csv(all_stata, "../data/all_211102_stataNames.csv")
-
-dictionary_stata_R <- data.frame(names(all), names_stata, label(all))
-names(dictionary_stata_R) <- c("Names R", "Names Stata", "Label")
-write_csv(dictionary_stata_R, "../data/dictionary_stata_R.csv")
-rm(all_stata)
-
+# DEPRECATED
 # all_bis <- janitor::clean_names(all)
 # df = as.data.frame(apply(all_bis, 2, function(x){
 #   if(class(x) == 'character') substr(x, 1, 128) else x}))
