@@ -382,10 +382,12 @@ region,region,region: region
 winner_latent,winner_latent,winner_latent: winner_latent
 winner,winner,winner: winner
 positive_treatment,positive_treatment,"positive_treatment: 0/1 If =1, questions on economic effect and cost-effectiveness of main policies asked in a positive way: positive/costless, if =0: negative/costly. Always =0 for US, DK, FR."
-affected_transport,affected_transport,affected_transport: Sum of activities for which a car or motorbike is used
+affected_transport,affected_transport,"affected_transport: Sum of activities for which a car or motorbike is used (work, leisure, shopping)."
+car_dependency,car_dependency,"car_dependency: Car or motorbike is used for at least one activity (work, leisure, shopping)."
 attentive,attentive,
 owner,owner,owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?
 diploma,diploma,
+investments_standard_minus_tax_transfers,investments_standard_minus_t_264,investments_standard_minus_tax_transfers: (standard_support + investments_support)/2 - tax_transfers_support
 scale_state_national,scale_state_national,scale_state: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - National
 pro_rich_pay,pro_rich_pay,pro_rich_pay: In favor of burden_share where rich countries pay: agree to _population or _historical.
 burden_share_ing_population,burden_share_ing_population,
@@ -412,11 +414,11 @@ positive_treatment_present,positive_treatment_present,
 investments_costless,investments_costless,
 investments_costless_costly,investments_costless_costly,
 investments_positive_effect,investments_positive_effect,
-investments_positive_negative,investments_positive_negativ_289,
+investments_positive_negative,investments_positive_negativ_291,
 tax_transfers_costless,tax_transfers_costless,
-tax_transfers_costless_costly,tax_transfers_costless_costl_291,
-tax_transfers_positive_effect,tax_transfers_positive_effec_292,
-tax_transfers_positive_negative,tax_transfers_positive_negat_293,
+tax_transfers_costless_costly,tax_transfers_costless_costl_293,
+tax_transfers_positive_effect,tax_transfers_positive_effec_294,
+tax_transfers_positive_negative,tax_transfers_positive_negat_295,
 policies_large_effect,policies_large_effect,"policies_large_effect: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have large effect on the economy and employment? Strongly disagree-agree"
 policies_positive_negative,policies_positive_negative,"policies_positive_negative: An emission limit for cars, a green infrastructure program and a carbon tax with cash transfers would have negative effect on the economy and employment? Strongly disagree-agree"
 policies_fair,policies_fair,"policies_fair: An emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers is fair? Strongly disagree - strongly agree"
@@ -429,6 +431,8 @@ policies_middle,policies_middle,"policies_middle: Would the middle class win or 
 policies_poor,policies_poor,"policies_poor: Would the poorest win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
 policies_incidence,policies_incidence,
 policies_self,policies_self,"policies_self: Would your household win or lose financially from an emission limit for cars, a green infrastrcuture program and a carbon tax with cash transfers? Average of 3 policies in [-2;+2]"
+policies_fair_support_same_sign,policies_fair_support_same_s_308,policies_fair_support_same_sign: T/F policies_fair * policies_support > 0.
+policies_support_poor_same_sign,policies_support_poor_same_s_309,policies_support_poor_same_sign: T/F policies_poor * policies_support > 0.
 urban,urban,"urban: Live in an urban area. Computed from zipcode if possible, otherwise from answer to urbanity. US: core_metroplitan; DK: urbanity > 20k; FR: Grand Pôle; IT: Cities and small cities from Eurostat; UK: Urban city or town, or conurbation and large urban area; "
 flights_agg,flights_agg,
 donation_agg,donation_agg,
@@ -451,9 +455,9 @@ income_factor,income_factor,
 weight,weight,
 know_treatment_climate,know_treatment_climate,know_treatment_climate: Number of good responses among the 2 knowledge questions related to treatment content: temperature_2100 = 8°F (4 °C) & know_local_damage = 70 days per year / Ozone hole (depending on country)
 know_treatment_policy,know_treatment_policy,"know_treatment_policy: Number of good responses among the 2 knowledge questions related to treatment content: ban = A ban on combustion-engine cars & investments_funding = Additional government debt (for the US, second one is 1.5 million jobs instead)"
-know_temperature_2100_correct,know_temperature_2100_correc_328,
+know_temperature_2100_correct,know_temperature_2100_correc_332,
 know_local_damage_correct,know_local_damage_correct,
-know_investments_funding_correct,know_investments_funding_cor_330,
+know_investments_funding_correct,know_investments_funding_cor_334,
 know_ban_correct,know_ban_correct,
 score_GHG,score_ghg,score_GHG: Score to the knowledge of GHG [0;+4] = CO2 + methane - H2 - particulates + 2
 know_GHG_CO2,know_ghg_co2,know_GHG_CO2: Correct answer that CO2 is a GHG
@@ -461,6 +465,32 @@ know_GHG_methane,know_ghg_methane,know_GHG_methane: Correct answer that methane 
 know_GHG_H2,know_ghg_h2,know_GHG_H2: Correct answer that H2 is not a GHG
 know_GHG_particulates,know_ghg_particulates,know_GHG_particulates: Correct answer that particulates is not a GHG
 score_CC_impacts,score_cc_impacts,score_CC_impacts: Score of knowledge of impacts from CC. Droughts > 0 (somewhat/very likely) + sea-level rise > 0 + volcanos <= -1 (somewhat unlikely) + volcanos == -2 (very unlikely)
+spread_CC_impacts,spread_cc_impacts,spread_CC_impacts: Spread between max and min value in the respondent's answers to the matrix CC_impacts
+all_same_CC_impacts,all_same_cc_impacts,all_same_CC_impacts: T/F Indicator that all answers to the matrix CC_impacts are identical.
+spread_responsible_CC,spread_responsible_cc,spread_responsible_CC: Spread between max and min value in the respondent's answers to the matrix responsible_CC
+all_same_responsible_CC,all_same_responsible_cc,all_same_responsible_CC: T/F Indicator that all answers to the matrix responsible_CC are identical.
+spread_willing,spread_willing,spread_willing: Spread between max and min value in the respondent's answers to the matrix willing
+all_same_willing,all_same_willing,all_same_willing: T/F Indicator that all answers to the matrix willing are identical.
+spread_condition,spread_condition,spread_condition: Spread between max and min value in the respondent's answers to the matrix condition
+all_same_condition,all_same_condition,all_same_condition: T/F Indicator that all answers to the matrix condition are identical.
+spread_standard_win_lose,spread_standard_win_lose,spread_standard_win_lose: Spread between max and min value in the respondent's answers to the matrix standard_win_lose
+all_same_standard_win_lose,all_same_standard_win_lose,all_same_standard_win_lose: T/F Indicator that all answers to the matrix standard_win_lose are identical.
+spread_tax_transfers_win_lose,spread_tax_transfers_win_los_352,spread_tax_transfers_win_lose: Spread between max and min value in the respondent's answers to the matrix tax_transfers_win_lose
+all_same_tax_transfers_win_lose,all_same_tax_transfers_win_l_353,all_same_tax_transfers_win_lose: T/F Indicator that all answers to the matrix tax_transfers_win_lose are identical.
+spread_investments_win_lose,spread_investments_win_lose,spread_investments_win_lose: Spread between max and min value in the respondent's answers to the matrix investments_win_lose
+all_same_investments_win_lose,all_same_investments_win_los_355,all_same_investments_win_lose: T/F Indicator that all answers to the matrix investments_win_lose are identical.
+spread_standard_effect,spread_standard_effect,spread_standard_effect: Spread between max and min value in the respondent's answers to the matrix standard_effect
+all_same_standard_effect,all_same_standard_effect,all_same_standard_effect: T/F Indicator that all answers to the matrix standard_effect are identical.
+spread_tax_transfers_effect,spread_tax_transfers_effect,spread_tax_transfers_effect: Spread between max and min value in the respondent's answers to the matrix tax_transfers_effect
+all_same_tax_transfers_effect,all_same_tax_transfers_effec_359,all_same_tax_transfers_effect: T/F Indicator that all answers to the matrix tax_transfers_effect are identical.
+spread_investments_effect,spread_investments_effect,spread_investments_effect: Spread between max and min value in the respondent's answers to the matrix investments_effect
+all_same_investments_effect,all_same_investments_effect,all_same_investments_effect: T/F Indicator that all answers to the matrix investments_effect are identical.
+spread_policy,spread_policy,spread_policy: Spread between max and min value in the respondent's answers to the matrix policy
+all_same_policy,all_same_policy,all_same_policy: T/F Indicator that all answers to the matrix policy are identical.
+spread_tax,spread_tax,spread_tax: Spread between max and min value in the respondent's answers to the matrix tax
+all_same_tax,all_same_tax,all_same_tax: T/F Indicator that all answers to the matrix tax are identical.
+mean_spread,mean_spread,"mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: CC_impacts, responsible_CC, willing, condition, standard_win_lose, tax_transfers_win_lose, investments_win_lose, standard_effect, tax_transfers_effect, investments_effect, policy, tax, burden_share, beef). -Inf indicates that all answers were NA."
+share_all_same,share_all_same,"mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: CC_impacts, responsible_CC, willing, condition, standard_win_lose, tax_transfers_win_lose, investments_win_lose, standard_effect, tax_transfers_effect, investments_effect, policy, tax, burden_share, beef)."
 footprint_pc_nb_distinct,footprint_pc_nb_distinct,footprint_pc_nb_distinct: Number of distinct ranks in the ranking of footprint per capita
 footprint_reg_nb_distinct,footprint_reg_nb_distinct,footprint_reg_nb_distinct: Number of distinct ranks in the ranking of total regional footprint
 footprint_pc_full_ranking,footprint_pc_full_ranking,footprint_pc_full_ranking: TRUE if the ranking of the footprint per capita is full (i.e. there is no pair of regions with the same ranking)
@@ -494,8 +524,8 @@ footprint_pc_country,footprint_pc_country,"footprint_pc_country: In which region
 
 
 Please rank the regions from 1 (most) to 4 (least). - [region]"
-correct_footprint_pc_compare_US,correct_footprint_pc_compare_351,correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's
-correct_footprint_pc_compare_own,correct_footprint_pc_compare_352,"correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA, TR, UA)"
+correct_footprint_pc_compare_US,correct_footprint_pc_compare_381,correct_footprint_pc_compare_US: T/F Correctly assesses that US per capita emissions are higher than China's
+correct_footprint_pc_compare_own,correct_footprint_pc_compare_382,"correct_footprint_pc_compare_own: T/F Correctly assesses which is higher between own region's per capita emissions and those of China (or of India for CN, SA, TR, UA)"
 footprint_pc_nb_na,footprint_pc_nb_na,footprint_pc_nb_na: Number of NA ranks in the ranking of footprint per capita
 footprint_reg_nb_na,footprint_reg_nb_na,footprint_reg_nb_na: Number of NA ranks in the ranking of total regional footprint
 score_footprint_elec,score_footprint_elec,e$score_footprint_elec: Kendall distance with true ranking of electricity footprints: coal>gas>nuclear
@@ -531,14 +561,16 @@ index_constrained,index_constrained,"index_constrained: Z-score of (non-weighted
 index_policies_effective,index_policies_effective,"index_policies_effective: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_effect_elec_greener, investments_effect_public_transport, investments_effect_less_pollution, tax_transfers_effect_driving, tax_transfers_effect_insulation, tax_transfers_effect_less_emission, tax_transfers_effect_less_pollution, standard_effect_less_emission, standard_effect_less_pollution. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_altruism,index_altruism,"index_altruism: Z-score of (non-weighted) average of (first-stage) z-scores of variables: donation. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_pro_redistribution,index_pro_redistribution,"index_pro_redistribution: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfer_poor, tax_transfer_constrained_hh, view_govt, tax_1p_support, problem_inequality, investments_funding_wealth_tax. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
-index_earmarking_vs_transfers,index_earmarking_vs_transfer_388,"index_earmarking_vs_transfers: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_subsidies, tax_investments, tax_transfer_all, tax_transfer_poor. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_earmarking_vs_transfers,index_earmarking_vs_transfer_418,"index_earmarking_vs_transfers: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_subsidies, tax_investments, tax_transfer_all, tax_transfer_poor. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_affected_subjective,index_affected_subjective,"index_affected_subjective: Z-score of (non-weighted) average of (first-stage) z-scores of variables: CC_affects_self. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
-index_lose_policies_subjective,index_lose_policies_subjecti_390,"index_lose_policies_subjective: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_win_lose_self, tax_transfers_win_lose_self, standard_win_lose_self. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_lose_policies_subjective,index_lose_policies_subjecti_420,"index_lose_policies_subjective: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_win_lose_self, tax_transfers_win_lose_self, standard_win_lose_self. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_lose_policies_poor,index_lose_policies_poor,"index_lose_policies_poor: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_win_lose_poor, tax_transfers_win_lose_poor, standard_win_lose_poor. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_lose_policies_rich,index_lose_policies_rich,"index_lose_policies_rich: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_win_lose_rich, tax_transfers_win_lose_rich, standard_win_lose_rich. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_fairness,index_fairness,"index_fairness: Z-score of (non-weighted) average of (first-stage) z-scores of variables: standard_fair, tax_transfers_fair, investments_fair. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_trust_govt,index_trust_govt,"index_trust_govt: Z-score of (non-weighted) average of (first-stage) z-scores of variables: can_trust_govt. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_willing_change,index_willing_change,"index_willing_change: Z-score of (non-weighted) average of (first-stage) z-scores of variables: willing_electric_car, willing_limit_driving, willing_limit_flying, willing_limit_beef, willing_limit_heating. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_care_poverty,index_care_poverty,"index_care_poverty: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfer_poor, tax_transfer_constrained_hh, problem_inequality. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_distribution_critical,index_distribution_critical,"index_distribution_critical: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfer_poor, tax_transfer_constrained_hh, tax_1p_support, responsible_CC_rich, condition_rich_change, investments_funding_wealth_tax, policies_fair_support_same_sign, policies_support_poor_same_sign. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_standard_policy,index_standard_policy,"index_standard_policy: Z-score of (non-weighted) average of (first-stage) z-scores of variables: standard_support, standard_public_transport_support. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_tax_transfers_policy,index_tax_transfers_policy,"index_tax_transfers_policy: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfers_support. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_investments_policy,index_investments_policy,"index_investments_policy: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_support. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
@@ -549,31 +581,33 @@ pricing_vs_norms,pricing_vs_norms,
 length_CC_field,length_cc_field,length_CC_field: Number of characters in CC_field
 length_comment_field,length_comment_field,length_comment_field: Number of characters in comment_field
 beef_tax_support,beef_tax_support,
-beef_subsidies_vegetables_support,beef_subsidies_vegetables_su_406,
-beef_subsidies_removal_support,beef_subsidies_removal_suppo_407,
+beef_subsidies_vegetables_support,beef_subsidies_vegetables_su_438,
+beef_subsidies_removal_support,beef_subsidies_removal_suppo_439,
 beef_ban_intensive_support,beef_ban_intensive_support,
 beef_order_tax_support,beef_order_tax_support,"beef_order_tax_support: Imagine that, in order to fight climate change, the [country] government decides to limit the consumption of cattle products like beef and dairy.
 
 
 
 Do you support or oppose the following options? - Display Order - A high tax on cattle products, so that the price of beef doubles"
-beef_order_subsidies_vegetables_support,beef_order_subsidies_vegetab_410,"beef_order_subsidies_vegetables_support: Imagine that, in order to fight climate change, the [country] government decides to limit the consumption of cattle products like beef and dairy.
+beef_order_subsidies_vegetables_support,beef_order_subsidies_vegetab_442,"beef_order_subsidies_vegetables_support: Imagine that, in order to fight climate change, the [country] government decides to limit the consumption of cattle products like beef and dairy.
 
 
 
 Do you support or oppose the following options? - Display Order - Subsidies on organic and local vegetables, fruits, and nuts"
-beef_order_subsidies_removal_support,beef_order_subsidies_removal_411,"beef_order_subsidies_removal_support: Imagine that, in order to fight climate change, the [country] government decides to limit the consumption of cattle products like beef and dairy.
+beef_order_subsidies_removal_support,beef_order_subsidies_removal_443,"beef_order_subsidies_removal_support: Imagine that, in order to fight climate change, the [country] government decides to limit the consumption of cattle products like beef and dairy.
 
 
 
 Do you support or oppose the following options? - Display Order - The removal of subsidies for cattle farming"
-beef_order_ban_intensive_support,beef_order_ban_intensive_sup_412,"beef_order_ban_intensive_support: Imagine that, in order to fight climate change, the [country] government decides to limit the consumption of cattle products like beef and dairy.
+beef_order_ban_intensive_support,beef_order_ban_intensive_sup_444,"beef_order_ban_intensive_support: Imagine that, in order to fight climate change, the [country] government decides to limit the consumption of cattle products like beef and dairy.
 
 
 
 Do you support or oppose the following options? - Display Order - The ban of intensive cattle farming"
 gas_expenses_country,gas_expenses_country,
 origin,origin,"origin: Origin of the respondent. In case of multiple origins (nb_origins > 1), only one is retained (and not the main one in the country)."
+spread_beef,spread_beef,spread_beef: Spread between max and min value in the respondent's answers to the matrix beef
+all_same_beef,all_same_beef,all_same_beef: T/F Indicator that all answers to the matrix beef are identical.
 index_pricing_vs_norms,index_pricing_vs_norms,"index_pricing_vs_norms: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfers_support, beef_tax_support, policy_tax_flying, standard_support, beef_ban_intensive_support, policy_ban_city_centers. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 index_beef_policies,index_beef_policies,"index_beef_policies: Z-score of (non-weighted) average of (first-stage) z-scores of variables: beef_tax_support, beef_subsidies_vegetables_support, beef_subsidies_removal_support, beef_ban_intensive_support. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 vote_participation,vote_participation,
@@ -585,19 +619,23 @@ voted,voted,voted: Has voted in last election: Yes to vote_participation.
 vote_mode_leaning,vote_mode_leaning,
 vote_agg,vote_agg,
 vote_agg_number,vote_agg_number,vote_agg_number: Numberic version of vote_agg. -2: Far left; -1: Social democratic left; 0: Center; 1: Right; 2: Far right; -0.1: PNR or other
+vote_agg_factor,vote_agg_factor,
+vote_official,vote_official,
 index_progressist,index_progressist,"index_progressist: Z-score of (non-weighted) average of (first-stage) z-scores of variables: left_right, vote_agg, view_govt. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 scale_federal_continent,scale_federal_continent,scale_federal: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - European
 Nb_children__14,nb_children_14,Nb_children__14: How many children below 14 live with you?
 origin_pnr,origin_pnr,origin_pnr: What race or ethnicity do you identify with? (Multiple answers are possible) - Prefer not to say
 origin_other,origin_other,origin_other: What race or ethnicity do you identify with? (Multiple answers are possible) - Other
-tax_transfers_progressive_fair,tax_transfers_progressive_fa_430,
-tax_transfers_progressive_support,tax_transfers_progressive_su_431,
+tax_transfers_progressive_fair,tax_transfers_progressive_fa_466,
+tax_transfers_progressive_support,tax_transfers_progressive_su_467,
 global_quota,global_quota,
 burden_share_population,burden_share_population,
 burden_share_emissions,burden_share_emissions,
 burden_share_historical,burden_share_historical,
 burden_share_damages,burden_share_damages,
 burden_share_ing_emissions,burden_share_ing_emissions,
+spread_burden_share,spread_burden_share,spread_burden_share: Spread between max and min value in the respondent's answers to the matrix burden_share
+all_same_burden_share,all_same_burden_share,all_same_burden_share: T/F Indicator that all answers to the matrix burden_share are identical.
 browser,browser,browser: Click to write the question text - Browser
 version,version,version: Click to write the question text - Version
 OS,os,OS: Click to write the question text - Operating System
@@ -607,14 +645,14 @@ footprint_pc_order_country,footprint_pc_order_country,"footprint_pc_order_countr
 
 
 Please rank the regions from 1 (most) to 5 (least). - Display Order - Japan"
-investments_funding_global_transfer,investments_funding_global_t_443,"investments_funding_global_transfer: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
+investments_funding_global_transfer,investments_funding_global_t_481,"investments_funding_global_transfer: Until now, we have considered that a green infrastructure program would be financed by public debt, but other sources of funding are possible.
  
 What sources of funding do you find appropriate for public investments in green infrastructure? (Multiple answers are possible) - Transfers from high-income countries"
 scale_national,scale_national,scale_national: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - National
 area,area,
 origin_other_text,origin_other_text,origin_other_text: What are your parents' nationalities? (Multiple answers are possible) - Other - Text
 policy_ban_deforestation,policy_ban_deforestation,
-policy_order_ban_deforestation,policy_order_ban_deforestati_448,policy_order_ban_deforestation: Do you support or oppose the following climate policies? - Display Order - A complete ban of deforestation enforced by strong sanctions
+policy_order_ban_deforestation,policy_order_ban_deforestati_486,policy_order_ban_deforestation: Do you support or oppose the following climate policies? - Display Order - A complete ban of deforestation enforced by strong sanctions
 heating_expenses,heating_expenses,
 insulation,insulation,
 will_insulate,will_insulate,
@@ -622,10 +660,10 @@ obstacles_insulation_cannot,obstacles_insulation_cannot,obstacles_insulation_can
 obstacles_insulation_cost,obstacles_insulation_cost,obstacles_insulation_cost: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - The upfront costs are too high
 obstacles_insulation_effort,obstacles_insulation_effort,obstacles_insulation_effort: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - It is too much effort
 obstacles_insulation_useless,obstacles_insulation_useless,obstacles_insulation_useless: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - It won't improve its energy efficiency
-obstacles_insulation_satisfactory,obstacles_insulation_satisfa_456,obstacles_insulation_satisfactory: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - My insulation and heating systems are already satisfactory
-insulation_mandatory_support_no_priming,insulation_mandatory_support_457,
-insulation_mandatory_support_priming,insulation_mandatory_support_458,
-insulation_disruption_variant,insulation_disruption_varian_459,"insulation_disruption_variant: Random priming that insulation cause disruption: 'Insulating your home can take long, may cause disruptions to your daily life during the renovation works, and may even require you to leave your home until the renovation is completed.'"
+obstacles_insulation_satisfactory,obstacles_insulation_satisfa_494,obstacles_insulation_satisfactory: What are the main hurdles preventing you from improving the insulation or replace the heating system of your accommodation? (Multiple answers are possible) - My insulation and heating systems are already satisfactory
+insulation_mandatory_support_no_priming,insulation_mandatory_support_495,
+insulation_mandatory_support_priming,insulation_mandatory_support_496,
+insulation_disruption_variant,insulation_disruption_varian_497,"insulation_disruption_variant: Random priming that insulation cause disruption: 'Insulating your home can take long, may cause disruptions to your daily life during the renovation works, and may even require you to leave your home until the renovation is completed.'"
 insulation_support,insulation_support,
 heating_expenses_country,heating_expenses_country,
 index_affected,index_affected,"index_affected: Z-score of (non-weighted) average of (first-stage) z-scores of variables: polluting_sector, affected_transport, gas_expenses, heating_expenses, availability_transport, urbanity, urban. Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
@@ -648,10 +686,10 @@ Please rank the items from 1 (most preferred) to 3 (least preferred) (by clickin
 standard_prefer_order_ban,standard_prefer_order_ban,"standard_prefer_order_ban: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine car would be sanctioned by a fine, of either 10,000€ or 100,000€. 
 Which variant do you prefer?
 Please rank the items from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A strict ban"
-standard_prefer_order_10k_fine,standard_prefer_order_10k_fi_474,"standard_prefer_order_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine car would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+standard_prefer_order_10k_fine,standard_prefer_order_10k_fi_512,"standard_prefer_order_10k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine car would be sanctioned by a fine, of either 10,000€ or 100,000€. 
 Which variant do you prefer?
 Please rank the items from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 10,000€ fine"
-standard_prefer_order_100k_fine,standard_prefer_order_100k_f_475,"standard_prefer_order_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine car would be sanctioned by a fine, of either 10,000€ or 100,000€. 
+standard_prefer_order_100k_fine,standard_prefer_order_100k_f_513,"standard_prefer_order_100k_fine: Consider the following variants of the ban on combustion-engine cars: instead of a ban, purchases of new combustion-engine car would be sanctioned by a fine, of either 10,000€ or 100,000€. 
 Which variant do you prefer?
 Please rank the items from 1 (most preferred) to 3 (least preferred) (by clicking and dragging the items). - Display Order - A 100,000€ fine"
 standard_10k_fine,standard_10k_fine,
@@ -670,22 +708,86 @@ pro_polluter_pay,pro_polluter_pay,"pro_polluter_pay: In favor of a burden_sharin
 pro_grand_fathering,pro_grand_fathering,"pro_grand_fathering: In favor of burden_sharing akin to grand-fathering. Inferred as disagreement to _cumulative, _rich_pay and _poor_receive, i.e.: countries pay in proportion to cumulative emissions, and to options where poor and vulnerable countries don't pay. Results are in line with US pilot on 502 people, where the more explicit usp$equal_quota == grand-fathering gathered 6%."
 pro_polluter_and_rich_pay,pro_polluter_and_rich_pay,"pro_polluter_and_rich_pay: In favor of burden_sharing where polluters and only rich countries pay. Inferred as agreeing to at least one polluter-pay option and one option where rich countries pay it all: (_income, _emissions or _cumulative) and (_rich_pay or _poor_receive)."
 pro_global_tax_dividend,pro_global_tax_dividend,pro_global_tax_dividend: In favor of burden_sharing akin to global tax & dividend. Inferred as agreeing to paying in proportion to current emissions and one option where rich countries pay it all: _emissions and (_rich_pay or _poor_receive).
-pro_differentiated_responsibilities_strict,pro_differentiated_responsib_492,"pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
-pro_differentiated_responsibilities_large,pro_differentiated_responsib_493,"pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
+pro_differentiated_responsibilities_strict,pro_differentiated_responsib_530,"pro_differentiated_responsibilities_strict: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a strict sense. Inferred as agreeing to paying in proportion to current emissions and that vulnerable countries receive income support in net: _emissions and _poor_receive."
+pro_differentiated_responsibilities_large,pro_differentiated_responsib_531,"pro_differentiated_responsibilities_large: In favor of a burden_sharing option akin to differentiated responsibilities, taken in a loose sense. Inferred as agreeing to at least one polluter-pay option and that vulnerable countries receive income support in net: (_emissions, _income or _cumulative) and _poor_receive "
 right_click_petition,right_click_petition,
 left_click_petition,left_click_petition,
 variant_petition_real,variant_petition_real,"variant_petition_real: True iff the respondent faces the new version of the question, without link to petition but with a real stake, as they are informed that 'we will send the results to the President of the United States’ office, informing him what share of people who took this survey were willing to support the following petition'"
 signed_petition,signed_petition,signed_petition: Answered that is willing to sign petition or clicked on the petition link.
-CC_field_english,cc_field_english,"CC_field: When thinking about climate change, what are your main considerations? What should the [Country] government do regarding climate change?
-
-
-Please write as much as you would like, your response will be very useful."
-comment_field_english,comment_field_english,"comment_field: The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below."
+CC_field_english,cc_field_english,"CC_field_english: CC_field either original (if in English, French) or translated to English."
+CC_field_worry,cc_field_worry,"CC_field_worry: worrying / should act - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_no_worry,cc_field_no_worry,"CC_field_no_worry: no need to worry/act - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_na,cc_field_na,"CC_field_na: NA / empty content - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_do_not_know,cc_field_do_not_know,"CC_field_do_not_know: don't know - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_bad_spelling,cc_field_bad_spelling,"CC_field_bad_spelling: spelling mistake - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_damage,cc_field_damage,"CC_field_damage: damages - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_adaptation,cc_field_adaptation,"CC_field_adaptation: adaptation - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_lifestyle,cc_field_lifestyle,"CC_field_lifestyle: change lifestyle - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_companies,cc_field_companies,"CC_field_companies: companies - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_trash,cc_field_trash,"CC_field_trash: trash/recycling/plastic - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_transport,cc_field_transport,"CC_field_transport: cars/transport - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_energy,cc_field_energy,"CC_field_energy: power/energy - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_housing,cc_field_housing,"CC_field_housing: housing/insulation - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_land_agri,cc_field_land_agri,"CC_field_land_agri: agriculture/forest - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_tax,cc_field_tax,"CC_field_tax: tax/incentives - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_ban,cc_field_ban,"CC_field_ban: bans/sanctions - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_standard,cc_field_standard,"CC_field_standard: standard - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+CC_field_spending,cc_field_spending,"CC_field_spending: subsidies/investment - Element mentioned (and supported) in CC_field. (For change lifestyle, it includes calls to reduce consumption.)"
+nb_sectors_CC_field,nb_sectors_cc_field,"nb_sectors_CC_field: Number of sectors for which an action is supported in CC_field, among: companies, trash, transport, energy, housing, land_agri"
+nb_measures_CC_field,nb_measures_cc_field,"nb_measures_CC_field: Number of types of government measures explicitly supported in CC_field, among: lifestyle, tax, ban, standard, spending"
+measure_proposed_CC_field,measure_proposed_cc_field,measure_proposed_CC_field: At least one measure mentioned and supported in CC_field.
+nb_actions_CC_field,nb_actions_cc_field,
+should_act_CC_field,should_act_cc_field,"should_act_CC_field: T/F Supports at least one action in CC_field (either expresses general concern/support for action (CC_field_worry) or mentions specific action(s): nb_types_CC_field > 0, or both)"
+weird_good_CC_field,weird_good_cc_field,weird_good_CC_field: T/F The answer to CC_field is weirdly 'good' or 'very good'. Flagged as low quality.
+nb_elements_CC_field,nb_elements_cc_field,
+CC_field_contains_meat,cc_field_contains_meat,CC_field_contains_meat: T/F CC_field_english contains: meat|beef|cow|vegan|animal food
+CC_field_contains_natural,cc_field_contains_natural,CC_field_contains_natural: T/F CC_field_english contains: natural
+CC_field_contains_world,cc_field_contains_world,CC_field_contains_world: T/F CC_field_english contains: international|world|countries
+CC_field_contains_population,cc_field_contains_population,CC_field_contains_population: T/F CC_field_english contains: population
+CC_field_contains_research,cc_field_contains_research,CC_field_contains_research: T/F CC_field_english contains: research|innovation|technology
+CC_field_contains_tax,cc_field_contains_tax,CC_field_contains_tax: T/F CC_field_english contains: tax|incentiv
+CC_field_contains_education,cc_field_contains_education,CC_field_contains_education: T/F CC_field_english contains: educat|teach|campaign|school
+CC_field_contains_solar,cc_field_contains_solar,CC_field_contains_solar: T/F CC_field_english contains: solar
+CC_field_contains_coal,cc_field_contains_coal,CC_field_contains_coal: T/F CC_field_english contains: coal
+CC_field_contains_electric,cc_field_contains_electric,CC_field_contains_electric: T/F CC_field_english contains: electric
+CC_field_contains_electric_car,cc_field_contains_electric_c_572,CC_field_contains_electric_car: T/F CC_field_english contains: electric car
+CC_field_contains_nuclear,cc_field_contains_nuclear,CC_field_contains_nuclear: T/F CC_field_english contains: nuclear
+CC_field_contains_fossil,cc_field_contains_fossil,CC_field_contains_fossil: T/F CC_field_english contains: fossil|coal|oil|gas
+CC_field_contains_plastic,cc_field_contains_plastic,CC_field_contains_plastic: T/F CC_field_english contains: plastic
+CC_field_contains_companies,cc_field_contains_companies,CC_field_contains_companies: T/F CC_field_english contains: compan|corporation|factories|factory
+CC_field_contains_aviation,cc_field_contains_aviation,CC_field_contains_aviation: T/F CC_field_english contains: plane|flight|fly|aviation
+CC_field_contains_justice,cc_field_contains_justice,CC_field_contains_justice: T/F CC_field_english contains: justice|poor|equalit
+CC_field_contains_training,cc_field_contains_training,CC_field_contains_training: T/F CC_field_english contains: training
+CC_field_contains_recycling,cc_field_contains_recycling,CC_field_contains_recycling: T/F CC_field_english contains: recycl
+CC_field_contains_heating,cc_field_contains_heating,CC_field_contains_heating: T/F CC_field_english contains: heating|insulat|renovat
+CC_field_contains_subsidies,cc_field_contains_subsidies,CC_field_contains_subsidies: T/F CC_field_english contains: subsid
+CC_field_contains_investment,cc_field_contains_investment,CC_field_contains_investment: T/F CC_field_english contains: invest
+CC_field_contains_ban,cc_field_contains_ban,CC_field_contains_ban: T/F CC_field_english contains: ban |banned|interdiction|forbid|mandat
+CC_field_contains_standard,cc_field_contains_standard,CC_field_contains_standard: T/F CC_field_english contains: standard
+CC_field_contains_reduce,cc_field_contains_reduce,CC_field_contains_reduce: T/F CC_field_english contains: reduc| less
+comment_field_english,comment_field_english,"comment_field_english: comment_field either original (if in English, French) or translated to English."
+comment_field_good,comment_field_good,comment_field_good: good - Feeling or opinion the respondent expressed about the survey in comment_field.
+comment_field_bad,comment_field_bad,comment_field_bad: bad - Feeling or opinion the respondent expressed about the survey in comment_field.
+comment_field_bias,comment_field_bias,comment_field_bias: bias - Feeling or opinion the respondent expressed about the survey in comment_field.
+comment_field_problem,comment_field_problem,comment_field_problem: problem - Feeling or opinion the respondent expressed about the survey in comment_field.
+dislike_comment_field,dislike_comment_field,dislike_comment_field: T/F The respondent didn't sur survey: comment_field either says the survey is bad or biased.
+critic_comment_field,critic_comment_field,"critic_comment_field: T/F The answer to comment_field is critical: either mentions an issue, says that the survey is bad or biased."
+treated_comment_field,treated_comment_field,treated_comment_field: T/F comment_field has been treated/recoded. N
+comment_field_contains_long,comment_field_contains_long,comment_field_contains_long: T/F comment_field_english contains:  long
+comment_field_contains_good,comment_field_contains_good,comment_field_contains_good: T/F comment_field_english contains: good|Good|excellent|enjoy|interesting
+comment_field_contains_thanks,comment_field_contains_thank_597,comment_field_contains_thanks: T/F comment_field_english contains: thank|Thank
+comment_field_contains_learned,comment_field_contains_learn_598,comment_field_contains_learned: T/F comment_field_english contains: learnt|learn
+comment_field_contains_bias,comment_field_contains_bias,comment_field_contains_bias: T/F comment_field_english contains: bias
+non_empty_comment_field,non_empty_comment_field,"non_empty_comment_field: The respondent left a feedback comment, i.e. comment_field is not NA."
 origin_africa,origin_africa,origin_africa: What are your parents' nationalities? (Multiple answers are possible) - Africa
 origin_asia,origin_asia,origin_asia: What are your parents' nationalities? (Multiple answers are possible) - Asia
+education_good,education_good,education_good: Which category best describes your highest level of education?
+college_border,college_border,college_border: T/F Indicator that the respondent has some college education (in the broad sense) but no college degree (in the strict sense); i.e. college_strict == F & college_broad == T.
+college_strict,college_strict,college_strict: T/F Indicator that the respondent has a college degree (in the strict sense).
+college_broad,college_broad,college_broad: T/F Indicator that the respondent has some college education (in the broad sense).
 origin_north_america,origin_north_america,origin_north_america: What are your parents' nationalities? (Multiple answers are possible) - North America
 origin_asian,origin_asian,origin_asian: What is the nationality of your parents? (Multiple answers allowed) - Asian
-insulation_mandatory_support_progressive,insulation_mandatory_support_504,
+insulation_mandatory_support_progressive,insulation_mandatory_support_609,
 origin_british,origin_british,origin_british: What is the nationality of your parents? (Multiple answers allowed) - British
 origin_EU,origin_eu,origin_EU: What is the nationality of your parents? (Multiple answers allowed) - European excluding British
 origin_new_zealand,origin_new_zealand,origin_new_zealand: What is the nationality of your parents? (Multiple answers allowed) - New Zealander
@@ -705,18 +807,45 @@ gas_spike_transition_needed,gas_spike_transition_needed,
 gas_spike_policies_costly,gas_spike_policies_costly,
 gas_spike_higher_tax_rich,gas_spike_higher_tax_rich,
 gas_spike_not_related,gas_spike_not_related,
-gas_spike_order_transition_needed,gas_spike_order_transition_n_516,gas_spike_order_transition_needed: Do you support or oppose the following statements? - Display Order - The current spike in gas prices shows that we need to transition more quickly to renewable energy to reduce our reliance on fossil fuels.
-gas_spike_order_policies_costly,gas_spike_order_policies_cos_517,gas_spike_order_policies_costly: Do you support or oppose the following statements? - Display Order - The current spike in gas prices means that we cannot strengthen climate policies as this will raise the bill for consumers to an unacceptable level.
-gas_spike_order_higher_tax_rich,gas_spike_order_higher_tax_r_518,gas_spike_order_higher_tax_rich: Do you support or oppose the following statements? - Display Order - The current spike in gas prices means that we must fund new energy generation projects by a higher tax on top incomes rather than higher energy bills.
+gas_spike_order_transition_needed,gas_spike_order_transition_n_621,gas_spike_order_transition_needed: Do you support or oppose the following statements? - Display Order - The current spike in gas prices shows that we need to transition more quickly to renewable energy to reduce our reliance on fossil fuels.
+gas_spike_order_policies_costly,gas_spike_order_policies_cos_622,gas_spike_order_policies_costly: Do you support or oppose the following statements? - Display Order - The current spike in gas prices means that we cannot strengthen climate policies as this will raise the bill for consumers to an unacceptable level.
+gas_spike_order_higher_tax_rich,gas_spike_order_higher_tax_r_623,gas_spike_order_higher_tax_rich: Do you support or oppose the following statements? - Display Order - The current spike in gas prices means that we must fund new energy generation projects by a higher tax on top incomes rather than higher energy bills.
 gas_spike_order_not_related,gas_spike_order_not_related,gas_spike_order_not_related: Do you support or oppose the following statements? - Display Order - The current gas price is unrelated to fighting climate change and does not affect my views on climate policies.
 religion,religion,religion: Which religion do you belong to?
 scale_EU,scale_eu,scale_EU: At which level(s) do you think public policies to tackle climate change need to be put in place? (Multiple answers are possible) - European
+index_knowledge_dummies,index_knowledge_dummies,"index_knowledge: Z-score of (non-weighted) average of (first-stage) z-scores of variables: score_footprint_transport, score_footprint_elec, score_footprint_food, score_footprint_pc, score_footprint_region, CC_dynamic, CC_anthropogenic, CC_real, score_CC_impacts, score_GHG. Variables are recoded as dummies (cf. conditions_index_knowledge). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_concerned_about_CC_dummies,index_concerned_about_cc_dum_628,"index_concerned_about_CC: Z-score of (non-weighted) average of (first-stage) z-scores of variables: CC_talks, CC_problem, should_fight_CC, member_environmental_orga. Variables are recoded as dummies (cf. conditions_index_concerned_about_CC). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_progressist_dummies,index_progressist_dummies,"index_progressist: Z-score of (non-weighted) average of (first-stage) z-scores of variables: left_right, vote_agg, view_govt. Variables are recoded as dummies (cf. conditions_index_progressist). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_worried_dummies,index_worried_dummies,"index_worried: Z-score of (non-weighted) average of (first-stage) z-scores of variables: CC_impacts_more_migration, CC_impacts_more_wars, CC_impacts_extinction, CC_impacts_drop_conso, CC_will_end, net_zero_feasible, future_richness. Variables are recoded as dummies (cf. conditions_index_worried). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_positive_economy_dummies,index_positive_economy_dummi_631,"index_positive_economy: Z-score of (non-weighted) average of (first-stage) z-scores of variables: effect_halt_CC_economy, investments_positive_negative, tax_transfers_positive_negative, standard_positive_negative. Variables are recoded as dummies (cf. conditions_index_positive_economy). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_constrained_dummies,index_constrained_dummies,"index_constrained: Z-score of (non-weighted) average of (first-stage) z-scores of variables: condition_financial_aid, income, wealth. Variables are recoded as dummies (cf. conditions_index_constrained). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_policies_effective_dummies,index_policies_effective_dum_633,"index_policies_effective: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_effect_elec_greener, investments_effect_public_transport, investments_effect_less_pollution, tax_transfers_effect_driving, tax_transfers_effect_insulation, tax_transfers_effect_less_emission, tax_transfers_effect_less_pollution, standard_effect_less_emission, standard_effect_less_pollution. Variables are recoded as dummies (cf. conditions_index_policies_effective). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_altruism_dummies,index_altruism_dummies,"index_altruism: Z-score of (non-weighted) average of (first-stage) z-scores of variables: donation. Variables are recoded as dummies (cf. conditions_index_altruism). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_pro_redistribution_dummies,index_pro_redistribution_dum_635,"index_pro_redistribution: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfer_poor, tax_transfer_constrained_hh, view_govt, tax_1p_support, problem_inequality, investments_funding_wealth_tax. Variables are recoded as dummies (cf. conditions_index_pro_redistribution). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_earmarking_vs_transfers_dummies,index_earmarking_vs_transfer_636,"index_earmarking_vs_transfers: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_subsidies, tax_investments, tax_transfer_all, tax_transfer_poor. Variables are recoded as dummies (cf. conditions_index_earmarking_vs_transfers). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_pricing_vs_norms_dummies,index_pricing_vs_norms_dummi_637,"index_pricing_vs_norms: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfers_support, beef_tax_support, policy_tax_flying, standard_support, beef_ban_intensive_support, policy_ban_city_centers. Variables are recoded as dummies (cf. conditions_index_pricing_vs_norms). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_affected_subjective_dummies,index_affected_subjective_du_638,"index_affected_subjective: Z-score of (non-weighted) average of (first-stage) z-scores of variables: CC_affects_self. Variables are recoded as dummies (cf. conditions_index_affected_subjective). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_lose_policies_subjective_dummies,index_lose_policies_subjecti_639,"index_lose_policies_subjective: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_win_lose_self, tax_transfers_win_lose_self, standard_win_lose_self. Variables are recoded as dummies (cf. conditions_index_lose_policies_subjective). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_lose_policies_poor_dummies,index_lose_policies_poor_dum_640,"index_lose_policies_poor: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_win_lose_poor, tax_transfers_win_lose_poor, standard_win_lose_poor. Variables are recoded as dummies (cf. conditions_index_lose_policies_poor). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_lose_policies_rich_dummies,index_lose_policies_rich_dum_641,"index_lose_policies_rich: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_win_lose_rich, tax_transfers_win_lose_rich, standard_win_lose_rich. Variables are recoded as dummies (cf. conditions_index_lose_policies_rich). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_fairness_dummies,index_fairness_dummies,"index_fairness: Z-score of (non-weighted) average of (first-stage) z-scores of variables: standard_fair, tax_transfers_fair, investments_fair. Variables are recoded as dummies (cf. conditions_index_fairness). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_trust_govt_dummies,index_trust_govt_dummies,"index_trust_govt: Z-score of (non-weighted) average of (first-stage) z-scores of variables: can_trust_govt. Variables are recoded as dummies (cf. conditions_index_trust_govt). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_willing_change_dummies,index_willing_change_dummies,"index_willing_change: Z-score of (non-weighted) average of (first-stage) z-scores of variables: willing_electric_car, willing_limit_driving, willing_limit_flying, willing_limit_beef, willing_limit_heating. Variables are recoded as dummies (cf. conditions_index_willing_change). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_care_poverty_dummies,index_care_poverty_dummies,"index_care_poverty: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfer_poor, tax_transfer_constrained_hh, problem_inequality. Variables are recoded as dummies (cf. conditions_index_care_poverty). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_distribution_critical_dummies,index_distribution_critical__646,"index_distribution_critical: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfer_poor, tax_transfer_constrained_hh, tax_1p_support, responsible_CC_rich, condition_rich_change, investments_funding_wealth_tax, policies_fair_support_same_sign, policies_support_poor_same_sign. Variables are recoded as dummies (cf. conditions_index_distribution_critical). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_standard_policy_dummies,index_standard_policy_dummie_647,"index_standard_policy: Z-score of (non-weighted) average of (first-stage) z-scores of variables: standard_support, standard_public_transport_support. Variables are recoded as dummies (cf. conditions_index_standard_policy). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_tax_transfers_policy_dummies,index_tax_transfers_policy_d_648,"index_tax_transfers_policy: Z-score of (non-weighted) average of (first-stage) z-scores of variables: tax_transfers_support. Variables are recoded as dummies (cf. conditions_index_tax_transfers_policy). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_investments_policy_dummies,index_investments_policy_dum_649,"index_investments_policy: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_support. Variables are recoded as dummies (cf. conditions_index_investments_policy). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_main_policies_dummies,index_main_policies_dummies,"index_main_policies: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_support, tax_transfers_support, standard_support, standard_public_transport_support. Variables are recoded as dummies (cf. conditions_index_main_policies). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_main_policies_all_dummies,index_main_policies_all_dumm_651,"index_main_policies_all: Z-score of (non-weighted) average of (first-stage) z-scores of variables: investments_support, tax_transfers_support, standard_support. Variables are recoded as dummies (cf. conditions_index_main_policies_all). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_beef_policies_dummies,index_beef_policies_dummies,"index_beef_policies: Z-score of (non-weighted) average of (first-stage) z-scores of variables: beef_tax_support, beef_subsidies_vegetables_support, beef_subsidies_removal_support, beef_ban_intensive_support. Variables are recoded as dummies (cf. conditions_index_beef_policies). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
+index_international_policies_dummies,index_international_policies_653,"index_international_policies: Z-score of (non-weighted) average of (first-stage) z-scores of variables: global_tax_support, global_assembly_support, tax_1p_support. Variables are recoded as dummies (cf. conditions_index_international_policies). Each z-score is normalized with survey weights, control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise)."
 origin_latin_america,origin_latin_america,origin_latin_america: What are your parents' nationalities? (Multiple answers are possible) - Latin America
 origin_europa,origin_europa,origin_europa: What are your parents' nationalities? (Multiple answers are possible) - Europa
 origin_oceania,origin_oceania,origin_oceania: What are your parents' nationalities? (Multiple answers are possible) - Oceania
 origin_russia_bielo,origin_russia_bielo,origin_russia_bielo: What are your parents' nationalities? (Multiple answers are possible) - [continent] (except [country])
 tax_ecological_protection,tax_ecological_protection,
-tax_order_ecological_protection,tax_order_ecological_protect_527,"tax_order_ecological_protection: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Funding projects for ecological protection such as forests, nature reserves, etc."
+tax_order_ecological_protection,tax_order_ecological_protect_659,"tax_order_ecological_protection: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - Funding projects for ecological protection such as forests, nature reserves, etc."
 origin_danish,origin_danish,origin_danish: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Danish
 origin_nordic,origin_nordic,origin_nordic: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Nordic
 origin_central_europe,origin_central_europe,origin_central_europe: What race or ethnicity do you identify with? (Multiple answers are possible) - Selected Choice - Central European
@@ -767,8 +896,8 @@ policy_ban_coal,policy_ban_coal,
 policy_order_ban_coal,policy_order_ban_coal,policy_order_ban_coal: Do you support or oppose the following climate policies? - Display Order - A ban on coal power in 2030
 tax_reduction_EEG_Umlage,tax_reduction_eeg_umlage,
 tax_more_commuter_allowance,tax_more_commuter_allowance,
-tax_order_reduction_EEG_Umlage,tax_order_reduction_eeg_umla_578,"tax_order_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in the EEG-Umlage"
-tax_order_more_commuter_allowance,tax_order_more_commuter_allo_579,"tax_order_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - An increase in commuter tax allowance"
+tax_order_reduction_EEG_Umlage,tax_order_reduction_eeg_umla_710,"tax_order_reduction_EEG_Umlage: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - A reduction in the EEG-Umlage"
+tax_order_more_commuter_allowance,tax_order_more_commuter_allo_711,"tax_order_more_commuter_allowance: Governments can use the revenues from carbon taxes in different ways. Would you support or oppose introducing a carbon tax that would raise gasoline prices by 40 cents per gallon, if the government used this revenue to finance... - Display Order - An increase in commuter tax allowance"
 origin_java,origin_java,origin_java: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Java
 origin_sunda,origin_sunda,origin_sunda: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Sunda
 origin_batak,origin_batak,origin_batak: What is your tribe or ethnicity? (More than one answer is possible) - Selected Choice - Batak
@@ -783,4 +912,3 @@ weight_pop_oecd,weight_pop_oecd,
 weight_adult_oecd,weight_adult_oecd,
 knows_anthropogenic,knows_anthropogenic,
 index_knowledge_efa_global,index_knowledge_efa_global,index_knowledge_efa_global: Weighted average of z-scores of variables in variables_knowledge_efa. Weights are loadings from explanatory factor analysis of all countries jointly (EFA with 1 factor). Each z-score is standardized with survey weights and impute mean of treatment group to missing values.
-share_common_policies_supported,share_common_policies_suppor_594,share_common_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent that were asked in all countries.
