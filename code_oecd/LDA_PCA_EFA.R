@@ -266,9 +266,9 @@ variables_lda <- names(e)[38:285][!grepl("_field|^insulation_mandatory_support_|
 variables_lda_w_obstacles <- names(e)[38:285][!grepl("_field|^insulation_mandatory_support_|^winner$|will_insulate|_voters|^watched|^know|attention_test|duration_|_first|_last|_click|_First|_Last|_Click|_order|race_other|sector|excluded|race_hawaii|wtp_|race_native|attentive|language|race_pnr", names(e)[38:285])] # TODO! which variable to exclude / automatize exclusion of consensual variables?
 
 
-variables_lda <- c("dominant_origin",variables_lda, "wtp", "country")
-variables_lda <- c("dominant_origin",variables_lda, "wtp", "vote_agg", "insulation_support")
-variables_lda_w_obstacles <- c("dominant_origin",variables_lda_w_obstacles, "wtp", "vote_agg", "insulation_support")
+variables_lda <- c("majority_origin",variables_lda, "wtp", "country")
+variables_lda <- c("majority_origin",variables_lda, "wtp", "vote_agg", "insulation_support")
+variables_lda_w_obstacles <- c("majority_origin",variables_lda_w_obstacles, "wtp", "vote_agg", "insulation_support")
 
 # TODO: robustness remove vote_agg, left_right
 # TODO: remove variables of setB, setC : robustness 

@@ -8,19 +8,18 @@ source("relabel_rename.R")
 # TODO! DK bug the way diploma is coded (order is inverted, cf. "uddannelsesniveau" in signal)
 # TODO! adapt new income to AU, MX, TR, CN, UA + IT, CA, JP, SK, SP, US
 # TODO! adapt new diploma to AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA
-# TODO!: dominant => majority origin
 # TODO!: zscores => EFA, (automatize rep F, >0)
 # TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
 # TODO! complete board.xlsx with countries specificities, list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...)
 # TODO! DE plot: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
 # TODO: cu, standard of living (not a priority), code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
-# TODO!! for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
+# TODO: for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
 # TODO: From board: 3.1 add coal & district heating; 242 change to yearly; scale: countries with only 3 (SA)
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
-control_variables <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
+control_variables <- c("majority_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
-control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
+control_variables_w_treatment <- c("majority_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0", "treatment")
 cov_lab_w_treatment <- c("race: White only", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center", "Climate treatment only", "Policy treatment only", "Both treatments")
 
 variables_fine_support <- c("standard_10k_fine", "standard_100k_fine") # DE, IT, PL, SP
@@ -773,6 +772,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   text_speaks_somewhat <- c("US" = "Somewhat well")
   text_speaks_no <- c("US" = "I cannot speak English")
   
+  # AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA
   text_education_no <- c("US" = "No schooling completed", 
                          "FR" = "Aucun")
   text_education_primary <- c("US" = "Primary school", 
@@ -1123,10 +1123,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   temp <- case_when(e$education < 3 ~ 0, e$education == 3 ~ 1,  e$education == 4 ~ 2, e$education > 4 ~ 3) 
   e$diploma <- as.item(temp, labels = structure(c(0:3), names = c("No secondary", "Vocational", "High school", "College")), annotation="diploma: recoded from education - What is the highest level of education you have completed?")
   
+  e$income_original <- e$income
   temp <-  (e$income %in% text_income_q1) + 2 * (e$income %in% text_income_q2) + 3 * (e$income %in% text_income_q3) + 4 * (e$income %in% text_income_q4) 
-  e$income <- as.item(temp, labels = structure(c(1:4),
-                                               names = c("Q1","Q2","Q3","Q4")),
-                      annotation=Label(e$income))
+  e$income <- as.item(temp, labels = structure(c(1:4), names = c("Q1","Q2","Q3","Q4")),  annotation=Label(e$income))
   
   temp <-  (e$wealth %in% text_wealth_q1) + 2 * (e$wealth %in% text_wealth_q2) + 3 * (e$wealth %in% text_wealth_q3) + 4 * (e$wealth %in% text_wealth_q4) + 5 * (e$wealth %in% text_wealth_q5) 
   e$wealth <- as.item(temp, labels = structure(c(1:5), # /!\ in the US, data is individual but question is household. In DK, FR, both are household. In other countries, both are individual.
@@ -1760,12 +1759,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$college[e$education >= 5] <- "College Degree"
   e$college <- factor(e$college, levels = c("No college", "College Degree"))
   
-  if ("education_good" %in% names(e)) {
+  if ("education_good" %in% names(e)) { # AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA
     if (country == "US") e$college_border <- e$education_good %in% c("Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)")
     if (country == "US") e$college_strict <- e$education_good %in% c("Bachelor's degree (for example: BA, BS)", "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "Doctorate degree (for example, PhD, EdD)")
     if (country == "AU") e$college_border <- e$education_good %in% c("Certificate IV")
     if (country == "AU") e$college_strict <- e$education_good %in% c("Advanced Diploma, Diploma, Associate Degree", "Bachelor's Degree", "Graduate Diploma, Graduate Certificate", "Postgraduate Degree (Honours, Master's or Doctoral Degree)")
-    if (country %in% c("US", "AU")) e$college_broad <- e$college_strict | e$college_border 
+    if (country == "UK") e$college_border <- e$education_good %in% c("Higher vocational education (Level 4+ award, level 4+ certificate, level 4+ diploma, higher apprenticeship, etc.)")
+    if (country == "UK") e$college_strict <- e$education_good %in% c("Bachelor's Degree (BA, BSc, BEng, etc.)", "Postgraduate diploma or certificate", "Master's Degree (MSc, MA, MBA, etc.) or Ph.D.")
+    if (country %in% c("US", "AU", "UK")) e$college_broad <- e$college_strict | e$college_border 
     if ("college_border" %in% names(e)) e$college_border[is.na(e$education_good)] <- e$college_strict[is.na(e$education_good)] <- e$college_border[is.na(e$education_good)] <- NA
     if ("college_border" %in% names(e)) label(e$college_border) <- "college_border: T/F Indicator that the respondent has some college education (in the broad sense) but no college degree (in the strict sense); i.e. college_strict == F & college_broad == T."
     if ("college_strict" %in% names(e)) label(e$college_strict) <- "college_strict: T/F Indicator that the respondent has a college degree (in the strict sense)."
@@ -1802,11 +1803,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
     e$origin <- e$race    
     for (v in variables_origin) e$nb_origin[e[[v]]==T] <- e$nb_origin[e[[v]]==T] + 1
-    e$dominant_origin <- e$race == "White only"
+    e$majority_origin <- e$race == "White only"
   } else if (country == "IA") {
-    e$dominant_origin <- e$religion == "Hinduism"
+    e$majority_origin <- e$religion == "Hinduism"
   } else if (country == "SA") {
-    e$dominant_origin <- e$origin == "Black"
+    e$majority_origin <- e$origin == "Black"
   } else if (!"origin" %in% names(e)) {
     variables_origin <<- names(e)[grepl('origin_', names(e)) & !grepl('other$', names(e))]
     e$origin <- NA
@@ -1814,14 +1815,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     for (v in variables_origin) {
       if (sum(!is.na(e[[v]])) > prop_dominant) {
         prop_dominant <- sum(!is.na(e[[v]]))
-        e$dominant_origin <- !is.na(e[[v]])  }
+        e$majority_origin <- !is.na(e[[v]])  }
       e$origin[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])]
       e$nb_origin[!is.na(e[[v]])] <- e$nb_origin[!is.na(e[[v]])] + 1 }
     label(e$origin) <- "origin: Origin of the respondent. In case of multiple origins (nb_origins > 1), only one is retained (and not the main one in the country)."
   }
-  else e$dominant_origin <- e$origin
+  else e$majority_origin <- e$origin
   label(e$nb_origin) <- "nb_origin: Number of origins (or race) of the respondent."
-  label(e$dominant_origin) <- "dominant_origin: T/F Respondent's origin is the dominant one in their country (US: white only; IA: hinduist; ID: Java; SA: Black; DK: Danish ethnic origin; Other: at least one parent's nationality = [country])."
+  label(e$majority_origin) <- "majority_origin: T/F Respondent's origin is the dominant one in their country (US: white only; IA: hinduist; ID: Java; SA: Black; DK: Danish ethnic origin; Other: at least one parent's nationality = [country])."
   
   e$income_factor <- as.factor(e$income)
   
@@ -2933,7 +2934,7 @@ save.image(".RData")
 prepare_all(countries = FALSE) # 6 min 
 
 # Sets. A: core socio-demos + vote. At: A + treatment. B: energy characteristics. C: mechanisms. D: outcomes. Dpos: binary outcomes (> 0).
-setA <- c("female", "age", "children", "income_factor", "employment_agg", "college", "dominant_origin", "vote_agg_factor") # left_right may be better than vote: we have answers for CN, it is less  country-specific, there is less PNR
+setA <- c("female", "age", "children", "income_factor", "employment_agg", "college", "majority_origin", "vote_agg_factor") # left_right may be better than vote: we have answers for CN, it is less  country-specific, there is less PNR
 setAt <- c(setA, "treatment") # TODO: heating_expenses -0.1 change to average
 setB <- c("urban", "(gas_expenses > 50)", "(heating_expenses > 500)", "polluting_sector", "(availability_transport >= 1)", "car_dependency", "owner", "(flights_agg > 1)") # index_affected # TODO: affected by transport
 setCvars <- c("(CC_problem >= 1)", "(CC_anthropogenic >= 1)", "(CC_affects_self >= 1)", "(can_trust_govt >= 1)", "(problem_inequality >= 1)")
@@ -2950,7 +2951,7 @@ uncommon_questions <- c(variables_fine_support, variables_fine_prefer, variables
 common_policies <- Reduce(function(vars1, vars2) { intersect(vars1, vars2) }, c(list(all_policies), lapply(All, names))) # /!\ Beware, policy_order_climate_fund is considered a common policy but it was asked differently (contributor vs. receiver) depending on the country (contributor iff in poor_country)
 setD <- c(common_policies, "should_fight_CC") # also: variables_burden_share (not common to all countries), if_other_do_less/more
 setDpos <- paste0("(", setD, " >= 1)")
-# setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "dominant_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
+# setA <- c("female", "age", "children", "income_factor", "wealth", "employment_agg", "college", "majority_origin", "vote_agg > 0", "vote_agg == 0", "vote_agg < 0") # left_right may be better than vote: we have answers for CN, it is less country-specific, there is less PNR
 # setAt <- c(setA, "treatment")
 # setB <- c("urban", "gas_expenses", "heating_expenses", "polluting_sector", "availability_transport", "affected_transport", "owner", "flights_agg > 1") # index_affected # TODO: affected by transport
 # setCvars <- c("CC_problem", "CC_anthropogenic", "CC_affects_self", "can_trust_govt", "problem_inequality")
@@ -2964,7 +2965,7 @@ regressors_names <- rev(c("femaleTRUE" = "Gender: Female", "age65+" = "Age: > 64
                           "childrenTRUE" = "Lives with child(ren) < 14", "income_factorQ4" = "Household income: Q4 (top 25%)", "income_factorQ3" = "Household income: Q3", "income_factorQ2" = "Household income: Q2", "wealth" = "Individual wealth", 
                           "as.factor(wealth)Q5" = "Individual Wealth : Q5", "as.factor(wealth)Q4" = "Individual Wealth : Q4", "as.factor(wealth)Q3" = "Individual Wealth : Q3", "as.factor(wealth)Q2" = "Individual Wealth : Q2",
                           "employment_aggWorking" = "Employment status: Working", "employment_aggStudent" = "Employment status: Student", "employment_aggRetired" = "Employment status: Retired", "collegeNo college" = "Diploma: below college", "collegeCollege Degree" = "College degree",
-                          "dominant_originTRUE" = "Origin: country's dominant one", "vote_agg_factorPNR or other" = "Vote: Others or PNR","vote_agg_factorCenter" = "Vote: Center", "vote_agg_factorLeft" = "Vote: Left or Far left", "vote_agg_factorRight" = "Vote: Right or Far right",
+                          "majority_originTRUE" = "Origin: country's majority one", "vote_agg_factorPNR or other" = "Vote: Others or PNR","vote_agg_factorCenter" = "Vote: Center", "vote_agg_factorLeft" = "Vote: Left or Far left", "vote_agg_factorRight" = "Vote: Right or Far right",
                           "vote_agg == -0.1TRUE" = "Vote: Others or PNR","vote_agg == 0TRUE" = "Vote: Center", "vote_agg < 0TRUE" = "Vote: Left or Far left", "vote_agg <= -1TRUE" = "Vote: Left or Far left", "vote_agg >= 1TRUE" = "Vote: Right or Far right",
                           "(Intercept)" = "Intercept", "urbanTRUE" = "Urban", "gas_expenses" = "Gasoline expenses", "heating_expenses" = "Heating expenses", "polluting_sectorTRUE" = "Polluting sector", "availability_transport" = "Availability of public transport",
                           "gas_expenses > 50TRUE" = "High gasoline expenses", "heating_expenses > 500TRUE" = "High heating expenses", "availability_transport >= 1TRUE" = "Public transport available", "car_dependencyTRUE" = "Uses car", 
