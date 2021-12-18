@@ -894,7 +894,7 @@ correlogram("knowledge")
 ## Generate tables
 label_treat_wave <- c("Both treatments", "Climate treatment only", "Policy treatment only", "wave: Pilot 2")
 
-control_variables_w_treatment <- c("dominant_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "vote_agg", "urban == 1", "treatment")
+control_variables_w_treatment <- c("majority_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "vote_agg", "urban == 1", "treatment")
 
 desc_table(dep_vars = c("CC_anthropogenic > 0", "CC_impacts_extinction > 0", "donation", "should_fight_CC > 0", "willing_limit_driving > 0"), filename = "US_1",
            dep.var.labels = c("CC caused by humans", "CC likely to cause extinction", "Donation (in \\$)", "US should fight CC", "Willing to limit driving"),

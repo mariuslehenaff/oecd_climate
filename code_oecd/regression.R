@@ -97,7 +97,7 @@ desc_table(dep_vars = c("net_zero_feasible >= 1", "CC_affects_self >= 1", "CC_wi
            dep.var.caption = c(""), data = us, indep_vars = control_variables_w_treatment, indep_labels = cov_lab_w_treatment)
 
 ## Generations most affected
-#control_variables_w_treatment_usp <- c("dominant_origin", "female", "children", "college", "employment_agg", "income_factor", "age_agg", "left_right < 0", "left_right > 0", "left_right == 0")
+#control_variables_w_treatment_usp <- c("majority_origin", "female", "children", "college", "employment_agg", "income_factor", "age_agg", "left_right < 0", "left_right > 0", "left_right == 0")
 #cov_lab_w_treatment_usp <- c("race: White only", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 30-49", "age: 50-87", "Left or Very left", "Right or Very right", "Center")
 #
 #desc_table(dep_vars = c("CC_affected_1960", "CC_affected_1990", "CC_affected_2020", "CC_affected_2050", "CC_affected_none"), filename = "CC_affected",
@@ -438,7 +438,7 @@ models[["Policies support (all)"]] <- lm(as.formula(paste("policies_support > 0 
 models[["Policies support"]] <- lm(as.formula(paste("policies_support > 0 ~ ", paste(c(end_formula, "polluting_sector", "can_trust_govt_dummy", "availability_transport_dummy", "index_affected", "index_knowledge"), collapse = ' + '))), data = e, weights = e$weight)
 
 
-cov_lab_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
+cov_lab_mod <- c("majority_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "income_factorQ2" = "Income Q2", "income_factorQ3" = "Income Q3", 
                  "income_factorQ4" = "Income Q4", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
@@ -497,7 +497,7 @@ end_formula_treatment_for_fairness <- paste(c(control_variables_w_treatment[c(1:
 end_formula_treatment_for_fairness <- paste(c("(", end_formula_treatment_for_fairness), collapse = "")
 end_formula_treatment_for_fairness <- paste(c(end_formula_treatment_for_fairness, ")"), collapse = "")
 
-cov_lab_treatment_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
+cov_lab_treatment_mod <- c("majority_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                  "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                  "as.factor(employment_agg)Working" = "status: Working", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
                  "age65+" = "age: 65+", "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center",
@@ -535,7 +535,7 @@ coef_policy_views_indices_all <- modelplot(models, coef_map = cov_lab_treatment_
                                    background = list(geom_vline(xintercept = 0, color = "grey"))) + labs(x = 'Coefficients', y = 'Views', title = 'Indices')
 
 
-cov_lab_fairness_mod <- c("dominant_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
+cov_lab_fairness_mod <- c("majority_originTRUE" = "race/origin: largest group", "femaleTRUE" = "Female", "childrenTRUE" = "Child(ren) at home", "collegeNo college" = "No college",
                            "as.factor(employment_agg)Retired" = "status: Retired" , "as.factor(employment_agg)Student" = "status: Student", 
                            "as.factor(employment_agg)Working" = "status: Working", "age25-34" = "age: 25-34", "age35-49" = "age: 35-49", "age50-64" = "age: 50-64", 
                            "age65+" = "age: 65+", "left_right <= -1TRUE" = "political: Left", "left_right >= 1TRUE" = "political: Right", "left_right == 0TRUE" = "political: Center",

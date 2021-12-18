@@ -981,8 +981,8 @@ render_country_comparison <- function(data = all, along = "country_name", parent
     # try({(race_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = variables_race[c(1:4)], export_xls = export_xls, df = e, miss=F, showLegend=F, rev = F, labels=c("White", "Black", "Hispanic", "Asian")))
     #   save_plotly_new_filename(race_US, width= 340, height=fig_height(3*nb_levels))}) 
     
-    try({(dominant_origin_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "dominant_origin", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Origin: largest group"))
-      save_plotly_new_filename(dominant_origin_US, width= 400, height=fig_height(1*nb_levels))})
+    try({(majority_origin_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "majority_origin", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="Origin: largest group"))
+      save_plotly_new_filename(majority_origin_US, width= 400, height=fig_height(1*nb_levels))})
     
     try({(income_US <- barresN(along=along, parentheses=parentheses, nolabel=nolabel, vars = "income", export_xls = export_xls, df = e, miss=F, rev_color = T, rev = F, labels="2019 household income"))
       save_plotly_new_filename(income_US, width= 510, height=fig_height(1*nb_levels))})
