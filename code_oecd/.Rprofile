@@ -314,6 +314,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   # indep_vars_included can be set to a list (of length the number of columns) of booleans or variable names to specify which covariates to include in each column
   # keep is a vector of regular expressions allowing to specify which covariates to display (by default, all except the Constant)
   # mean_above=T displays the mean of the dependant var (for those which treatment=="control" if mean_control = T) at top rather than bottom of Table (only_mean=T only displays that)
+  # logit is either a boolean or a boolean vector 
   if (missing(dep.var.labels) & !(is.character(dep_vars))) dep.var.labels <- dep_vars
   dep.var.labels.include <- ifelse(is.null(dep.var.labels), F, T)
   names(indep_vars) <- indep_vars
@@ -326,10 +327,9 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
     formula_i <- as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]]], ")", collapse = ' + ')))
     if (logit[i]) { 
       models[[i]] <- glm(formula_i, data = data, family = binomial(link='logit'))
-      logit_margin_i <- logitmfx(formula_i, data = data, atmean = atmean)$mfxest # TODO! weights with logit
+      logit_margin_i <- logitmfx(formula_i, data = data, robust = robust_SE, atmean = atmean)$mfxest # TODO! weights with logit; NB: logitmfx computes White/robust SE when robust_SE == T
       coefs[[i]] <- logit_margin_i[,1]
-      SEs[[i]] <- logit_margin_i[,2] # TODO! robust SE with logit
-      if (robust_SE) warning("Robust Standard Errors are not implemented for logit: regular SE are shown instead.")
+      SEs[[i]] <- logit_margin_i[,2] 
     }
     else { 
       models[[i]] <- lm(formula_i, data = data, weights = weights)
