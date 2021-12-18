@@ -303,7 +303,7 @@ export_stats_desc <- function(data, file, miss = TRUE, sorted_by_n = FALSE, retu
   if (return) return(output)
 }
 desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = NULL, weights = data$weight,
-                       save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE,
+                       save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE, logit = FALSE, atmean = T, robust_SE = FALSE,
                        mean_above = T, only_mean = F, keep = indep_vars, nolabel = F, indep_vars_included = T, no.space = F) {
   # Wrapper for stargazer
   # /!\ always run first with nolabel = T to check that the order of indep_labels correspond to the one displayed
@@ -319,10 +319,24 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   names(indep_vars) <- indep_vars
   if (class(indep_vars_included)=="list") { if (length(dep_vars)==1) dep_vars <- rep(dep_vars[1], length(indep_vars_included))  }
   else { indep_vars_included <- rep(list(rep(T, length(indep_vars))), length(dep_vars)) }
-  models <- list()
+  if (length(logit) == 1) logit <- rep(logit, length(dep_vars))
+  models <- coefs <- SEs <- list()
   means <- c()
   for (i in seq_along(dep_vars)) {
-    models[[i]] <- lm(as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]]], ")", collapse = ' + '))), data = data, weights = weights)
+    formula_i <- as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]]], ")", collapse = ' + ')))
+    if (logit[i]) { 
+      models[[i]] <- glm(formula_i, data = data, family = binomial(link='logit'))
+      logit_margin_i <- logitmfx(formula_i, data = data, atmean = atmean)$mfxest # TODO! weights with logit
+      coefs[[i]] <- logit_margin_i[,1]
+      SEs[[i]] <- logit_margin_i[,2] # TODO! robust SE with logit
+      if (robust_SE) warning("Robust Standard Errors are not implemented for logit: regular SE are shown instead.")
+    }
+    else { 
+      models[[i]] <- lm(formula_i, data = data, weights = weights)
+      coefs[[i]] <- models[[i]]$coefficients
+      if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,2]
+      else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
+    }
     if (mean_control==FALSE){
       means[i] <- round(wtd.mean(eval(parse(text = paste( "data$", parse(text = dep_vars[i]), sep=""))), weights = weights, na.rm = T), d = digits)
       mean_text <- "Mean"
@@ -338,12 +352,14 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   if (mean_above) {
     if (nolabel) table <- do.call(stargazer, c(models,
                                                list(out=NULL, header=F, model.numbers = F, add.lines = list(c(mean_text, means)),
+                                                    coef = coefs, se = SEs,
                                                     dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
                                                     multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space #, omit.stat = c("n")
                                                )))
     else  table <- do.call(stargazer, c(models,
                                         list(out=NULL, header=F, model.numbers = F,
                                              covariate.labels = indep_labels, add.lines = list(c(mean_text, means)),
+                                             coef = coefs, se = SEs,
                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
                                              multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space #, omit.stat = c("n")
                                         )))
@@ -358,12 +374,14 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   } else {
     if (nolabel) table <- do.call(stargazer, c(models,
                                                list(out=file_path, header=F, add.lines =list(c(mean_text, means)),
+                                                    coef = coefs, se = SEs,
                                                     dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
                                                     multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space
                                                )))
     else table <- do.call(stargazer, c(models,
                                        list(out=file_path, header=F,
                                             covariate.labels = indep_labels, add.lines =list(c(mean_text, means)),
+                                            coef = coefs, se = SEs,
                                             dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
                                             multicolumn = F, float = F, keep.stat = c("n"), omit.table.layout = "n", keep=keep, no.space = no.space
                                        ))) }
@@ -1633,8 +1651,8 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
         if (v %in% names(reg$xlevels) & v != along) for (j in reg$xlevels[[v]][2:length(reg$xlevels[[v]])]) {
           name_var <- sub("^as\\.factor\\((.*)\\)$", "\\1", "as.factor(income)")
           if (!name_var %in% names(data_s)) warning(paste(name_var, "not in names(df): its coefficient set to 0 to compute the origin value."))
-          else origin_value <- origin_value + reg$coefficients[[paste0(v, j)]] * wtd.mean(data_s[[name_var]] == j, weights = data_s$weight) }
-        else if (v %in% names(reg$coefficients) & !(v %in% c(along, "(weights)"))) origin_value <- origin_value + reg$coefficients[[v]] * wtd.mean(data_s[[v]], weights = data_s$weight)
+          else origin_value <- origin_value + reg$coefficients[[paste0(v, j)]] * wtd.mean(data_s[[name_var]] == j, weights = data_s$weight, na.rm = T) }
+        else if (v %in% names(reg$coefficients) & !(v %in% c(along, "(weights)"))) origin_value <- origin_value + reg$coefficients[[v]] * wtd.mean(data_s[[v]], weights = data_s$weight, na.rm = T)
       }
       if (logit[i]) origin_value <- 1/(1+exp(-origin_value)) # cf. https://www.princeton.edu/~otorres/LogitR101.pdf for an alternative coding
     } else if (origin == 'control_mean') {
@@ -1651,8 +1669,8 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
       
       n <- length(reg$fitted.values)
       t <- qt(1-(1-confidence)/2, n)
-      sigma <- sqrt(wtd.mean((reg$y - reg$fitted.values)^2, weights = data_s$weight))
-      SDs <- sapply(levels_along, function(i) return(sqrt(wtd.mean(((data_s[[along]] == i) - wtd.mean(data_s[[along]] == i, weights = data_s$weight))^2, weights = data_s$weight))))
+      sigma <- sqrt(wtd.mean((reg$y - reg$fitted.values)^2)) #, weights = data_s$weight)) TODO: handle weight for logit_margin (uncommenting this would only work when there is no missing value so that length(data_s$weight)==length(reg$y))
+      SDs <- sapply(levels_along, function(i) return(sqrt(wtd.mean(((data_s[[along]] == i) - wtd.mean(data_s[[along]] == i, weights = data_s$weight, na.rm = T))^2, weights = data_s$weight, na.rm = T))))
       CI <- cbind(coefs - t*sqrt(1/n)*sigma/SDs, coefs + t*sqrt(1/n)*sigma/SDs) # CIs approximated as if the results were that of a linear regression. Stata uses a more appropriate method: the Delta method (which also have some issues: CIs can be outside [0; 1]), not easily implementable in R (despite msm::deltamethod)
     } else { # OLS
       if (logit[i]) warning("Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
@@ -1661,12 +1679,13 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
       n <- length(reg$fitted.values)
       t <- qt(1-(1-confidence)/2, n)
       if (!("weight" %in% names(data_s))) data_s$weight <- 1
-      sigma <- sqrt(wtd.mean((reg$model[[1]] - reg$fitted.values)^2, weights = data_s$weight))
-      SD <- sqrt(wtd.mean(((data_s[[along]] == levels_along[1]) - wtd.mean(data_s[[along]] == levels_along[1], weights = data_s$weight))^2, weights = data_s$weight))
+      if (!("weights" %in% names(reg))) reg$weights <- 1
+      sigma <- sqrt(wtd.mean((reg$model[[1]] - reg$fitted.values)^2, weights = reg$weights))
+      SD <- sqrt(wtd.mean(((data_s[[along]] == levels_along[1]) - wtd.mean(data_s[[along]] == levels_along[1], weights = data_s$weight, na.rm = T))^2, weights = data_s$weight, na.rm = T))
       CI_origin <- c(-1, 1)*t*sqrt(1/n)*sigma/SD # This computation is very close to confint(...), which we can't use for the omitted variable.
       coefs <- origin_value + c(0, reg$coefficients[names_levels[2:k]]) # what about emmeans(reg, ~ 1 | along) to compute e.g. CI_origin?
       # CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) # if simple OLS
-      robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1"))
+      robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1")) # another way to get (non-robust) SEs is summary(reg)$coefficients[,2]
       CI <- origin_value + rbind(CI_origin, cbind(robust_SEs[names_levels[2:k], 1] - t*robust_SEs[names_levels[2:k], 2], robust_SEs[names_levels[2:k], 1] + t*robust_SEs[names_levels[2:k], 2]))
     }
     mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
