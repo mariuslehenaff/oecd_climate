@@ -5,17 +5,16 @@ source(".Rprofile")
 source("relabel_rename.R")
 
 # TODO check who drops out
-# TODO! DK bug the way diploma is coded (order is inverted, cf. "uddannelsesniveau" in signal)
-# TODO! adapt new income to AU, MX, TR, CN, UA + IT, CA, JP, SK, SP, US
-# TODO! adapt new diploma to AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA
-# TODO!: zscores => EFA, (automatize rep F, >0)
-# TODO!: index_pro_climate, affected: separate lifestyle vs. income; ban vs. price and other Ecol Eco index; 
+# TODO! check: dk$education; adapt new income to AU, MX, TR, CN, UA + IT, CA, JP, SK, SP, US; adapt new diploma to AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA
+# TODO!: index_pro_climate, affected: separate lifestyle vs. income
+# TODO!: save loadings; zscores => EFA (replace efa = FALSE par efa = T)
 # TODO! complete board.xlsx with countries specificities, list country-specific variables (e.g. deforestation, ban_coal, gilets_jaunes...)
 # TODO! DE plot: know_local_damage, left_right, vote, urbanity, knowledge_wo_footprint_mean_countries, behavior_countries, affected_positive_countries, responsible_CC_positive_countries, policy_positive_countries tax_positive_countries burden_sharing_positive_countries burden_share_
 # TODO: cu, standard of living (not a priority), code CSP, consistency_answers/quality (max_footprint_reg = 1, tax_transfers 2 kinds, CC_field_na, weird_good_CC_field), CC_field, feedback, score_trust, vote, ranking vs. order of display,  Yes/No => T/F?
 # TODO: for IN, CA, AU, SA (and maybe others where EN-US is used primarily), correct all labels that are different from usual
 # TODO: From board: 3.1 add coal & district heating; 242 change to yearly; scale: countries with only 3 (SA)
 # TODO: CN check if there are people from Taiwan (zipcode=999079), Hong Kong (999077) or Macau (999078)
+# TODO: from education_good, create a variable with the ISCED education levels
 # TODO: /!\ problem: in France, investments_win_lose was asked with standard instead; and standard_support was asked with investments instead (but respondents could probably guess this was a mistake). => we should check whether answers are close for the two policies (and relative to other countries) to see if this could have caused an issue.
 control_variables <- c("majority_origin", "female", "children", "college", "as.factor(employment_agg)", "income_factor", "age", "left_right <= -1", "left_right >= 1", "left_right == 0") # "vote_agg") # "left_right")
 cov_lab <- c("origin: largest group", "Female", "Children", "No college", "status: Retired" ,"status: Student", "status: Working", "Income Q2", "Income Q3", "Income Q4","age: 25-34", "age: 35-49", "age: 50-64", "age: 65+", "Left or Very left", "Right or Very right", "Center") #"vote: Biden", "vote: Trump")
@@ -355,7 +354,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   return(e)
 }
 
-convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE) {
+convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE, efa = FALSE) {
   text_pnr <- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
                 "FR" = "Je ne sais pas", "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Préfère ne pas le dire",
@@ -1057,6 +1056,17 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   text_sector_no <- c("US" = "No, none of the above")
   
+  text_college_border <- c("US" = "2-year college degree or associates degree (for example: AA, AS)", "US" = "Some college, no degree", "AU" = "Certificate IV", "UK" = "Higher vocational education (Level 4+ award, level 4+ certificate, level 4+ diploma, higher apprenticeship, etc.)", "CA" = "Apprenticeship program of 3 or 4 years", 
+                           "IT" = "Higher Technical Diploma (ITS) / Higher Technical Specialization Certificate (IFTS)", "JP" = "Short-term college", "JP" = "Technical short-term college", "SK" = "College dropout", "SP" = "Medium professional training", "TR" = "High school graduate or Vocational or Technical High School graduate",
+                           "CN" = "Secondary school education pre university type", "SA" = "N6 NATED part-qualification or National N Diploma")
+  text_college_strict <- c("US" = "Bachelor's degree (for example: BA, BS)", "US" = "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "US" = "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "US" = "Doctorate degree (for example, PhD, EdD)",
+                           "AU" = "Advanced Diploma, Diploma, Associate Degree", "AU" = "Bachelor's Degree", "AU" = "Graduate Diploma, Graduate Certificate", "AU" = "Postgraduate Degree (Honours, Master's or Doctoral Degree)",
+                           "UK" = "Bachelor's Degree (BA, BSc, BEng, etc.)", "UK" = "Postgraduate diploma or certificate", "UK" = "Master's Degree (MSc, MA, MBA, etc.) or Ph.D.", "CA" = "Master's degree or Doctorate", "CA" = "Bachelor's degree (3 or 4 years)", "CA" = "Postsecondary general career, technical or professional program (Technical diploma)",
+                           "IT" = "Bachelor", "IT" = "Master's degree or higher", "JP" = "Professional Graduate School", "JP" = "College", "JP" = "Master", "JP" = "Doctorate", 
+                           "MX" = "Master's or Specialty or Doctorate", "MX" = "University degree", "MX" = "Higher professional training (Bachelor's Degree, Higher University Technician)", "SK" = "University graduation", "SK" = "Drop out of graduate school", "SK" = "Graduate school",
+                           "SP" = "Higher professional training", "SP" = "University degree", "SP" = "Master or PhD", "TR" = "Associate's degree", "TR" = "Licence", "TR" = "Master's degree or higher", "CN" = "Incomplete university education", "CN" = "University education",
+                           "SA" = "Bachelor's Degree", "SA" = "Diploma, Advanced Diploma (AD), Higher Certificate or Advanced Certificate (AC)", "SA" = "Bachelor's Honours or Postgraduate Diploma (PGD)", "SA" = "Master's Degree or Doctorate") 
+  
   if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% text_a_little
   
   for (v in intersect(names(e), c(variables_burden_sharing, variables_burden_share, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
@@ -1117,6 +1127,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                             annotation=Label(e$speaks_well))
   
   temp <-  (e$education %in% text_education_primary) + 2 * (e$education %in% text_education_secondary) + 3 * (e$education %in% text_education_vocational) + 4 * (e$education %in% text_education_high) + 5 * (e$education %in% text_education_college) + 6 * (e$education %in% text_education_master) - 0.1*is.pnr(e$education)
+  if (country == "DK") {
+    temp[temp == 4] <- 5
+    temp[temp == 2] <- 4
+  }
   e$education <- as.item(temp, missing.values = -0.1, labels = structure(c(-0.1, 0:6), names = c(NA, "None", "Primary", "Lower secondary", "Vocational", "High school", "College degree", "Master degree")),
                          annotation=Label(e$education))
   
@@ -1759,14 +1773,20 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$college[e$education >= 5] <- "College Degree"
   e$college <- factor(e$college, levels = c("No college", "College Degree"))
   
-  if ("education_good" %in% names(e)) { # AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA
-    if (country == "US") e$college_border <- e$education_good %in% c("Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)")
-    if (country == "US") e$college_strict <- e$education_good %in% c("Bachelor's degree (for example: BA, BS)", "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "Doctorate degree (for example, PhD, EdD)")
-    if (country == "AU") e$college_border <- e$education_good %in% c("Certificate IV")
-    if (country == "AU") e$college_strict <- e$education_good %in% c("Advanced Diploma, Diploma, Associate Degree", "Bachelor's Degree", "Graduate Diploma, Graduate Certificate", "Postgraduate Degree (Honours, Master's or Doctoral Degree)")
-    if (country == "UK") e$college_border <- e$education_good %in% c("Higher vocational education (Level 4+ award, level 4+ certificate, level 4+ diploma, higher apprenticeship, etc.)")
-    if (country == "UK") e$college_strict <- e$education_good %in% c("Bachelor's Degree (BA, BSc, BEng, etc.)", "Postgraduate diploma or certificate", "Master's Degree (MSc, MA, MBA, etc.) or Ph.D.")
-    if (country %in% c("US", "AU", "UK")) e$college_broad <- e$college_strict | e$college_border 
+  if ("education_good" %in% names(e)) { # AU, CA, IT, JP, SK, ES, US, MX, TR, UK, CN, SA TODO! check that the (number of) categories of education_good in college_border and college_strict are correct
+    # if (country == "US") e$college_border <- e$education_good %in% c("Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)")
+    # if (country == "US") e$college_strict <- e$education_good %in% c("Bachelor's degree (for example: BA, BS)", "Master’s degree (for example: MA, MS, MEng, MEd, MSW, MBA)", "Professional degree beyond bachelor’s degree (for example: MD, DDS, DVM, LLB, JD)", "Doctorate degree (for example, PhD, EdD)")
+    # if (country == "AU") e$college_border <- e$education_good %in% c("Certificate IV")
+    # if (country == "AU") e$college_strict <- e$education_good %in% c("Advanced Diploma, Diploma, Associate Degree", "Bachelor's Degree", "Graduate Diploma, Graduate Certificate", "Postgraduate Degree (Honours, Master's or Doctoral Degree)")
+    # if (country == "UK") e$college_border <- e$education_good %in% c("Higher vocational education (Level 4+ award, level 4+ certificate, level 4+ diploma, higher apprenticeship, etc.)")
+    # if (country == "UK") e$college_strict <- e$education_good %in% c("Bachelor's Degree (BA, BSc, BEng, etc.)", "Postgraduate diploma or certificate", "Master's Degree (MSc, MA, MBA, etc.) or Ph.D.")
+    # if (country == "CA") e$college_border <- e$education_good %in% c("Apprenticeship program of 3 or 4 years")
+    # if (country == "CA") e$college_strict <- e$education_good %in% c("Master's degree or Doctorate", "Bachelor's degree (3 or 4 years)", "Postsecondary general career, technical or professional program (Technical diploma)")
+    # if (country %in% c("US", "AU", "UK", "CA", "IT", "JP", "MX", "SK", "SP", "TR", "CN", "SA")) {
+    if ("education_good" %in% names(e)) {
+      e$college_border <- e$education_good %in% text_college_border
+      e$college_strict <- e$education_good %in% text_college_strict
+      e$college_broad <- e$college_strict | e$college_border }
     if ("college_border" %in% names(e)) e$college_border[is.na(e$education_good)] <- e$college_strict[is.na(e$education_good)] <- e$college_border[is.na(e$education_good)] <- NA
     if ("college_border" %in% names(e)) label(e$college_border) <- "college_border: T/F Indicator that the respondent has some college education (in the broad sense) but no college degree (in the strict sense); i.e. college_strict == F & college_broad == T."
     if ("college_strict" %in% names(e)) label(e$college_strict) <- "college_strict: T/F Indicator that the respondent has a college degree (in the strict sense)."
@@ -2266,7 +2286,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   # Conditions : conditions to transform into dummy variables; before_treatment : T if question asked before the treatment
   # /!\ Be careful of the logical implications of using both negatives and conditions! : if no condition just set negative = T,
   # if dummy leave negative = F and inverse condition (e.g., < 0 instead of > 0) or set condition accordingly (e.g., >-1 for logical)
-  index_zscore <<- function(name = NULL, variables = NULL, negatives = NULL, conditions = rep("", length(variables)), before_treatment = rep(FALSE, length(variables)), df=e, dummies = FALSE, require_all_variables = T, weight=T) {
+  index_zscore <<- function(name = NULL, variables = NULL, negatives = NULL, conditions = rep("", length(variables)), before_treatment = rep(FALSE, length(variables)), df=e, dummies = FALSE, require_all_variables = T, weight=T, efa = FALSE) {
     if (!missing(name)) {
       if (missing(variables)) variables <- eval(as.name(paste0("variables_index_", name)))
       if (missing(negatives)) negatives <- eval(as.name(paste0("negatives_index_", name)))
@@ -2288,11 +2308,21 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       zscores_data <- as.data.frame(lapply(groups, z_score_computation, df=df, weight=weight))
       #zscore_names<- as.vector(sapply(variables_list,function(x) paste(x,"zscores_data", sep = "_")))
       #colnames(zscores_data) <- zscore_names
-      zscores <- rowMeans(zscores_data)
+      if (efa) {
+        try({loadings <- as.numeric(factanal(zscores_data, 1)$loadings)})
+        if (is.null(loadings)) loadings <- rep(1, length(variables))
+        # names(loadings) <- variables
+        zscores <- 0
+        for (i in 1:length(variables)) zscores <- zscores + loadings[i]*zscores_data[, i]
+      } else zscores <- rowMeans(zscores_data)
       zscores <- (zscores - wtd.mean(zscores, w = e$weight, na.rm=T)) / sqrt(wtd.var(zscores, w = e$weight, na.rm=T))
-      label(zscores) <- paste0("index_", name, ": Z-score of (non-weighted) average of (first-stage) z-scores of variables: ", paste(variables, collapse = ', '), 
-                               ".", ifelse(dummies, paste0(" Variables are recoded as dummies (cf. conditions_index_", name, ")."), ""), 
-                               " Each z-score is normalized with", ifelse(weight, " survey weights,", ""), " control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise).")
+      if (is.null(loadings) || all(loadings == 1)) {
+        label(zscores) <- paste0("index_", name, ": Z-score of (non-weighted) average of (first-stage) z-scores of variables: ", paste(variables, collapse = ', '), 
+                                 ".", ifelse(dummies, paste0(" Variables are recoded as dummies (cf. conditions_index_", name, ")."), ""), 
+                                 " Each z-score is normalized with", ifelse(weight, " survey weights,", ""), " control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise).")
+      } else { label(zscores) <- paste0("index_", name, ": Z-score of weighted (with Exploratory Factor Analysis loadings) average of (first-stage) z-scores of variables: ", paste(variables, collapse = ', '), 
+                                 ".", ifelse(dummies, paste0(" Variables are recoded as dummies (cf. conditions_index_", name, ")."), ""), 
+                                 " Each z-score is normalized with", ifelse(weight, " survey weights,", ""), " control group (resp. sample) mean and sd. Imputes group mean to missing values. Group: treatment group (resp. whole sample) if question asked after treatment and it's a first-stage z-scores (resp. otherwise).") }
       return(zscores)
     } else browser(expr = FALSE) # Interrupts the execution without returning an error
   }
@@ -2346,13 +2376,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   # variables_indices <- list()
   # negatives_indices <- list()
   # conditions_indices <- list()
-  # before_treatment_indices <- list()
+  # before_treatment_indices <- list() 
   names_indices <<- c("affected", "knowledge", "concerned_about_CC", "progressist", "worried", "positive_economy", "constrained", "policies_effective", "altruism", "pro_redistribution", "earmarking_vs_transfers",
                       "pricing_vs_norms", "affected_subjective", "lose_policies_subjective", "lose_policies_poor", "lose_policies_rich", "fairness", "trust_govt", "willing_change", "care_poverty", "distribution_critical", "attentive", 
                       "standard_policy", "tax_transfers_policy", "investments_policy", "main_policies", "main_policies_all", "main_policies_all", "beef_policies", "international_policies", "other_policies", "all_policies")
   for (i in names_indices) {
-    if (zscores) e[[paste0("index_", i)]] <- index_zscore(i, df = e, weight = weighting, dummies = FALSE, require_all_variables = TRUE)
-    if (zscores_dummies) e[[paste0("index_", i, "_dummies")]] <- index_zscore(i, df = e, weight = weighting, dummies = TRUE, require_all_variables = TRUE)
+    if (zscores) e[[paste0("index_", i)]] <- index_zscore(i, df = e, weight = weighting, dummies = FALSE, require_all_variables = TRUE, efa = efa)
+    if (zscores_dummies) e[[paste0("index_", i, "_dummies")]] <- index_zscore(i, df = e, weight = weighting, dummies = TRUE, require_all_variables = TRUE, efa = efa)
     # if (zscores) e[[paste0("index_", i)]] <- index_zscore(as.name(paste0("variables_index_", i)), as.name(paste0("negatives_index_", i)), conditions = as.name(paste0("conditions_index_", i)), before_treatment = as.name(paste0("before_treatment_index_", i)), df = e, weight = weighting, dummies = FALSE, require_all_variables = TRUE)
     # if (zscores_dummies) e[[paste0("index_", i, "_dummies")]] <- index_zscore(variables_indices[[i]], negatives_indices[[i]], conditions = conditions_indices[[i]], before_treatment = before_treatment_indices[[i]], df = e, weight = weighting, dummies = TRUE, require_all_variables = TRUE)
     
@@ -2665,7 +2695,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   # 
 }
 
-prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = FALSE, zscores = T, zscores_dummies = FALSE, remove_id = FALSE) { #(country!="DK") # , exclude_quotas_full=TRUE
+prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = FALSE, zscores = T, zscores_dummies = FALSE, remove_id = FALSE, efa = FALSE) { #(country!="DK") # , exclude_quotas_full=TRUE
   # if (country == "US") {
   #   if (wave == "pilot1") e <- read_csv("../data/US_pilot.csv") 
   #   else if (wave == "pilot2") e <- read_csv("../data/US_pilot2.csv") 
@@ -2693,7 +2723,7 @@ prepare <- function(exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=T
   if (exclude_speeder) { e <- e[as.numeric(as.vector(e$duration)) > duration_min,] } 
   if (only_finished) { # TODO: le faire marcher même pour les autres
     e <- e[e$finished==1,] 
-    e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
+    e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
     e <- e[,!duplicated(names(e))]
     # if (weighting) {
     #   e$weight <- weighting(e)
@@ -2880,7 +2910,7 @@ merge_all_countries <- function(df = All, weight_adult = T, weight_oecd = F) {
 }
 
 
-prepare_all <- function(weighting = T, zscores = T, zscores_dummies = F, pilots = FALSE, countries = T, merge = T) {
+prepare_all <- function(weighting = T, zscores = T, zscores_dummies = F, efa = FALSE, pilots = FALSE, countries = T, merge = T) {
   start <- Sys.time()
   if (countries) {
     if (pilots) {
@@ -2892,26 +2922,26 @@ prepare_all <- function(weighting = T, zscores = T, zscores_dummies = F, pilots 
       usp <<- merge(usp3, usp12, all = T) # merge(usp3, usp12, all = T)
       us_all <<- prepare(country = "US", duration_min = 0, only_finished = F, exclude_screened = F, exclude_speeder = F)
     }
-    au <<- prepare(country = "AU", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    ca <<- prepare(country = "CA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    dk <<- prepare(country = "DK", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    fr <<- prepare(country = "FR", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    de <<- prepare(country = "DE", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    it <<- prepare(country = "IT", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    jp <<- prepare(country = "JP", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    mx <<- prepare(country = "MX", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    pl <<- prepare(country = "PL", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    sk <<- prepare(country = "SK", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    sp <<- prepare(country = "SP", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    tr <<- prepare(country = "TR", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    uk <<- prepare(country = "UK", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    us <<- prepare(country = "US", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    br <<- prepare(country = "BR", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    cn <<- prepare(country = "CN", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    ia <<- prepare(country = "IA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    id <<- prepare(country = "ID", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    sa <<- prepare(country = "SA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
-    ua <<- prepare(country = "UA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies)
+    au <<- prepare(country = "AU", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    ca <<- prepare(country = "CA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    dk <<- prepare(country = "DK", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    fr <<- prepare(country = "FR", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    de <<- prepare(country = "DE", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    it <<- prepare(country = "IT", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    jp <<- prepare(country = "JP", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    mx <<- prepare(country = "MX", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    pl <<- prepare(country = "PL", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    sk <<- prepare(country = "SK", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    sp <<- prepare(country = "SP", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    tr <<- prepare(country = "TR", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    uk <<- prepare(country = "UK", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    us <<- prepare(country = "US", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    br <<- prepare(country = "BR", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    cn <<- prepare(country = "CN", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    ia <<- prepare(country = "IA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    id <<- prepare(country = "ID", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    sa <<- prepare(country = "SA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
+    ua <<- prepare(country = "UA", duration_min = 686, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa)
   }
   if (merge) {
     current_countries <- c("DK", "US", "FR", "DE", "ID")
