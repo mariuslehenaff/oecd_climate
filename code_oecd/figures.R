@@ -944,6 +944,8 @@ modelplot(lm(CC_dynamic == 'Yes' ~ treatment, data = e))
 # corrplot(corrc, method='color', p.mat = p.matc, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T , type='upper') #, order='hclust'
 
 # TODO BP: LDA: improve interpretation; Variance/Gelbach: remove wealth, as.factor(vote); 
+#          Appendix overleaf
+#          variance decomposition, Gelbach for all
 #          sample vs. pop tables, marital status; 
 #          LDA: avec toutes variables, do something about multiple answers questions for the LDA, as well as variables that are not on a [-2;+2] scale; 
 #          create a function (within a new file e.g. country_appendix.R) that automatically create all the figures/tables we need for a country appendix (and then we'll call the function for all countries). 
